@@ -1,5 +1,6 @@
-// check mail validity
+const xmlhttp = new XMLHttpRequest();
 
+// check mail validity
 const checkMail = (t) =>{
 
     let email = t.value;
@@ -57,10 +58,27 @@ const checkMailExistance = (t) =>{
 // mobile verification and validation =======
 
 const checkContactNo = (t) => {
-    if (t.value.length != 10) {
+    // if (t.value.length != 10) {
+    //     Swal.fire({
+    //         title: "Alert",
+    //         text: "Mobile number must be 10 digits.",
+    //         icon: "warning",
+    //         confirmButtonColor: "#3085d6",
+    //         confirmButtonText: "Ok"
+    //       }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             t.value='';
+    //             t.focus();
+    //         }
+    //       });
+    // } 
+    var mob = document.getElementById('patientPhoneNumber').value;
+    var regex = /^[0-9]{10}$/; 
+            
+    if(! regex.test( mob)) {
         Swal.fire({
-            title: "Alert",
-            text: "Mobile number must be 10 digits.",
+            title:"Alert",
+            text: "Please provide a valid 10-digit mobile number.",
             icon: "warning",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Ok"
@@ -70,34 +88,37 @@ const checkContactNo = (t) => {
                 t.focus();
             }
           });
-    } else {
-        let contactNo = t.value;
-        $.ajax({
-            url: 'ajax/mobile-email-existance-check.ajax.php',
-            type: 'POST',
-            data: {
-                checkMobNo: contactNo,
-            },
-            success: function (data) {
-                // alert(data);
-                if (data == 1) {
-                    Swal.fire({
-                        title: "Alert",
-                        text: "Mobile number exist.",
-                        icon: "warning",
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "Ok"
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                            t.value='';
-                            t.focus();
-                        }
-                      });
-                } 
-            },
-        });
-    }
+    } 
+    // else {
+    //     let contactNo = t.value;
+    //     $.ajax({
+    //         url: 'ajax/mobile-email-existance-check.ajax.php',
+    //         type: 'POST',
+    //         data: {
+    //             checkMobNo: contactNo,
+    //         },
+    //         success: function (data) {
+    //             // alert(data);
+    //             if (data == 1) {
+    //                 Swal.fire({
+    //                     title: "Alert",
+    //                     text: "Mobile number exist.",
+    //                     icon: "warning",
+    //                     confirmButtonColor: "#3085d6",
+    //                     confirmButtonText: "Ok"
+    //                   }).then((result) => {
+    //                     if (result.isConfirmed) {
+    //                         t.value='';
+    //                         t.focus();
+    //                     }
+    //                   });
+    //             } 
+    //         },
+    //     });
+    // }
 }
+
+
 
 
 

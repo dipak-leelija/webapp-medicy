@@ -24,6 +24,7 @@ if (isset($_POST['proceed'])) {
 
         $patient = json_decode($Patients->patientsDisplayByPId($patientId));
         $name            = $patient->name;
+        $age             = $patient->age;
         $gurdianName     = $patient->gurdian_name;
         $phno            = $patient->phno;
         $email           = $patient->email;
@@ -165,7 +166,7 @@ if (isset($_POST['submit'])) {
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger"> *</span></label>
 
-                                                <input type="number" id="patientAge" name="patientAge" placeholder="Age" maxlength="3" minlength="1" required onfocusout="checkAge(this)" autocomplete="off">
+                                                <input type="number" id="patientAge" name="patientAge" placeholder="Age" Value="<?php echo $age; ?>" maxlength="3" minlength="1" required onfocusout="checkAge(this)" autocomplete="off">
 
                                             </div>
 
@@ -199,7 +200,7 @@ if (isset($_POST['submit'])) {
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="appointmentDate">Appointment Date<span class="text-danger"> *</span></label>
 
-                                                <input type="date" id="appointmentDate" name="appointmentDate" placeholder="" required>
+                                                <input type="date" id="appointmentDate" name="appointmentDate" placeholder="" value="<?php print(date("Y-m-d")) ?>" required>
                                             </div>
                                         </div>
 

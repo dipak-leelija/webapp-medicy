@@ -18,6 +18,21 @@
     text-decoration: none;
     color: white;
 } */
+/* #browsers{
+    background-color: #ffffff;
+    color: #000000;
+} */
+.newbillInput{
+    outline: none;
+    border: none;
+    background: transparent;
+    border-bottom: 0.1rem solid #000000;
+    border-radius: 0px !important;
+}
+.newbillInput:focus{
+    border: none;
+    border-bottom: 1px solid rgb(27, 134, 235);
+}
 
 .entry-button-col {
     text-align: right;
