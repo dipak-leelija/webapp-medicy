@@ -1107,9 +1107,11 @@ class StockOut extends DatabaseConnection
     function selectStockOutDataOnDateFilter($startDate, $endDate, $adminId)
     {
         try {
-            $selectSalesData = "SELECT invoice_id, amount, bill_date FROM stock_out 
-                                WHERE `bill_date` BETWEEN ? AND ? 
-                                AND `admin_id` = ?";
+            $selectSalesData = "SELECT COUNT(invoice_id) AS invoice_count, SUM(amount) 
+                                AS sell_amount, DATE(added_on) AS sell_date 
+                                FROM stock_out 
+                                WHERE DATE(added_on) BETWEEN ? AND ? 
+                                AND `admin_id` = ? GROUP BY DATE(added_on)";
 
             $stmt = $this->conn->prepare($selectSalesData);
             
@@ -1129,10 +1131,10 @@ class StockOut extends DatabaseConnection
                     $data[] = $row;
                 }
                 $stmt->close();
-                return json_encode(['status'=>'1', 'data'=>$data]);
+                return $data;
             }else{
                 $stmt->close();
-                return json_encode(['status'=>'0', 'data'=>'']);
+                return null;
             }
         } catch (Exception $e) {
             echo "error". $e->getMessage();
@@ -1374,6 +1376,137 @@ class StockOut extends DatabaseConnection
 
 
     //  ================== most sold item check query ====================
+    //  ===================== most sold less sold data filter function =======================
+    function stockOutDataFetchFromStart($adminId, $sortVal)
+    {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= (SELECT MIN(added_on) FROM stock_out WHERE admin_id = ?)
+                              AND so.added_on <= NOW()
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold $sortVal
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $adminId, $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'data'=>$data]);
+                } else {
+                    return json_encode(['status'=>'0']);
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+    function dailyStockOutDataFetch($adminId, $sortVal)
+    {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= NOW() - INTERVAL 24 HOUR
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold $sortVal
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'data'=>$data]);
+                } else {
+                    return json_encode(['status'=>'0']);
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+    function stockOutDataFetchByRange($startDt, $endDt, $sortVal, $adminId)
+    {
+        $data = array();
+
+        try {
+            $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
+                            FROM stock_out_details
+                            WHERE invoice_id IN (
+                                SELECT invoice_id
+                                FROM stock_out
+                                WHERE admin_id = ? AND DATE(added_on) BETWEEN ? AND ?
+                            )
+                            GROUP BY product_id
+                            ORDER BY total_sold $sortVal
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDt);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'data'=>$data]);
+                } else {
+                    return json_encode(['status'=>'0']);
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return $data;
+    }
+
+    //===================== eof most sold less sold data filter function ===============================
 
     // =========== most sold item function from the begening =========
     function mostSoldStockOutDataFromStart($adminId)

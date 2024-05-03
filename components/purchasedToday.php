@@ -20,47 +20,48 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 ?>
 
 <div class="card border-left-info shadow h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-center px-3 mt-2">
-    <div class="row no-gutters align-items-center">
-        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-            Purchased today
-        </div>
-    </div>
-    <div class="d-flex justify-content-end">
-        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;">
-            <input type="date" id="purchaseOfTheDayDate">
-            <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
-        </div>
-        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;">
-            <div class="d-flex d-flex justify-content-start">
-                <div>
-                    <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
-                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
-                </div>&nbsp
-                <div>
-                    <br>
-                    <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
+    <div class="px-3 mt-2">
+        <div class="row d-flex">
+            <div class="col-md-6">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    Purchased today
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-end">
+                <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;">
+                    <input type="date" id="purchaseOfTheDayDate">
+                    <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;">
+                    <div class="d-flex d-flex justify-content-start">
+                        <div>
+                            <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
+                            <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
+                        </div>&nbsp
+                        <div>
+                            <br>
+                            <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex justify-content-end">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-filter"></i>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
+                        <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
+                        <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
+                        <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
+                        <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
+                        <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="btn-group">
-            <!-- <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                ...
-            </button> -->
-            <span class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                ...
-            </span>
-
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
-                <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
-                <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
-                <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
-            </div>
-        </div>
-    </div>
     </div>
     <div class="card-body py-0">
         <div class="row no-gutters align-items-center">
@@ -74,7 +75,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
                 </div>
             </div>
             <div class="col-auto  mt-n2" id="pod-no-data-found-div" style="display: none;">
-            <p class="text-warning">Oops!, the requested data isn't in our records.</p>
+                <p class="text-warning">Oops! No record found.</p>
             </div>
         </div>
     </div>

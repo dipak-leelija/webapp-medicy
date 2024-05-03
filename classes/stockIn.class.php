@@ -271,10 +271,13 @@ class StockIn extends DatabaseConnection
 
     function purchaseDatafetchByDateRange($startDt, $endDt, $adminId)
     {
+        $data = array();
         try {
-            $selectStockIn = "SELECT id, amount, bill_date FROM stock_in
+            $selectStockIn = "SELECT COUNT(id) AS id, SUM(amount) AS stockin_amount,
+                                DATE(added_on) AS purchase_date
+                              FROM stock_in
                               WHERE admin_id = ?
-                              AND DATE(added_on) BETWEEN ? AND ?";
+                              AND DATE(added_on) BETWEEN ? AND ? GROUP BY DATE(added_on)";
 
             $stmt = $this->conn->prepare($selectStockIn);
 
@@ -289,12 +292,14 @@ class StockIn extends DatabaseConnection
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                $data[] = $result->fetch_object(); 
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
                 $stmt->close();
-                return json_encode(['status' => '1', 'data' => $data]);
+                return $data;
             } else {
                 $stmt->close();
-                return json_encode(['status' => '0', 'data' => '']);
+                return null;
             }
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage());      
