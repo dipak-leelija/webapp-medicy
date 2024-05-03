@@ -139,14 +139,14 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     <!-- style="width: 5rem;" -->
                     <small><b>SL.</b></small>
                 </div>
-                <div class="col-sm-2 text-start" >
+                <div class="col-sm-2 text-start">
                     <!-- style="width: 12rem;" -->
                     <small><b>Name</b></small>
                 </div>
                 <div class="col-sm-1 text-start">
                     <small><b>Manuf.</b></small>
                 </div>
-                <div class="col-sm-1 text-start">
+                <div class="col-sm-1 text-center">
                     <!-- style="width: 7rem;" -->
                     <small><b>Batch</b></small>
                 </div>
@@ -243,7 +243,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             <div class="col-sm-1" style="max-width: 9rem;width:auto;">
                                 <small>' . substr($detail['item_name'], 0, 15) . '</small>
                             </div>
-                            <div class="col-sm-1 text-start p-0">
+                            <div class="col-sm-1 text-center p-0">
                                 <small>' . $manufacturerName . '</small>
                             </div>
                             <div class="col-sm-1 text-center p-0" style="
