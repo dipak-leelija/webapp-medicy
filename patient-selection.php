@@ -2,16 +2,121 @@
 
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
+// require_once CLASS_DIR . 'dbconnect.php';
+// require_once ROOT_DIR . '_config/healthcare.inc.php';
+// require_once CLASS_DIR . 'patients.class.php';
+
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
+require_once CLASS_DIR . 'utility.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
 
-$Patients = new Patients();
+// $Patients = new Patients();
 
+$appointments   = new Appointments;
+$IdsGeneration  = new IdsGeneration;
+$Patients       = new Patients;
+$Utility        = new Utility;
+$HealthCare     = new HealthCare;
+$doctors        = new Doctors();
+
+
+$currentURL = $Utility->currentUrl();
+
+// $test = false;
+// if (isset($_GET['test'])) {
+//     if ($_GET['test'] == 'true') {
+//         $test = true;
+//     }
+// }
+
+
+$showDoctors = $doctors->showDoctors($adminId);
+$showDoctors = json_decode($showDoctors);
+$allDoctors  = $showDoctors->data;
+
+$clinicInfo  = $HealthCare -> showHealthCare($adminId);
+$clinicInfo  = json_decode($clinicInfo, true);
+
+if ($clinicInfo['status'] == 1) {
+    $data = $clinicInfo['data'];
+     $district = $data['dist'];
+     $pin      = $data['pin'];
+     $state    = $data['health_care_state'];
+} else {
+    echo "Error: " . $clinicInfo['msg'];
+}
 
 $showPatients = json_decode($Patients->allPatients($adminId));
-// print_r($showPatients);
 
+
+
+if (isset($_SESSION['appointment-data'])) {
+    unset($_SESSION['appointment-data']);
+}
+
+if (isset($_POST['submit'])) {
+
+    $appointmentDate    = $_POST["appointmentDate"];
+    $patientName        = $_POST["patientName"];
+    $patientGurdianName = $_POST["patientGurdianName"];
+    $patientEmail       = $_POST["patientEmail"];
+    $patientPhoneNumber = $_POST["patientPhoneNumber"];
+    $patientAge         = $_POST["patientAge"];
+    $patientWeight      = $_POST["patientWeight"];
+    $gender             = $_POST["gender"];
+    $patientAddress1    = $_POST["patientAddress1"];
+    // $patientAddress2    = $_POST["patientAddress2"];
+    $patientPS          = $_POST["patientPS"];
+    $patientDist        = $_POST["patientDist"];
+    $patientPIN         = $_POST["patientPIN"];
+    $patientState       = $_POST["patientState"];
+    $patientDoctor      = $_POST["patientDoctor"];
+    // $patientDoctorShift = $_POST["doctorTime"];
+
+    //Patient Id Generate
+    $patientId = $IdsGeneration->patientidGenerate();
+
+    //redirect if the insertion has done
+    $visited = 1;
+
+    // Inserting Into Patients Database
+    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, NOW, $adminId);
+
+    if ($addPatients) {
+
+        $_SESSION['appointment-data'] = array(
+            'patientId' => $patientId,
+            'appointmentDate' => $appointmentDate,
+            'patientName' => $patientName,
+            'patientGurdianName' => $patientGurdianName,
+            'patientEmail' => $patientEmail,
+            'patientPhoneNumber' => $patientPhoneNumber,
+            'patientAge' => $patientAge,
+            'patientWeight' => intval($patientWeight),
+            'gender' => $gender,
+            'patientAddress1' => $patientAddress1,
+            'patientAddress2' => $patientAddress2,
+            'patientPS' => $patientPS,
+            'patientDist' => $patientDist,
+            'patientPIN' => $patientPIN,
+            'patientState' => $patientState,
+            'patientDoctor' => $patientDoctor
+        );
+
+        if ($test) {
+            header("location: lab-billing.php");
+        } else {
+            header("location: appointment-entry.php");
+        }
+    } else {
+        echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
+    }
+}
 ?>
 
 <!doctype html>
@@ -30,7 +135,9 @@ $showPatients = json_decode($Patients->allPatients($adminId));
 
 
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
@@ -70,14 +177,22 @@ $showPatients = json_decode($Patients->allPatients($adminId));
                 <div class="container-fluid">
                     <div class="card p-0">
                         <div class="card-header">
-                            <h5><b><p class="text-primary">Select Patient</p></b></h5>
+                            <h5><b>
+                                    <p class="text-primary">Select Patient</p>
+                                </b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
-                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post">
+                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php"
+                                method="post">
 
                                 <div class="section col-12 col-md-6">
                                     <div class="data-test-hook=" remove-button>
-                                        <select class="form-control " id="choices-remove-button" name="patientName" required>
+                                        <button class="btn btn-primary " id="addButton" data-toggle="modal"
+                                            data-target="#addnewTestbill" onclick="addnewpatient()"
+                                            style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
+                                            New</button>
+                                        <select class="form-control " id="choices-remove-button" name="patientName"
+                                            required>
                                             <option value="" selected disabled> Search Patient Name
                                             </option>
                                             <?php
@@ -95,7 +210,6 @@ $showPatients = json_decode($Patients->allPatients($adminId));
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="form-group col-12 col-md-2 mt-2">
                                     <button type="submit" name="proceed" class="btn-block btn-primary">Proceed</button>
                                 </div>
@@ -108,6 +222,25 @@ $showPatients = json_decode($Patients->allPatients($adminId));
         </div>
     </div>
     <!-- Page Wrapper end -->
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Appointment</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="window.location.reload()"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body addnewTestbill" id="newTestModalBody" value="">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Footer -->
@@ -129,6 +262,7 @@ $showPatients = json_decode($Patients->allPatients($adminId));
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>add-patient.js"></script>
 
     <!-- Page level plugins -->
     <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
@@ -144,20 +278,41 @@ $showPatients = json_decode($Patients->allPatients($adminId));
 
 
     <script>
-        //patient selection js
-        // $(document).ready(function() {
-        //     $('.patient-select').selectpicker();
+    //patient selection js
+    // $(document).ready(function() {
+    //     $('.patient-select').selectpicker();
 
-        // })
-        document.addEventListener('DOMContentLoaded', function() {
-            new Choices('#choices-remove-button', {
-                allowHTML: true,
-                removeItemButton: true,
-            });
+    // })
+    document.addEventListener('DOMContentLoaded', function() {
+        new Choices('#choices-remove-button', {
+            allowHTML: true,
+            removeItemButton: true,
         });
+    });
     </script>
 
+    <script>
+    const addnewpatient = () => {
+        let url = "ajax/newTestBill-add.ajax.php";
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('newTestModalBody').innerHTML = data;
+                console.log(data);
+
+                $('#addnewTestbill').modal('show');
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+            });
+    }
+    </script>
 
 </body>
 
 </html>
+
+
+<!-- $patientOptionValue = isset($_SESSION['appointment-data']) ? $_SESSION['appointment-data']['patientId'] : $patientsRow->patient_id;
+                                                         $patientOptionText = isset($_SESSION['appointment-data']) ? $_SESSION['appointment-data']['patientId'] :                                      $patientsRow->patient_id . " - " . $patientsRow->name;
+                                                         echo "<option value='" . $patientOptionValue . "'>" . $patientOptionText . "</option>"; -->

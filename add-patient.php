@@ -1,5 +1,5 @@
 <?php
-$page = "appointments";
+// $page = "appointments";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
@@ -19,7 +19,7 @@ $IdsGeneration  = new IdsGeneration;
 $Patients       = new Patients;
 $Utility        = new Utility;
 $HealthCare     = new HealthCare;
-$doctors = new Doctors();
+$doctors        = new Doctors();
 
 
 $currentURL = $Utility->currentUrl();
@@ -49,6 +49,12 @@ if ($clinicInfo['status'] == 1) {
     echo "Error: " . $clinicInfo['msg'];
 }
 
+
+
+
+// find the patient name 
+// $Patients = $Patients->patientFilterByAdminId($adminId);
+// $Patients = json_decode($Patients);
 ?>
 
 <!doctype html>
@@ -165,20 +171,22 @@ if ($clinicInfo['status'] == 1) {
                         <div class="col-xl-9 col-lg-10 col-md-10 text-center">
                             <div class="card shadow-sm p-4">
                                 <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4>
-                                <form class="form-card" action="<?= $currentURL ?>" method="post">
+                                <form class="form-card " action="<?= $currentURL ?>" method="post">
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
-
                                             <label class="form-control-label px-3" for="patientName">Patient Name<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required autocomplete="off">
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" onkeyup="getpatient(this.value)" required autocomplete="off">
+                                            <div id="patients-list">
 
+                                            </div>
+                                            <input type="text" id="patientId" hidden>
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                 number<span class="text-danger"> *</span></label>
-                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required /*onkeypress="checkMobNo(this)"*/  onfocusout="checkContactNo(this)" autocomplete="off">
+                                            <input type="tel" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required /*onkeypress="checkMobNo(this)"*/  onchange="checkContactNo(this)" autocomplete="off" maxlength="10">
                                         </div>
 
 

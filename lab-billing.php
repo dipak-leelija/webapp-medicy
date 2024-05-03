@@ -35,7 +35,7 @@ if (isset($_SESSION['appointment-data'])) {
     $patientWeight      = $data['patientWeight'];
     $gender             = $data['gender'];
     $patientAddress1    = $data['patientAddress1'];
-    $patientAddress2    = $data['patientAddress2'];
+    // $patientAddress2    = $data['patientAddress2'];
     $patientPS          = $data['patientPS'];
     $patientDist        = $data['patientDist'];
     $patientPIN         = $data['patientPIN'];

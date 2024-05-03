@@ -220,9 +220,11 @@ if ($labBillDisplay->status) {
                                 </div>
 
                                 <div class="col-3 text-right entry ml-5">
-                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#labPatientSelection">
+                                    <a class="btn btn-sm btn-primary" href="lab-patient-selection.php?test=true">
                                         <p class="m-0 p-0">Entry</p>
                                     </a>
+
+                                    <!-- <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a> -->
                                 </div>
                             </div>
 
@@ -420,7 +422,7 @@ if ($labBillDisplay->status) {
     </a>
 
     <!-- Lab ptient selection Modal -->
-    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body d-flex justify-content-around align-items-center py-5">
@@ -433,7 +435,7 @@ if ($labBillDisplay->status) {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- end Lab ptient selection Modal -->
 
 
