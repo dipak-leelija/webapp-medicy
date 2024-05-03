@@ -99,7 +99,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
+                            alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -134,26 +135,26 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="row justify-content-around">
                 <!-- table heading -->
 
-                <div class="col-sm-1 text-center" >
-                <!-- style="width: 5rem;" -->
+                <div class="col-sm-1 text-center">
+                    <!-- style="width: 5rem;" -->
                     <small><b>SL.</b></small>
                 </div>
-                <div class="col-sm-2 " >
-                <!-- style="width: 12rem;" -->
+                <div class="col-sm-2 ">
+                    <!-- style="width: 12rem;" -->
                     <small><b>Name</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <div class="col-sm-1" >  
-                <!-- style="width: 7rem;" -->
+                <div class="col-sm-1 text-center">
+                    <!-- style="width: 7rem;" -->
                     <small><b>Batch</b></small>
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1 text-end">
                     <small><b>Exp.</b></small>
                 </div>
-                <div class="col-sm-1 text-end" >
-                <!-- style="width: 7rem;" -->
+                <div class="col-sm-1 text-end">
+                    <!-- style="width: 7rem;" -->
                     <small><b>QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -245,10 +246,11 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             <div class="col-sm-1 text-center p-0">
                                 <small>' . $manufacturerName . '</small>
                             </div>
-                            <div class="col-sm-1 text-center p-0">
+                            <div class="col-sm-1 text-center p-0" style="
+                            max-width: 5rem; width: auto;">
                                 <small>' . $detail['batch_no'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-center p-0">
+                            <div class="col-sm-1 text-end ps-2 p-0">
                                 <small>' . $detail['exp_date'] . '</small>
                             </div>
                             <div class="col-sm-1 text-center" >
@@ -311,7 +313,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                                 </div>
                                 <div class="col-sm-2">
                                     <p class="m-0"><small>MRP</small></p>
-                                    <b><p class="m-0"><small>Payble</small></p></b>
+                                    <b>
+                                        <p class="m-0"><small>Payble</small></p>
+                                    </b>
                                     <p><small>You Saved</small></p>
                                 </div>
                                 <div class="col-sm-4">
@@ -413,9 +417,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 <script>
-    const bactoNewSell = () =>{
-        window.location = "<?php echo LOCAL_DIR ?>new-sales.php";
-    }
+const bactoNewSell = () => {
+    window.location = "<?php echo LOCAL_DIR ?>new-sales.php";
+}
 </script>
 
 </html>
