@@ -102,7 +102,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
+                            alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -118,7 +119,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="my-0"><b>Invoice</b></p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id:
                                 #<?php echo $invoiceId; ?></small></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment: <?php echo $refundMode; ?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment:
+                                <?php echo $refundMode; ?></small>
                         </p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date: <?php echo $billdate; ?></small>
                         </p>
@@ -134,8 +136,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             </div> -->
             <hr class="my-0" style="height:3px;">
 
-            <div class="row">
-                <!-- table heading -->
+            <!-- <div class="row">
+                
 
                 <div class="col-sm-1 text-center" style="width: 5%;">
                     <small><b>SL.</b></small>
@@ -146,12 +148,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <!-- <div class="col-sm-1">
-                    <small><b>Packing</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small>' . $weatage . '</small>
-                </div> -->
+               
                 <div class="col-sm-1">
                     <small><b>Batch</b></small>
                 </div>
@@ -180,12 +177,27 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     <small><b>Refund</b></small>
                 </div>
 
-                <!--/end table heading -->
-            </div>
+                
+            </div> -->
 
-            <hr class="my-0" style="height:1px;">
-
-            <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">SL.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Manuf.</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Exp.</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Buy Qty</th>
+                        <th scope="col">Ret.Qty</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Disc(%)</th>
+                        <th scope="col">GST(%)</th>
+                        <th scope="col">Refund</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 $slno = 0;
                 $totalMrp = 0;
@@ -224,9 +236,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     $weatage = "$itemunit of $packUnit";
 
                     $slno++;
-                    if ($slno > 1) {
-                        echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                    }
+                    // if ($slno > 1) {
+                    //     echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                    // }
 
                     $col1 = 'invoice_id';
                     $col2 = 'item_id';
@@ -243,46 +255,125 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     $totalMrp = floatval($totalMrp) + floatval($detail['mrp']);
 
 
-                    echo '<div class="col-sm-1 text-center" style="width: 5%;">
-                                <small>' . $slno . '</small>
-                            </div>
-                            <div class="col-sm-2 ">
-                                <small>' . $product->name . '</small>
-                            </div>
-                            <div class="col-sm-1">
-                                <small>' . $manufacturerName . '</small>
-                            </div>
-                            <div class="col-sm-1">
-                                <small>' . $detail['batch_no'] . '</small>
-                            </div>
-                            <div class="col-sm-1">
-                                <small>' . $detail['exp'] . '</small>
-                            </div>
-                            <div class="col-sm-1">
-                                <small>' . $detail['weatage'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end">
-                                <small>' . $purchasedQty . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end">
-                                <small>' . $detail['return_qty'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end">
-                                <small>' . $detail['ptr'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end" style="width: 5%;">
-                            <small>' . $detail['disc'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end" style="width: 5%;">
-                                <small>' . $detail['gst'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-end">
-                                <small>' . $detail['refund_amount'] . '</small>
-                            </div>';
+                   echo ' <tr>
+                        <th scope="row"><small>' . $slno . '</small> </th>
+                        <td><small>' . $product->name . '</small></td>
+                        <td><small>' . $manufacturerName . '</small></td>
+                        <td><small>' . $detail['batch_no'] . '</small></td>
+                        <td><small>' . $detail['exp'] . '</small></td>
+                        <td><small>' . $detail['weatage'] . '</small></td>
+                        <td><small>' . $purchasedQty . '</small></td>
+                        <td><small>' . $detail['return_qty'] . '</small></td>
+                        <td><small>' . $detail['ptr'] . '</small></td>
+                        <td><small>' . $detail['disc'] . '</small></td>
+                        <td><small>' . $detail['gst'] . '</small></td>
+                        <td><small>' . $detail['refund_amount'] . '</small></td>
+                    </tr>
+                </tbody>';
                 }
                 ?>
+            </table>
 
-            </div>
+            <!-- <hr class="my-0" style="height:1px;">
+
+            <div class="row"> -->
+                <?php
+                // $slno = 0;
+                // $totalMrp = 0;
+                // $subTotal = floatval(00.00);
+                // foreach ($salesReturnDetails as $detail) {
+                //     // print_r($detail);
+                //     //=========================
+                //     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+
+                //     if ($checkTable->status == 1) {
+                //         $table = 'products';
+                //     } else {
+                //         $table = 'product_request';
+                //     }
+                //     //=========================
+
+                //     $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+
+                //     $product = $productResponse->data;
+                //     // print_r($product);
+
+                //     $packQty = $product->unit_quantity;
+
+                //     if (isset($product->manufacturer_id)) {
+                //         $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+
+                //         $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                //     } else {
+                //         $manufacturerName = '';
+                //     }
+
+
+                //     $itemunit = $ItemUnit->itemUnitName($product->unit);
+                //     $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
+
+                //     $weatage = "$itemunit of $packUnit";
+
+                //     $slno++;
+                //     if ($slno > 1) {
+                //         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                //     }
+
+                //     $col1 = 'invoice_id';
+                //     $col2 = 'item_id';
+                //     $stockOutData = $StockOut->stokOutDetailsDataByTwoCol($col1, $detail['invoice_id'], $col2, $detail['item_id']);
+                //     // print_r($stockOutData);
+
+                //     if($stockOutData[0]['loosely_count'] != 0){
+                //         $purchasedQty = $stockOutData[0]['loosely_count'];
+                //     }else{
+                //         $purchasedQty = $stockOutData[0]['qty'];
+                //     }
+
+                //     // ================== TOTAL MRP CALCULATION AREA =======================
+                //     $totalMrp = floatval($totalMrp) + floatval($detail['mrp']);
+
+
+                //     echo '<div class="col-sm-1 text-center" style="width: 5%;">
+                //                 <small>' . $slno . '</small>
+                //             </div>
+                //             <div class="col-sm-2 ">
+                //                 <small>' . $product->name . '</small>
+                //             </div>
+                //             <div class="col-sm-1">
+                //                 <small>' . $manufacturerName . '</small>
+                //             </div>
+                //             <div class="col-sm-1">
+                //                 <small>' . $detail['batch_no'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1">
+                //                 <small>' . $detail['exp'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1">
+                //                 <small>' . $detail['weatage'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end">
+                //                 <small>' . $purchasedQty . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end">
+                //                 <small>' . $detail['return_qty'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end">
+                //                 <small>' . $detail['ptr'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end" style="width: 5%;">
+                //             <small>' . $detail['disc'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end" style="width: 5%;">
+                //                 <small>' . $detail['gst'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-end">
+                //                 <small>' . $detail['refund_amount'] . '</small>
+                //             </div>';
+                // }
+                ?>
+
+            <!-- </div> -->
 
             <div class="footer">
                 <hr calss="my-0" style="height: 3px;">
