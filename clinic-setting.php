@@ -57,68 +57,6 @@ if ($bills->status) {
 }
 
 
-
-// ================================ drug permit data submit ========================================
-
-if (isset($_POST['drug-permit-data-update']) ==  true) {
-
-    // form 20
-    if (!empty($_FILES['form-20']['name'])) {
-        $form20 = $_FILES['form-20']['name'];
-        // echo "<br>form20 : ".$form20;
-        $tempImgname20    = $_FILES['form-20']['tmp_name'];
-        // echo "<br>temp form20 : ".$tempImgname20;
-        $imgFolderForm20      = "assets/images/orgs/drug-permit/" . $form20;
-        move_uploaded_file($tempImgname20, $imgFolderForm20);
-    } else {
-        $imgFolder  = '';
-    }
-
-    // form 21
-    if (!empty($_FILES['form-21']['name'])) {
-        $form21 = $_FILES['form-21']['name'];
-        // echo "<br>form21 : ".$form21;
-        $tempImgname21    = $_FILES['form-21']['tmp_name'];
-        // echo "<br>temp form21 : ".$tempImgname21;
-        $imgFolderForm21      = "assets/images/orgs/drug-permit/" . $form21;
-        move_uploaded_file($tempImgname21, $imgFolderForm21);
-    } else {
-        $imgFolder  = '';
-    }
-
-    // gstin
-    if (!empty($_POST['gstin'])) {
-        $gstin          = $_POST['gstin'];
-    } else {
-        $gstin = '';
-    }
-
-    // pan
-    if (!empty($_POST['pan'])) {
-        $pan          = $_POST['pan'];
-    } else {
-        $pan = '';
-    }
-
-    // $UpdateHealthcare = $HealthCare->updateDrugPermissionData($imgFolderForm20, $imgFolderForm21, $gstin, $pan, $adminId);
-
-    // print_r($UpdateHealthcare);
-    // header("Location: $currentUrl?setup=Clinic Data Updated");
-    // print_r($UpdateHealthcare);
-    // print_r($UpdateHealthcare);
-
-    // if ($UpdateHealthcare) {
-    //     header("Location: $currentUrl?setup=Clinic Data Updated");
-    //     exit;
-    // } else {
-    //     header("Location: $currentUrl?setup=Updation Failed!");
-    //     exit;
-    // }
-}
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
