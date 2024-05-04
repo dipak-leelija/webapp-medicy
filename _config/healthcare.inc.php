@@ -6,6 +6,7 @@ $HealthCare     = new HealthCare;
 $Subscription   = new Subscription;
 
 $healthCare   = json_decode($HealthCare->showHealthCare($adminId));
+// print_r($healthCare);
 // $SubsDetails  = json_decode($Subscription->getSubscription($adminId));
 $checkSubscription = $Subscription->checkSubscription($adminId, NOW);
 
@@ -26,8 +27,9 @@ if ($healthCare->status === 1 ) {
     if (!empty($healthCare->hospital_name)){
         $healthCareName = $healthCare->hospital_name;
     }else {
-        if (!str_contains(PAGE, 'clinic-setup')) {
-            header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
+        if (!str_contains(PAGE, 'clinic-setting')) {
+            // header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
+            header('Location: '.URL.'clinic-setting.php?setup=Please complete your Pharmacy/Healthcare setup!');
         }
     }
 
@@ -36,6 +38,12 @@ if ($healthCare->status === 1 ) {
 
     $healthCareId        = $healthCare->hospital_id;
     $healthCareName      = $healthCare->hospital_name;
+
+    $form20Data          = $healthCare->form_20;
+    $form21Data          = $healthCare->form_21;
+    $gstinData           = $healthCare->gstin;
+    $panData             = $healthCare->pan;
+
     $healthCareAddress1  = $healthCare->address_1;
     $healthCareAddress2  = $healthCare->address_2;
     $healthCareCity      = $healthCare->city;
@@ -47,7 +55,8 @@ if ($healthCare->status === 1 ) {
     $healthCareApntbkNo  = $healthCare->appointment_help_line;
     
 }else {
-    if (!str_contains(PAGE, 'clinic-setup')) {
-        header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
+    if (!str_contains(PAGE, 'clinic-setting')) {
+        // header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
+        header('Location: '.URL.'clinic-setting.php?setup=Please complete your Pharmacy/Healthcare setup!');
     }
 }

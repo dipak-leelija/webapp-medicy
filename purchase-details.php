@@ -8,6 +8,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
+require_once CLASS_DIR . 'pagination.class.php';
 
 
 $page = "purchase-details";
@@ -16,28 +17,53 @@ $page = "purchase-details";
 $Distributor        = new Distributor();
 $StockIn            = new StockIn();
 $UtilityFiles       = new UtilityFiles;
+$Pagination         = new Pagination;
 
+$showDistributor       = $Distributor->showDistributor();
 
+// ============ data fetch area =======================
 if (isset($_GET['searchKey'])) {
-    $id = $_GET['searchKey'];
-    $showStockIn = $StockIn->selectStockInById($id);
+    $searchData = $_GET['searchKey'];
+    $showStockIn = $StockIn->stockInDataAsLike($searchData, $adminId);
 } else {
     $showStockIn = $StockIn->showStockInDecendingOrder($adminId);
+    // print_r($showStockIn);
     if ($showStockIn != null) {
         $StockInId = $showStockIn[0]['id'];
     }
 }
+// print_r($showStockIn);
+// ===================== pagination area =========================
+$slicedData = '';
+if (!empty($showStockIn)) {
+    if (is_array($showStockIn)) {
+        $response = json_decode($Pagination->arrayPagination($showStockIn));
 
-$showDistributor       = $Distributor->showDistributor();
+        $paginationHTML = '';
+        $totalItem = $slicedData = $response->totalitem;
 
+        if ($response->status == 1) {
+            $slicedData = $response->items;
+            $paginationHTML = $response->paginationHTML;
+        }
+    } else {
+        $totalItem = 0;
+    }
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
+}
+// print_r($slicedData);
+
+
+// =================== eof pagination ===========================
 if (isset($_POST) && isset($_FILES['import-file'])) {
     print_r($_FILES);
 
     $filename = $_FILES["import-file"]["tmp_name"];
     if ($_FILES["import-file"]["size"] > 0) {
-        
+
         $UtilityFiles->purchaseImport($filename);
-        
     }
 }
 
@@ -96,39 +122,48 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
 
                         <div class="card-header booked_btn">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="m-0 font-weight-bold text-primary">Number of Stock in :<?php echo count($showStockIn); ?></h6>
-                                <div>
-                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#staticBackdrop">Import </button>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterData()"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-center">
+                                    <h6 class="m-0 font-weight-bold text-primary">Number of Purchase :<?php echo $totalItem; ?></h6>
+                                </div>
+                                <div class="col-md-3 d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">Import </button>
                                     <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card-body">
-
-
-
                             <div class="table-responsive">
                                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
-                                    <thead class="bg-primary text-light">
+                                    <thead>
                                         <tr>
                                             <th>Sl.</th>
                                             <th>Dist. Bill No</th>
                                             <th>Dist. Name</th>
                                             <th>Date</th>
                                             <th>Amount</th>
-                                            <th>Status</th>
+                                            <th>Payment Mode</th>
                                             <th class="d-flex justify-content-around">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if (count($showStockIn) > 0) {
-                                            $StockInId = $showStockIn[0]['id'];
-                                            $id = $showStockIn[0]['id'];
-                                            $slNo = $id - $StockInId;
-                                            foreach ($showStockIn as $stockIn) {
-                                                $distributor = json_decode($Distributor->showDistributorById($stockIn['distributor_id']));
+                                        if ($totalItem > 0) {
+                                            // $StockInId = $slicedData[0]['id'];
+                                            // $id = $slicedData[0]->id;
+                                            // $slNo = $id - $StockInId;
+                                            $slNo = 0;
+                                            foreach ($slicedData as $stockIn) {
+                                                $distributor = json_decode($Distributor->showDistributorById($stockIn->distributor_id));
                                                 if ($distributor->status == 1) {
                                                     $fetchedDistributor = $distributor->data;
                                                     $distName = $fetchedDistributor->name;
@@ -136,36 +171,35 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                                                     $distName = '';
                                                 }
 
-
                                                 $slNo++;
 
                                         ?>
 
                                                 <tr>
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', )" data-toggle="modal" data-target="#exampleModal"><?php echo $slNo ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>', )" data-toggle="modal" data-target="#exampleModal"><?php echo $slNo ?>
                                                     </td>
 
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn->distributor_bill ?>
                                                     </td>
 
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?= $distName ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>' )" data-toggle="modal" data-target="#exampleModal"><?= $distName ?>
                                                     </td>
 
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn->bill_date ?>
                                                     </td>
 
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn->amount ?>
                                                     </td>
 
-                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn->payment_mode ?>
                                                     </td>
 
                                                     <td class="d-flex justify-content-around align-middle">
-                                                        <a class="text-primary pe-auto" role="button" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>' , this.value1)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
+                                                        <a class="text-primary pe-auto" role="button" onclick="stockDetails('<?php echo $stockIn->distributor_bill ?>','<?php echo $stockIn->id ?>')" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a class="text-primary" id="<?php echo $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php echo $stockIn['distributor_bill'] ?>&editId=<?php echo $stockIn['id'] ?>" role="button"><i class=" fas fa-edit"></i>
+                                                        <a class="text-primary" id="<?php echo $stockIn->distributor_bill ?>" href="stock-in-edit.php?edit=<?php echo $stockIn->distributor_bill ?>&editId=<?php echo $stockIn->id ?>" role="button"><i class=" fas fa-edit"></i>
                                                         </a>
-                                                        <a class="text-danger" role="button"><i class="fas fa-trash" id="<?php echo $stockIn['id'] ?>" onclick="deleteStock(this.id)"></i></a>
+                                                        <a class="text-danger" role="button"><i class="fas fa-trash" id="<?php echo $stockIn->id ?>" onclick="deleteStock(this.id)"></i></a>
                                                     </td>
                                                 </tr>
                                         <?php
@@ -175,6 +209,9 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
 
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -249,7 +286,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+    <!-- <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script> -->
     <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
 
     <!-- Page level custom scripts -->
@@ -406,6 +443,19 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                 });
 
 
+        }
+
+        //====================== url modification for data search ======================
+        const filterData = () => {
+            var value = document.getElementById('data-search').value;
+
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (value.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?searchKey=${value}`;
+                window.location.replace(newURL);
+            } else {
+                alert('Please Enter Minimum 3 Character!');
+            }
         }
     </script>
 
