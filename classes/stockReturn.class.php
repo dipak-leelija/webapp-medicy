@@ -125,6 +125,34 @@ class StockReturn extends DatabaseConnection
 
 
 
+    function stockReturnBySearchFilter($value, $adminId)
+    {
+        try {
+            $sql = "SELECT * FROM stock_return WHERE (`id` LIKE '%$value%' OR `return_date`LIKE '%$value%' OR `added_by` LIKE '%$value%' OR `refund_mode` LIKE '%$value%' OR `refund_amount` LIKE '%$value%') AND `admin_id` = '$adminId'";
+
+            $result = $this->conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+                $result->close();
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
+        }
+
+        return 0;
+    }
+
+
+
+
+
 
     function stockReturnFilterByTableName($table, $value, $admin)
     {
