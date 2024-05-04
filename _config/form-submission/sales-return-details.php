@@ -189,7 +189,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <th scope="col">Batch</th>
                         <th scope="col">Exp.</th>
                         <th scope="col">Unit</th>
-                        <th scope="col">Buy Qty</th>
+                        <th scope="col" style="width: 4.9rem;">Buy Qty</th>
                         <th scope="col">Ret.Qty</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Disc(%)</th>
@@ -198,7 +198,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </tr>
                 </thead>
                 <tbody>
-                <?php
+                    <?php
                 $slno = 0;
                 $totalMrp = 0;
                 $subTotal = floatval(00.00);
@@ -277,7 +277,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <!-- <hr class="my-0" style="height:1px;">
 
             <div class="row"> -->
-                <?php
+            <?php
                 // $slno = 0;
                 // $totalMrp = 0;
                 // $subTotal = floatval(00.00);
