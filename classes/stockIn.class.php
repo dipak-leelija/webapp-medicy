@@ -265,6 +265,37 @@ class StockIn extends DatabaseConnection
             }
         }
     }
+    
+
+    // ======================== stok in any data fetch =========================
+    function stockInDataAsLike($data, $adminId)
+    {
+        try {
+            $ShowData = array();
+    
+            $select = "SELECT * FROM `stock_in` WHERE (`distributor_bill` LIKE ? OR `bill_date` LIKE ? OR `amount` LIKE ? OR `payment_mode` LIKE ?) AND `admin_id` = ?";
+            
+            $stmt = $this->conn->prepare($select);
+    
+            $likeParam = "%$data%";
+            $stmt->bind_param("ssssi", $likeParam, $likeParam, $likeParam, $likeParam, $adminId);
+    
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            while ($row = $result->fetch_assoc()) {
+                $ShowData[] = $row;
+            }
+    
+            $stmt->close();
+    
+            return $ShowData;
+        } catch (Exception $e) {
+            throw new Exception("Error retrieving data: " . $e->getMessage());
+        }
+    }
+    
     // ============================================================
 
     // =================== stock in data fetch by date range ===================
