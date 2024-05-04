@@ -189,7 +189,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <th scope="col">Batch</th>
                         <th scope="col">Exp.</th>
                         <th scope="col">Unit</th>
-                        <th scope="col" style="width: 4.9rem;">Buy Qty</th>
+                        <th scope="col">Buy Qty</th>
                         <th scope="col">Ret.Qty</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Disc(%)</th>
