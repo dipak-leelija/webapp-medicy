@@ -127,7 +127,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </div>
                 </div>
             </div>
-            <hr class="my-0" style="height:0px; background: #000000; border: #000000;">
+            <!-- <hr class="my-0" style="height:0px; background: #000000; border: #000000;"> -->
             <!-- <div class="row my-0">
                 <div class="col-sm-6 ms-4 my-0">
                     <p class="text-start" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
