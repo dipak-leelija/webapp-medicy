@@ -121,6 +121,10 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                         <div class="card-header booked_btn">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="col-md-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Number of Purchase :<?php echo $totalItem; ?></h6>
+                                </div>
+
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <input class="cvx-inp" type="text" placeholder="Search..." name="purchase-data-search" id="purchase-data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchData) ? $searchData : ''; ?>">
 
@@ -129,9 +133,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 d-flex justify-content-center">
-                                    <h6 class="m-0 font-weight-bold text-primary">Number of Purchase :<?php echo $totalItem; ?></h6>
-                                </div>
+
                                 <div class="col-md-3 d-flex justify-content-end">
                                     <button class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">Import </button>
                                     <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>

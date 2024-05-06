@@ -7,6 +7,9 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'subscription.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
+// echo $healthCareDist;
+// echo $panData;
+
 $Subscription   = new Subscription;
 $Utility        = new Utility;
 // $$HealthCare    = new HealthCare;
@@ -41,10 +44,10 @@ if (isset($_POST['update']) ==  true) {
     // print_r($UpdateHealthcare);
 
     if ($UpdateHealthcare) {
-        header("Location: $currentUrl?setup=Clinic Data Updated");
+        header("Location: $currentUrl?setup=Clinic Data Updated & flag=1");
         exit;
     } else {
-        header("Location: $currentUrl?setup=Updation Failed!");
+        header("Location: $currentUrl?setup=Updation Failed! & flag=0");
         exit;
     }
 }

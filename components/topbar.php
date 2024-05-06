@@ -1,3 +1,8 @@
+<?php 
+
+
+?>
+
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -5,13 +10,6 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-
-    <!-- <a href="#" id="sidebarToggleTop" class="sidebar-toggle" data-toggle="push-menu" role="button">
-    <i class="fa fa-bars"></i>
-    </a> -->
-
-    <!-- Topbar Search -->
-
 
     <div class="d-flex">
         <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" id="search-all-form">

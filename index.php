@@ -92,18 +92,12 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
 
-                    <!-- Page Heading -->
-                    <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div> -->
-
-
-                    <!-- CONTENT USER DATA ROW -->
-
-
-                    <!-- Content Row -->
                     <div class="row">
                         <!-- Earnings (Monthly) Card Example -->
                         <?php
@@ -161,7 +155,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <div class="row">
                                     <!----------- Purchase today card ----------->
                                     <div class="col-xl-12 col-md-12 mb-4">
-                                        <?php require_once ROOT_COMPONENT. "most-purchased.php"; ?>
+                                        <?php require_once ROOT_COMPONENT . "most-purchased.php"; ?>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +188,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
                             </div> -->
 
-                        </div> 
+                        </div>
 
                         <!-- ================== SECOND ROW ================== -->
                         <div class="row">
