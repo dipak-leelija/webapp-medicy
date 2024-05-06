@@ -99,7 +99,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
+                        <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" -->
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
@@ -124,10 +125,13 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 </div>
             </div>
             <hr class="my-0" style="height:0px; background: #000000; border: #000000;">
-            <div class="row my-0">
-                <div class="col-sm-6 ms-4 my-0">
-                    <p class="text-start" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
+            <div class="d-flex justify-content-between">
+                <div class="">
+                    <p class="text-start m-0" ><small><b>Refered By:</b>
                             <?php echo $reffby; ?></small></p>
+                </div>
+                <div class="" style="margin-right: 4.8rem;">
+                    <p class="m-0 "><small><b>GST ID :</b></small><?php echo $gstinData?></p>
                 </div>
             </div>
             <hr class="my-0" style="height:2px;">
@@ -382,17 +386,17 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                                 <div class="col-sm-2">
                                     <p class="m-0"><small>CGST</small></p>
                                     <p class="m-0"><small>SGST</small></p>
-                                    <p><small>Total GST:</small></p>
+                                    <p style="width:4rem;"><small>Total GST</small></p>
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="m-0">
-                                        <small>: ₹<?php echo $totalGSt / 2; ?></small>
+                                        <small>: ₹ <?php echo $totalGSt / 2; ?></small>
                                     </p>
                                     <p class="m-0">
-                                        <small>: ₹<?php echo $totalGSt / 2; ?></small>
+                                        <small>: ₹ <?php echo $totalGSt / 2; ?></small>
                                     </p>
                                     <p class="m-0">
-                                        <small>: ₹<?php echo floatval($totalGSt); ?></small>
+                                        <small>: ₹ <?php echo floatval($totalGSt); ?></small>
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
@@ -400,17 +404,17 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                                     <b>
                                         <p class="m-0"><small>Payble</small></p>
                                     </b>
-                                    <p><small>You Saved</small></p>
+                                    <p style="width:4rem;"><small>You Saved</small></p>
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="m-0">
-                                        <small>: ₹<?php echo floatval($totalMrp); ?></small>
+                                        <small>: ₹ <?php echo floatval($totalMrp); ?></small>
                                     </p>
                                     <p class="m-0">
-                                        <b><small>: ₹<?php echo floatval($billAmout); ?></small></b>
+                                        <b><small>: ₹ <?php echo floatval($billAmout); ?></small></b>
                                     </p>
                                     <p class="m-0">
-                                        <small>: ₹<?php echo $totalMrp - $billAmout; ?></small>
+                                        <small>: ₹ <?php echo $totalMrp - $billAmout; ?></small>
                                     </p>
                                 </div>
                             </div>
