@@ -207,10 +207,10 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                     }?>
             </table>
 
-                <!-- <hr class="my-0" style="height:1px;"> -->
+            <!-- <hr class="my-0" style="height:1px;"> -->
 
-                <!-- <div class="row"> -->
-                <?php
+            <!-- <div class="row"> -->
+            <?php
                     // foreach ($returnDetails as $eachDetail) {
 
                     //     $productNameResponse = json_decode($Products->showProductNameById($eachDetail['product_id']));
@@ -268,78 +268,76 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                     //         </div>';
                     // }
                     ?>
-        <!-- </div>
+            <!-- </div>
     </div> -->
 
-    <!-- ===================================================== -->
-    <div class="footer">
-        <hr calss="my-0" style="height: 1px;">
+            <!-- ===================================================== -->
+            <div class="footer">
+                <hr calss="my-0" style="height: 1px;">
 
-        <!-- table total calculation -->
-        <div class="row my-0">
-            <div class="col-4 border-end text-end">
-                <div class="row">
+                <!-- table total calculation -->
+                <div class="row my-0">
+                    <div class="col-4 border-end text-end">
+                        <div class="row">
+                            <div class="col-4">
+                                <small><b>Customer:</b></small>
+                            </div>
+                            <div class="col-8 text-end">
+                                <small><?= $pharmacyName; ?></small>
+                                <br>
+                                <small><?= $pharmacyContact; ?></small>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 border-end">
+                        <div class="row">
+                            <div class="col-8 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;">
+                                    <small>₹<?php echo $returnGst / 2; ?></small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;">
+                                    <small>₹<?php echo $returnGst / 2; ?></small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;">
+                                    <small>₹<?php echo floatval($returnGst); ?></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-4">
-                        <small><b>Customer:</b></small>
-                    </div>
-                    <div class="col-8 text-end">
-                        <small><?= $pharmacyName; ?></small>
-                        <br>
-                        <small><?= $pharmacyContact; ?></small>
+                        <div class="row text-end">
+                            <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty; ?></b> & Total Units
+                                <b><?php echo $totalReturnQty; ?></b></small>
+                        </div>
+                        <div class="row text-end mt-1">
+                            <h5 class="mb-0 pb-0">Total Refund: <b>₹<?php echo floatval($refund); ?></b></h5>
+
+                        </div>
 
                     </div>
+
                 </div>
+                <hr calss="my-0" style="height: 1px;">
             </div>
-            <div class="col-4 border-end">
-                <div class="row">
-                    <div class="col-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
-                    </div>
-                    <div class="col-4 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small>₹<?php echo $returnGst / 2; ?></small>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
-                    </div>
-                    <div class="col-4 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small>₹<?php echo $returnGst / 2; ?></small>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
-                    </div>
-                    <div class="col-4 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small>₹<?php echo floatval($returnGst); ?></small>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row text-end">
-                    <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty; ?></b> & Total Units
-                        <b><?php echo $totalReturnQty; ?></b></small>
-                </div>
-                <div class="row text-end mt-1">
-                    <h5 class="mb-0 pb-0">Total Refund: <b>₹<?php echo floatval($refund); ?></b></h5>
-
-                </div>
-
-            </div>
-
         </div>
-
-
-
-    </div>
-    </div>
     </div>
     <!-- <hr style="height: 1px;"> -->
     </div>

@@ -411,8 +411,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         </div>
                     </div>
                 </div>
+                <hr style="height: 1px; margin-top: 0px;">
             </div>
-            <hr style="height: 1px; margin-top: 0px;">
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
