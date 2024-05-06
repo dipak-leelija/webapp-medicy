@@ -84,8 +84,10 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-1 pe-0">
-                        <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
-                            src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
+                        <!-- <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
+                            src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
+                            <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
+                            src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
 
                     <div class="col-8">

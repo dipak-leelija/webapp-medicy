@@ -102,7 +102,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
+                        <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" -->
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">

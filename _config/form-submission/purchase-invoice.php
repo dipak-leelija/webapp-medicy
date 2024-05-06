@@ -4,6 +4,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
@@ -107,8 +108,8 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
-                            alt="Medicy">
+                        <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?= $distributorName; ?></h4>
