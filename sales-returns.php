@@ -10,11 +10,48 @@ require_once CLASS_DIR . 'salesReturn.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'pagination.class.php';
 
 $SalesReturn   = new SalesReturn();
 $Patients      = new Patients();
 $stockOut      = new StockOut();
 $currentStock  = new CurrentStock();
+$Pagination      = new Pagination;
+
+
+
+if (isset($_GET['searchKey'])) {
+    $searchOn = $_GET['searchKey'];
+    $salesReturns = $SalesReturn->salesReturnSearch($searchOn, $adminId);
+    // print_r($salesReturns);
+} else {
+    $table1 = 'admin_id';
+    $salesReturns = $SalesReturn->selectSalesReturn($table1, $adminId);
+}
+
+if (!empty($salesReturns)) {
+    if (is_array($salesReturns)) {
+        $response = json_decode($Pagination->arrayPagination($salesReturns));
+
+        $paginationHTML = '';
+        $totalItem = $slicedLabBills = $response->totalitem;
+
+        if ($response->status == 1) {
+            $slicedData = $response->items;
+            $paginationHTML = $response->paginationHTML;
+        }
+    } else {
+        $totalItem = 0;
+    }
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
+}
+
+// print_r($slicedData);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +75,7 @@ $currentStock  = new CurrentStock();
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css">
 
     <!-- Data Table CSS  -->
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
 
 
 </head>
@@ -66,16 +103,27 @@ $currentStock  = new CurrentStock();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-flex justify-content-between">
-                        <h5 class="h4 mb-2 text-gray-800"> Return </h4>
-                            <a class="btn btn-sm btn-primary mb-3" href="sales-returns-items.php"> New <i class="fas fa-plus"></i></a>
-                    </div>
-                    <!-- Showing Sell Items  -->
-                    <div class="card shadow mb-2">
-                        <div class="card-body">
 
+                    <!-- Showing Sell Items  -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <div class="col-md-10">
+                                <div class="input-group w-25">
+                                    <input class="cvx-inp" type="text" placeholder="Search..." name="sales-return-search" id="sales-return-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterSalesReturnSearch()"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-end">
+                                <a class="btn btn-sm btn-primary" href="sales-returns-items.php"> New <i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table item-table table-sm text-dark" id="dataTable" style="width: 100%;">
+                                <table class="table table-sm" id="dataTable" style="width: 100%;">
                                     <thead class="thead-white bg-primary text-light">
                                         <tr>
                                             <th>Invoice</th>
@@ -92,47 +140,43 @@ $currentStock  = new CurrentStock();
                                     <tbody id="dataBody">
                                         <?php
 
-                                        $table1 = 'admin_id';
-                                        // $table2 = "status";  # fetching those data whose STATUS are 
-                                        // $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
-
-                                        $returns = $SalesReturn->selectSalesReturn($table1, $adminId);
 
 
-                                        if (count($returns) > 0) {
-                                            
-                                            foreach ($returns as $item) {
-                                                $invoiceId = $item['invoice_id'];
-                                                $salesReturnId = $item['id'];
-                                                $patientName = ($item['patient_id'] == "Cash Sales") ? "Cash Sales" : json_decode($Patients->patientsDisplayByPId($item['patient_id']))->name;
-                                                $rowStyle = ($item['status'] == 0) ? 'style="color: white; background-color: red;"' : '';
-                                            
+                                        if ($totalItem > 0) {
+                                            foreach ($slicedData as $item) {
+
+                                                $invoiceId = $item->invoice_id;
+                                                $salesReturnId = $item->id;
+                                                $patientName = ($item->patient_id == "Cash Sales") ? "Cash Sales" : json_decode($Patients->patientsDisplayByPId($item->patient_id))->name;
+                                                $rowStyle = ($item->status == 0) ? 'style="color: white; background-color: red;"' : '';
+
                                                 echo '<tr ' . $rowStyle . '>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
                                                         <td hidden>' . $salesReturnId . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $patientName . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->items . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item->bill_date)) . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item->return_date)) . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->added_by . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->refund_amount . '</td>
                                                         <td>';
-                                            
-                                                if ($item['status'] != 0) {
+
+                                                if ($item->status != 0) {
                                                     echo '<a class="text-primary ml-4" onclick="editSalesReturn(' . $invoiceId . ',' . $salesReturnId . ')"><i class="fas fa-edit"></i></a>
                                                           <a class="text-danger ml-2" onclick="cancelSalesReturn(this)" id="' . $salesReturnId . '"><i class="fas fa-window-close"></i></a>';
-                                                }else{
+                                                } else {
                                                     echo '</td>
                                                       </tr>';
                                                 }
-                                            
                                             }
-                                            
                                         }
 
                                         ?>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -193,11 +237,13 @@ $currentStock  = new CurrentStock();
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="<?= PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- <script src="<?= PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script> -->
+    <!-- <script src="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script> -->
+    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
 
     <!-- Page level custom scripts -->
-    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
+
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <script>
         const xmlhttp = new XMLHttpRequest();
@@ -217,9 +263,9 @@ $currentStock  = new CurrentStock();
 
 
         const cancelSalesReturn = (t) => {
-           
+
             cancelId = t.id;
-           
+
             swal({
                     title: "Are you sure?",
                     text: "Do you really cancel theis transaction?",
@@ -264,8 +310,23 @@ $currentStock  = new CurrentStock();
                     return false;
                 });
         }
+
+        // ====================================================================
+
+        const filterSalesReturnSearch = () => {
+
+            var searchFor = document.getElementById('sales-return-search').value;
+            console.log(searchFor);
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (searchFor.length > 0) {
+                var newURL = `${currentURLWithoutQuery}?searchKey=${searchFor}`;
+                window.location.replace(newURL);
+            } else {
+                alert('Please Enter Minimum 3 Character!');
+            }
+        }
     </script>
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+
 
 </body>
 

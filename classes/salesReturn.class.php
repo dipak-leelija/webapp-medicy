@@ -53,6 +53,39 @@ class SalesReturn extends DatabaseConnection
 
 
 
+    function salesReturnSearch($search, $adminId)
+    {
+        try {
+            $resData  = array();
+
+            $selectReturnData = "SELECT * FROM `sales_return` WHERE (`invoice_id` LIKE '%$search%' OR `bill_date` LIKE '%$search%' OR `return_date` LIKE '%$search%' OR `refund_amount` LIKE '%$search%') AND `admin_id` = '$adminId'";
+            
+            $stmt = $this->conn->prepare($selectReturnData);
+
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_array()) {
+                        $resData[] = $row;
+                    }
+                    return $resData;
+                } else {
+                    return null;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    } //end employeesDisplay function
+
+
+
+
 
     function selectSalesReturn($table, $data)
     {

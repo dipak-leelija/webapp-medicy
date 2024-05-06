@@ -58,8 +58,6 @@ if (!empty($showStockIn)) {
 
 // =================== eof pagination ===========================
 if (isset($_POST) && isset($_FILES['import-file'])) {
-    print_r($_FILES);
-
     $filename = $_FILES["import-file"]["tmp_name"];
     if ($_FILES["import-file"]["size"] > 0) {
 
@@ -124,7 +122,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                        <input class="cvx-inp" type="text" placeholder="Search..." name="purchase-data-search" id="purchase-data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchData) ? $searchData : ''; ?>">
 
                                         <div class="input-group-append">
                                             <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterData()"><i class="fas fa-search"></i></button>
@@ -447,7 +445,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
 
         //====================== url modification for data search ======================
         const filterData = () => {
-            var value = document.getElementById('data-search').value;
+            var value = document.getElementById('purchase-data-search').value;
 
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
             if (value.length > 2) {

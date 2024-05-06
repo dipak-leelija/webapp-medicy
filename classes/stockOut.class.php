@@ -33,19 +33,16 @@ class StockOut extends DatabaseConnection
             $billData = array();
             if (!empty($adminId)) {
                 $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ?
-                ORDER BY invoice_id DESC";
+                ORDER BY invoice_id ASC";
                 $stmt = $this->conn->prepare($selectBill);
                 $stmt->bind_param("s", $adminId);
             } else {
                 $selectBill = "SELECT * FROM `stock_out` 
-                ORDER BY invoice_id DESC";
+                ORDER BY invoice_id ASC";
                 $stmt = $this->conn->prepare($selectBill);
             }
 
-            // $stmt = $this->conn->prepare($selectBill);
-
             if ($stmt) {
-                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -61,15 +58,48 @@ class StockOut extends DatabaseConnection
 
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // You can customize this part to suit your needs
             echo "Error: " . $e->getMessage();
         }
     }
+
+
+
+
+
+
+    function stockOutSearch($searchVal, $adminId){
+        try {
+            $billData = array();
+
+            $selectBill = "SELECT * FROM `stock_out` WHERE (`invoice_id` LIKE '%$searchVal%' OR `items` LIKE '%$searchVal%' OR `amount` LIKE '%$searchVal%' OR `payment_mode` LIKE '%$searchVal%' OR `bill_date` LIKE '%$searchVal%') AND `admin_id` = '$adminId'";
+
+            $stmt = $this->conn->prepare($selectBill);
+
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_array()) {
+                        $billData[] = $row;
+                    }
+                    return $billData;
+                } else {
+                    return null;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
 
 
 
