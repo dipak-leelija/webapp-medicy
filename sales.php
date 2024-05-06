@@ -1,31 +1,52 @@
 <?php
 $page = "sales";
 require_once 'config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 // require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR."dbconnect.php";
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR."encrypt.inc.php";
-require_once CLASS_DIR."stockOut.class.php";
-require_once CLASS_DIR."patients.class.php";
+require_once CLASS_DIR . "dbconnect.php";
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . "encrypt.inc.php";
+require_once CLASS_DIR . "stockOut.class.php";
+require_once CLASS_DIR . "patients.class.php";
+require_once CLASS_DIR . 'pagination.class.php';
 
 
 // CLASS INTIATING 
 $StockOut = new StockOut();
 $Patients = new Patients();
+$Pagination      = new Pagination;
 
 
 if (isset($_GET['searchKey'])) {
-    $id = $_GET['searchKey'];
-    $table1 = 'id';
-    $table2 = 'admin_id';
-    $soldItems = $StockOut->stokOutDataByTwoCol($table1, $id, $table2, $adminId);
+    $searchOn = $_GET['searchKey'];
+    $soldItems = $StockOut->stockOutSearch($searchOn, $adminId);
+    // print_r($soldItems);
 } else {
     $soldItems = $StockOut->stockOutDisplay(strval($adminId));
 }
 
-// print_r($soldItems);
+
+if (!empty($soldItems)) {
+    if (is_array($soldItems)) {
+        $response = json_decode($Pagination->arrayPagination($soldItems));
+
+        $paginationHTML = '';
+        $totalItem = $slicedLabBills = $response->totalitem;
+
+        if ($response->status == 1) {
+            $slicedLabBills = $response->items;
+            $paginationHTML = $response->paginationHTML;
+        }
+    } else {
+        $totalItem = 0;
+    }
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -43,9 +64,7 @@ if (isset($_GET['searchKey'])) {
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Default styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -54,7 +73,7 @@ if (isset($_GET['searchKey'])) {
     <link rel="stylesheet" href="<?= CSS_PATH ?>sales.css">
 
     <!-- Data Table CSS  -->
-    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet"> -->
 
 
 </head>
@@ -65,7 +84,7 @@ if (isset($_GET['searchKey'])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -75,23 +94,25 @@ if (isset($_GET['searchKey'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <!-- <h1 class="h3 mb-4 text-gray-800">Sell Products</h1> -->
-
-
-                    <!-- Showing Sell Items  -->
-                    <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex d-flex justify-content-between">
-                            <!-- <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6> -->
-                            <a class="btn btn-sm btn-primary" href="new-sales.php"> New Sell <i
-                                    class="fas fa-plus"></i></a>
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    <input class="cvx-inp" type="text" placeholder="Search..." name="sales-search" id="sales-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterSalesSearch()"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-end">
+                                <a class="btn btn-sm btn-primary" href="new-sales.php"> New Sell <i class="fas fa-plus"></i></a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -108,61 +129,62 @@ if (isset($_GET['searchKey'])) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    
+
                                         <?php
-                                        if (count($soldItems) > 0):
+                                        if (count($soldItems) > 0) :
                                             foreach ($soldItems as $soldItem) {
                                                 $invoice    = $soldItem['invoice_id'];
                                                 $patient    = $soldItem['customer_id'];
                                                 $billDate   = date_create($soldItem['bill_date']);
                                                 $billDate   = date_format($billDate, "d-m-Y");
                                                 $billAmount = $soldItem['amount'];
-                                                $paymentMode= $soldItem['payment_mode'];
+                                                $paymentMode = $soldItem['payment_mode'];
 
                                                 if ($patient != 'Cash Sales') {
                                                     $patientName = json_decode($Patients->patientsDisplayByPId($patient));
 
-                                                    if($patientName!= null){
+                                                    if ($patientName != null) {
                                                         $patientName = $patientName->name;
-                                                    }
-                                                    else{
+                                                    } else {
                                                         $patientName = "";
                                                     }
-                                                }else{
+                                                } else {
                                                     $patientName = $patient;
                                                 }
 
                                                 echo "<tr class='text-center sales-table";
-                                                ?>
-                                            <?php
+                                        ?>
+                                                <?php
                                                 $creditIcon = "";
                                                 if ($paymentMode == "Credit") {
                                                     echo "text-danger";
                                                     $creditIcon = "<i class='ml-1 fas fa-exclamation-circle' data-toggle='tooltip' data-placement='top' title='This payment is due, Collect all the due payments.'></i>";
                                                 }
                                                 ?>
-                                            <?php echo "'data-toggle='modal' data-target='#viewBillModal'>
-                                                        <td onclick='viewBills(".$invoice.")'>".$invoice."</td>
-                                                        <td onclick='viewBills(".$invoice.")'>".$patientName."</td>
-                                                        <td onclick='viewBills(".$invoice.")'>".$billDate."</td>
-                                                        <td onclick='viewBills(".$invoice.")'>".$soldItem['items']."</td>
-                                                        <td onclick='viewBills(".$invoice.")'>".$billAmount."</td>
-                                                        <td onclick='viewBills(".$invoice.")'>".$paymentMode, $creditIcon."</td>
+                                        <?php echo "'data-toggle='modal' data-target='#viewBillModal'>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $invoice . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $patientName . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $billDate . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $soldItem['items'] . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $billAmount . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $paymentMode, $creditIcon . "</td>
                                                         <td>
-                                                        <a class='ml-2' href='update-sales.php?id=".url_enc($invoice)."'><i class='fas fa-edit'></i></a>
+                                                        <a class='ml-2' href='update-sales.php?id=" . url_enc($invoice) . "'><i class='fas fa-edit'></i></a>
                                                         
-                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".url_enc($invoice)."'><i class='fas fa-print'></i></a>
+                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=" . url_enc($invoice) . "'><i class='fas fa-print'></i></a>
 
-                                                        <a class='ml-2' data-id=".$invoice."><i class='fab fa-whatsapp'></i></i></a>
+                                                        <a class='ml-2' data-id=" . $invoice . "><i class='fab fa-whatsapp'></i></i></a>
 
                                                     </td>
                                                     </tr>";
-
                                             }
                                         endif;
-                                       ?>
+                                        ?>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -175,7 +197,7 @@ if (isset($_GET['searchKey'])) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -196,7 +218,7 @@ if (isset($_GET['searchKey'])) {
                     </button>
                 </div>
                 <div class="modal-body viewBillModal">
-                    
+
                 </div>
             </div>
         </div>
@@ -211,35 +233,51 @@ if (isset($_GET['searchKey'])) {
     </a>
 
 
-    
+
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-    
+
     <!-- Core plugin JavaScript-->
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <!--Data Table plugins -->
-    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
-    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
+    <!-- <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script> -->
+    <!-- <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script> -->
 
     <!-- Page level custom scripts -->
-    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
+    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
 
     <script>
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
-    const viewBills = (invoice) => {
-        // alert(invoice);
-        url = `ajax/viewBill.ajax.php?invoice=${invoice}`;
-        $(".viewBillModal").html(
-            '<iframe width="99%" height="340px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    }
+        const viewBills = (invoice) => {
+            // alert(invoice);
+            url = `ajax/viewBill.ajax.php?invoice=${invoice}`;
+            $(".viewBillModal").html(
+                '<iframe width="99%" height="340px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        }
+
+
+        //=========================================================
+
+        const filterSalesSearch = () => {
+
+            var searchFor = document.getElementById('sales-search').value;
+            console.log(searchFor);
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (searchFor.length > 0) {
+                var newURL = `${currentURLWithoutQuery}?searchKey=${searchFor}`;
+                window.location.replace(newURL);
+            } else {
+                alert('Please Enter Minimum 3 Character!');
+            }
+        }
     </script>
 
 </body>

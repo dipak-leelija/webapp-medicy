@@ -130,7 +130,7 @@ if ($stockReturnLists->status == '1') {
                                 <div class="row mb-3 ">
                                     <div class="col-md-10">
                                         <div class="input-group w-25">
-                                            <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                            <input class="cvx-inp" type="text" placeholder="Search..." name="stock-return-data-search" id="stock-return-data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchData) ? $searchData : ''; ?>">
 
                                             <div class="input-group-append">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterData()"><i class="fas fa-search"></i></button>
@@ -388,7 +388,7 @@ if ($stockReturnLists->status == '1') {
         <script>
             // ---------------- local script -------------
             const filterData = () => {
-                var value = document.getElementById('data-search').value;
+                var value = document.getElementById('stock-return-data-search').value;
 
                 var currentURLWithoutQuery = window.location.origin + window.location.pathname;
                 if (value.length > 2) {
