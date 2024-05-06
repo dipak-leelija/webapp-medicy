@@ -549,9 +549,9 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         </div>
                     </div>
                 </div>
-
+                <hr class="my-1" style="height: 1px;">
             </div>
-            <hr class="my-1" style="height: 1px;">
+            <!-- <hr class="my-1" style="height: 1px;"> -->
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
