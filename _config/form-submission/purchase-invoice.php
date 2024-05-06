@@ -84,9 +84,9 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/purchase-bill.css">
 
     <style type="text/css">
-        @page {
-            size: landscape;
-        }
+    @page {
+        size: landscape;
+    }
     </style>
 
     <!-- Include SweetAlert2 CSS -->
@@ -107,7 +107,8 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>"
+                            alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?= $distributorName; ?></h4>
@@ -122,11 +123,14 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     <div class="col-sm-3 border-start border-dark">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id:
                                 <?= $distributorBill; ?></small></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment Mode: <?php echo $pMode; ?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment Mode:
+                                <?php echo $pMode; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill Date: <?php echo $billDate; ?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill Date:
+                                <?php echo $billDate; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Due Date: <?php echo $dueDate; ?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Due Date:
+                                <?php echo $dueDate; ?></small>
                         </p>
                     </div>
                 </div>
@@ -135,8 +139,8 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
 
             <hr class="my-0" style="height:1px;">
 
-            <div class="row">
-                <!-- table heading -->
+            <!-- <div class="row">
+               
                 <div class="col-sm-1 text-center" style="width: 3%;">
                     <small><b>SL.</b></small>
                 </div>
@@ -179,13 +183,30 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                 <div class="col-sm-1b text-end" style="width: 10%;">
                     <small><b>Amount</b></small>
                 </div>
-                <!--/end table heading -->
-            </div>
+               
+            </div> -->
 
-            <hr class="my-0" style="height:1px;">
-
-            <div class="row">
-                <?php
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><small>SL.</small></th>
+                        <th scope="col"><small>P Id</small></th>
+                        <th scope="col"><small>Product Name</small></th>
+                        <th scope="col"><small>Manuf.</small></th>
+                        <th scope="col"><small>Packing</small></th>
+                        <th scope="col"><small>Batch</small></th>
+                        <th scope="col"><small>Exp.</small></th>
+                        <th scope="col"><small>QTY</small></th>
+                        <th scope="col"><small>F.QTY</small></th>
+                        <th scope="col"><small>MRP</small></th>
+                        <th scope="col"><small>PTR</small></th>
+                        <th scope="col"><small>Disc.</small></th>
+                        <th scope="col"><small>GST</small></th>
+                        <th scope="col"><small>Amount</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
                 $slno = 0;
                 $itemBillNo    = $distributorBill;
                 $distributorId = $distributorId;
@@ -265,60 +286,170 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     $cGst           = $sGst = number_format($totalGst / 2, 2);
 
 
-                    if ($slno > 1) {
-                        echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                    }
+                    // if ($slno > 1) {
+                    //     echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                    // }
 
                     // =====================================================
                     // =====================================================
                 ?>
-                    <div class="col-sm-1 text-center" style="width: 3%;">
-                        <small> <?php echo "$slno" ?></small>
-                    </div>
-                    <div class="col-sm-1b " hidden>
-                        <small><?php echo "$prodId" ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 17%;">
-                        <small><?php echo "$pname" ?></small>
-                    </div>
-                    <div class="col-sm-1">
-                        <small><?php echo "$manufName" ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 12%;">
-                        <small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 10%;">
-                        <small><?php echo "$batchNo" ?></small>
-                    </div>
-                    <!-- <div class="col-sm-1 text-end" style="width: 5%;">
+                    <tr>
+                        <th scope="row"><small> <?php echo "$slno" ?></small></th>
+                        <td><small><?php echo "$prodId" ?></small></td>
+                        <td><small><?php echo "$pname" ?></small></td>
+                        <td><small><?php echo "$manufName" ?></small></td>
+                        <td><small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small></td>
+                        <td><small><?php echo "$batchNo" ?></small></td>
+                        <td><small><?php echo "$ExpDate" ?></small></td>
+                        <td><small><?php echo "$qty" ?></small></td>
+                        <td><small><?php echo "$FreeQty" ?></small></td>
+                        <td><small><?php echo "$Mrp" ?></small></td>
+                        <td><small><?php echo "$Ptr" ?></small></td>
+                        <td><small><?php echo "$discPercent%" ?></small></td>
+                        <td><small><?php echo "$gstPercent%" ?></small></td>
+                        <td><small><?php echo "$Amount" ?></small></td>
+                    </tr>
+                </tbody>
+                <?php } ?>
+            </table>
+
+            <!-- <hr class="my-0" style="height:1px;"> -->
+
+            <div class="row">
+                <?php
+                // $slno = 0;
+                // $itemBillNo    = $distributorBill;
+                // $distributorId = $distributorId;
+                // $totalGst   = 0;
+                // $totalMrp   = 0;
+                // $billAmnt   = 0;
+                // // $stokInId = $stokInid;
+
+                // $itemDetials = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);
+
+                // foreach ($itemDetials as $itemsData) {
+                //     $slno++;
+
+                //     $prodId = $itemsData['product_id'];
+
+                //     $chkExistance = json_decode($Products->productExistanceCheck($prodId));
+                //     if ($chkExistance->status) {
+                //         $edtRqstFlg = 1;
+                //     } else {
+                //         $edtRqstFlg = '';
+                //     }
+
+                //     $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $edtRqstFlg));
+                //     // print_r($productDetails);
+                //     $productDetails = $productDetails->data;
+
+                //     foreach ($productDetails as $pData) {
+                //         // print_r($pData);
+                //         $pname = $pData->name;
+                //         if (isset($pData->manufacturer_id)) {
+                //             $pManfId = $pData->manufacturer_id;
+                //         } else {
+                //             $pManfId = '';
+                //         }
+                //         $pType  = $pData->packaging_type;
+                //         $pQTY = $pData->unit_quantity;
+                //         $pUnit = $pData->unit;
+
+                //         // echo $pUnit;
+                //         $itemUnitName = $ItemUnit->itemUnitName($pUnit);
+                //         // echo $itemUnitName;
+                //     }
+
+                //     $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
+                //     // foreach ($packagingData as $packData) {
+                //     $unitNm = $packagingData->data->unit_name;
+                //     // }
+
+
+                //     if ($pManfId != '') {
+                //         $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
+                //         $manufDetails = $manufDetails->data;
+                //         // print_r($manufDetails);
+                //         if (isset($manufDetails->short_name)) {
+                //             $manufName = $manufDetails->short_name;
+                //         } else {
+                //             $manufName = '';
+                //         }
+                //     } else {
+                //         $manufName = '';
+                //     }
+
+
+                //     $batchNo        = $itemsData['batch_no'];
+                //     $ExpDate        = $itemsData['exp_date'];
+                //     $qty            = $itemsData['qty'];
+                //     $FreeQty        = $itemsData['free_qty'];
+                //     $Mrp            = $itemsData['mrp'];
+                //     $Ptr            = $itemsData['ptr'];
+                //     $discPercent    = $itemsData['discount'];
+                //     $gstPercent     = $itemsData['gst'];
+                //     $Amount         = $itemsData['amount'];
+                //     $gstAmnt        = $itemsData['gst_amount'];
+                //     $totalGst       = $totalGst + $gstAmnt;
+                //     $totalMrp       = $totalMrp + ($Mrp * $qty);
+                //     $billAmnt       = $billAmnt + $Amount;
+                //     $cGst           = $sGst = number_format($totalGst / 2, 2);
+
+
+                //     if ($slno > 1) {
+                //         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                //     }
+
+                    // =====================================================
+                    // =====================================================
+                ?>
+                <!-- <div class="col-sm-1 text-center" style="width: 3%;">
+                    <small> <?php echo "$slno" ?></small>
+                </div>
+                <div class="col-sm-1b " hidden>
+                    <small><?php echo "$prodId" ?></small>
+                </div>
+                <div class="col-sm-1b" style="width: 17%;">
+                    <small><?php echo "$pname" ?></small>
+                </div>
+                <div class="col-sm-1">
+                    <small><?php echo "$manufName" ?></small>
+                </div>
+                <div class="col-sm-1b" style="width: 12%;">
+                    <small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
+                </div>
+                <div class="col-sm-1b" style="width: 10%;">
+                    <small><?php echo "$batchNo" ?></small>
+                </div> -->
+                <!-- <div class="col-sm-1 text-end" style="width: 5%;">
                         <small><?php echo "$MfdDate" ?></small>
                     </div> -->
-                    <div class="col-sm-1 text-center" style="width: 5%;">
-                        <small><?php echo "$ExpDate" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$qty" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$FreeQty" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small><?php echo "$Mrp" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small><?php echo "$Ptr" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$discPercent%" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$gstPercent%" ?></small>
-                    </div>
-                    <div class="col-sm-1b text-end" style="width: 10%;">
-                        <small><?php echo "$Amount" ?></small>
-                    </div>
+                <!-- <div class="col-sm-1 text-center" style="width: 5%;">
+                    <small><?php echo "$ExpDate" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 5%;">
+                    <small><?php echo "$qty" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 5%;">
+                    <small><?php echo "$FreeQty" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 7%;">
+                    <small><?php echo "$Mrp" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 7%;">
+                    <small><?php echo "$Ptr" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 5%;">
+                    <small><?php echo "$discPercent%" ?></small>
+                </div>
+                <div class="col-sm-1 text-end" style="width: 5%;">
+                    <small><?php echo "$gstPercent%" ?></small>
+                </div>
+                <div class="col-sm-1b text-end" style="width: 10%;">
+                    <small><?php echo "$Amount" ?></small>
+                </div> -->
                 <?php
-                }
+                // }
                 ?>
 
             </div>
@@ -424,23 +555,26 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
-        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" onclick="goBack('<?php echo $stockIn_Id ?>','<?php echo $itemBillNo ?>')">Go Back</button>
-        <button class="btn btn-primary shadow mx-2"> <a class="text-light text-decoration-none" href="<?= URL . 'purchase-details.php'; ?>">See Details</a></button>
+        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;"
+            onclick="goBack('<?php echo $stockIn_Id ?>','<?php echo $itemBillNo ?>')">Go Back</button>
+        <button class="btn btn-primary shadow mx-2"> <a class="text-light text-decoration-none"
+                href="<?= URL . 'purchase-details.php'; ?>">See Details</a></button>
         <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
-        <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print Bill</button>
+        <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print
+            Bill</button>
     </div>
     </div>
 
 </body>
 <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 <script>
-    const back = () => {
-        window.location.replace("<?= URL ?>stock-in.php")
-    }
+const back = () => {
+    window.location.replace("<?= URL ?>stock-in.php")
+}
 
-    const goBack = (id, value) => {
-        location.href = `<?= URL ?>stock-in-edit.php?edit=${value}&editId=${id}`;
-    }
+const goBack = (id, value) => {
+    location.href = `<?= URL ?>stock-in-edit.php?edit=${value}&editId=${id}`;
+}
 </script>
 
 </html>
