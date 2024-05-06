@@ -132,29 +132,24 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             </div>
             <hr class="my-0" style="height:2px;">
 
-            <div class="row justify-content-around">
-                <!-- table heading -->
+            <!-- <div class="row justify-content-around">
 
                 <div class="col-sm-1 text-center">
-                    <!-- style="width: 5rem;" -->
                     <small><b>SL.</b></small>
                 </div>
                 <div class="col-sm-2 text-start">
-                    <!-- style="width: 12rem;" -->
                     <small><b>Name</b></small>
                 </div>
-                <div class="col-sm-1 text-start">
+                <div class="col-sm-1 text-start" >
                     <small><b>Manuf.</b></small>
                 </div>
                 <div class="col-sm-1 text-center">
-                    <!-- style="width: 7rem;" -->
                     <small><b>Batch</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
                     <small><b>Exp.</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
-                    <!-- style="width: 7rem;" -->
                     <small><b>QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -170,12 +165,22 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     <small><b>Amount</b></small>
                 </div>
 
-                <!--/end table heading -->
-            </div>
-
-            <hr class="my-0" style="height:1px;">
-
-            <div class="row justify-content-around">
+            </div> -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><small>SL.</small></th>
+                        <th scope="col"><small>Name</small></th>
+                        <th scope="col"><small>Manuf.</small></th>
+                        <th scope="col"><small>Batch</small></th>
+                        <th scope="col"><small>Exp.</small></th>
+                        <th scope="col"><small>QTY</small></th>
+                        <th scope="col"><small>MRP</small></th>
+                        <th scope="col"><small>Disc(%)</small></th>
+                        <th scope="col"><small>GST(%)</small></th>
+                        <th scope="col"><small>Amount</small></th>
+                    </tr>
+                </thead>
                 <?php
                 $slno = 0;
                 $subTotal = floatval(00.00);
@@ -213,9 +218,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     $weatage = "$itemunit of $packUnit";
 
                     $slno++;
-                    if ($slno > 1) {
-                        echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                    }
+                    // if ($slno > 1) {
+                    //     echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                    // }
 
                     // $itemQty = $detail['loosely_count']/$packQty;
 
@@ -234,44 +239,123 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         $itemSellQty = $detail['qty'];
                     }
 
-                    // ===================================================
-
-
-                    echo '<div class="col-sm-1 text-center">
-                                <small>' . $slno . '</small>
-                            </div>
-                            <div class="col-sm-1" style="max-width: 9rem;width:auto;">
-                                <small>' . substr($detail['item_name'], 0, 15) . '</small>
-                            </div>
-                            <div class="col-sm-1 text-center p-0">
-                                <small>' . $manufacturerName . '</small>
-                            </div>
-                            <div class="col-sm-1 text-center p-0" style="
-                            max-width: 8rem; width: auto;">
-                                <small>' . $detail['batch_no'] . '</small>
-                            </div>
-                            <div class="col-sm-1 ">
-                                <small>' . $detail['exp_date'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-center" >
-                                <small>' . $itemSellQty . '</small>
-                            </div>
-                            <div class="col-sm-1 ">
-                                <small>' . $detail['mrp'] . '</small>
-                            </div>
-                            <div class="col-sm-1 ">
-                            <small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small>
-                            </div>
-                            <div class="col-sm-1 ">
-                                <small>' . $detail['gst'] . '</small>
-                            </div>
-                            <div class="col-sm-1 text-start p-0">
-                                <small>' . $detail['amount'] . '</small>
-                            </div>';
+                echo '<tbody>
+                    <tr>
+                        <th scope="row"><small>' . $slno . '</small></th>
+                        <td><small>' . substr($detail['item_name'], 0, 15) . '</small></td>
+                        <td><small>' . $manufacturerName . '</small></td>
+                        <td><small>' . $detail['batch_no'] . '</small></td>
+                        <td><small>' . $detail['exp_date'] . '</small></td>
+                        <td><small>' . $itemSellQty . '</small></td>
+                        <td><small>' . $detail['mrp'] . '</small></td>
+                        <td><small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small></td>
+                        <td><small>' . $detail['gst'] . '</small></td>
+                        <td><small>' . $detail['amount'] . '</small></td>
+                    </tr>
+                </tbody>';
                 }
                 ?>
+            </table>
 
-            </div>
+            <!-- <hr class="my-0" style="height:1px;"> -->
+
+            <!-- <div class="row justify-content-around"> -->
+                <?php
+                // $slno = 0;
+                // $subTotal = floatval(00.00);
+                // foreach ($details as $detail) {
+
+                //     //=========================
+                //     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+
+                //     if ($checkTable->status) {
+                //         $table = 'products';
+                //     } else {
+                //         $table = 'product_request';
+                //     }
+                //     //=========================
+
+                //     $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+
+                //     $product = $productResponse->data;
+                //     // print_r($product);
+
+                //     $packQty = $product->unit_quantity;
+
+                //     if (isset($product->manufacturer_id)) {
+                //         $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+
+                //         $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                //     } else {
+                //         $manufacturerName = '';
+                //     }
+
+
+                //     $itemunit = $ItemUnit->itemUnitName($product->unit);
+                //     $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
+
+                //     $weatage = "$itemunit of $packUnit";
+
+                //     $slno++;
+                //     if ($slno > 1) {
+                //         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                //     }
+
+                //     // $itemQty = $detail['loosely_count']/$packQty;
+
+                //     $itemQty = intdiv($detail['loosely_count'], $packQty);
+
+                //     // ===================================================
+
+                //     if ($detail['loosely_count'] != 0) {
+                //         $itemSellQty = $detail['loosely_count'] / $detail['weightage'];
+                        
+                //         if(!is_int($itemSellQty)){
+                //             $itemSellQty = $detail['loosely_count'] . ' ' . $detail['unit'];
+                //         }
+
+                //     } else {
+                //         $itemSellQty = $detail['qty'];
+                //     }
+
+                //     // ===================================================
+
+
+                //     echo '<div class="col-sm-1 text-center">
+                //                 <small>' . $slno . '</small>
+                //             </div>
+                //             <div class="col-sm-1" style="max-width: 9rem;width:auto;">
+                //                 <small>' . substr($detail['item_name'], 0, 15) . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-center p-0">
+                //                 <small>' . $manufacturerName . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-center p-0" style="
+                //             max-width: 8rem; width: auto;">
+                //                 <small>' . $detail['batch_no'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 ">
+                //                 <small>' . $detail['exp_date'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-center" >
+                //                 <small>' . $itemSellQty . '</small>
+                //             </div>
+                //             <div class="col-sm-1 ">
+                //                 <small>' . $detail['mrp'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 ">
+                //             <small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small>
+                //             </div>
+                //             <div class="col-sm-1 ">
+                //                 <small>' . $detail['gst'] . '</small>
+                //             </div>
+                //             <div class="col-sm-1 text-start p-0">
+                //                 <small>' . $detail['amount'] . '</small>
+                //             </div>';
+                // }
+                ?>
+
+            <!-- </div> -->
 
             <div class="footer">
                 <hr calss="my-0" style="height: 2px;">
@@ -403,9 +487,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         </div>
                     </div>
                 </div> -->
-
+                <hr style="height: 1px; margin-top: 0px;">
             </div>
-            <hr style="height: 1px; margin-top: 0px;">
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
