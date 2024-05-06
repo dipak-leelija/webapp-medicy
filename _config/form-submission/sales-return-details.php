@@ -128,6 +128,10 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-end" style="margin-right: 4.8rem;">
+                <p class="m-0 "><small><b>GST ID :</b></small><?php echo $gstinData?></p>
+            </div>
             <!-- <hr class="my-0" style="height:0px; background: #000000; border: #000000;"> -->
             <!-- <div class="row my-0">
                 <div class="col-sm-6 ms-4 my-0">
