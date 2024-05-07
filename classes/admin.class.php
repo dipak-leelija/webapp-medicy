@@ -106,6 +106,28 @@ class Admin extends DatabaseConnection
     }
 
 
+
+    function checkAdminDataExistance($col, $data)
+    {
+        try {
+            
+            $chkUser = " SELECT * FROM `admin` WHERE `$col`= '$data' ";
+            $chkUserQuery = $this->conn->query($chkUser);
+
+            if ($chkUserQuery->num_rows > 0) {
+                return json_encode(['status' => '1']);
+            } else {
+                return json_encode(['status' => '0']);
+            }
+
+        } catch (Exception $e) {
+            return $e->errorMessage();
+        }
+    } //eof CheckEmail
+
+
+
+
     function echeckUsername($username)
     {
         $chkUser = " SELECT * FROM `admin` WHERE `username`= '$username' ";

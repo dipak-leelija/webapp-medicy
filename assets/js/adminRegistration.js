@@ -1,4 +1,4 @@
-let xmlhttp = new XMLHttpRequest();
+const xmlhttp = new XMLHttpRequest();
 
 // powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + productId;
 // // alert(url);
@@ -8,23 +8,47 @@ let xmlhttp = new XMLHttpRequest();
 // document.getElementById("medicine-power").value = xmlhttp.responseText;
 
 // ======== code to chek mobile number input validity ===========
-var mobileInput = document.getElementById('mobile-number');
+// var mobileInput = document.getElementById('mobile-number');
 
 const validateMobileNumber = () => {
 
     let mobileInput = document.getElementById('mobile-number');
 
     var inputValue = mobileInput.value;
-    var numericValue = inputValue.replace(/[^0-9]/g, '');
+    var numericValue = inputValue.replace(/[^0-9]/, '');
     document.getElementById('mobile-number').value = numericValue;
 
-
-    if (mobileInput.value.length != 10) {
-        mobileInput.focus();
-        console.log('input 10 digits');
-    }
 }
 
+
+const verifyMobileNumber = () =>{
+    let cntactNumber = document.getElementById('mobile-number').value;
+
+    if(cntactNumber.length == ' '){
+        Swal.fire('alert','enter contact number', 'alert');
+    }
+
+    if(cntactNumber.length != 10){
+        Swal.fire('error','enter valid contact number', 'error');
+    }
+
+    if(cntactNumber.length == 10){
+        $.ajax({
+            url: "ajax/admin-mail-usrnm-existance-check.ajax.php",
+            type: "POST",
+            data: {
+                checkContact: cntactNumber,
+            },
+            success: function (data) {
+                if (data == '1') {
+                    document.getElementById('mobile-number').value = ' ';
+                    Swal.fire('alert','Contact number exitst as registered!','alert');
+                    document.getElementById('mobile-number').focus();
+                } 
+            }
+        });
+    }
+}
 
 
 const verifyEmail = () => {

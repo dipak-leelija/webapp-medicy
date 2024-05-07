@@ -65,6 +65,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH; ?>custom-dashboard.css">
 
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
