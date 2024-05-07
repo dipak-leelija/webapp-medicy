@@ -39,7 +39,11 @@ $currentUrl = $Utility->currentUrl();
             <div class="mt-4 mb-4">
 
                 <div class="card-body">
-                    <?php if (isset($_GET['setup'])) : ?>
+                    <?php if (isset($_GET['setup']) && isset($_GET['flag']) && $_GET['flag'] == '1') : ?>
+                        <div class="alert alert-success" role="alert">
+                            <?= $_GET['setup'] ?>
+                        </div>
+                    <?php elseif (isset($_GET['setup']) && isset($_GET['flag']) && $_GET['flag'] == '0') :  ?>
                         <div class="alert alert-warning" role="alert">
                             <?= $_GET['setup'] ?>
                         </div>
@@ -158,7 +162,7 @@ $currentUrl = $Utility->currentUrl();
             }
         }
     </script>
-    
+
 </body>
 
 </html>
