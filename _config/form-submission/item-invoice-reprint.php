@@ -111,6 +111,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
+                        <!-- <div class="" style="margin-right: 4.8rem;"> -->
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b> </small><?php echo $gstinData?></p>
+                        <!-- </div> -->
 
                     </div>
                     <div class="col-sm-3 border-start border-dark">
@@ -127,11 +130,15 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <hr class="my-0" style="height:0px; background: #000000; border: #000000;">
             <div class="d-flex justify-content-between">
                 <div class="">
-                    <p class="text-start m-0" ><small><b>Refered By:</b>
-                            <?php echo $reffby; ?></small></p>
-                </div>
-                <div class="" style="margin-right: 4.8rem;">
-                    <p class="m-0 "><small><b>GST ID :</b></small><?php echo $gstinData?></p>
+                    <!--
+                    echo'<p class="text-start m-0"><small><b>Refered By:</b>
+                            <?php echo $reffby; ?></small></p>';-->
+
+                    <?php
+                    if ($reffby !== 'Cash Sales') {
+                        echo '<p class="text-start m-0"><small><b>Referred By:</b> ' . $reffby . '</small></p>';
+                    }
+                    ?>
                 </div>
             </div>
             <hr class="my-0" style="height:2px;">
@@ -245,16 +252,16 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
                 echo '<tbody>
                     <tr>
-                        <th scope="row"><small>' . $slno . '</small></th>
-                        <td><small>' . substr($detail['item_name'], 0, 15) . '</small></td>
-                        <td><small>' . $manufacturerName . '</small></td>
-                        <td><small>' . $detail['batch_no'] . '</small></td>
-                        <td><small>' . $detail['exp_date'] . '</small></td>
-                        <td><small>' . $itemSellQty . '</small></td>
-                        <td><small>' . $detail['mrp'] . '</small></td>
-                        <td><small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small></td>
-                        <td><small>' . $detail['gst'] . '</small></td>
-                        <td><small>' . $detail['amount'] . '</small></td>
+                        <th scope="row" class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $slno . '</small></th>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . substr($detail['item_name'], 0, 15) . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $manufacturerName . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $detail['batch_no'] . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $detail['exp_date'] . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $itemSellQty . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $detail['mrp'] . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $detail['gst'] . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $detail['amount'] . '</small></td>
                     </tr>
                 </tbody>';
                 }
@@ -264,7 +271,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <!-- <hr class="my-0" style="height:1px;"> -->
 
             <!-- <div class="row justify-content-around"> -->
-                <?php
+            <?php
                 // $slno = 0;
                 // $subTotal = floatval(00.00);
                 // foreach ($details as $detail) {

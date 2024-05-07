@@ -114,6 +114,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $gstinData?></p>
 
                     </div>
                     <div class="col-sm-3 border-start border-dark">
@@ -127,10 +128,6 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         </p>
                     </div>
                 </div>
-            </div>
-
-            <div class="d-flex justify-content-end" style="margin-right: 4.8rem;">
-                <p class="m-0 "><small><b>GST ID :</b></small><?php echo $gstinData?></p>
             </div>
             <!-- <hr class="my-0" style="height:0px; background: #000000; border: #000000;"> -->
             <!-- <div class="row my-0">
@@ -188,18 +185,18 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">SL.</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Manuf.</th>
-                        <th scope="col">Batch</th>
-                        <th scope="col">Exp.</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Buy Qty</th>
-                        <th scope="col">Ret.Qty</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Disc(%)</th>
-                        <th scope="col">GST(%)</th>
-                        <th scope="col">Refund</th>
+                        <th scope="col"><small>SL.</small></th>
+                        <th scope="col"><small>Name</small></th>
+                        <th scope="col"><small>Manuf.</small></th>
+                        <th scope="col"><small>Batch</small></th>
+                        <th scope="col"><small>Exp.</small></th>
+                        <th scope="col"><small>Unit</small></th>
+                        <th scope="col"><small>Buy Qty</small></th>
+                        <th scope="col"><small>Ret.Qty</small></th>
+                        <th scope="col"><small>Rate</small></th>
+                        <th scope="col"><small>Disc(%)</small></th>
+                        <th scope="col"><small>GST(%)</small></th>
+                        <th scope="col"><small>Refund</small></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -261,18 +258,18 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
                    echo ' <tr>
-                        <th scope="row"><small>' . $slno . '</small> </th>
-                        <td><small>' . $product->name . '</small></td>
-                        <td><small>' . $manufacturerName . '</small></td>
-                        <td><small>' . $detail['batch_no'] . '</small></td>
-                        <td><small>' . $detail['exp'] . '</small></td>
-                        <td><small>' . $detail['weatage'] . '</small></td>
-                        <td><small>' . $purchasedQty . '</small></td>
-                        <td><small>' . $detail['return_qty'] . '</small></td>
-                        <td><small>' . $detail['ptr'] . '</small></td>
-                        <td><small>' . $detail['disc'] . '</small></td>
-                        <td><small>' . $detail['gst'] . '</small></td>
-                        <td><small>' . $detail['refund_amount'] . '</small></td>
+                        <th scope="row" class="pt-1 pb-1"><small>' . $slno . '</small> </th>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $product->name . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $manufacturerName . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['batch_no'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['exp'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['weatage'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $purchasedQty . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['return_qty'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['ptr'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['disc'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['gst'] . '</small></td>
+                        <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['refund_amount'] . '</small></td>
                     </tr>
                 </tbody>';
                 }

@@ -109,7 +109,8 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                 <div class="row">
                     <div class="col-sm-1">
                         <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
+                            alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?= $distributorName; ?></h4>
@@ -118,6 +119,8 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $distContact  ?></small>
+                        </p>
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $distGST?>
                         </p>
 
                     </div>
@@ -191,7 +194,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                 <thead>
                     <tr>
                         <th scope="col"><small>SL.</small></th>
-                        <th scope="col"><small>P Id</small></th>
+                        <!-- <th scope="col"><small>P Id</small></th> -->
                         <th scope="col"><small>Product Name</small></th>
                         <th scope="col"><small>Manuf.</small></th>
                         <th scope="col"><small>Packing</small></th>
@@ -295,20 +298,25 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     // =====================================================
                 ?>
                     <tr>
-                        <th scope="row"><small> <?php echo "$slno" ?></small></th>
-                        <td><small><?php echo "$prodId" ?></small></td>
-                        <td><small><?php echo "$pname" ?></small></td>
-                        <td><small><?php echo "$manufName" ?></small></td>
-                        <td><small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small></td>
-                        <td><small><?php echo "$batchNo" ?></small></td>
-                        <td><small><?php echo "$ExpDate" ?></small></td>
-                        <td><small><?php echo "$qty" ?></small></td>
-                        <td><small><?php echo "$FreeQty" ?></small></td>
-                        <td><small><?php echo "$Mrp" ?></small></td>
-                        <td><small><?php echo "$Ptr" ?></small></td>
-                        <td><small><?php echo "$discPercent%" ?></small></td>
-                        <td><small><?php echo "$gstPercent%" ?></small></td>
-                        <td><small><?php echo "$Amount" ?></small></td>
+                        <th scope="row" class="pt-1 pb-1"><small style="font-size: 0.750em;">
+                                <?php echo "$slno" ?></small></th>
+                        <!-- <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$prodId" ?></small></td> -->
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$pname" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$manufName" ?></small></td>
+                        <td class="pt-1 pb-1"><small
+                                style="font-size: 0.750em;"><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
+                        </td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$batchNo" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$ExpDate" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$qty" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$FreeQty" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$Mrp" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$Ptr" ?></small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$discPercent%" ?></small>
+                        </td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$gstPercent%" ?></small>
+                        </td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$Amount" ?></small></td>
                     </tr>
                 </tbody>
                 <?php } ?>
@@ -463,22 +471,22 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                 <!-- table total calculation -->
                 <div class="row my-0">
                     <div class="col-6">
-                        <div class="row">
-                            <div class="col-6">
-                                <b><small>Bill To:</small></b>
+                        <div class="d-flex justify-content-around">
+                            <div class="">
+                                <b><small>Bill To : </small></b>
                             </div>
-                            <div class="col-6">
-                                <p class="text-start mb-0"><small><?= $pharmacyName ?></small></p>
-                                <p class="text-start"><small><?= $pharmacyContact ?></small></p>
+                            <div class="">
+                                <p class=" mb-0"><small><?= $pharmacyName ?></small></p>
+                                <p class=""><small><?= $pharmacyContact ?></small></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 border-start border-dark">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST :</small></p>
                                     </div>
                                     <div class="col-4 text-end">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
@@ -489,7 +497,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                                 </div>
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST :</small></p>
                                     </div>
                                     <div class="col-4 text-end">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
@@ -500,7 +508,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                                 </div>
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST :</small></p>
                                     </div>
                                     <div class="col-4 text-end">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
@@ -510,39 +518,39 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-7">
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total MRP:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total MRP :</small></p>
                                     </div>
-                                    <div class="col-4 text-end">
+                                    <div class="col-4 text-start">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
                                             <!-- <small><b>₹<?php echo floatval($totalMrp); ?></b></small> -->
-                                            <small>₹<?php echo "$totalMrp" ?></small>
+                                            <small>₹ <?php echo "$totalMrp" ?></small>
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved :</small></p>
                                     </div>
-                                    <div class="col-4 text-end">
+                                    <div class="col-4 text-start">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
                                             <!-- <small>₹<?php echo $totalMrp - $billAmnt; ?></small> -->
-                                            <small>₹<?php echo $totalMrp - $billAmnt ?></small>
+                                            <small>₹ <?php echo $totalMrp - $billAmnt ?></small>
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-8 text-end">
-                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net Amount:</small></p>
+                                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net Amount :</small></p>
                                     </div>
-                                    <div class="col-4 text-end">
+                                    <div class="col-4 text-start">
                                         <p style="margin-top: -5px; margin-bottom: 0px;">
                                             <!-- <small><b>₹<?php echo floatval($billAmout); ?></b></small> -->
-                                            <small><b>₹<?php echo "$billAmnt" ?></b></small>
+                                            <small><b>₹ <?php echo "$billAmnt" ?></b></small>
                                         </p>
                                     </div>
                                 </div>
