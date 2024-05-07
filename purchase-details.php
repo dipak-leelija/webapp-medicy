@@ -61,7 +61,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
     $filename = $_FILES["import-file"]["tmp_name"];
     if ($_FILES["import-file"]["size"] > 0) {
 
-        $UtilityFiles->purchaseImport($filename);
+        $UtilityFiles->purchaseImport($filename, $ADMINID);
     }
 }
 
