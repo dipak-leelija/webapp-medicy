@@ -8,6 +8,7 @@ require_once CLASS_DIR.'distributor.class.php';
 
 $distributorId        = $_GET['id'];
 $distributorName      = $_GET['name'];
+$distributorGSTIN     = $_GET['gstin'];
 $distributorPhno      = $_GET['phno'];
 $distributorEmail     = $_GET['email'];
 $distributorAddress   = $_GET['address'];
@@ -16,7 +17,7 @@ $distributorDsc       = $_GET['dsc'];
 
 $Distributor = new Distributor();
 
-$updateDist = $Distributor->updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW, $distributorId);
+$updateDist = $Distributor->updateDist($distributorName, $distributorGSTIN, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW, $distributorId);
 
 //check if the data has been updated or not
 if($updateDist){
