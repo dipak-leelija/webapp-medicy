@@ -84,19 +84,19 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
         <div class="custom-body <?= $refundMode != 'Credit' ? "paid-bg" : ''; ?>">
             <div class="card-body ">
                 <div class="row">
-                    <div class="col-2 pe-0">
+                    <div class="col-1 pe-0">
                         <!-- <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
                             src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
-                        <img class="float-end" style="height: 55px; width: 100%; object-fit: cover;"
+                        <img class="float-end" style="height: 55px; width: 58px; object-fit: cover;"
                             src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
 
-                    <div class="col-7">
+                    <div class="col-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $distAddress . ', ' . $distPIN; ?></small>
                         </p>
-                        <p class="text-start" style=" margin-bottom: 0px;">
+                        <p class="text-start" style="margin-top:-6px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $distContact; ?></small>
                         </p>
                         <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $distGST?>
