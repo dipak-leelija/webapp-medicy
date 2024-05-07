@@ -1,20 +1,20 @@
 <?php
 $page = "patients";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once ROOT_DIR.'_config/user-details.inc.php';
-require_once CLASS_DIR.'encrypt.inc.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR. 'report-generate.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once ROOT_DIR . '_config/user-details.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'report-generate.class.php';
 
 
 
 $Patients   = new Patients;
-$LabReport  = new LabReport ;
+$LabReport  = new LabReport;
 
 // $labreportfetch = $LabReport->labreportfetch();
 // echo $labreportfetch;
@@ -35,13 +35,11 @@ $LabReport  = new LabReport ;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Patients - <?= SITE_NAME?></title>
+    <title>Patients - <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -55,7 +53,7 @@ $LabReport  = new LabReport ;
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -65,18 +63,22 @@ $LabReport  = new LabReport ;
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Report</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button
-                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                            <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -92,30 +94,30 @@ $LabReport  = new LabReport ;
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                           $labreportfetch = $LabReport->labreportfetch($adminId);
-                                           $labreportfetch = json_decode($labreportfetch, true);
-                                            if ($labreportfetch) {
-                                                foreach ($labreportfetch as $entry) {
-                                                    $reportId  = $entry['id'];
-                                                    $billId    = $entry['bill_id'];
-                                                    $patientId    = $entry['patient_id'];
-                                                    $adminId = $entry['admin_id'];
-                                                    $date = $entry['added_on'];
-                                            ?>
-                                                    <tr class="appointment-row">
-                                                        <td><?= $reportId ?></td>
-                                                        <!-- <td><?= $billId  ?></td> -->
-                                                        <td><?= $patientId ?></td>
-                                                        <td><?= $adminId ?></td>
-                                                        <td><?= $date ?></td>
-                                                        <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                            <?php
+                                        <?php
+                                        $labreportfetch = $LabReport->labreportfetch($adminId);
+                                        $labreportfetch = json_decode($labreportfetch, true);
+                                        if ($labreportfetch) {
+                                            foreach ($labreportfetch as $entry) {
+                                                $reportId  = $entry['id'];
+                                                $billId    = $entry['bill_id'];
+                                                $patientId    = $entry['patient_id'];
+                                                $adminId = $entry['admin_id'];
+                                                $date = $entry['added_on'];
+                                        ?>
+                                                <tr class="appointment-row">
+                                                    <td><?= $reportId ?></td>
+                                                    <!-- <td><?= $billId  ?></td> -->
+                                                    <td><?= $patientId ?></td>
+                                                    <td><?= $adminId ?></td>
+                                                    <td><?= $date ?></td>
+                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                </tr>
+                                        <?php
 
-                                                }
                                             }
-                                            ?>
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -130,7 +132,7 @@ $LabReport  = new LabReport ;
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

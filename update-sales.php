@@ -103,6 +103,11 @@ if ($_GET['id']) {
                     <!-- End of Topbar -->
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
+                        <div class="row" style="z-index: 999;">
+                            <div class="col-12">
+                                <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                            </div>
+                        </div>
                         <!-- Page Heading -->
                         <!-- <h1 class="h3 mb-4 text-gray-800">Sell Items</h1> -->
                         <!-- Add Product -->

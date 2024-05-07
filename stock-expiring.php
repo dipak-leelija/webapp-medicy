@@ -1,14 +1,14 @@
 <?php
 $page = 'stock-expiring';
 
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'products.class.php';
 
 
 $CurrentStock = new CurrentStock();
@@ -18,15 +18,15 @@ $thisMonth = date('m');
 $thisYear = date('Y');
 
 $modifiedMnth = intval($thisMonth) + intval(2);
-if($modifiedMnth > 12){
+if ($modifiedMnth > 12) {
     $expMnth = $modifiedMnth % 12;
     $expYr = intval($thisYear) + 1;
-}else{
+} else {
     $expMnth = $modifiedMnth;
     $expYr = $thisYear;
 }
 
-$expRange = $expMnth.'/'.$expYr;
+$expRange = $expMnth . '/' . $expYr;
 
 $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
 // print_r($showExpiry);
@@ -48,9 +48,7 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -66,7 +64,7 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -76,11 +74,16 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
 
                     <!-- Page Heading -->
                     <!-- <h1 class="h3 mb-4 text-gray-800">Blank Page</h1> -->
@@ -124,7 +127,7 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
                                             $productId    = $item['product_id'];
 
                                             $productDetails = json_decode($Products->showProductsById($productId));
-                                            if(!$productDetails->status ){
+                                            if (!$productDetails->status) {
                                                 $tableName = 'product_request';
                                                 $productDetails = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
                                             }
@@ -138,15 +141,15 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
                                             $lCount       = $item['loosely_count'];
 
                                             echo "<tr>
-                                                    <td>".$prodName."</td>
-                                                    <td>".$batch."</td>
-                                                    <td>".$expDate."</td>
-                                                    <td>".$qty."</td>
-                                                    <td>".$lCount."</td>
-                                                </tr>";                                             
-                                        }                
-                                       ?>
-                                                    <!-- <td>
+                                                    <td>" . $prodName . "</td>
+                                                    <td>" . $batch . "</td>
+                                                    <td>" . $expDate . "</td>
+                                                    <td>" . $qty . "</td>
+                                                    <td>" . $lCount . "</td>
+                                                </tr>";
+                                        }
+                                        ?>
+                                        <!-- <td>
                                                         <a class='' data-toggle='modal' data-target='#manufacturerModal' onclick='viewSoldList(".$productId.")'><i class='fas fa-edit'></i></a>
 
                                                         <a class='ms-2' id='delete-btn' data-id=".$productId."><i class='far fa-trash-alt'></i></a>
@@ -165,7 +168,7 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
