@@ -46,6 +46,7 @@ if (isset($_GET['data'])) {
 
                 $distributorName = $distributorData->name;
                 $distContact = $distributorData->phno;
+                $distGST        = $distributorData->gst_id;
                 $distAddress = $distributorData->address;
                 $distPIN = $distributorData->area_pin_code;
             }
@@ -83,20 +84,22 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
         <div class="custom-body <?= $refundMode != 'Credit' ? "paid-bg" : ''; ?>">
             <div class="card-body ">
                 <div class="row">
-                    <div class="col-1 pe-0">
+                    <div class="col-2 pe-0">
                         <!-- <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
                             src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
-                            <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
+                        <img class="float-end" style="height: 55px; width: 100%; object-fit: cover;"
                             src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
 
-                    <div class="col-8">
+                    <div class="col-7">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $distAddress . ', ' . $distPIN; ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p class="text-start" style=" margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $distContact; ?></small>
+                        </p>
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $distGST?>
                         </p>
 
                     </div>
@@ -156,7 +159,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"> <small>Name</small></th>
+                        <th scope="col"><small>Name</small></th>
                         <th scope="col"><small>Batch</small></th>
                         <th scope="col"><small>Exp.</small></th>
                         <th scope="col"><small>P.Qty</small></th>
@@ -191,19 +194,19 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
 
                 echo '<tbody>
                     <tr>
-                        <th scope="row"><small style="font-weight: normal;">' . substr($productName, 0, 20) . '</small>
+                        <th scope="row" class="pt-1 pb-1"><small style="font-weight: normal; font-size: 0.750em;">' . substr($productName, 0, 20) . '</small>
                         <br>
-                        <small>' . $setof . '</small></th>
-                        <td><small>' . strtoupper($batchNo) . '</small></td>
-                        <td><small>' . $expDate . '</small></td>
-                        <td><small>' . $purchasedQty . '</small></td>
-                        <td><small>' . $freeQty . '</small></td>
-                        <td><small>' . $mrp . '</small></td>
-                        <td><small>' . $ptr . '</small></td>
-                        <td><small>' . $gstPercent . '</small></td>
-                        <td><small>' . $discParcent . '</small></td>
-                        <td><small>' . $returnQty . '</small></td>
-                        <td><small>' . $refundAmount . '</small></td>
+                        <small style="font-size: 0.750em;">' . $setof . '</small></th>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . strtoupper($batchNo) . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $expDate . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $purchasedQty . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $freeQty . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $mrp . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $ptr . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $gstPercent . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $discParcent . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $returnQty . '</small></td>
+                        <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $refundAmount . '</small></td>
                     </tr>
                 </tbody>';
                     }?>
@@ -330,7 +333,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                                 <b><?php echo $totalReturnQty; ?></b></small>
                         </div>
                         <div class="row text-end mt-1">
-                            <h5 class="mb-0 pb-0">Total Refund: <b>₹<?php echo floatval($refund); ?></b></h5>
+                            <b><small class="mb-0 pb-0">Total Refund : ₹ <?php echo floatval($refund); ?></small></b>
 
                         </div>
 
