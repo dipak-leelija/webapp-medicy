@@ -141,72 +141,25 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
             </div>
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
 
-            <hr class="my-0" style="height:1px;">
-
-            <!-- <div class="row">
-               
-                <div class="col-sm-1 text-center" style="width: 3%;">
-                    <small><b>SL.</b></small>
-                </div>
-                <div class="col-sm-1" hidden>
-                    <small><b>P Id</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 17%;">
-                    <small><b>Product Name</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Manuf.</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 12%;">
-                    <small><b>Packing</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 10%;">
-                    <small><b>Batch</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 5%">
-                    <small><b>Exp.</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>QTY</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>F.QTY</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>MRP</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>PTR</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>Disc.</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>GST</b></small>
-                </div>
-                <div class="col-sm-1b text-end" style="width: 10%;">
-                    <small><b>Amount</b></small>
-                </div>
-               
-            </div> -->
+            <hr class="my-0" style="height:1px;opacity:0.5">
 
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"><small>SL.</small></th>
-                        <!-- <th scope="col"><small>P Id</small></th> -->
-                        <th scope="col"><small>Product Name</small></th>
-                        <th scope="col"><small>Manuf.</small></th>
-                        <th scope="col"><small>Packing</small></th>
-                        <th scope="col"><small>Batch</small></th>
-                        <th scope="col"><small>Exp.</small></th>
-                        <th scope="col"><small>QTY</small></th>
-                        <th scope="col"><small>F.QTY</small></th>
-                        <th scope="col"><small>MRP</small></th>
-                        <th scope="col"><small>PTR</small></th>
-                        <th scope="col"><small>Disc.</small></th>
-                        <th scope="col"><small>GST</small></th>
-                        <th scope="col"><small>Amount</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>SL.</small></th>
+                        <!-- <th class="pt-1 pb-1" scope="col"><small>P Id</small></th> -->
+                        <th class="pt-1 pb-1" scope="col"><small>Product Name</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Manuf.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Packing</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Batch</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Exp.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>QTY</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>F.QTY</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>MRP</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>PTR</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Disc.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>GST</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Amount</small></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,155 +271,15 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         </td>
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$Amount" ?></small></td>
                     </tr>
+                    <?php } ?>
                 </tbody>
-                <?php } ?>
             </table>
 
             <!-- <hr class="my-0" style="height:1px;"> -->
 
-            <div class="row">
-                <?php
-                // $slno = 0;
-                // $itemBillNo    = $distributorBill;
-                // $distributorId = $distributorId;
-                // $totalGst   = 0;
-                // $totalMrp   = 0;
-                // $billAmnt   = 0;
-                // // $stokInId = $stokInid;
-
-                // $itemDetials = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);
-
-                // foreach ($itemDetials as $itemsData) {
-                //     $slno++;
-
-                //     $prodId = $itemsData['product_id'];
-
-                //     $chkExistance = json_decode($Products->productExistanceCheck($prodId));
-                //     if ($chkExistance->status) {
-                //         $edtRqstFlg = 1;
-                //     } else {
-                //         $edtRqstFlg = '';
-                //     }
-
-                //     $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $edtRqstFlg));
-                //     // print_r($productDetails);
-                //     $productDetails = $productDetails->data;
-
-                //     foreach ($productDetails as $pData) {
-                //         // print_r($pData);
-                //         $pname = $pData->name;
-                //         if (isset($pData->manufacturer_id)) {
-                //             $pManfId = $pData->manufacturer_id;
-                //         } else {
-                //             $pManfId = '';
-                //         }
-                //         $pType  = $pData->packaging_type;
-                //         $pQTY = $pData->unit_quantity;
-                //         $pUnit = $pData->unit;
-
-                //         // echo $pUnit;
-                //         $itemUnitName = $ItemUnit->itemUnitName($pUnit);
-                //         // echo $itemUnitName;
-                //     }
-
-                //     $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
-                //     // foreach ($packagingData as $packData) {
-                //     $unitNm = $packagingData->data->unit_name;
-                //     // }
-
-
-                //     if ($pManfId != '') {
-                //         $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
-                //         $manufDetails = $manufDetails->data;
-                //         // print_r($manufDetails);
-                //         if (isset($manufDetails->short_name)) {
-                //             $manufName = $manufDetails->short_name;
-                //         } else {
-                //             $manufName = '';
-                //         }
-                //     } else {
-                //         $manufName = '';
-                //     }
-
-
-                //     $batchNo        = $itemsData['batch_no'];
-                //     $ExpDate        = $itemsData['exp_date'];
-                //     $qty            = $itemsData['qty'];
-                //     $FreeQty        = $itemsData['free_qty'];
-                //     $Mrp            = $itemsData['mrp'];
-                //     $Ptr            = $itemsData['ptr'];
-                //     $discPercent    = $itemsData['discount'];
-                //     $gstPercent     = $itemsData['gst'];
-                //     $Amount         = $itemsData['amount'];
-                //     $gstAmnt        = $itemsData['gst_amount'];
-                //     $totalGst       = $totalGst + $gstAmnt;
-                //     $totalMrp       = $totalMrp + ($Mrp * $qty);
-                //     $billAmnt       = $billAmnt + $Amount;
-                //     $cGst           = $sGst = number_format($totalGst / 2, 2);
-
-
-                //     if ($slno > 1) {
-                //         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                //     }
-
-                    // =====================================================
-                    // =====================================================
-                ?>
-                <!-- <div class="col-sm-1 text-center" style="width: 3%;">
-                    <small> <?php echo "$slno" ?></small>
-                </div>
-                <div class="col-sm-1b " hidden>
-                    <small><?php echo "$prodId" ?></small>
-                </div>
-                <div class="col-sm-1b" style="width: 17%;">
-                    <small><?php echo "$pname" ?></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><?php echo "$manufName" ?></small>
-                </div>
-                <div class="col-sm-1b" style="width: 12%;">
-                    <small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
-                </div>
-                <div class="col-sm-1b" style="width: 10%;">
-                    <small><?php echo "$batchNo" ?></small>
-                </div> -->
-                <!-- <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$MfdDate" ?></small>
-                    </div> -->
-                <!-- <div class="col-sm-1 text-center" style="width: 5%;">
-                    <small><?php echo "$ExpDate" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><?php echo "$qty" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><?php echo "$FreeQty" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><?php echo "$Mrp" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><?php echo "$Ptr" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><?php echo "$discPercent%" ?></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><?php echo "$gstPercent%" ?></small>
-                </div>
-                <div class="col-sm-1b text-end" style="width: 10%;">
-                    <small><?php echo "$Amount" ?></small>
-                </div> -->
-                <?php
-                // }
-                ?>
-
-            </div>
-            <!-- </div> -->
-
             <!-- </div> -->
             <div class="footer">
-                <hr class="my-1 mt-2" style="height: 1px;">
+                <hr class="my-1 mt-2" style="height: 1px; opacity:0.5;">
 
                 <!-- table total calculation -->
                 <div class="row my-0">
@@ -558,7 +371,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         </div>
                     </div>
                 </div>
-                <hr class="my-1" style="height: 1px;">
+                <hr class="my-1" style="height: 1px;opacity:0.5;">
             </div>
             <!-- <hr class="my-1" style="height: 1px;"> -->
         </div>
