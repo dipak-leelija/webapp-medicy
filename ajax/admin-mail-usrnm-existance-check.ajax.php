@@ -10,20 +10,41 @@ require_once CLASS_DIR . 'employee.class.php';
 $Admin = new Admin;
 $Employee = new Employees;
 
+// =========== admin contact number existance check =============
+
+if (isset($_POST['checkContact'])) {
+
+    $checkContact = $_POST['checkContact'];
+    
+    $admCol = 'mobile_no';
+    $checkAdminContactExistance = json_decode($Admin->checkAdminDataExistance($admCol, $checkContact));
+
+    
+    $empCol = 'emp_contact_no';
+    $checkEmpContactExistance = json_decode($Employee->selectEmpByColData($empCol, $checkContact));
+
+    if ($checkAdminContactExistance->status == '1' || $checkEmpContactExistance->status == '1') {
+        echo '1';
+    } else {
+        echo '0';
+    }
+}
+
 
 // =========== admin email existance check =============
 
 if (isset($_POST['chekEmailExistance'])) {
     $checkEmail = $_POST['chekEmailExistance'];
 
-    $checkAdminMailExistance = $Admin->echeckEmail($checkEmail);
+    $admCol = 'email';
+    $checkAdminMailExistance = json_decode($Admin->checkAdminDataExistance($admCol, $checkEmail));
 
     
     $empCol1 = 'emp_email';
     $checkEmpMailExistance = json_decode($Employee->selectEmpByColData($empCol1, $checkEmail));
-    // print_r($checkEmpMailExistance);
+    
 
-    if ($checkAdminMailExistance == 1 || $checkEmpMailExistance->status == '1') {
+    if ($checkAdminMailExistance->status == '1' || $checkEmpMailExistance->status == '1') {
         echo '1';
     } else {
         echo '0';
@@ -36,13 +57,14 @@ if (isset($_POST['chekEmailExistance'])) {
 if (isset($_POST['chekUsrnmExistance'])) {
     $checkUsername = $_POST['chekUsrnmExistance'];
 
-    $checkAdminUsrnmExistance = $Admin->echeckUsername($checkUsername);
+    $admCol = 'username';
+    $checkAdminUsrnmExistance = json_decode($Admin->checkAdminDataExistance($admCol, $checkUsername));
 
     $empCol1 = 'emp_username';
     $checkEmpUsrnmExistance = json_decode($Employee->selectEmpByColData($empCol1, $checkUsername));
 
     
-    if ($checkAdminUsrnmExistance == 1 || $checkEmpUsrnmExistance->status == 1) {
+    if ($checkAdminUsrnmExistance->status == '1' || $checkEmpUsrnmExistance->status == 1) {
         echo '1';
     } else {
         echo '0';
