@@ -136,67 +136,23 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             <?php echo $reffby; ?></small></p>
                 </div>
             </div> -->
-            <hr class="my-0" style="height:3px;">
-
-            <!-- <div class="row">
-                
-
-                <div class="col-sm-1 text-center" style="width: 5%;">
-                    <small><b>SL.</b></small>
-                </div>
-                <div class="col-sm-2">
-                    <small><b>Name</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Manuf.</b></small>
-                </div>
-               
-                <div class="col-sm-1">
-                    <small><b>Batch</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Exp.</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Unit</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>Buy Qty</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>Ret.Qty</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>Rate</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>Disc(%)</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>GST(%)</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>Refund</b></small>
-                </div>
-
-                
-            </div> -->
+            <hr class="my-0" style="height:2px;opacity:0.5;">
 
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"><small>SL.</small></th>
-                        <th scope="col"><small>Name</small></th>
-                        <th scope="col"><small>Manuf.</small></th>
-                        <th scope="col"><small>Batch</small></th>
-                        <th scope="col"><small>Exp.</small></th>
-                        <th scope="col"><small>Unit</small></th>
-                        <th scope="col"><small>Buy Qty</small></th>
-                        <th scope="col"><small>Ret.Qty</small></th>
-                        <th scope="col"><small>Rate</small></th>
-                        <th scope="col"><small>Disc(%)</small></th>
-                        <th scope="col"><small>GST(%)</small></th>
-                        <th scope="col"><small>Refund</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>SL.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Name</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Manuf.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Batch</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Exp.</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Unit</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Buy Qty</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Ret.Qty</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Rate</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Disc(%)</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>GST(%)</small></th>
+                        <th class="pt-1 pb-1" scope="col"><small>Refund</small></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -270,115 +226,15 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['disc'] . '</small></td>
                         <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['gst'] . '</small></td>
                         <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $detail['refund_amount'] . '</small></td>
-                    </tr>
-                </tbody>';
+                    </tr>';
                 }
                 ?>
+                </tbody>
             </table>
 
-            <!-- <hr class="my-0" style="height:1px;">
-
-            <div class="row"> -->
-            <?php
-                // $slno = 0;
-                // $totalMrp = 0;
-                // $subTotal = floatval(00.00);
-                // foreach ($salesReturnDetails as $detail) {
-                //     // print_r($detail);
-                //     //=========================
-                //     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
-
-                //     if ($checkTable->status == 1) {
-                //         $table = 'products';
-                //     } else {
-                //         $table = 'product_request';
-                //     }
-                //     //=========================
-
-                //     $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
-
-                //     $product = $productResponse->data;
-                //     // print_r($product);
-
-                //     $packQty = $product->unit_quantity;
-
-                //     if (isset($product->manufacturer_id)) {
-                //         $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
-
-                //         $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
-                //     } else {
-                //         $manufacturerName = '';
-                //     }
-
-
-                //     $itemunit = $ItemUnit->itemUnitName($product->unit);
-                //     $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
-
-                //     $weatage = "$itemunit of $packUnit";
-
-                //     $slno++;
-                //     if ($slno > 1) {
-                //         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                //     }
-
-                //     $col1 = 'invoice_id';
-                //     $col2 = 'item_id';
-                //     $stockOutData = $StockOut->stokOutDetailsDataByTwoCol($col1, $detail['invoice_id'], $col2, $detail['item_id']);
-                //     // print_r($stockOutData);
-
-                //     if($stockOutData[0]['loosely_count'] != 0){
-                //         $purchasedQty = $stockOutData[0]['loosely_count'];
-                //     }else{
-                //         $purchasedQty = $stockOutData[0]['qty'];
-                //     }
-
-                //     // ================== TOTAL MRP CALCULATION AREA =======================
-                //     $totalMrp = floatval($totalMrp) + floatval($detail['mrp']);
-
-
-                //     echo '<div class="col-sm-1 text-center" style="width: 5%;">
-                //                 <small>' . $slno . '</small>
-                //             </div>
-                //             <div class="col-sm-2 ">
-                //                 <small>' . $product->name . '</small>
-                //             </div>
-                //             <div class="col-sm-1">
-                //                 <small>' . $manufacturerName . '</small>
-                //             </div>
-                //             <div class="col-sm-1">
-                //                 <small>' . $detail['batch_no'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1">
-                //                 <small>' . $detail['exp'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1">
-                //                 <small>' . $detail['weatage'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end">
-                //                 <small>' . $purchasedQty . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end">
-                //                 <small>' . $detail['return_qty'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end">
-                //                 <small>' . $detail['ptr'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end" style="width: 5%;">
-                //             <small>' . $detail['disc'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end" style="width: 5%;">
-                //                 <small>' . $detail['gst'] . '</small>
-                //             </div>
-                //             <div class="col-sm-1 text-end">
-                //                 <small>' . $detail['refund_amount'] . '</small>
-                //             </div>';
-                // }
-                ?>
-
-            <!-- </div> -->
 
             <div class="footer">
-                <hr calss="my-0" style="height: 3px;">
+                <hr calss="my-0" style="height: 2px;opacity: 0.5;">
                 <!-- table total calculation -->
 
                 <div class="row my-0">
@@ -413,7 +269,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         </div>
                     </div>
                 </div>
-                <hr style="height: 1px; margin-top: 0px;">
+                <hr style="height: 2px; margin-top: 4px;opacity: 0.5;">
             </div>
         </div>
     </div>
