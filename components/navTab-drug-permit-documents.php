@@ -13,7 +13,13 @@ $Utility        = new Utility;
 $currentUrl = $Utility->currentUrl();
 // Healthcare Addesss and details
 
-$storeDataFilePath = ROOT_DIR . "assets/images/orgs/drug-permit/";
+$baseURL = URL;
+$filePath = "assets/images/orgs/drug-permit/";
+// $storeDataFilePath = ROOT_DIR . "assets/images/orgs/drug-permit/";
+$storeDataFilePath = $baseURL . ltrim($filePath, '/');
+
+// echo $storeDataFilePath;
+
 $form20Data;
 $form21Data;
 
@@ -27,13 +33,10 @@ $form21Data;
         <div class="mt-4 mb-4">
 
             <div class="card-body">
-
-                <!-- <?php if (isset($_GET['setup'])) : ?>
-                        <div class="alert alert-warning" role="alert">
-                            <?= $_GET['setup'] ?>
-                        </div>
-                    <?php endif; ?> -->
-                <!-- <form action="<?= PAGE ?>" method="post" enctype="multipart/form-data"> -->
+                <!-- <div class="row">
+                    hello
+                    <img src="C:/xampp/htdocs/medicy.in/assets/images/orgs/drug-permit/6634da21d4b3e.png" alt="">
+                </div> -->
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="card">
@@ -46,6 +49,7 @@ $form21Data;
                             </div>
                         </div>
                     </div>
+
 
                     <div class="col-sm-6">
                         <div class="card">
@@ -72,10 +76,10 @@ $form21Data;
                 </div>
                 <div class="row">
                     <div class="col-md-12 d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                        <button class="btn btn-success me-md-2" name="drug-permit-data-update" type="submit" onclick="drugFormDataUpload()">Update</button>
+                        <button class="btn btn-success me-md-2" name="drug-permit-data-update" type="submit" onclick="drugFormDataUpload ()">Update</button>
                     </div>
                 </div>
-                <!-- </form> -->
+
             </div>
         </div>
     </div>
@@ -88,28 +92,59 @@ $form21Data;
 
 
 <script>
-    document.getElementById("imagePreviewForm20").getElementsByTagName("img")[0].src = <?php echo json_encode($storeDataFilePath . $form20Data); ?>;
-    document.getElementById("imagePreviewForm21").getElementsByTagName("img")[0].src = <?php echo json_encode($storeDataFilePath . $form21Data); ?>;
-
-    function validateFileType() {
-        var fileName = document.getElementById("form-20").value;
-        var idxDot = fileName.lastIndexOf(".") + 1;
-        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png" || extFile == "pdf") {
-            document.getElementById("err-show").classList.add("d-none");
-        } else {
-            document.getElementById("err-show").classList.remove("d-none");
-            // Show current image when error occurs
-            document.querySelector('.img-uv-view').src = "<?= $healthCareLogo; ?>";
-        }
+    // =====================================================
+    // Function to fetch file from database and display it in the given div
+    function displayFileFromDatabase(filePath, previewId) {
+        console.log(filePath);
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const preview = document.getElementById(previewId);
+                const fileType = filePath.split('.').pop().toLowerCase();
+                const contentType = xhr.getResponseHeader("Content-Type");
+                const blob = new Blob([xhr.response], {
+                    type: contentType
+                });
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const base64data = reader.result;
+                    console.log(base64data);
+                    if (fileType === 'pdf') {
+                        preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%">`;
+                    } else if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
+                        preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;">`;
+                    } else {
+                        preview.innerHTML = `<p>Unsupported file format</p>`;
+                    }
+                };
+                reader.readAsDataURL(blob);
+            }
+        };
+        xhr.open('GET', filePath, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.send();
     }
 
 
+    <?php if (!empty($form20Data)) : ?>
+        const form20path = <?php echo json_encode($storeDataFilePath . $form20Data); ?>;
+        displayFileFromDatabase(form20path, 'imagePreviewForm20');
+    <?php endif; ?>
+
+    <?php if (!empty($form21Data)) : ?>
+        const form21path = <?php echo json_encode($storeDataFilePath . $form21Data); ?>;
+        displayFileFromDatabase(form21path, 'imagePreviewForm21');
+    <?php endif; ?>
+
+
+    // =====================================================
     function getFile(inputId) {
         document.getElementById(inputId).click();
     }
 
+
     function sub(obj, previewId) {
+
         var file = obj.files[0];
         var reader = new FileReader();
 
@@ -117,9 +152,9 @@ $form21Data;
             var filePreview = document.getElementById(previewId);
 
             if (file.type.includes('image')) {
-                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 100%;">';
+                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;">';
             } else if (file.type === 'application/pdf') {
-                filePreview.innerHTML = '<embed src="' + reader.result + '" width="100%" height="100%">';
+                filePreview.innerHTML = '<embed src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;">';
             } else {
                 filePreview.innerHTML = '<p>File type not supported for preview</p>';
             }
@@ -129,6 +164,7 @@ $form21Data;
             reader.readAsDataURL(file);
         }
     }
+
 
 
     const checkField = () => {
@@ -147,32 +183,26 @@ $form21Data;
     }
 
 
-    const drugFormDataUpload = async () => {
+    const drugFormDataUpload = () => {
+        var formData = new FormData();
         var form20File = document.getElementById('form-20').files[0];
         var form21File = document.getElementById('form-21').files[0];
         var gstin = document.getElementById('gstin').value;
         var pan = document.getElementById('pan').value;
 
-        // Convert file data to base64 strings
-        var form20Base64 = null;
-        var form21Base64 = null;
-        if (form20File) {
-            form20Base64 = await getBase64(form20File);
-        }
-        if (form21File) {
-            form21Base64 = await getBase64(form21File);
+        if (!form20File && !form21File) {
+            console.error("No files selected.");
+            return; // No need to proceed if no files are selected
         }
 
-        var formData = new FormData();
-        if (form20Base64) {
-            formData.append('form_20', form20Base64);
+        if (form20File) {
+            formData.append('form_20', form20File);
         }
-        if (form21Base64) {
-            formData.append('form_21', form21Base64);
+        if (form21File) {
+            formData.append('form_21', form21File);
         }
         formData.append('gstin', gstin);
         formData.append('pan', pan);
-
 
         $.ajax({
             url: '<?= URL ?>_config/form-submission/navTab-drug-permit-data-submit.php',
@@ -189,17 +219,7 @@ $form21Data;
         });
     }
 
-    // Function to convert file to base64 string
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
 
 
     // ====================================== 
-    
 </script>
