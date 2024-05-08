@@ -64,28 +64,25 @@ if ($clinicInfo['status'] == 1) {
 
                 <form id="patientForm" class="form-card " action="" method="post">
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientName">Patient Name<span
-                                    class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="text" id="patientName" name="patientName"
-                                placeholder="Enter Patient Name" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientName" name="patientName"
+                                placeholder="" Required autocomplete="off">
+                            <label for="patientName">Patient Name<span class="text-danger"> *</span></label>
                         </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientGurdianName">Patient's
-                                Gurdian Name<span class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="text" id="patientGurdianName" name="patientGurdianName"
-                                placeholder="Enter Patient's Gurdian Name" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientGurdianName"
+                                name="patientGurdianName" placeholder="" required autocomplete="off">
+                            <label for="patientGurdianName">Gurdian Name<span class="text-danger"> *</span></label>
                         </div>
                     </div>
 
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger">
-                                    *</span></label>
-                            <input class="newbillInput" type="number" id="patientAge" name="patientAge"
-                                placeholder="Age" onfocusout="checkAge(this)" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="number" class="form-control newbillInput" id="patientAge" name="patientAge"
+                                onfocusout="checkAge(this)" placeholder="" required autocomplete="off">
+                            <label for="patientAge">Age<span class="text-danger"> *</span></label>
                         </div>
-                        <div class="col-sm-6 mt-4">
+                        <div class="col-sm-6 mt-4 mt-2">
                             <label class="mb-3 mr-1" for="gender">Gender: </label>
                             <input type="radio" class="btn-check" name="gender" id="male" value="Male"
                                 autocomplete="off" required>
@@ -103,85 +100,82 @@ if ($clinicInfo['status'] == 1) {
 
                     <div class="row justify-content-between text-left">
                         <?php if(!$test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
-                                    kg)</small><span class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="number" id="patientWeight" name="patientWeight"
-                                placeholder="Weight in kg" onfocusout="checkWeight(this)" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="number" class="form-control newbillInput" id="patientWeight"
+                                name="patientWeight" onfocusout="checkWeight(this)" placeholder="" required
+                                autocomplete="off">
+                            <label for="patientWeight">Weight<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientPhoneNumber">Phone
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="tel" class="form-control newbillInput" id="patientPhoneNumber"
+                                name="patientPhoneNumber" onchange="checkContactNo(this)" placeholder="" required
+                                autocomplete="off" maxlength="10">
+                            <label for="patientPhoneNumber">Phone
                                 number<span class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="tel" id="patientPhoneNumber" name="patientPhoneNumber"
-                                placeholder="Phone Number" required onchange="checkContactNo(this)" autocomplete="off"
-                                maxlength="10">
                         </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="appointmentDate">Appointment
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="date" class="form-control newbillInput" id="appointmentDate"
+                                name="appointmentDate" placeholder="" value="<?php print(date("Y-m-d")) ?>" required
+                                autocomplete="off">
+                            <label for="appointmentDate">Appointment
                                 Date<span class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="date" id="appointmentDate"
-                                value="<?php print(date("Y-m-d")) ?>" name="appointmentDate" required>
                         </div>
                         <?php if (!$test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
+                        <!-- <div class="form-group col-sm-6 flex-column d-flex">
                             <label class="form-control-label px-3" for="patientEmail">Patient
                                 Email</label>
                             <input class="newbillInput" type="email" id="email" name="patientEmail"
-                                placeholder="Patient Email" autocomplete="off">
-                            <!-- onfocusout="checkMail(this)" -->
+                                placeholder="Patient Email" onfocusout="checkMail(this)" autocomplete="off">
+                        </div> -->
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="email" class="form-control newbillInput" id="email" name="patientEmail"
+                                placeholder="" autocomplete="off">
+                            <label for="patientEmail">Patient Email</span></label>
                         </div>
                         <?php endif; ?>
                     </div>
 
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientAddress1">Address <span
-                                    class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="text" id="patientAddress1" name="patientAddress1"
-                                placeholder="Address" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientAddress1"
+                                name="patientAddress1" placeholder="" required autocomplete="off">
+                            <label for="patientAddress1">Address <span class="text-danger"> *</span></span></label>
                         </div>
                         <?php if ($test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientEmail">Patient
-                                Email</label>
-                            <input class="newbillInput" type="email" id="email" name="patientEmail"
-                                placeholder="Patient Email" autocomplete="off">
-                            <!-- onfocusout="checkMail(this)" -->
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="email" class="form-control newbillInput" id="email" name="patientEmail"
+                                placeholder="" autocomplete="off">
+                            <label for="patientEmail">Patient Email</span></label>
                         </div>
                         <?php endif; ?>
                         <?php if (!$test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientPS">Police Station<span
-                                    class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="text" id="patientPS" name="patientPS"
-                                placeholder="Police Station" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientPS" name="patientPS"
+                                placeholder="" required autocomplete="off">
+                            <label for="patientPS">Police Station<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
                     </div>
 
                     <div class="row justify-content-between text-left">
                         <?php if ($test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientPS">Police Station<span
-                                    class="text-danger"> *</span></label>
-                            <input class="newbillInput" type="text" id="patientPS" name="patientPS"
-                                placeholder="Police Station" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientPS" name="patientPS"
+                                placeholder="" required autocomplete="off">
+                            <label for="patientPS">Police Station<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientDist">District<span class="text-danger">
-                                    *</span></label>
-                            <input class="newbillInput" type="text" id="patientDist" Value="<?= $district; ?>"
-                                name="patientDist" placeholder="District" required autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="text" class="form-control newbillInput" id="patientDist" name="patientDist"
+                                Value="<?= $district; ?>" placeholder="" required autocomplete="off">
+                            <label for="patientDist">District<span class="text-danger"> *</span></label>
                         </div>
                         <?php if (!$test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger">
-                                    *</span></label>
-                            <input class="newbillInput" type="number" id="patientPIN" Value="<?= $pin ?>"
-                                name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required
-                                autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="number" class="form-control newbillInput" id="patientPIN" name="patientPIN" required
+                                onfocusout="checkPin(this)" Value="<?= $pin ?>" placeholder="" autocomplete="off">
+                            <label for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
 
@@ -189,23 +183,20 @@ if ($clinicInfo['status'] == 1) {
 
                     <div class="row justify-content-between text-left">
                         <?php if ($test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger">
-                                    *</span></label>
-                            <input class="newbillInput" type="number" id="patientPIN" Value="<?= $pin ?>"
-                                name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required
-                                autocomplete="off">
+                        <div class="form-floating col-sm-6 mt-3">
+                            <input type="number" class="form-control newbillInput" id="patientPIN" name="patientPIN" required
+                                onfocusout="checkPin(this)" Value="<?= $pin ?>" placeholder="" autocomplete="off">
+                            <label for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
                         <?php if ($test) : ?>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientState">State<span class="text-danger">
-                                    *</span></label>
-                            <select class="newbillInput" id="dropSelection" name="patientState" required>
+                        <div class="form-floating col-sm-6 mt-3">
+                            <select class="form-select newbillInput" id="" name="patientState" required>
                                 <option Value="<?= $state ?>" selected><?= $state ?></option>
                                 <option value="West bengal">West Bengal</option>
                                 <option value="Other">Other</option>
                             </select>
+                            <label for="patientState">State<span class="text-danger"> *</span></label>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -214,22 +205,17 @@ if ($clinicInfo['status'] == 1) {
 
                     <?php if (!$test) : ?>
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientState">State<span class="text-danger">
-                                    *</span></label>
-                            <select class="newbillInput" id="dropSelection" name="patientState" required>
+                        <div class="form-floating col-sm-6 mt-3">
+                            <select class="form-select newbillInput" id="" name="patientState" required>
                                 <option Value="<?= $state ?>" selected><?= $state ?></option>
                                 <option value="West bengal">West Bengal</option>
                                 <option value="Other">Other</option>
                             </select>
+                            <label for="patientState">State<span class="text-danger"> *</span></label>
                         </div>
 
-                        <!-- <h5 class="text-center mb-4 mt-5">Select Doctor</h5> -->
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span
-                                    class="text-danger"> *</span></label>
-                            <select id="docList" class="customDropSelection" name="patientDoctor" required>
-                                <option value="" disabled selected>Select Doctor</option>
+                        <div class="form-floating col-sm-6 mt-3">
+                            <select class="form-select newbillInput" id="docList" name="patientDoctor" required>
                                 <?php
                                                     if ($allDoctors != null) {
                                                         foreach ($allDoctors as $showDoctorDetails) {
@@ -240,13 +226,14 @@ if ($clinicInfo['status'] == 1) {
                                                     }
                                                     ?>
                             </select>
+                            <label for="patientDoctor">Doctor Name<span class="text-danger"> *</span></label>
                         </div>
                     </div>
                     <?php else: ?>
                     <input class="d-none" type="text" value=" " name="patientDoctor">
                     <?php endif; ?>
 
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-end mt-3">
                         <div class="form-group col-sm-4">
                             <button type="submit" name="submit" id="submitBtn"
                                 class="btn-block btn-primary">Submit</button>
