@@ -81,6 +81,7 @@ if ($clinicInfo['status'] == 1) {
                             <input type="number" class="form-control newbillInput" id="patientAge" name="patientAge"
                                 onfocusout="checkAge(this)" placeholder="" required autocomplete="off">
                             <label for="patientAge">Age<span class="text-danger"> *</span></label>
+                            <p class='text-danger fs-6' id='ageMsg'></p>
                         </div>
                         <div class="col-sm-6 mt-4 mt-2">
                             <label class="mb-3 mr-1" for="gender">Gender: </label>
@@ -113,6 +114,7 @@ if ($clinicInfo['status'] == 1) {
                                 autocomplete="off" maxlength="10">
                             <label for="patientPhoneNumber">Phone
                                 number<span class="text-danger"> *</span></label>
+                                <div class='text-danger fs-6' id="pMsg"></div>
                         </div>
                         <div class="form-floating col-sm-6 mt-3">
                             <input type="date" class="form-control newbillInput" id="appointmentDate"
@@ -130,8 +132,9 @@ if ($clinicInfo['status'] == 1) {
                         </div> -->
                         <div class="form-floating col-sm-6 mt-3">
                             <input type="email" class="form-control newbillInput" id="email" name="patientEmail"
-                                placeholder="" autocomplete="off">
+                                placeholder="" autocomplete="off" onchange="checkMail(this)">
                             <label for="patientEmail">Patient Email</span></label>
+                            <div class='text-danger fs-6' id='emailMsg'></div>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -145,8 +148,9 @@ if ($clinicInfo['status'] == 1) {
                         <?php if ($test) : ?>
                         <div class="form-floating col-sm-6 mt-3">
                             <input type="email" class="form-control newbillInput" id="email" name="patientEmail"
-                                placeholder="" autocomplete="off">
+                                placeholder="" autocomplete="off" onchange="checkMail(this)">
                             <label for="patientEmail">Patient Email</span></label>
+                            <div class='text-danger fs-6' id='emailMsg'></div>
                         </div>
                         <?php endif; ?>
                         <?php if (!$test) : ?>
@@ -176,6 +180,7 @@ if ($clinicInfo['status'] == 1) {
                             <input type="number" class="form-control newbillInput" id="patientPIN" name="patientPIN" required
                                 onfocusout="checkPin(this)" Value="<?= $pin ?>" placeholder="" autocomplete="off">
                             <label for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
+                            <div class='text-danger fs-6' id='pinMsg'></div>
                         </div>
                         <?php endif; ?>
 
@@ -187,6 +192,7 @@ if ($clinicInfo['status'] == 1) {
                             <input type="number" class="form-control newbillInput" id="patientPIN" name="patientPIN" required
                                 onfocusout="checkPin(this)" Value="<?= $pin ?>" placeholder="" autocomplete="off">
                             <label for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
+                            <div class='text-danger fs-6' id='pinMsg'></div>
                         </div>
                         <?php endif; ?>
                         <?php if ($test) : ?>
