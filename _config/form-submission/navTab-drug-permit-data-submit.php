@@ -12,45 +12,32 @@ $Utility        = new Utility;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    if (isset($_POST['form_20'], $_POST['form_21'], $_POST['gstin'], $_POST['pan'])) {
+    if (isset($_FILES['form_20'], $_FILES['form_21'], $_POST['gstin'], $_POST['pan'])) {
         
-        $form20Base64 = $_POST['form_20'];
-        $form21Base64 = $_POST['form_21'];
+        $form20File = $_FILES['form_20'];
+        $form21File = $_FILES['form_21'];
         $gstin = $_POST['gstin'];
         $pan = $_POST['pan'];
 
-        // DESTINATION FORLDER
+        // DESTINATION FOLDER
         $uploadFolder = ROOT_DIR . "assets/images/orgs/drug-permit/";
 
         $validExtensions = ['pdf', 'jpeg', 'jpg', 'png'];
 
-        function getFileExtension($data)
+        function getFileExtension($fileName)
         {
-            $imageData = explode(',', $data);
-            $extension = '';
-
-            if (preg_match('/^data:image\/(\w+);base64/', $imageData[0], $match)) {
-                $extension = $match[1];
-            } elseif (preg_match('/^data:(\w+\/\w+);base64/', $imageData[0], $match)) {
-                $extension = explode('/', $match[1])[1];
-            }
-
+            $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
             return $extension;
         }
 
-        // DECODE FILE DATA
-        $form20Extension = getFileExtension($form20Base64);
-        $form21Extension = getFileExtension($form21Base64);
+        // FILE EXTENSIONS
+        $form20Extension = getFileExtension($form20File['name']);
+        $form21Extension = getFileExtension($form21File['name']);
 
         if (!in_array($form20Extension, $validExtensions) || !in_array($form21Extension, $validExtensions)) {
             echo "Invalid file format. Allowed formats: pdf, jpeg, jpg, png";
             exit;
         }
-
-        // Decode base64 data
-        $decodedForm20 = base64_decode($form20Base64);
-        $decodedForm21 = base64_decode($form21Base64);
 
         // Generate unique filenames
         $form20FileName = uniqid() . ".$form20Extension";
@@ -60,21 +47,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $form20Path = $uploadFolder . $form20FileName;
         $form21Path = $uploadFolder . $form21FileName;
 
-        // Save decoded files
-        file_put_contents($form20Path, $decodedForm20);
-        file_put_contents($form21Path, $decodedForm21);
+        // Move uploaded files to destination folder
+        if (move_uploaded_file($form20File['tmp_name'], $form20Path) && move_uploaded_file($form21File['tmp_name'], $form21Path)) {
 
-        // Assuming $HealthCare and $adminId are defined elsewhere
-        $uplodClinicData = $HealthCare->updateDrugPermissionData($form20FileName, $form21FileName, $gstin, $pan, $adminId);
+            // Assuming $HealthCare and $adminId are defined elsewhere
+            $uplodClinicData = $HealthCare->updateDrugPermissionData($form20FileName, $form21FileName, $gstin, $pan, $adminId);
 
-        if ($uplodClinicData) {
-            echo "Data updated successfully.";
+            if ($uplodClinicData) {
+                echo "Data updated successfully. 1";
+            } else {
+                echo "Failed to update data. 0";
+            }
         } else {
-            echo "Failed to update data.";
+            echo "Failed to move uploaded files. 01";
         }
     } else {
-        echo "Required fields not set.";
+        echo "Required fields not set. 10";
     }
 } else {
-    echo "Form not submitted.";
+    echo "Form not submitted. 00";
 }
+
+?>
