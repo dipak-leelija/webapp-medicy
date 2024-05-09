@@ -111,10 +111,11 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePin; ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p class="text-start" style="margin-top: -6px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
-                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $gstinData?></p>
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $gstinData?>
+                        </p>
 
                     </div>
                     <div class="col-sm-3 border-start border-dark">
@@ -136,7 +137,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             <?php echo $reffby; ?></small></p>
                 </div>
             </div> -->
-            <hr class="my-0" style="height:2px;opacity:0.5;">
+            <hr class="my-0" style="height:1px;opacity:1;">
 
             <table class="table">
                 <thead>
@@ -160,7 +161,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 $slno = 0;
                 $totalMrp = 0;
                 $subTotal = floatval(00.00);
-                foreach ($salesReturnDetails as $detail) {
+                foreach ($salesReturnDetails as $index => $detail) {
                     // print_r($detail);
                     //=========================
                     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
@@ -212,8 +213,11 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     // ================== TOTAL MRP CALCULATION AREA =======================
                     $totalMrp = floatval($totalMrp) + floatval($detail['mrp']);
 
+                    $isLastRow = $index === count($salesReturnDetails) - 1;
+                    // Add border style only if it's not the last row
+                    $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
 
-                   echo ' <tr>
+                   echo ' <tr style="'.$borderStyle.'">
                         <th scope="row" class="pt-1 pb-1"><small>' . $slno . '</small> </th>
                         <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $product->name . '</small></td>
                         <td class="pt-1 pb-1" ><small style="font-size: 0.750em;">' . $manufacturerName . '</small></td>
@@ -234,12 +238,12 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
             <div class="footer">
-                <hr calss="my-0" style="height: 2px;opacity: 0.5;">
+                <hr calss="my-0" style="height: 1px; margin-bottom:0;opacity:1;">
                 <!-- table total calculation -->
 
                 <div class="row my-0">
                     <div class="col-5">
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col-2 ms-4">
                                 <b><small>Patient </small></b><br>
                                 <!-- <b><small>Age</small></b><br> -->
@@ -253,23 +257,17 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         </div>
                     </div>
                     <div class="col-7 border-start border-dark">
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-sm-10">
+                                <p class="text-end mb-0"><b>Total Refund :</b></p>
                             </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <p class="text-start mb-0"><b>Total Refund</b></p>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="d-flex justify-content-end mb-0 me-3"><b><?= $refundAmount; ?></b></p>
-                                    </div>
-                                </div>
+                            <div class="col-sm-2">
+                                <p class="mb-0 me-3"><b><?= $refundAmount; ?></b></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr style="height: 2px; margin-top: 4px;opacity: 0.5;">
+                <hr style="height: 1px; margin-top:0;opacity: 1;">
             </div>
         </div>
     </div>

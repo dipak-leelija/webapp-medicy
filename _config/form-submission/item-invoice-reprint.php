@@ -108,7 +108,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePin; ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p class="text-start" style="margin-top: -6px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
                         <!-- <div class="" style="margin-right: 4.8rem;"> -->
@@ -141,7 +141,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     ?>
                 </div>
             </div>
-            <hr class="my-0" style="height:2px; opacity:0.5;">
+            <hr class="my-0" style="height:1px; opacity:1;">
 
             <table class="table">
                 <thead>
@@ -163,7 +163,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <?php
                 $slno = 0;
                 $subTotal = floatval(00.00);
-                foreach ($details as $detail) {
+                foreach ($details as $index => $detail) {
 
                     //=========================
                     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
@@ -218,7 +218,11 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         $itemSellQty = $detail['qty'];
                     }
 
-                    echo '<tr style="border-bottom: #bfbaba;">
+                    $isLastRow = $index === count($details) - 1;
+                    // Add border style only if it's not the last row
+                    $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
+
+                    echo '<tr style="'.$borderStyle.'">
                         <th scope="row" class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $slno . '</small></th>
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . substr($detail['item_name'], 0, 15) . '</small></td>
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $manufacturerName . '</small></td>
@@ -239,12 +243,12 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
             <div class="footer">
-                <hr calss="my-0" style="height: 2px;opacity: 0.5;">
+                <hr calss="" style="height: 1px;margin-bottom: 0px;opacity: 1">
                 <!-- table total calculation -->
 
                 <div class="row my-0">
                     <div class="col-5">
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-2 ms-4">
                                 <b><small>Patient </small></b><br>
                                 <b><small>Age</small></b><br>
@@ -259,7 +263,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </div>
                     <div class="col-7 border-start border-dark">
                         <div class="col-12">
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-sm-2">
                                     <p class="m-0"><small>CGST</small></p>
                                     <p class="m-0"><small>SGST</small></p>

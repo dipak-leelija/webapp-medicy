@@ -107,17 +107,17 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                                 } ?>">
             <div class="card-body ">
                 <div class="row">
-                    <div class="col-sm-1">
-                        <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
-                            alt="Medicy">
-                    </div>
-                    <div class="col-sm-8">
-                        <h4 class="text-start my-0"><?= $distributorName; ?></h4>
+                    <!-- <div class="col-sm-1"> -->
+                    <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
+                    <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
+                            alt="Medicy"> -->
+                    <!-- </div> -->
+                    <div class="col-sm-9">
+                        <h4 class="text-start my-1"><?= $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $distAddress . ', PIN - ' . $distPIN; ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p class="text-start" style="margin-top: -6px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $distContact  ?></small>
                         </p>
                         <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b></small><?php echo $distGST?>
@@ -139,9 +139,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     </div>
                 </div>
             </div>
-            <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
-
-            <hr class="my-0" style="height:1px;opacity:0.5">
+            <hr class="my-0" style="height:1px;opacity:1">
 
             <table class="table">
                 <thead>
@@ -174,7 +172,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
 
                 $itemDetials = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);
 
-                foreach ($itemDetials as $itemsData) {
+                foreach ($itemDetials as $index => $itemsData) {
                     $slno++;
 
                     $prodId = $itemsData['product_id'];
@@ -247,10 +245,11 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     //     echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     // }
 
-                    // =====================================================
-                    // =====================================================
+                    $isLastRow = $index === count($itemDetials) - 1;
+                    // Add border style only if it's not the last row
+                    $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
                 ?>
-                    <tr>
+                    <tr style="<?php echo $borderStyle ?>">
                         <th scope="row" class="pt-1 pb-1"><small style="font-size: 0.750em;">
                                 <?php echo "$slno" ?></small></th>
                         <!-- <td class="pt-1 pb-1"><small style="font-size: 0.750em;"><?php echo "$prodId" ?></small></td> -->
@@ -279,23 +278,23 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
 
             <!-- </div> -->
             <div class="footer">
-                <hr class="my-1 mt-2" style="height: 1px; opacity:0.5;">
+                <hr class="my-0" style="height: 1px; opacity:1;">
 
                 <!-- table total calculation -->
-                <div class="row my-0">
+                <div class="row">
                     <div class="col-6">
-                        <div class="d-flex justify-content-around">
-                            <div class="">
-                                <b><small>Bill To : </small></b>
+                        <div class="row mt-1">
+                            <div class="col-6">
+                                <b><small class="ms-2">Bill To : </small></b>
                             </div>
-                            <div class="">
+                            <div class="col-6">
                                 <p class=" mb-0"><small><?= $pharmacyName ?></small></p>
                                 <p class=""><small><?= $pharmacyContact ?></small></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 border-start border-dark">
-                        <div class="row">
+                        <div class="row my-2">
                             <div class="col-5">
                                 <div class="row">
                                     <div class="col-8 text-end">
@@ -371,7 +370,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         </div>
                     </div>
                 </div>
-                <hr class="my-1" style="height: 1px;opacity:0.5;">
+                <hr class="my-0" style="height: 1px;opacity:1;">
             </div>
             <!-- <hr class="my-1" style="height: 1px;"> -->
         </div>

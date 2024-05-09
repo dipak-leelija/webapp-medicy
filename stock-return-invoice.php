@@ -84,15 +84,15 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
         <div class="custom-body <?= $refundMode != 'Credit' ? "paid-bg" : ''; ?>">
             <div class="card-body ">
                 <div class="row">
-                    <div class="col-1 pe-0">
-                        <!-- <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
-                            src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy"> -->
+                    <!-- <div class="col-1 pe-0">
+                        <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;"
+                            src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
                         <img class="float-end" style="height: 55px; width: 58px; object-fit: cover;"
                             src="<?= $healthCareLogo ?>" alt="Medicy">
-                    </div>
+                    </div> -->
 
-                    <div class="col-8">
-                        <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
+                    <div class="col-9">
+                        <h4 class="text-start my-1"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $distAddress . ', ' . $distPIN; ?></small>
                         </p>
@@ -116,7 +116,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                     </div>
                 </div>
             </div>
-            <hr class="my-0" style="height:2px;opacity:0.5">
+            <hr class="my-0" style="height:1px;opacity:1;">
 
             <!-- ===================================================== -->
             <table class="table">
@@ -135,8 +135,9 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                         <th class="pt-1 pb-1" scope="col"><small>Refund</small></th>
                     </tr>
                 </thead>
+                <tbody>
                 <?php
-                    foreach ($returnDetails as $eachDetail) {
+                    foreach ($returnDetails as $index => $eachDetail) {
 
                         $productNameResponse = json_decode($Products->showProductNameById($eachDetail['product_id']));
                         if ($productNameResponse->status) {
@@ -155,8 +156,11 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                         $returnQty      = $eachDetail['return_qty'];
                         $refundAmount   = $eachDetail['refund_amount'];
 
-                echo '<tbody>
-                    <tr>
+                        $isLastRow = $index === count($returnDetails) - 1;
+                        // Add border style only if it's not the last row
+                        $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
+
+                    echo '<tr style="'.$borderStyle.'">
                         <th scope="row" class="pt-1 pb-1"><small style="font-weight: normal; font-size: 0.750em;">' . substr($productName, 0, 20) . '</small>
                         <br>
                         <small style="font-size: 0.750em;">' . $setof . '</small></th>
@@ -170,19 +174,20 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $discParcent . '</small></td>
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $returnQty . '</small></td>
                         <td class="pt-1 pb-1"><small style="font-size: 0.750em;">' . $refundAmount . '</small></td>
-                    </tr>
-                </tbody>';
-                    }?>
+                    </tr>';
+                }?>
+                </tbody>
+                    
             </table>
 
             <!-- ===================================================== -->
             <div class="footer">
-                <hr calss="my-0" style="height: 1px;opacity:0.5">
+                <hr calss="" style="height: 1px;margin-bottom:0;opacity:1;">
 
                 <!-- table total calculation -->
-                <div class="row my-0">
+                <div class="row">
                     <div class="col-4 border-end border-secondary text-end">
-                        <div class="row">
+                        <div class="row my-2">
                             <div class="col-4">
                                 <small><b>Customer:</b></small>
                             </div>
@@ -195,7 +200,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                         </div>
                     </div>
                     <div class="col-4 border-end border-secondary">
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-8 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
                             </div>
@@ -215,7 +220,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                                 </p>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-8 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
                             </div>
@@ -226,7 +231,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 my-2">
                         <div class="row text-end">
                             <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty; ?></b> & Total Units
                                 <b><?php echo $totalReturnQty; ?></b></small>
@@ -239,7 +244,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                     </div>
 
                 </div>
-                <hr calss="my-0" style="height: 1px;opacity:0.5">
+                <hr calss="my-0" style="height: 1px;margin-top:0;opacity:1;">
             </div>
         </div>
     </div>
