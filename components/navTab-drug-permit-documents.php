@@ -94,7 +94,7 @@ $form21Data;
     // =====================================================
     // Function to fetch file from database and display it in the given div
     function displayFileFromDatabase(filePath, previewId) {
-        console.log(filePath);
+        // console.log(filePath);
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -182,15 +182,15 @@ $form21Data;
 
 
     const drugFormDataUpload = () => {
-        var formData = new FormData();
-        var form20File = document.getElementById('form-20').files[0];
-        var form21File = document.getElementById('form-21').files[0];
-        var gstin = document.getElementById('gstin').value;
-        var pan = document.getElementById('pan').value;
+        const formData = new FormData();
+        const form20File = document.getElementById('form-20').files[0];
+        const form21File = document.getElementById('form-21').files[0];
+        const gstin = document.getElementById('gstin').value;
+        const pan = document.getElementById('pan').value;
 
         if (!form20File && !form21File) {
-            console.error("No files selected.");
-            return; // No need to proceed if no files are selected
+            alert("No files selected.");
+            return;
         }
 
         if (form20File) {
@@ -209,17 +209,38 @@ $form21Data;
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log("Response from server:", response);
-                if(response == '1'){
-                    document.getElementById("alert-div-control").innerHTML = '1';
-                    document.getElementById('drugPermitMsg').innerHTML = 'Success! Data updated successfully.';
+                // console.log("Response from server:", response);
+                // response = '00';
+                let alertValue;
+                switch (response) {
+                    case '1':
+                        alertValue = '1';
+                        break;
+                    case '00':
+                        alertValue = '00';
+                        break;
+                    case '01':
+                        alertValue = '01';
+                        break;
+                    case '10':
+                        alertValue = '10';
+                        break;
+                    case '11':
+                        alertValue = '11';
+                        break;
+                    default:
+                        alertValue = '';
                 }
+                document.getElementById("alert-div-control").innerHTML = alertValue;
+                alterDivControlFun(alertValue);
+                msgDivControlFun();
             },
             error: function(xhr, status, error) {
                 console.error("Error occurred:", error);
             }
         });
     }
+
 
 
 

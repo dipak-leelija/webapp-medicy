@@ -54,18 +54,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $uplodClinicData = $HealthCare->updateDrugPermissionData($form20FileName, $form21FileName, $gstin, $pan, $adminId);
 
             if ($uplodClinicData) {
-                echo "1";
+                echo "1"; // data updated successfully
             } else {
-                echo "Failed to update data. 0";
+                echo "00"; // Failed to update data. 
             }
         } else {
-            echo "Failed to move uploaded files. 01";
+            echo "01"; // Failed to move uploaded files. 
         }
     } else {
-        echo "Required fields not set. 10";
+        echo "10"; // Required fields not set. 
     }
 } else {
-    echo "Form not submitted. 00";
+    echo "11"; // Form not submitted. 
 }
 
 ?>

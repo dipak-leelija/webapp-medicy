@@ -257,8 +257,20 @@ if ($bills->status) {
 
 
         const msgDivControlFun = () => {
-            if (document.getElementById("alert-div-control").innerHTML.trim() === '1') {
+            let alertDivControl = document.getElementById("alert-div-control");
+
+            if (alertDivControl.innerHTML.trim() === '0') {
+                document.getElementById("alert-div").classList.remove('d-none');
+                document.getElementById("msg-div").classList.add('d-none');
+            }
+
+            if (alertDivControl.innerHTML.trim() === '1') {
                 document.getElementById("alert-div").classList.add('d-none');
+                document.getElementById("msg-div").classList.remove('d-none');
+            }
+
+            if (alertDivControl.innerHTML.trim() !== '0' && alertDivControl.innerHTML.trim() !== '1') {
+                document.getElementById("alert-div").classList.remove('d-none');
                 document.getElementById("msg-div").classList.remove('d-none');
             }
         }
