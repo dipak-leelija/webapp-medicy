@@ -178,7 +178,7 @@ if (isset($_POST['submit'])) {
                             <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
                         </div>
                     </div>
-                    
+
                     <div class="card p-0">
                         <div class="card-header">
                             <h5><b>
@@ -186,8 +186,9 @@ if (isset($_POST['submit'])) {
                                 </b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
-                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post">
+                            <!-- <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post"> -->
 
+                            <div class="row flex-column align-items-center">
                                 <div class="section col-12 col-md-6">
                                     <div class="data-test-hook=" remove-button>
                                         <button class="btn btn-primary " id="addButton" data-toggle="modal" data-target="#addnewTestbill" onclick="addnewpatient()" style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
@@ -211,9 +212,11 @@ if (isset($_POST['submit'])) {
                                     </div>
                                 </div>
                                 <div class="form-group col-12 col-md-2 mt-2">
-                                    <button type="submit" name="proceed" class="btn-block btn-primary">Proceed</button>
+                                    <button type="submit" name="proceed" class="btn-block btn-primary" onclick="returningPatientProceed()">Proceed</button>
                                 </div>
-                            </form>
+                            </div>
+
+                            <!-- </form> -->
                         </div>
 
                     </div>
@@ -246,18 +249,19 @@ if (isset($_POST['submit'])) {
     <!-- End of Footer -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+
+
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery-3-5-1.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
-
-
     <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?php echo JS_PATH ?>add-patient.js"></script>
@@ -276,7 +280,7 @@ if (isset($_POST['submit'])) {
 
 
     <script>
-        //patient selection js
+        // patient selection js
         // $(document).ready(function() {
         //     $('.patient-select').selectpicker();
 
@@ -303,6 +307,13 @@ if (isset($_POST['submit'])) {
                 .catch(error => {
                     console.error('Error fetching content:', error);
                 });
+        }
+
+        // =============== returning patient proceed function =======================
+
+        const returningPatientProceed = () => {
+            var patientId = document.getElementById('choices-remove-button').value;
+            window.location.href = "<?php echo URL ?>returning-appointment-entry.php?patientName=" +patientId;
         }
     </script>
 

@@ -18,9 +18,9 @@ $doctors        = new Doctors();
 $showDoctors = json_decode($doctors->showDoctors($adminId));
 
 
-if (isset($_POST['proceed'])) {
-    if (isset($_POST['patientName'])) {
-        $patientId = $_POST['patientName'];
+// if (isset($_POST['proceed'])) {
+    if (isset($_GET['patientName'])) {
+        $patientId = $_GET['patientName'];
 
         $patient = json_decode($Patients->patientsDisplayByPId($patientId));
         $name            = $patient->name;
@@ -36,7 +36,7 @@ if (isset($_POST['proceed'])) {
         $patientPIN      = $patient->patient_pin;
         $patientState    = $patient->patient_state;
     }
-}
+// }
 
 
 
