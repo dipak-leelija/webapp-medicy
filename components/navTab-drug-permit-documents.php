@@ -33,16 +33,14 @@ $form21Data;
         <div class="mt-4 mb-4">
 
             <div class="card-body">
-                <!-- <div class="row">
-                    hello
-                    <img src="C:/xampp/htdocs/medicy.in/assets/images/orgs/drug-permit/6634da21d4b3e.png" alt="">
-                </div> -->
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="text-center" id="yourBtn1" onclick="getFile('form-20')">Click to upload a file for Form 20</div>
-                                <div id="imagePreviewForm20" class="image-preview"></div>
+                                <div id="imagePreviewForm20" class="image-preview" onclick="getFile('form-20')" style="z-index: 9999;">
+                                    <i class="fas fa-upload">Upload Form 20</i>
+                                </div>
                                 <div style='height: 0px;width: 0px; overflow:hidden;'>
                                     <input id="form-20" type="file" name="form-20" value="" onchange="sub(this, 'imagePreviewForm20')" required />
                                 </div>
@@ -54,8 +52,9 @@ $form21Data;
                     <div class="col-sm-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="text-center" id="yourBtn2" onclick="getFile('form-21')">Click to upload a file for Form 21</div>
-                                <div id="imagePreviewForm21" class="image-preview"></div>
+                                <div id="imagePreviewForm21" class="image-preview" onclick="getFile('form-21')">
+                                    <i class="fas fa-upload">Upload Form 21</i>
+                                </div>
                                 <div style='height: 0px;width: 0px; overflow:hidden;'>
                                     <input id="form-21" type="file" name="form-21" value="" onchange="sub(this, 'imagePreviewForm21')" required />
                                 </div>
@@ -95,7 +94,7 @@ $form21Data;
     // =====================================================
     // Function to fetch file from database and display it in the given div
     function displayFileFromDatabase(filePath, previewId) {
-        console.log(filePath);
+        // console.log(filePath);
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -108,11 +107,10 @@ $form21Data;
                 const reader = new FileReader();
                 reader.onload = function() {
                     const base64data = reader.result;
-                    console.log(base64data);
                     if (fileType === 'pdf') {
-                        preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%">`;
+                        preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>`;
                     } else if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
-                        preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;">`;
+                        preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>`;
                     } else {
                         preview.innerHTML = `<p>Unsupported file format</p>`;
                     }
@@ -152,9 +150,9 @@ $form21Data;
             var filePreview = document.getElementById(previewId);
 
             if (file.type.includes('image')) {
-                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;">';
+                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" ><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>'
             } else if (file.type === 'application/pdf') {
-                filePreview.innerHTML = '<embed src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;">';
+                filePreview.innerHTML = '<embed src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" class="fas fa-upload"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>';
             } else {
                 filePreview.innerHTML = '<p>File type not supported for preview</p>';
             }
@@ -184,15 +182,15 @@ $form21Data;
 
 
     const drugFormDataUpload = () => {
-        var formData = new FormData();
-        var form20File = document.getElementById('form-20').files[0];
-        var form21File = document.getElementById('form-21').files[0];
-        var gstin = document.getElementById('gstin').value;
-        var pan = document.getElementById('pan').value;
+        const formData = new FormData();
+        const form20File = document.getElementById('form-20').files[0];
+        const form21File = document.getElementById('form-21').files[0];
+        const gstin = document.getElementById('gstin').value;
+        const pan = document.getElementById('pan').value;
 
         if (!form20File && !form21File) {
-            console.error("No files selected.");
-            return; // No need to proceed if no files are selected
+            alert("No files selected.");
+            return;
         }
 
         if (form20File) {
@@ -211,13 +209,38 @@ $form21Data;
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log("Response from server:", response);
+                // console.log("Response from server:", response);
+                // response = '00';
+                let alertValue;
+                switch (response) {
+                    case '1':
+                        alertValue = '1';
+                        break;
+                    case '00':
+                        alertValue = '00';
+                        break;
+                    case '01':
+                        alertValue = '01';
+                        break;
+                    case '10':
+                        alertValue = '10';
+                        break;
+                    case '11':
+                        alertValue = '11';
+                        break;
+                    default:
+                        alertValue = '';
+                }
+                document.getElementById("alert-div-control").innerHTML = alertValue;
+                alterDivControlFun(alertValue);
+                msgDivControlFun();
             },
             error: function(xhr, status, error) {
                 console.error("Error occurred:", error);
             }
         });
     }
+
 
 
 
