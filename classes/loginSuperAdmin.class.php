@@ -39,7 +39,8 @@ class SuperAdminLoginForm extends DatabaseConnection{
                     return 'Wrong Password';
                 }
             }
-        } 
+        }
+        return 'not found'; 
     }
 
 }

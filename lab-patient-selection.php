@@ -129,36 +129,20 @@ if (isset($_POST['submit'])) {
 
     <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
-    <!-- Custom styles for this page -->
-    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" />
-
     <link href="<?= PLUGIN_PATH ?>select2/select2.min.css" rel="stylesheet" />
     <!-- Choices includes -->
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
     <!-- css for sweetalert2 -->
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-
-    <!-- ///////// -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
     <!-- css for sweetalert2 -->
-    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
     <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
-
-    <!-- css for sweetalert2 -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-    <!-- ////////////// -->
 
 </head>
 
