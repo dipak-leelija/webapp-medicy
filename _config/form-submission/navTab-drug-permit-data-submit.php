@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $uplodClinicData = $HealthCare->updateDrugPermissionData($form20FileName, $form21FileName, $gstin, $pan, $adminId);
 
             if ($uplodClinicData) {
-                echo "Data updated successfully. 1";
+                echo "1";
             } else {
                 echo "Failed to update data. 0";
             }

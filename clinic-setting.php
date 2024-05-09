@@ -86,7 +86,7 @@ if ($bills->status) {
     <link href="<?= CSS_PATH ?>upload-design.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>helth-care.css" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>img-uv/img-uv.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>upload-design.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 
     <style>
@@ -131,11 +131,16 @@ if ($bills->status) {
                 <!-- Begin Page Content -->
 
                 <div class="container-fluid">
-                    <div class="row mt-4" style="z-index: 999;">
-                        <div class="col-12">
-                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
-                        </div>
+                    <label class="d-none" id="alert-div-control">0</label>
+
+                    <div class="row mt-4" style="z-index: 999;" id="alert-div">
+                        <?php require_once ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
                     </div>
+
+                    <div class="row mt-4 d-none" style="z-index: 999;" id="msg-div">
+                        <?php require_once ROOT_COMPONENT . "drugPermitDataUpdateMsg.php"; ?>
+                    </div>
+
                     <div class="card shadow h-100 py-2 pending_border animated--grow-in">
                         <div class="row mt-1">
                             <div class="col-12">
@@ -225,38 +230,40 @@ if ($bills->status) {
     <!-- <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script> -->
 
     <!-- Sweet alert plugins -->
-    <!-- <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script> -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <script>
         if (document.getElementById("nav-pan-flag").innerHTML.trim() === '1') {
-            // Remove "active" class and add "fade" class to the tab pane with id "home"
+            
+            // control home menue
             document.getElementById("home").classList.remove("active");
             document.getElementById("home-tab").classList.remove("active");
             document.getElementById("home").classList.add("fade");
 
-
-            // Remove "fade" class and add "show" and "active" classes to the tab pane with id "menu1"
+            // control menue 1
             document.getElementById("menu1").classList.remove("fade");
             document.getElementById("menu1").classList.add("show", "active");
             document.getElementById("menu1-tab").classList.add("active");
 
+            // control menue 2
             document.getElementById("menu2").classList.remove("active");
             document.getElementById("menu2-tab").classList.remove("active");
 
             document.getElementById("nav-pan-flag").innerHTML = 'nav-tab';
-
-            //=============================================================
-            // const ids = ['home-tab', 'menu1-tab', 'menu2-tab'];
-
-            // ids.forEach(ids => {
-            //     document.getElementById(ids).style.color = 'black';
-            //     document.getElementById(ids).style.border = 'none';
-            //     document.getElementById(ids).style.borderBottom = '1px solid #e6e6e6';
-            // });
         }
+
+
+        const msgDivControlFun = () => {
+            if (document.getElementById("alert-div-control").innerHTML.trim() === '1') {
+                document.getElementById("alert-div").classList.add('d-none');
+                document.getElementById("msg-div").classList.remove('d-none');
+            }
+        }
+
+        msgDivControlFun();
     </script>
 
 </body>
