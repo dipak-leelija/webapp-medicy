@@ -3910,6 +3910,16 @@ function word_teaser_end($string, $count){
 		}
 		return $result;
 	}
+
+	function cleanAndExtract($inputString, $reaponseLength) {
+		// Remove special characters and spaces
+		$cleanedString = preg_replace('/[^A-Za-z0-9]/', '', $inputString);
+		
+		// Get the first 5 characters
+		$result = substr($cleanedString, 0, $reaponseLength);
+		
+		return $result;
+	}
 	
 	/*****************************************************************************
 	*																			 *
