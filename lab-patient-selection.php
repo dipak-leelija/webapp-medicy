@@ -193,9 +193,9 @@ if (isset($_POST['submit'])) {
                                         <button class="btn btn-primary btn-sm" id="addButton" data-toggle="modal" data-target="#addnewTestbill" style="position: absolute;margin-left: -100px;margin-top: 8px; display: none;" onclick="addnewpatient()">Add New</button>
                                         <datalist id="browsers">
                                             <?php
-                                            foreach ($showPatients as $patientsRow) {
-                                                echo "<option value='$patientsRow->patient_id'> $patientsRow->name</option>";
-                                            }
+                                            // foreach ($showPatients as $patientsRow) {
+                                            //     echo "<option value='$patientsRow->patient_id'> $patientsRow->name</option>";
+                                            // }
                                             ?>
                                         </datalist>
                                     </div>
