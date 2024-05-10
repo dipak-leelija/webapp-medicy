@@ -31,6 +31,7 @@ const getCustomer = (customer) => {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("customer-list").style.display = "block";
+                // console.log("check xmlhttp responce : "+xmlhttp.responseText);
                 document.getElementById("customer-list").innerHTML = xmlhttp.responseText;
             }
         };
@@ -42,7 +43,6 @@ const getCustomer = (customer) => {
 } // end getCustomer
 
 const setCustomer = (id) => {
-    var xmlhttp = new XMLHttpRequest();
 
     // ================ get Name ================
     stockCheckUrl = 'ajax/customer.getDetails.ajax.php?name=' + id;
@@ -135,14 +135,14 @@ const searchItem = (searchFor) => {
         if (searchFor.length > 2) {
             document.getElementById("searched-items").style.display = "block";
             document.getElementById("exta-details").style.display = "none";
-            var XML = new XMLHttpRequest();
-            XML.onreadystatechange = function () {
-                if (XML.readyState == 4 && XML.status == 200) {
-                    searchReult.innerHTML = XML.responseText;
+            
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    searchReult.innerHTML = xmlhttp.responseText;
                 }
             };
-            XML.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
-            XML.send();
+            xmlhttp.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
+            xmlhttp.send();
         }
 
         newSellGenerateBill.setAttribute("disabled", "true");
@@ -179,14 +179,13 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("taxable").value = '';
         document.getElementById("amount").value = '';
 
-        var XML = new XMLHttpRequest();
-        XML.onreadystatechange = function () {
-            if (XML.readyState == 4 && XML.status == 200) {
-                searchReult.innerHTML = XML.responseText;
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                searchReult.innerHTML = xmlhttp.responseText;
             }
         };
-        XML.open('GET', `ajax/sales-item-batch-list.ajax.php?prodId=${prodcutId}`, true);
-        XML.send();
+        xmlhttp.open('GET', `ajax/sales-item-batch-list.ajax.php?prodId=${prodcutId}`, true);
+        xmlhttp.send();
     }
 
     if (stock <= 0) {
@@ -295,7 +294,7 @@ const stockDetails = (productId, batchNo, itemId) => {
                     document.getElementById("searched-batchNo").style.display = "none";
                     document.getElementById("crnt-stck-itm-id").value = itemId;
 
-                    var xmlhttp = new XMLHttpRequest();
+                    // var xmlhttp = new XMLHttpRequest();
                     // ============== Check Existence ==============
                     stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
                     xmlhttp.open("GET", stockCheckUrl, false);
@@ -309,7 +308,7 @@ const stockDetails = (productId, batchNo, itemId) => {
                 document.getElementById("searched-batchNo").style.display = "none";
                 document.getElementById("crnt-stck-itm-id").value = itemId;
 
-                var xmlhttp = new XMLHttpRequest();
+                // var xmlhttp = new XMLHttpRequest();
 
                 // ============== Check Existence ==============
                 stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
@@ -332,7 +331,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("searched-batchNo").style.display = "none";
         document.getElementById("crnt-stck-itm-id").value = itemId;
 
-        var xmlhttp = new XMLHttpRequest();
+        // var xmlhttp = new XMLHttpRequest();
 
         // ============== Check Existence ==============
         stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
@@ -618,7 +617,7 @@ const onQty = (qty) => {
         xmlhttp.open("GET", purchased_cost_url, false);
         xmlhttp.send(null);
         document.getElementById("purchased-cost").value = xmlhttp.responseText;
-        console.info(xmlhttp.responseText);
+        // console.info(xmlhttp.responseText);
 
         //==================== Margin on an Item ====================
         marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;

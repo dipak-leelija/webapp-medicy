@@ -143,6 +143,11 @@ if (isset($_POST['subtest-submit']) == true) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Lab Tests</h1>
@@ -382,9 +387,9 @@ if (isset($_POST['subtest-submit']) == true) {
     <!-- End of Category Edit Modal -->
 
     <!-- Custom Javascript  -->
-    <script src="<?php echo JS_PATH ?>custom-js.js"></script>  <!-- LabCategoryEditModal function body gose hear -->
+    <script src="<?php echo JS_PATH ?>custom-js.js"></script> <!-- LabCategoryEditModal function body gose hear -->
 
-    
+
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>

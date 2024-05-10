@@ -39,14 +39,14 @@ $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors);
 $allDoctors  = $showDoctors->data;
 
-$clinicInfo  = $HealthCare -> showHealthCare($adminId);
+$clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
 
 if ($clinicInfo['status'] == 1) {
     $data = $clinicInfo['data'];
-     $district = $data['dist'];
-     $pin      = $data['pin'];
-     $state    = $data['health_care_state'];
+    $district = $data['dist'];
+    $pin      = $data['pin'];
+    $state    = $data['health_care_state'];
 } else {
     echo "Error: " . $clinicInfo['msg'];
 }
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
     $visited = 1;
 
     // Inserting Into Patients Database
-    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, NOW, $adminId);
+    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, NOW, $adminId);
 
     if ($addPatients) {
 
@@ -135,9 +135,7 @@ if (isset($_POST['submit'])) {
 
 
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
@@ -175,6 +173,12 @@ if (isset($_POST['submit'])) {
 
 
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
+
                     <div class="card p-0">
                         <div class="card-header">
                             <h5><b>
@@ -182,35 +186,41 @@ if (isset($_POST['submit'])) {
                                 </b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
-                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php"
-                                method="post">
-
+                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post" id="form-submit">
                                 <div class="section col-12 col-md-6">
-                                    <div class="data-test-hook=" remove-button>
-                                        <button class="btn btn-primary " id="addButton" data-toggle="modal"
-                                            data-target="#addnewTestbill" onclick="addnewpatient()"
-                                            style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
+
+                                    <!-- <input class="d-none col-12 col-md-12" type="text" id="patient-id"> -->
+                                    <!-- <input class="col-12 col-md-12" type="text" id="patient-name" class="sale-inp-item" onkeyup="getPatient(this.value)" /*onclick="chekPatient()"*/ autocomplete="off"> -->
+
+                                    <input type="text" class="d-none" id="patientId" name="patientId">
+                                    <input type="text" class="form-control w-100" id="patientName" name="patientName" placeholder='Enter patient name' onkeyup="getPatient(this.value)" autocomplete="off">
+                                    <div id="patient-list">
+                                    </div>
+
+                                    <!--<div class="data-test-hook=" remove-button>
+                                        <button class="btn btn-primary " id="addButton" data-toggle="modal" data-target="#addnewTestbill" onclick="addnewpatient()" style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
                                             New</button>
-                                        <select class="form-control " id="choices-remove-button" name="patientName"
-                                            required>
+                                        <select class="form-control " id="choices-remove-button" name="patientName" required /*onchange="selectReturningPationtSelect()"*/>
+
                                             <option value="" selected disabled> Search Patient Name
                                             </option>
                                             <?php
-                                                if ($showPatients->status) {
-                                                    $showPatients = $showPatients->data;
+                                            // if ($showPatients->status) {
+                                            //     $showPatients = $showPatients->data;
 
-                                                    foreach ($showPatients as $patientsRow) {
-                                                        // $data[] = $patientsRow;
-                                                        echo "<option value='" . $patientsRow->patient_id . "'>" . $patientsRow->patient_id . " - " . $patientsRow->name . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value=''>No data found!</option>";
-                                                }
+                                            //     foreach ($showPatients as $patientsRow) {
+                                            //         // $data[] = $patientsRow;
+                                            //         echo "<option value='" . $patientsRow->patient_id . "'>" . $patientsRow->patient_id . " - " . $patientsRow->name . "</option>";
+                                            //     }
+                                            // } else {
+                                            //     echo "<option value=''>No data found!</option>";
+                                            // }
                                             ?>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
-                                <div class="form-group col-12 col-md-2 mt-2">
+
+                                <div class="form-group col-12 col-md-6 mt-4">
                                     <button type="submit" name="proceed" class="btn-block btn-primary">Proceed</button>
                                 </div>
                             </form>
@@ -219,19 +229,26 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-center">
+                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            </div>
+
         </div>
     </div>
     <!-- Page Wrapper end -->
 
+    <!-- Footer -->
+
+    <!-- End of Footer -->
+
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add New Appointment</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="window.location.reload()"
-                        aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" onclick="window.location.reload()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -243,23 +260,22 @@ if (isset($_POST['submit'])) {
     </div>
 
 
-    <!-- Footer -->
-    <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-    <!-- End of Footer -->
+
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+
+
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery-3-5-1.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
-
-
     <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?php echo JS_PATH ?>add-patient.js"></script>
@@ -278,34 +294,59 @@ if (isset($_POST['submit'])) {
 
 
     <script>
-    //patient selection js
-    // $(document).ready(function() {
-    //     $('.patient-select').selectpicker();
+        // patient selection js
+        // $(document).ready(function() {
+        //     $('.patient-select').selectpicker();
 
-    // })
-    document.addEventListener('DOMContentLoaded', function() {
-        new Choices('#choices-remove-button', {
-            allowHTML: true,
-            removeItemButton: true,
-        });
-    });
+        // })
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     new Choices('#choices-remove-button', {
+        //         allowHTML: true,
+        //         removeItemButton: true,
+        //     });
+        // });
     </script>
 
     <script>
-    const addnewpatient = () => {
-        let url = "ajax/newTestBill-add.ajax.php";
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('newTestModalBody').innerHTML = data;
-                console.log(data);
+        const addnewpatient = () => {
 
-                $('#addnewTestbill').modal('show');
-            })
-            .catch(error => {
-                console.error('Error fetching content:', error);
-            });
-    }
+            document.getElementById('form-submit').removeAttribute('action');
+            // formId.removeAttribute('action');
+
+            let url = "ajax/newTestBill-add.ajax.php";
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('newTestModalBody').innerHTML = data;
+                    console.log(data);
+
+                    $('#addnewTestbill').modal('show');
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                });
+        }
+
+        // =============== returning patient proceed function =======================
+
+        // const returningPatientProceed = () => {
+        //     var patientId = document.getElementById('choices-remove-button').value;
+        //     var data = {'patientData':patientId};
+        //     console.log(JSON.stringify(data));
+        //     var url = '<?php echo URL ?>returning-appointment-entry.php';
+
+
+        //     xmlhttp.open('POST', url, true);
+        //     xmlhttp.setRequestHeader('Content-Type', 'application/json');
+        //     xmlhttp.onreadystatechange = function() {
+        //         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        //             // Redirect to the received URL
+        //             // console.log(xmlhttp.responseText);
+        //             window.location.href = url;
+        //         }
+        //     };
+        //     xmlhttp.send(JSON.stringify(data));
+        // }
     </script>
 
 </body>

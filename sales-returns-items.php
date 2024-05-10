@@ -1,13 +1,13 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."doctors.class.php";
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "doctors.class.php";
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 $page = "sales-returns";
 
 
@@ -60,7 +60,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -70,12 +70,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800"> Sales Return</h1>
 
@@ -277,7 +281,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     <input type="number" value="0" id="serial-control" style="width: 2rem;" readonly hidden>
                                                 </th>
                                                 <th scope="col">Items</th>
-                                                <th scope="col" hidden>Ids of tables</th> 
+                                                <th scope="col" hidden>Ids of tables</th>
                                                 <!-- ids of tables holds stock_out_detaisl table item id and pharmacy_invocie table item id and sales return details table item id-->
                                                 <th scope="col" hidden>Item id</th>
                                                 <th scope="col" hidden>Prodcut id</th>
@@ -341,7 +345,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 <!-- /.container-fluid -->
 
                 <!-- Footer -->
-                <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
@@ -369,7 +373,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
         <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
         <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-        
+
         <script src="<?= JS_PATH ?>sales-return-item.js"></script>
 
 </body>

@@ -99,6 +99,11 @@ if (!empty($soldItems)) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <div class="col-md-10">

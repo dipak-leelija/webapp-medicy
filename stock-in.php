@@ -100,6 +100,11 @@ $todayYr = date("y");
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <!-- Add Product -->
                     <div class="card shadow mb-5">
                         <div class="card-body">
@@ -112,7 +117,7 @@ $todayYr = date("y");
                                     <label class="mb-1" for="distributor-id">Distributor</label>
                                     <input type="text" name="" id="distributor-id" class="upr-inp">
 
-                        
+
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
                                         <?php if (!empty($showDistributors)) : ?>
                                             <div class="lists" id="lists">
@@ -134,7 +139,7 @@ $todayYr = date("y");
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                   
+
                                 </div>
 
 
@@ -211,17 +216,17 @@ $todayYr = date("y");
     <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" /*onload="captureCurrentLocation()"*/>
-                    <h5 class="modal-title" id="exampleModalLabel">Add Distributor</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body add-distributor">
-                    <!-- Details Appeare Here by Ajax  -->
-                </div>
+                <div class="modal-header" /*onload="captureCurrentLocation()" * />
+                <h5 class="modal-title" id="exampleModalLabel">Add Distributor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body add-distributor">
+                <!-- Details Appeare Here by Ajax  -->
             </div>
         </div>
+    </div>
     </div>
     <!--/end Distributor Add Modal -->
 

@@ -6,21 +6,23 @@ const checkMail = (t) =>{
     let email = t.value;
 
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(emailRegex.test(email)){
-        checkMailExistance(email);
+    if(!emailRegex.test(email)){
+        // checkMailExistance(email);
+        document.getElementById('emailMsg').innerHTML = 'Enter valid email id.';
     }else{
-        Swal.fire({
-            title: "Alert",
-            text: "Enter valid email id.",
-            icon: "warning",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Ok"
-          }).then((result) => {
-            if (result.isConfirmed) {
-                t.value = '';
-                t.focus();
-            }
-          });
+        document.getElementById('emailMsg').innerHTML = '';
+        // Swal.fire({
+        //     title: "Alert",
+        //     text: "Enter valid email id.",
+        //     icon: "warning",
+        //     confirmButtonColor: "#3085d6",
+        //     confirmButtonText: "Ok"
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         t.value = '';
+        //         t.focus();
+        //     }
+        //   });
     }
 }
 
@@ -76,19 +78,22 @@ const checkContactNo = (t) => {
     var regex = /^[0-9]{10}$/; 
             
     if(! regex.test( mob)) {
-        Swal.fire({
-            title:"Alert",
-            text: "Please provide a valid 10-digit mobile number.",
-            icon: "warning",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Ok"
-          }).then((result) => {
-            if (result.isConfirmed) {
-                t.value='';
-                t.focus();
-            }
-          });
-    } 
+        document.getElementById('pMsg').innerHTML ='Please provide a valid 10-digit mobile number.';
+        // Swal.fire({
+        //     title:"Alert",
+        //     text: "Please provide a valid 10-digit mobile number.",
+        //     icon: "warning",
+        //     confirmButtonColor: "#3085d6",
+        //     confirmButtonText: "Ok"
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         t.value='';
+        //         t.focus();
+        //     }
+        //   });
+    } else{
+        document.getElementById('pMsg').innerHTML ='';
+    }
     // else {
     //     let contactNo = t.value;
     //     $.ajax({
@@ -134,8 +139,11 @@ const checkWeight = (t) =>{
 // patient age validity
 const checkAge = (t) =>{
     if(t.value.length > 3){
-        Swal.fire('Error','Enter valid age','error');
-        t.value = '';
+        document.getElementById('ageMsg').innerHTML = 'Enter valid age';
+        // Swal.fire('Error','Enter valid age','error');
+        // t.value = '';
+    }else{
+        document.getElementById('ageMsg').innerHTML = '';
     }
 }
 
@@ -143,7 +151,43 @@ const checkAge = (t) =>{
 // pin validity check
 const checkPin = (t) =>{
     if(t.value.length != 6){
-        Swal.fire('Error','Enter valid PIN number(maximum 6 digit).','error');
-        t.value = '';
+        document.getElementById('pinMsg').innerHTML = 'Enter valid PIN number(maximum 6 digit).';
+        // Swal.fire('Error','Enter valid PIN number(maximum 6 digit).','error');
+        // t.value = '';
+    }else{
+        document.getElementById('pinMsg').innerHTML = '';
     }
+}
+
+
+// ==================================================================
+
+
+const getPatient = (patient) => {
+    if (patient.length > 0) {
+        // console.log('hello');
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("patient-list").style.display = "block";
+                // console.log("check xmlhttp responce : "+xmlhttp.responseText);
+                document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
+        xmlhttp.send();
+    } else {
+        document.getElementById("patient-list").style.display = "none";
+    }
+}
+
+const setPatient = (id) => {
+
+    // ================ get Name ================
+    stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
+    xmlhttp.open("GET", stockCheckUrl, false);
+    xmlhttp.send(null);
+    // document.getElementById("patientId").value = xmlhttp.responseText;
+    document.getElementById("patientName").value = xmlhttp.responseText +' - '+id;
+    document.getElementById("patientId").value = id;
+    document.getElementById("patient-list").style.display = "none";
 }

@@ -149,6 +149,11 @@ if (!empty($currentStockGroup)) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
 
                     <div class="card shadow mb-4">
                         <div class="col-12 d-flex">
@@ -164,12 +169,12 @@ if (!empty($currentStockGroup)) {
 
                             <div class="card-header col-md-6 d-flex justify-content-end">
 
-                                    <input class="form-control w-75" type="text" placeholder="Search Product" name="product-search" id="product-search" style="outline: none;" autocomplete="off">
+                                <input class="form-control w-75" type="text" placeholder="Search Product" name="product-search" id="product-search" style="outline: none;" autocomplete="off">
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="getProduct()"><i class="fas fa-search"></i></button>
-                                    </div>
-                                
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="getProduct()"><i class="fas fa-search"></i></button>
+                                </div>
+
                             </div>
                         </div>
 

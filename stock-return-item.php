@@ -65,7 +65,11 @@ $showDistributor = $showDistributor->data;
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <!-- Page Heading -->
                     <!-- <h1 class="h3 mb-2 text-gray-800"> Purchase Return</h1> -->
 
@@ -247,7 +251,7 @@ $showDistributor = $showDistributor->data;
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
                                                 <span class="text-danger">*</span>
-                                                <input type="number" class="upr-inp focus-border" id="return-qty" value=""  onkeyup="getRefund(this.value);">
+                                                <input type="number" class="upr-inp focus-border" id="return-qty" value="" onkeyup="getRefund(this.value);">
                                             </div>
 
                                             <!-- <div class="col-md-3 col-7">

@@ -104,7 +104,11 @@ if (isset($_GET["returnId"])) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <!-- Page Heading -->
                     <!-- <h1 class="h3 mb-2 text-gray-800"> Purchase Return</h1> -->
 
@@ -234,7 +238,7 @@ if (isset($_GET["returnId"])) {
 
                                         <!-- third row  -->
                                         <div class="row mt-md-2">
-                                            
+
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="current-qty">Live Qty: </label>
                                                 <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
@@ -384,7 +388,7 @@ if (isset($_GET["returnId"])) {
                                                 //========================
 
                                                 $productDetails = json_decode($Products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
-                                                
+
                                                 $productDetails = $productDetails->data;
 
                                                 $productName = $productDetails[0]->name;

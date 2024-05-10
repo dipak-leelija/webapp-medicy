@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="d-flex align-items-center justify-content-center flex-column">
         <h4 class=""><img style="width: 160px;margin-top:55%;" src="<?php echo ASSETS_PATH ?>img/lab-tests/logo.png" alt=""></h4>
-        <form class="p-4 border rounded main" action="login-superAdmin.php" method="post" autocomplete="off">
+        <form class="p-4 border rounded main" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
 
             <div class="d-flex align-items-center justify-content-center mb-3">
                 <h5 class="">Log in to Medicy</h5>

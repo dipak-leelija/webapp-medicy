@@ -105,6 +105,11 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <div class="card-body shadow mb-4 col-12 d-flex flex-wrap" style="min-height: 70vh; max-width: 150vh;">
                             <!-- <div class="card-body col-12 d-flex flex-wrap"> -->

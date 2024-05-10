@@ -101,7 +101,11 @@ if (!empty($salesReturns)) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <!-- Page Heading -->
 
                     <!-- Showing Sell Items  -->

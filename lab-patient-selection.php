@@ -1,19 +1,19 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 // require_once CLASS_DIR.'dbconnect.php';
 // require_once ROOT_DIR . '_config/healthcare.inc.php';
 // require_once CLASS_DIR.'patients.class.php';
 
-require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
-require_once CLASS_DIR. 'encrypt.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 // $Patients = new Patients();
 
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
     $visited = 1;
 
     // Inserting Into Patients Database
-    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,'', NOW, $adminId);
+    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, '', NOW, $adminId);
 
     if ($addPatients) {
 
@@ -94,8 +94,7 @@ if (isset($_POST['submit'])) {
             'patientDoctor' => $patientDoctor
         );
 
-         header("location: lab-billing.php?pa");
-
+        header("location: lab-billing.php?pa");
     } else {
         echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
     }
@@ -133,38 +132,20 @@ if (isset($_POST['submit'])) {
 
     <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
-    <!-- Custom styles for this page -->
-    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" />
-
     <link href="<?= PLUGIN_PATH ?>select2/select2.min.css" rel="stylesheet" />
     <!-- Choices includes -->
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
     <!-- css for sweetalert2 -->
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-
-    <!-- ///////// -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
     <!-- css for sweetalert2 -->
-    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
     <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
-
-    <!-- css for sweetalert2 -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-    <!-- ////////////// -->
 
 </head>
 
@@ -176,7 +157,7 @@ if (isset($_POST['submit'])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -186,13 +167,18 @@ if (isset($_POST['submit'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
                 <div class="container-fluid">
+                    <div class="row" style="z-index: 999;">
+                        <div class="col-12">
+                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                        </div>
+                    </div>
                     <div class="card p-0">
-                    <div class="card-header">
+                        <div class="card-header">
                             <h5><b>
                                     <p class="text-primary">Lab Test</p>
                                 </b></h5>
@@ -201,22 +187,27 @@ if (isset($_POST['submit'])) {
 
                             <form class="row flex-column align-items-center" action="lab-billing.php" method="post">
 
-                                <div class="section col-12 col-md-6">
+                                <!-- <div class="section col-12 col-md-6">
                                     <div data-test-hook="remove-button">
-                                        <input class="w-100" list="browsers" name="patientId" id="choices-remove-button"
-                                            placeholder='Enter patient name' autocomplete="off" required>
-                                        <button class="btn btn-primary btn-sm" id="addButton" data-toggle="modal"
-                                            data-target="#addnewTestbill"
-                                            style="position: absolute;margin-left: -100px;margin-top: 8px; display: none;"
-                                            onclick="addnewpatient()">Add New</button>
+                                        <input class="w-100" list="browsers" name="patientId" id="choices-remove-button" placeholder='Enter patient name' autocomplete="off" required>
+                                        <button class="btn btn-primary btn-sm" id="addButton" data-toggle="modal" data-target="#addnewTestbill" style="position: absolute;margin-left: -100px;margin-top: 8px; display: none;" onclick="addnewpatient()">Add New</button>
                                         <datalist id="browsers">
                                             <?php
-                                                foreach ($showPatients as $patientsRow) {
-                                                    echo "<option value='$patientsRow->patient_id'> $patientsRow->name</option>";
-            
-                                                }
+                                            // foreach ($showPatients as $patientsRow) {
+                                            //     echo "<option value='$patientsRow->patient_id'> $patientsRow->name</option>";
+                                            // }
                                             ?>
                                         </datalist>
+                                    </div>
+                                </div> -->
+                                <div class=" col-md-6 col-12">
+                                    <!-- <label for="">Customer</label><br> -->
+
+                                    <input type="text" class="d-none" id="patientId" name="patientId">
+                                    <input type="text" class="form-control w-100" id="patientName"
+                                        name="patientName" placeholder='Enter patient name'
+                                        onkeyup="getPatient(this.value)" autocomplete="off">
+                                    <div id="patient-list">
                                     </div>
                                 </div>
 
@@ -256,7 +247,7 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
                 <!-- Footer -->
-                <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->
@@ -278,33 +269,33 @@ if (isset($_POST['submit'])) {
 
 
                 <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var inputField = document.getElementById('choices-remove-button');
-                    var addButton = document.getElementById('addButton');
+                // document.addEventListener('DOMContentLoaded', function() {
+                //     var inputField = document.getElementById('choices-remove-button');
+                //     var addButton = document.getElementById('addButton');
 
-                    // Add event listener for input change
-                    inputField.addEventListener('input', function() {
-                        // Check if any options match the input value
-                        var options = document.querySelectorAll('#browsers option');
-                        var found = Array.from(options).some(function(option) {
-                            return option.value === inputField.value;
-                        });
+                //     // Add event listener for input change
+                //     inputField.addEventListener('input', function() {
+                //         // Check if any options match the input value
+                //         var options = document.querySelectorAll('#browsers option');
+                //         var found = Array.from(options).some(function(option) {
+                //             return option.value === inputField.value;
+                //         });
 
-                        // If no options found, display the Add New button
-                        if (!found && inputField.value.trim() !== '') {
-                            addButton.style.display = 'inline-block';
-                        } else {
-                            addButton.style.display = 'none';
-                        }
-                    });
+                //         // If no options found, display the Add New button
+                //         if (!found && inputField.value.trim() !== '') {
+                //             addButton.style.display = 'inline-block';
+                //         } else {
+                //             addButton.style.display = 'none';
+                //         }
+                //     });
 
-                    // Show Add New button if input field is empty
-                    // inputField.addEventListener('change', function() {
-                    //     if (inputField.value === '') {
-                    //         addButton.style.display = 'none';
-                    //     }
-                    // });
-                });
+                // Show Add New button if input field is empty
+                // inputField.addEventListener('change', function() {
+                //     if (inputField.value === '') {
+                //         addButton.style.display = 'none';
+                //     }
+                // });
+                // });
                 </script>
 
                 <script>
@@ -320,6 +311,37 @@ if (isset($_POST['submit'])) {
                             console.error('Error fetching content:', error);
                         });
                 }
+                </script>
+
+                <script>
+                // const getPatient = (patient) => {
+                //     if (patient.length > 0) {
+                //         // console.log('hello');
+                //         xmlhttp.onreadystatechange = function() {
+                //             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //                 document.getElementById("patient-list").style.display = "block";
+                //                 // console.log("check xmlhttp responce : "+xmlhttp.responseText);
+                //                 document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
+                //             }
+                //         };
+                //         xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
+                //         xmlhttp.send();
+                //     } else {
+                //         document.getElementById("patient-list").style.display = "none";
+                //     }
+                // }
+
+                // const setPatient = (id) => {
+
+                //     // ================ get Name ================
+                //     stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
+                //     xmlhttp.open("GET", stockCheckUrl, false);
+                //     xmlhttp.send(null);
+                //     document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                //     document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                //     document.getElementById("choices-remove-button").value = id;
+                //     document.getElementById("patient-list").style.display = "none";
+                // }
                 </script>
 
 

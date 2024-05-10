@@ -86,7 +86,28 @@ if ($bills->status) {
     <link href="<?= CSS_PATH ?>upload-design.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>helth-care.css" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>img-uv/img-uv.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
+
+    <style>
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            /* Set the fixed height as needed */
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .image-preview img,
+        .image-preview embed {
+            width: auto;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -107,24 +128,42 @@ if ($bills->status) {
                 <!-- Topbar -->
                 <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
-
                 <!-- Begin Page Content -->
+
                 <div class="container-fluid">
+                    <label class="d-none" id="alert-div-control">0</label>
+
+                    <div class="row mt-4" style="z-index: 999;" id="alert-div">
+                        <?php require_once ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                    </div>
+
+                    <div class="row mt-4 d-none" style="z-index: 999;" id="msg-div">
+                        <?php require_once ROOT_COMPONENT . "drugPermitDataUpdateMsg.php"; ?>
+                    </div>
+
                     <div class="card shadow h-100 py-2 pending_border animated--grow-in">
                         <div class="row mt-1">
                             <div class="col-12">
                                 <div class="container-fluid">
                                     <div class="col-md-12">
+                                        <label class="d-none" id="nav-pan-flag">nav flag</label>
+                                        <?php
+                                        // PHP code
+                                        if (isset($_GET['tab-control'])) {
+                                            // echo 'hello';
+                                            echo '<script>document.getElementById("nav-pan-flag").innerHTML = "1";</script>'; // JavaScript code
+                                        }
+
+                                        ?>
                                         <ul class="nav nav-tabs row" role="tablist">
                                             <li class="nav-item col-4">
-                                                <a class="nav-link active" data-toggle="tab" href="#home">Helth Care Details</a>
-
+                                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home">Helth Care Details</a>
                                             </li>
                                             <li class="nav-item col-4">
-                                                <a class="nav-link" data-toggle="tab" href="#menu1">Drug Permit Documents</a>
+                                                <a class="nav-link" id="menu1-tab" data-toggle="tab" href="#menu1">Drug Permit Documents</a>
                                             </li>
                                             <li class="nav-item col-4">
-                                                <a class="nav-link" data-toggle="tab" href="#menu2">Subscriptions Details</a>
+                                                <a class="nav-link" id="menu2-tab" data-toggle="tab" href="#menu2">Subscriptions Details</a>
                                             </li>
                                         </ul>
 
@@ -191,11 +230,53 @@ if ($bills->status) {
     <!-- <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script> -->
 
     <!-- Sweet alert plugins -->
-    <!-- <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script> -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
+    <script>
+        if (document.getElementById("nav-pan-flag").innerHTML.trim() === '1') {
+            
+            // control home menue
+            document.getElementById("home").classList.remove("active");
+            document.getElementById("home-tab").classList.remove("active");
+            document.getElementById("home").classList.add("fade");
+
+            // control menue 1
+            document.getElementById("menu1").classList.remove("fade");
+            document.getElementById("menu1").classList.add("show", "active");
+            document.getElementById("menu1-tab").classList.add("active");
+
+            // control menue 2
+            document.getElementById("menu2").classList.remove("active");
+            document.getElementById("menu2-tab").classList.remove("active");
+
+            document.getElementById("nav-pan-flag").innerHTML = 'nav-tab';
+        }
+
+
+        const msgDivControlFun = () => {
+            let alertDivControl = document.getElementById("alert-div-control");
+
+            if (alertDivControl.innerHTML.trim() === '0') {
+                document.getElementById("alert-div").classList.remove('d-none');
+                document.getElementById("msg-div").classList.add('d-none');
+            }
+
+            if (alertDivControl.innerHTML.trim() === '1') {
+                document.getElementById("alert-div").classList.add('d-none');
+                document.getElementById("msg-div").classList.remove('d-none');
+            }
+
+            if (alertDivControl.innerHTML.trim() !== '0' && alertDivControl.innerHTML.trim() !== '1') {
+                document.getElementById("alert-div").classList.remove('d-none');
+                document.getElementById("msg-div").classList.remove('d-none');
+            }
+        }
+
+        msgDivControlFun();
+    </script>
 
 </body>
 
