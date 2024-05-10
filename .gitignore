@@ -12,3 +12,5 @@ _config/accessPermission.php
 
 .CREDENTIALS
 .NEEDTOUPDATE
+
+development/
