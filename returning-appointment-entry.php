@@ -17,10 +17,10 @@ $doctors        = new Doctors();
 
 $showDoctors = json_decode($doctors->showDoctors($adminId));
 
-
+// var_dump($_POST);
 // if (isset($_POST['proceed'])) {
-    if (isset($_POST['patientName'])) {
-        $patientId = $_POST['patientName'];
+    if (isset($_POST['patientId'])) {
+        $patientId = $_POST['patientId'];
 
         $patient = json_decode($Patients->patientsDisplayByPId($patientId));
         $name            = $patient->name;

@@ -189,8 +189,13 @@ if (isset($_POST['submit'])) {
                             <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post" id="form-submit">
                                 <div class="section col-12 col-md-6">
 
-                                    <input class="d-none col-12 col-md-12" type="text" id="patient-id">
-                                    <input class="col-12 col-md-12" type="text" id="patient-name" class="sale-inp-item" onkeyup="searchPatient(this.value)" onclick="chekPatient()" autocomplete="off">
+                                    <!-- <input class="d-none col-12 col-md-12" type="text" id="patient-id"> -->
+                                    <!-- <input class="col-12 col-md-12" type="text" id="patient-name" class="sale-inp-item" onkeyup="getPatient(this.value)" /*onclick="chekPatient()"*/ autocomplete="off"> -->
+
+                                    <input type="text" class="d-none" id="patientId" name="patientId">
+                                    <input type="text" class="form-control w-100" id="patientName" name="patientName" placeholder='Enter patient name' onkeyup="getPatient(this.value)" autocomplete="off">
+                                    <div id="patient-list">
+                                    </div>
 
                                     <!--<div class="data-test-hook=" remove-button>
                                         <button class="btn btn-primary " id="addButton" data-toggle="modal" data-target="#addnewTestbill" onclick="addnewpatient()" style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
@@ -200,25 +205,20 @@ if (isset($_POST['submit'])) {
                                             <option value="" selected disabled> Search Patient Name
                                             </option>
                                             <?php
-                                            if ($showPatients->status) {
-                                                $showPatients = $showPatients->data;
+                                            // if ($showPatients->status) {
+                                            //     $showPatients = $showPatients->data;
 
-                                                foreach ($showPatients as $patientsRow) {
-                                                    // $data[] = $patientsRow;
-                                                    echo "<option value='" . $patientsRow->patient_id . "'>" . $patientsRow->patient_id . " - " . $patientsRow->name . "</option>";
-                                                }
-                                            } else {
-                                                echo "<option value=''>No data found!</option>";
-                                            }
+                                            //     foreach ($showPatients as $patientsRow) {
+                                            //         // $data[] = $patientsRow;
+                                            //         echo "<option value='" . $patientsRow->patient_id . "'>" . $patientsRow->patient_id . " - " . $patientsRow->name . "</option>";
+                                            //     }
+                                            // } else {
+                                            //     echo "<option value=''>No data found!</option>";
+                                            // }
                                             ?>
                                         </select>
                                     </div>-->
                                 </div>
-
-                                <!-- search patient display -->
-                                <div class="section col-12 col-md-6" id="search-patient">
-                                </div>
-                                <!-- eof search patient display -->
 
                                 <div class="form-group col-12 col-md-6 mt-4">
                                     <button type="submit" name="proceed" class="btn-block btn-primary">Proceed</button>
@@ -299,12 +299,12 @@ if (isset($_POST['submit'])) {
         //     $('.patient-select').selectpicker();
 
         // })
-        document.addEventListener('DOMContentLoaded', function() {
-            new Choices('#choices-remove-button', {
-                allowHTML: true,
-                removeItemButton: true,
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     new Choices('#choices-remove-button', {
+        //         allowHTML: true,
+        //         removeItemButton: true,
+        //     });
+        // });
     </script>
 
     <script>

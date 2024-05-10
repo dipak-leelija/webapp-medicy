@@ -158,3 +158,36 @@ const checkPin = (t) =>{
         document.getElementById('pinMsg').innerHTML = '';
     }
 }
+
+
+// ==================================================================
+
+
+const getPatient = (patient) => {
+    if (patient.length > 0) {
+        // console.log('hello');
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("patient-list").style.display = "block";
+                // console.log("check xmlhttp responce : "+xmlhttp.responseText);
+                document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
+        xmlhttp.send();
+    } else {
+        document.getElementById("patient-list").style.display = "none";
+    }
+}
+
+const setPatient = (id) => {
+
+    // ================ get Name ================
+    stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
+    xmlhttp.open("GET", stockCheckUrl, false);
+    xmlhttp.send(null);
+    // document.getElementById("patientId").value = xmlhttp.responseText;
+    document.getElementById("patientName").value = xmlhttp.responseText;
+    document.getElementById("patientId").value = id;
+    document.getElementById("patient-list").style.display = "none";
+}

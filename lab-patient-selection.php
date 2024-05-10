@@ -202,9 +202,10 @@ if (isset($_POST['submit'])) {
                                 </div> -->
                                 <div class=" col-md-6 col-12">
                                     <!-- <label for="">Customer</label><br> -->
-                                    <input type="text" class="form-control w-100" id="choices-remove-button"
-                                        name="patientId" placeholder='Enter patient name'
-                                        onkeyup="getPatient(this.value)">
+                                    <input type="text" class="d-none" id="patientId" name="patientId">
+                                    <input type="text" class="form-control w-100" id="patientName"
+                                        name="patientName" placeholder='Enter patient name'
+                                        onkeyup="getPatient(this.value)" autocomplete="off">
                                     <div id="patient-list">
                                     </div>
                                 </div>
@@ -312,34 +313,34 @@ if (isset($_POST['submit'])) {
                 </script>
 
                 <script>
-                const getPatient = (patient) => {
-                    if (patient.length > 0) {
-                        // console.log('hello');
-                        xmlhttp.onreadystatechange = function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                                document.getElementById("patient-list").style.display = "block";
-                                // console.log("check xmlhttp responce : "+xmlhttp.responseText);
-                                document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
-                            }
-                        };
-                        xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
-                        xmlhttp.send();
-                    } else {
-                        document.getElementById("patient-list").style.display = "none";
-                    }
-                }
+                // const getPatient = (patient) => {
+                //     if (patient.length > 0) {
+                //         // console.log('hello');
+                //         xmlhttp.onreadystatechange = function() {
+                //             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //                 document.getElementById("patient-list").style.display = "block";
+                //                 // console.log("check xmlhttp responce : "+xmlhttp.responseText);
+                //                 document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
+                //             }
+                //         };
+                //         xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
+                //         xmlhttp.send();
+                //     } else {
+                //         document.getElementById("patient-list").style.display = "none";
+                //     }
+                // }
 
-                const setPatient = (id) => {
+                // const setPatient = (id) => {
 
-                    // ================ get Name ================
-                    stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
-                    xmlhttp.open("GET", stockCheckUrl, false);
-                    xmlhttp.send(null);
-                    document.getElementById("choices-remove-button").value = xmlhttp.responseText;
-                    document.getElementById("choices-remove-button").value = xmlhttp.responseText;
-                    document.getElementById("choices-remove-button").value = id;
-                    document.getElementById("patient-list").style.display = "none";
-                }
+                //     // ================ get Name ================
+                //     stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
+                //     xmlhttp.open("GET", stockCheckUrl, false);
+                //     xmlhttp.send(null);
+                //     document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                //     document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                //     document.getElementById("choices-remove-button").value = id;
+                //     document.getElementById("patient-list").style.display = "none";
+                // }
                 </script>
 
 
