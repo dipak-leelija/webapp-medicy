@@ -232,9 +232,9 @@ if ($doctorCategory->status == 1) {
             </div>
         </div>
         <div class=" footer w-100" style="margin-bottom:0px;position:static;">
-            <div class="row border border-primary pt-2 pb-0 d-flex justify-content-between">
+            <div class="row border border-primary pt-2 pb-0">
 
-                <div class="col-md-4 custom-width-name mb-0 text-end">
+                <div class="col-md-4 custom-width-name mb-0 text-center">
                     <ul style="margin-bottom: 8px">
                         <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2"
                                 src="<?= IMG_PATH ?>icons/hospital.png" alt="Healt Care"
