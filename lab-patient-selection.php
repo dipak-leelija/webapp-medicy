@@ -204,7 +204,7 @@ if (isset($_POST['submit'])) {
                                     <!-- <label for="">Customer</label><br> -->
                                     <input type="text" class="form-control w-100" id="choices-remove-button"
                                         name="patientId" placeholder='Enter patient name'
-                                        onkeyup="getPatient(this.value)">
+                                        onkeyup="getPatient(this.value)" autocomplete="off" required>
                                     <div id="patient-list">
                                     </div>
                                 </div>
