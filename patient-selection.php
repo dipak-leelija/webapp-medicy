@@ -186,14 +186,17 @@ if (isset($_POST['submit'])) {
                                 </b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
-                            <!-- <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post"> -->
-
-                            <div class="row flex-column align-items-center">
+                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post" id="form-submit">
                                 <div class="section col-12 col-md-6">
-                                    <div class="data-test-hook=" remove-button>
+
+                                    <input class="d-none col-12 col-md-12" type="text" id="patient-id">
+                                    <input class="col-12 col-md-12" type="text" id="patient-name" class="sale-inp-item" onkeyup="searchPatient(this.value)" onclick="chekPatient()" autocomplete="off">
+
+                                    <!--<div class="data-test-hook=" remove-button>
                                         <button class="btn btn-primary " id="addButton" data-toggle="modal" data-target="#addnewTestbill" onclick="addnewpatient()" style="position: absolute; right: 0; top: 0;margin-top:2px;margin-right:12px;z-index:1;">Add
                                             New</button>
-                                        <select class="form-control " id="choices-remove-button" name="patientName" required>
+                                        <select class="form-control " id="choices-remove-button" name="patientName" required /*onchange="selectReturningPationtSelect()"*/>
+
                                             <option value="" selected disabled> Search Patient Name
                                             </option>
                                             <?php
@@ -209,22 +212,35 @@ if (isset($_POST['submit'])) {
                                             }
                                             ?>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
-                                <div class="form-group col-12 col-md-2 mt-2">
-                                    <button type="submit" name="proceed" class="btn-block btn-primary" onclick="returningPatientProceed()">Proceed</button>
-                                </div>
-                            </div>
 
-                            <!-- </form> -->
+                                <!-- search patient display -->
+                                <div class="section col-12 col-md-6" id="search-patient">
+                                </div>
+                                <!-- eof search patient display -->
+
+                                <div class="form-group col-12 col-md-6 mt-4">
+                                    <button type="submit" name="proceed" class="btn-block btn-primary">Proceed</button>
+                                </div>
+                            </form>
                         </div>
 
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-center">
+                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            </div>
+
         </div>
     </div>
     <!-- Page Wrapper end -->
+
+    <!-- Footer -->
+
+    <!-- End of Footer -->
 
     <!-- Modal -->
     <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -244,9 +260,7 @@ if (isset($_POST['submit'])) {
     </div>
 
 
-    <!-- Footer -->
-    <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-    <!-- End of Footer -->
+
 
     <!-- Bootstrap core JavaScript-->
 
@@ -295,6 +309,10 @@ if (isset($_POST['submit'])) {
 
     <script>
         const addnewpatient = () => {
+
+            document.getElementById('form-submit').removeAttribute('action');
+            // formId.removeAttribute('action');
+
             let url = "ajax/newTestBill-add.ajax.php";
             fetch(url)
                 .then(response => response.text())
@@ -311,10 +329,24 @@ if (isset($_POST['submit'])) {
 
         // =============== returning patient proceed function =======================
 
-        const returningPatientProceed = () => {
-            var patientId = document.getElementById('choices-remove-button').value;
-            window.location.href = "<?php echo URL ?>returning-appointment-entry.php?patientName=" +patientId;
-        }
+        // const returningPatientProceed = () => {
+        //     var patientId = document.getElementById('choices-remove-button').value;
+        //     var data = {'patientData':patientId};
+        //     console.log(JSON.stringify(data));
+        //     var url = '<?php echo URL ?>returning-appointment-entry.php';
+
+
+        //     xmlhttp.open('POST', url, true);
+        //     xmlhttp.setRequestHeader('Content-Type', 'application/json');
+        //     xmlhttp.onreadystatechange = function() {
+        //         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        //             // Redirect to the received URL
+        //             // console.log(xmlhttp.responseText);
+        //             window.location.href = url;
+        //         }
+        //     };
+        //     xmlhttp.send(JSON.stringify(data));
+        // }
     </script>
 
 </body>

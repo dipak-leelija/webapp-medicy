@@ -19,8 +19,8 @@ $showDoctors = json_decode($doctors->showDoctors($adminId));
 
 
 // if (isset($_POST['proceed'])) {
-    if (isset($_GET['patientName'])) {
-        $patientId = $_GET['patientName'];
+    if (isset($_POST['patientName'])) {
+        $patientId = $_POST['patientName'];
 
         $patient = json_decode($Patients->patientsDisplayByPId($patientId));
         $name            = $patient->name;
