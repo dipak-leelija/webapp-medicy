@@ -108,9 +108,9 @@ $form21Data;
                 reader.onload = function() {
                     const base64data = reader.result;
                     if (fileType === 'pdf') {
-                        preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>`;
+                        preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%"><i class="" style="position: absolute; align-item: center; width: auto; max-width: 60%; height: 12rem;"></i>`;
                     } else if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
-                        preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>`;
+                        preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;"><i class="" style="position: absolute; align-item: center; width: auto; max-width: 60%; height: 12rem;"></i>`;
                     } else {
                         preview.innerHTML = `<p>Unsupported file format</p>`;
                     }
@@ -150,9 +150,9 @@ $form21Data;
             var filePreview = document.getElementById(previewId);
 
             if (file.type.includes('image')) {
-                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" ><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>'
+                filePreview.innerHTML = '<img src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" ><i class="" style="position: absolute; align-item: center; width: auto; max-width: 60%; height: 12rem;"></i>'
             } else if (file.type === 'application/pdf') {
-                filePreview.innerHTML = '<embed src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" class="fas fa-upload"><i class="" style="position: absolute; align-item: center; width: 60%; height: 12rem;"></i>';
+                filePreview.innerHTML = '<embed src="' + reader.result + '" style="max-width: 100%; max-height: 12rem;" class="fas fa-upload"><i class="" style="position: absolute; align-item: center; width: auto; max-width: 60%; height: 12rem;"></i>';
             } else {
                 filePreview.innerHTML = '<p>File type not supported for preview</p>';
             }
