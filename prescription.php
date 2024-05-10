@@ -156,7 +156,7 @@ if ($doctorCategory->status == 1) {
         </div> -->
         <div class="row space mt-1">
             <div class="col-3 border-end " style="border-color: #0000ff59 !important;">
-                <small>
+                <small class="mt-4">
                     <b>A-ID:</b> <?php echo $apntId ?>
                     <br>
                     <b>P-ID:</b> <?php echo $patientId ?>
@@ -166,48 +166,28 @@ if ($doctorCategory->status == 1) {
                         <b>WT:</b> <?php echo $patientWeight ?>
                     </div>
                 </small>
-                <div class="mt-4 mb-2">
-                    <h6 class="text-start"><u> DIAGNOSIS </u></h6>
-                    TC,DC,Hb%,ESR
-                    <br>
-                    BT,CT
-                    <br>
-                    BI,Sugar(F. & P.P)
-                    <br>
-                    GR. & Rh.type
-                    <br>
-                    VDRL
-                    <br>
-                    Lipid Profile
-                    <br>
-                    HIV-I & II
-                    <br>
-                    HBsAg
-                    <br>
-                    Urea
-                    <br>
-                    Creatine
-                    <br>
-                    TSH,T3,T4
-                    <br>
-                    Bilirubin
-                    <br>
-                    M.P.
-                    <br>
-                    L.F.T
-                    <br>
-                    Urine (RE/ME/CS)
-                    <br>
-                    Urine Pregnency
-                    <br>
-                    X-Ray Chest = PA
-                    <br>
-                    E.C.G
-                    <br>
-                    Serum PSA Titre
-                    <br>
-                    USG-W/A-L/A,FPP
-
+                <div class="my-4">
+                    <h6 class="text-start mb-4"><u> DIAGNOSIS </u></h6>
+                    <p class="mb-2">TC,DC,Hb%,ESR</p>
+                    <p class="mb-1">BT,CT</p>
+                    <p class="mb-1">BI,Sugar(F. & P.P)</p>
+                    <p class="mb-1">GR. & Rh.type</p>
+                    <p class="mb-1">VDRL</p>
+                    <p class="mb-1">Lipid Profile</p>
+                    <p class="mb-1">HIV-I & II</p>
+                    <p class="mb-1">HBsAg</p>
+                    <p class="mb-1">Urea</p>
+                    <p class="mb-1">Creatine</p>
+                    <p class="mb-1">TSH,T3,T4</p>
+                    <p class="mb-1">Bilirubin</p>
+                    <p class="mb-1">M.P.</p>
+                    <p class="mb-1">L.F.T</p>
+                    <p class="mb-1">Urine (RE/ME/CS)</p>
+                    <p class="mb-1">Urine Pregnency</p>
+                    <p class="mb-1">X-Ray Chest = PA</p>
+                    <p class="mb-1">E.C.G</p>
+                    <p class="mb-1">Serum PSA Titre</p>
+                    <p class="mb-1">USG-W/A-L/A,FPP</p>
                 </div>
             </div>
             <div class="col-9">
