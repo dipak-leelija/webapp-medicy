@@ -119,8 +119,11 @@ if (isset($_POST['submit'])) {
     <title>Enter Patient Details</title>
 
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
@@ -184,7 +187,7 @@ if (isset($_POST['submit'])) {
 
                             <form class="row flex-column align-items-center" action="lab-billing.php" method="post">
 
-                                <div class="section col-12 col-md-6">
+                                <!-- <div class="section col-12 col-md-6">
                                     <div data-test-hook="remove-button">
                                         <input class="w-100" list="browsers" name="patientId" id="choices-remove-button" placeholder='Enter patient name' autocomplete="off" required>
                                         <button class="btn btn-primary btn-sm" id="addButton" data-toggle="modal" data-target="#addnewTestbill" style="position: absolute;margin-left: -100px;margin-top: 8px; display: none;" onclick="addnewpatient()">Add New</button>
@@ -196,15 +199,25 @@ if (isset($_POST['submit'])) {
                                             ?>
                                         </datalist>
                                     </div>
+                                </div> -->
+                                <div class=" col-md-6 col-12">
+                                    <!-- <label for="">Customer</label><br> -->
+                                    <input type="text" class="form-control w-100" id="choices-remove-button"
+                                        name="patientId" placeholder='Enter patient name'
+                                        onkeyup="getPatient(this.value)">
+                                    <div id="patient-list">
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12 col-md-6 mt-2">
-                                    <input type="date" class="form-control w-100" id="testDate" name="testDate" placeholder="" required>
+                                    <input type="date" class="form-control w-100" id="testDate" name="testDate"
+                                        placeholder="" required>
                                 </div>
 
                                 <!-- value="<?php echo (isset($_SESSION['appointment-data'])) ? $_SESSION['appointment-data']['patientId'] : ''; ?>" -->
                                 <div class="form-group col-12 col-md-2">
-                                    <button type="submit" name="bill-proceed" class="btn-block btn-primary">Proceed</button>
+                                    <button type="submit" name="bill-proceed"
+                                        class="btn-block btn-primary">Proceed</button>
                                 </div>
                             </form>
                         </div>
@@ -214,12 +227,14 @@ if (isset($_POST['submit'])) {
 
 
                 <!-- Modal -->
-                <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade bd-example-modal-lg" id="addnewTestbill" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Add New Lab Test</h5>
-                                <button type="button" class="close" data-dismiss="modal" onclick="window.location.reload()" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal"
+                                    onclick="window.location.reload()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -252,48 +267,79 @@ if (isset($_POST['submit'])) {
 
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var inputField = document.getElementById('choices-remove-button');
-                        var addButton = document.getElementById('addButton');
+                // document.addEventListener('DOMContentLoaded', function() {
+                //     var inputField = document.getElementById('choices-remove-button');
+                //     var addButton = document.getElementById('addButton');
 
-                        // Add event listener for input change
-                        inputField.addEventListener('input', function() {
-                            // Check if any options match the input value
-                            var options = document.querySelectorAll('#browsers option');
-                            var found = Array.from(options).some(function(option) {
-                                return option.value === inputField.value;
-                            });
+                //     // Add event listener for input change
+                //     inputField.addEventListener('input', function() {
+                //         // Check if any options match the input value
+                //         var options = document.querySelectorAll('#browsers option');
+                //         var found = Array.from(options).some(function(option) {
+                //             return option.value === inputField.value;
+                //         });
 
-                            // If no options found, display the Add New button
-                            if (!found && inputField.value.trim() !== '') {
-                                addButton.style.display = 'inline-block';
-                            } else {
-                                addButton.style.display = 'none';
-                            }
-                        });
+                //         // If no options found, display the Add New button
+                //         if (!found && inputField.value.trim() !== '') {
+                //             addButton.style.display = 'inline-block';
+                //         } else {
+                //             addButton.style.display = 'none';
+                //         }
+                //     });
 
-                        // Show Add New button if input field is empty
-                        // inputField.addEventListener('change', function() {
-                        //     if (inputField.value === '') {
-                        //         addButton.style.display = 'none';
-                        //     }
-                        // });
-                    });
+                // Show Add New button if input field is empty
+                // inputField.addEventListener('change', function() {
+                //     if (inputField.value === '') {
+                //         addButton.style.display = 'none';
+                //     }
+                // });
+                // });
                 </script>
 
                 <script>
-                    const addnewpatient = () => {
-                        let url = "ajax/newTestBill-add.ajax.php?test=true";
-                        fetch(url)
-                            .then(response => response.text())
-                            .then(data => {
-                                document.getElementById('newTestModalBody').innerHTML = data;
-                                $('#addnewTestbill').modal('show');
-                            })
-                            .catch(error => {
-                                console.error('Error fetching content:', error);
-                            });
+                const addnewpatient = () => {
+                    let url = "ajax/newTestBill-add.ajax.php?test=true";
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('newTestModalBody').innerHTML = data;
+                            $('#addnewTestbill').modal('show');
+                        })
+                        .catch(error => {
+                            console.error('Error fetching content:', error);
+                        });
+                }
+                </script>
+
+                <script>
+                const getPatient = (patient) => {
+                    if (patient.length > 0) {
+                        // console.log('hello');
+                        xmlhttp.onreadystatechange = function() {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                document.getElementById("patient-list").style.display = "block";
+                                // console.log("check xmlhttp responce : "+xmlhttp.responseText);
+                                document.getElementById("patient-list").innerHTML = xmlhttp.responseText;
+                            }
+                        };
+                        xmlhttp.open("GET", `ajax/patientSearch.ajax.php?data=${patient}`, true);
+                        xmlhttp.send();
+                    } else {
+                        document.getElementById("patient-list").style.display = "none";
                     }
+                }
+
+                const setPatient = (id) => {
+
+                    // ================ get Name ================
+                    stockCheckUrl = 'ajax/patient.getDetails.ajax.php?name=' + id;
+                    xmlhttp.open("GET", stockCheckUrl, false);
+                    xmlhttp.send(null);
+                    document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                    document.getElementById("choices-remove-button").value = xmlhttp.responseText;
+                    document.getElementById("choices-remove-button").value = id;
+                    document.getElementById("patient-list").style.display = "none";
+                }
                 </script>
 
 
