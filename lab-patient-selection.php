@@ -202,6 +202,7 @@ if (isset($_POST['submit'])) {
                                 </div> -->
                                 <div class=" col-md-6 col-12">
                                     <!-- <label for="">Customer</label><br> -->
+
                                     <input type="text" class="d-none" id="patientId" name="patientId">
                                     <input type="text" class="form-control w-100" id="patientName"
                                         name="patientName" placeholder='Enter patient name'
