@@ -187,7 +187,7 @@ const setPatient = (id) => {
     xmlhttp.open("GET", stockCheckUrl, false);
     xmlhttp.send(null);
     // document.getElementById("patientId").value = xmlhttp.responseText;
-    document.getElementById("patientName").value = xmlhttp.responseText;
+    document.getElementById("patientName").value = xmlhttp.responseText +' - '+id;
     document.getElementById("patientId").value = id;
     document.getElementById("patient-list").style.display = "none";
 }
