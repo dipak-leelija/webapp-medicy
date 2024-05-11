@@ -39,18 +39,18 @@ class Distributor extends DatabaseConnection{
 
 
 
-    function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId)
+    function updateDist($distributorName, $distributorGSTIN, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $update = "UPDATE `distributor` SET `name`=?, `address`=?, `area_pin_code`=?, `phno`=?, `email`=?, `dsc`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            $update = "UPDATE `distributor` SET `name`=?, `gst_id`=?, `address`=?, `area_pin_code`=?, `phno`=?, `email`=?, `dsc`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($update);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssssssssi", $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId);
+                $stmt->bind_param("sssssssssi", $distributorName, $distributorGSTIN, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId);
 
                 // Execute the query
                 $updatedQuery = $stmt->execute();

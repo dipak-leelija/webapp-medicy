@@ -18,6 +18,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
 
     if (!empty($data)) {
         $DistributorName    = $data->name;
+        $DistributorGSTIN    = $data->gst_id;
         $DistributorAddress = $data->address;
         $DistributorPIN     = $data->area_pin_code;
         $DistributorPhno    = $data->phno;
@@ -47,6 +48,10 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
         <div class="form-group">
             <label for="distributor-name" class="form-label mb-0 mt-0">Distributor Name:</label>
             <input type="text" class="form-control" id="distributor-name" value="<?php echo $DistributorName; ?>">
+        </div>
+        <div class="form-group">
+            <label for="distributor-name" class="form-label mb-0 mt-0">GSTIN:</label>
+            <input type="text" class="form-control" id="distributor-gstin" value="<?php echo $DistributorGSTIN; ?>">
         </div>
 
         <div class="form-group">
@@ -106,6 +111,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
         // let Id        = $("#distributorId").val();
         let Id      = document.getElementById("distributorId").value;
         let name      = document.getElementById("distributor-name").value;
+        let gstin      = document.getElementById("distributor-gstin").value;
         let phno      = document.getElementById("distributor-phno").value;
         let email     = document.getElementById("distributor-email").value;
         let address   = document.getElementById("distributor-address").value;
@@ -113,7 +119,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
         let dsc       = document.getElementById("distributor-dsc").value;
 
 
-        let url = "distributor.Edit.ajax.php?id=" + escape(Id) + "&name=" + escape(name) + "&phno=" + escape(phno) + "&email=" + escape(email) + "&address=" + escape(address) + "&pin=" + escape(areaPin) + "&dsc=" + escape(dsc);
+        let url = "distributor.Edit.ajax.php?id=" + escape(Id) + "&name=" + escape(name) + "&gstin=" + escape(gstin) + "&phno=" + escape(phno) + "&email=" + escape(email) + "&address=" + escape(address) + "&pin=" + escape(areaPin) + "&dsc=" + escape(dsc);
         
         request.open('GET', url, true);
  
