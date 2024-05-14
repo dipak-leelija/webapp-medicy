@@ -131,7 +131,7 @@ class Appointments extends DatabaseConnection
 
         try {
             if (!empty($adminId)) {
-                $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE appointment_id LIKE ? OR  patient_id LIKE ? OR patient_name LIKE ? AND admin_id = ? ORDER BY id DESC");
+                $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE (appointment_id LIKE ? OR  patient_id LIKE ? OR patient_name LIKE ?) AND admin_id = ? ORDER BY id DESC");
                 $searchPattern = "%".$data ."%";
                 $stmt->bind_param("ssss", $searchPattern, $searchPattern, $searchPattern, $adminId);
             }else{
