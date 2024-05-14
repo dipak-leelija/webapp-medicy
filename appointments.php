@@ -423,6 +423,7 @@ if ($allAppointments->status) {
 
     <!-- custom scripts for appointments serarch and filter -->
     <script src="<?= JS_PATH ?>appointments.js"></script>
+    <script src="<?= JS_PATH ?>polyclinic-searchFilter.js"></script>
 
 
 </body>
