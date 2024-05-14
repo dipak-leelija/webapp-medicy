@@ -96,7 +96,7 @@ class ItemUnit extends DatabaseConnection
                 if ($result->num_rows > 0) {
 
                     while ($row = $result->fetch_object()) {
-                        $data[] = $row;
+                        $data = $row;
                     }
 
                     return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);

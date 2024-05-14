@@ -7,14 +7,15 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'request.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
 
 
-$Products      = new Products();
-$ProductImages = new ProductImages();
-$Unit = new MeasureOfUnits();
-$Session = new SessionHandler();
-$Request = new Request;
-
+$Products       = new Products();
+$ProductImages  = new ProductImages();
+$Unit           = new MeasureOfUnits();
+$Session        = new SessionHandler();
+$Request        = new Request;
+$IdsGeneration  = new IdsGeneration;
 
 
 ?>
@@ -54,27 +55,12 @@ $Request = new Request;
 
         $description = 'New Product Request';
 
-        $randNum = rand(1, 999999999999);
-        $productId = 'PR' . $randNum;
-
-        $status = 0;
-
-        // echo "<br>PRODUCT ID : $productId";
-        // echo "<br>PRODUCT NAME : $prodName";
-        // echo "<br>PRODUCT CATAGORY : $prodCategory";
-        // echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
-        // echo "<br>PRODUCT UNIT : $qantity";
-        // echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
-        // echo "<br>PRODUCT POWER : $medicinePower";
-        // echo "<br>MRP : $mrp";
-        // echo "<br>GST : $gst";
-        // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber<br><br>";
-
+        $productId = $IdsGeneration->generateProductId();
 
 
         //Insert into request table 
 
-        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, $status);
+        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, 0);
 
 
         // print_r($addProductRequest);

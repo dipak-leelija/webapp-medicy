@@ -347,6 +347,31 @@ class Manufacturer extends DatabaseConnection
     }
 
 
+    function manufacturerByName($name){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM `manufacturer` WHERE `name` = ?");
+            $stmt->bind_param("s", $name);
+            
+            $stmt->execute();
+            
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+            } else {
+                return json_encode(['status' => 0, 'message' => 'empty']);
+            }
+    
+        } catch (Exception $e) {
+            echo 'Message: ' . $e->getMessage();
+        }
+    }
+    
+    
 
 
 
