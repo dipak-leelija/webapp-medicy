@@ -41,96 +41,36 @@ if ($doctorDetails->status) {
 
 
 // ============= APPOINTMENT DATA ================
+$searchVal = '';
+$match = '';
+$startDate = '';
+$endDate = '';
+$docId = '';
+$empId = '';
 
-if (isset($_GET['search'])) {
 
-    $search = $_GET['search'];
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['docIdFilter']) || isset($_GET['staffIdFilter'])) {
 
-    if ($search == 'appointment_search') {
-        $flagVal = 1;
-        $searchPattern = $match =  $_GET['searchKey'];
-        $allAppointments = $Appoinments->filterAppointmentsByIdOrName($searchPattern, $adminId);
-        $allAppointments = json_decode($allAppointments);
-        // print_r($allAppointments);
+    if(isset($_GET['search'])){
+        $searchVal = $match = $_GET['search'];
     }
     
-    if ($search == 'doctor_id') {
-        $flagVal = 3;
-        $doctorID = $_GET['searchKey'];
-        $col = $_GET['search'];
-        $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
-        $allAppointments = json_decode($allAppointments);
+    if(isset($_GET['dateFilterStart'])){
+        $startDate = $_GET['dateFilterStart'];
+        $endDate = $_GET['dateFilterEnd'];
+    }
+    
+    if(isset($_GET['docIdFilter'])){
+        $docId = $_GET['docIdFilter'];
     }
 
-    if ($search == 'added_by') {
-        $flagVal = 4;
-        $doctorID = $_GET['searchKey'];
-        $col = $_GET['search'];
-        $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
-        $allAppointments = json_decode($allAppointments);
+    if(isset($_GET['staffIdFilter'])){
+        $empId = $_GET['staffIdFilter'];
     }
 
-    if ($search == 'added_on') {
-        $flagVal = 2;
-        $value = $_GET['searchKey'];
-
-        if ($value == 'T') {
-            $fromDt = date('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'Y') {
-            $fromDt = new DateTime('yesterday');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = $fromDt;
-        }
-
-        if ($value == 'LW') {
-            $fromDt = new DateTime('-7 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LM') {
-            $fromDt = new DateTime('-30 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LQ') {
-            $fromDt = new DateTime('-90 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'CFY') {
-            $currentYear = new DateTime();
-            $fiscalYear = $currentYear->format('Y');
-            $fiscalYear = intval($fiscalYear) + 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $currentYear . '-04-01';
-            $toDt = $fiscalYear . '-03-31';
-        }
-
-        if ($value == 'PFY') {
-            $currentYear = new DateTime();
-            $prevFiscalYr = $currentYear->format('Y');
-            $prevFiscalYr = intval($prevFiscalYr) - 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $prevFiscalYr . '-04-01';
-            $toDt = $currentYear . '-03-31';
-        }
-
-        if ($value == 'CR') {
-            $fromDt = $_GET['fromDt'];
-            $toDt = $_GET['toDt'];
-        }
-
-        $allAppointments = $Appoinments->appointmentsFilterByDate($fromDt, $toDt, $adminId);
-        $allAppointments = json_decode($allAppointments);
-    }
+    $allAppointments = $Appoinments->appointmentsDataSearchFilter($searchVal, $startDate, $endDate, $docId, $empId, $adminId);
+    $allAppointments = json_decode($allAppointments);
+    // print_r($allAppointments);
 } else {
     $flagVal = 0;
 
@@ -240,25 +180,26 @@ if ($allAppointments->status) {
 
                             <div class="row mt-2">
                                 <label class="d-none" id="control-flag"><?= $flagVal; ?></label>
+                                <label class="d-none" id="parent-url"><?php echo URL; ?></label>
                                 <div class="d-flex">
                                     <div class="col-md-6 col-6 mt-2">
                                         <div class="input-group">
-                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
+                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" onkeyup="filterAppointmentByValue()">
 
-                                            <div class="input-group-append" id="appointment-search-filter-1">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue(this)"><i class="fas fa-search"></i></button>
-                                            </div>
+                                            <!-- <div class="input-group-append" id="appointment-search-filter-1">
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
+                                            </div> -->
 
-                                            <div class="d-none input-group-append" id="appointment-search-reset-1">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" onclick="resteUrl()"><i class="fas fa-times"></i></button>
-                                            </div>
+                                            <!-- <div class="d-none input-group-append" > -->
+                                                <button class=" d-none btn btn-sm btn-outline-primary shadow-none" id="appointment-search-reset-1"type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                            <!-- </div> -->
                                         </div>
                                     </div>
 
 
                                     <div class="d-flex col-md-6 col-6  mt-2">
-                                        <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue(this)">
-                                            <option value="" disabled="" selected="">Select Duration</option>
+                                        <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue()">
+                                            <option value="" disabled selected>Select Duration</option>
                                             <option value="T">Today</option>
                                             <option value="Y">yesterday</option>
                                             <option value="LW">Last 7 Days</option>
@@ -268,15 +209,17 @@ if ($allAppointments->status) {
                                             <option value="PFY">Previous Fiscal Year</option>
                                             <option value="CR">Custom Range </option>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="appointment-search-reset-2" onclick="resteUrl()" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="appointment-search-reset-2" onclick="resteUrl(this.id)" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
 
+                                        <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
+                                        <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="col-md-6 col-6 mt-2 d-flex">
-                                        <select class="col-md-11 cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue(this)">
-                                            <option value="" selected="" disabled="">Find By Doctor</option>
+                                        <select class="col-md-11 cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue()">
+                                            <option value="" selected disabled>Find By Doctor</option>
 
                                             <?php
 
@@ -286,11 +229,13 @@ if ($allAppointments->status) {
 
                                             ?>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-3" style="margin-left: -26px; z-index: 100; background: white;"onclick="resteUrl()"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+
+                                        <label class="d-none" id="select-docId"><?php echo $docId; ?></label>
                                     </div>
 
                                     <div class="col-md-6 col-6 mt-2 d-flex">
-                                        <select class="cl-md-11 cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
+                                        <select class="cl-md-11 cvx-inp1" id="added_by" onchange="filterAppointmentByValue()">
                                             <option value="" disabled="" selected="">Select Staff</option>
 
                                             <?php
@@ -301,12 +246,15 @@ if ($allAppointments->status) {
 
                                             ?>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-4" style="margin-left: -26px; z-index: 100; background: white;"onclick="resteUrl()"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+
+                                        <label class="d-none" id="select-empId"><?php echo $empId; ?></label>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="dropdown-menu  p-2 row ml-4" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <label class="d-none" id="date-range-control-flag">0</label>
+                            <div class="dropdown-menu  p-2 row ml-4 mt-2" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
@@ -318,7 +266,7 @@ if ($allAppointments->status) {
                                             <input type="date" id="to-date" name="to-date">
                                         </div>
                                         <div class="dtPicker">
-                                            <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
+                                            <button class="btn btn-sm btn-primary" onclick="filterAppointmentByValue()">Find</button>
                                         </div>
                                     </div>
                                 </div>
@@ -473,119 +421,9 @@ if ($allAppointments->status) {
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
 
+    <!-- custom scripts for appointments serarch and filter -->
+    <script src="<?= JS_PATH ?>appointments.js"></script>
 
-
-    <script>
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
-
-                if (confirm("Are You Sure?")) {
-                    apntID = $(this).data("id");
-                    btn = this;
-
-                    $.ajax({
-                        url: "ajax/appointment.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: apntID
-                        },
-                        success: function(data) {
-                            if (data == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
-                            }
-
-                        }
-                    });
-                }
-                return false;
-            })
-
-        })
-
-        // =======================================================
-        appointmentViewAndEditModal = (appointmentTableID) => {
-
-            let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
-            $(".view-and-edit-appointments").html(
-                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-
-        } // end of LabCategoryEditModal function
-
-        // ==========================================================
-
-        const filterAppointmentByValue = (t) => {
-
-            document.getElementById('dtPickerDiv').style.display = 'none';
-
-            key = t.id;
-            val = t.value;
-
-            if (t.id == 'button-addon') {
-                var key = document.getElementById("appointment_search").id;
-                var val = document.getElementById("appointment_search").value;
-
-                if (val.length < 2) {
-                    console.log("min 3 char");
-                }
-            }
-
-            if (val != 'CR') {
-                var currentURL = window.location.href;
-
-                // Get the current URL without the query string
-                var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-
-                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
-
-                window.location.replace(newURL);
-            }
-
-            if (val == 'CR') {
-                document.getElementById('dtPickerDiv').style.display = 'block';
-            }
-        }
-
-
-        const customDate = () => {
-            let fromDate = document.getElementById('from-date').value;
-            let toDate = document.getElementById('to-date').value;
-
-            //fetch current url and pathname
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            // create new url with added value to previous url
-            var newUrl = `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
-            // replace previous url with new url
-            window.location.replace(newUrl);
-        }
-
-
-        const resteUrl = (t) => {
-            let url = '<?php echo URL ?>appointments.php';
-            window.location.replace(url);
-        }
-
-
-        if (document.getElementById('control-flag').innerHTML.trim() === '1') {
-            document.getElementById('button-addon').classList.add('d-none');
-            document.getElementById('appointment-search-reset-1').classList.remove('d-none');
-        }
-
-        if (document.getElementById('control-flag').innerHTML.trim() === '2') {
-            document.getElementById('appointment-search-reset-2').classList.remove('d-none');
-        }
-
-        if (document.getElementById('control-flag').innerHTML.trim() === '3') {
-            document.getElementById('appointment-search-reset-3').classList.remove('d-none');
-        }
-
-        if (document.getElementById('control-flag').innerHTML.trim() === '4') {
-            document.getElementById('appointment-search-reset-4').classList.remove('d-none');
-        }
-    </script>
 
 </body>
 

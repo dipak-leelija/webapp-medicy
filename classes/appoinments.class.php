@@ -243,6 +243,106 @@ class Appointments extends DatabaseConnection
 
 
 
+    // =============== appointment filter =================
+    // function appointmentsDataSearchFilter($searchVal='', $startDate='', $endDate='', $docId='', $empId='', $adminId='')
+    // {
+    //     try {
+
+    //         $searchSQL = "SELECT * FROM appointments WHERE (((appointment_id LIKE :%$searchVal% OR :$searchVal IS NULL) OR (patient_id LIKE :%$searchVal% OR :$searchVal IS NULL) OR (patient_name LIKE :%$searchVal% OR :$searchVal IS NULL))
+    //             AND (added_on BETWEEN DATE($startDate AND $endDate))
+    //             AND (doctor_id = :$docId OR :$docId IS NULL)
+    //             AND (added_by = :$empId OR :$empId IS NULL))
+    //             AND admin_id = '$adminId'";
+
+    //         $searchPattern = "%" . $searchVal . "%";
+
+    //         $stmt = $this->conn->prepare($searchSQL);
+    //         $stmt->bind_param("ssss", $searchPattern, $searchPattern, $searchPattern, $adminId);
+
+
+
+    //         $stmt->execute();
+    //         $result = $stmt->get_result();
+
+    //         if($result->num_rows > 0){
+    //             $appointmentsRestult = array();
+    //             while ($row = $result->fetch_object()) {
+    //                 $appointmentsRestult[] = $row;
+    //             } 
+    //             return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$appointmentsRestult]);
+    //         } else {
+    //             return json_encode(['status'=>'0', 'message'=>'', 'data'=>'']);
+    //         }
+
+    //     }catch(Exception $e){
+    //         print_r($e->getLine());
+    //     }
+    // }
+
+
+
+
+
+    function appointmentsDataSearchFilter($searchVal = '', $startDate = '', $endDate = '', $docId = '', $empId = '', $adminId = '') {
+        try {
+            $searchSQL = "SELECT * FROM appointments WHERE 1=1";
+            
+            $params = array();
+    
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (appointment_id LIKE '%$searchVal%' OR patient_id LIKE '%$searchVal%' OR patient_name LIKE '%$searchVal%')";
+            }
+            
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE('added_on') BETWEEN '$startDate' AND '$endDate'";
+            }
+    
+            if (!empty($docId)) {
+                $searchSQL .= " AND doctor_id = '$docId'";
+            }
+    
+            if (!empty($empId)) {
+                $searchSQL .= " AND added_by = '$empId'";
+            }
+    
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+
+            $stmt = $this->conn->prepare($searchSQL);
+
+            if(!$stmt){
+                throw new Exception('statement preaper exception');
+            }
+
+            foreach ($params as $param => &$value) {
+                $stmt->bindParam($param, $value);
+            }
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $appointmentsResult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsResult[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $appointmentsResult]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+    
+    
+
+    
+
+
+
+
     function appointmentsFilterByDate($fromDate='', $toDate='', $adminId=''){
         try {
             if (!empty($adminId)) {
