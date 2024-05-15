@@ -242,6 +242,29 @@ class Products extends DatabaseConnection
     }
 
 
+    function productByName($prodName)
+    {
+        try {
+            $slectProduct = "SELECT * FROM products WHERE name = ?";
+            $stmt = $this->conn->prepare($slectProduct);
+
+            $stmt->bind_param("s", $prodName);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows == 0) {
+                return json_encode(['status' => '0', 'data' => '']);
+            } else {
+                return json_encode(['status' => '1', 'data' => $result]);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'data' => $e->getMessage()]);
+        } finally {
+            $stmt->close();
+        }
+    }
 
 
 
