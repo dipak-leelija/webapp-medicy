@@ -184,14 +184,14 @@ if ($allAppointments->status) {
                                 <div class="d-flex">
                                     <div class="col-md-6 col-6 mt-2">
                                         <div class="input-group">
-                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" onkeyup="filterAppointmentByValue()">
+                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()"*/>
 
-                                            <!-- <div class="input-group-append" id="appointment-search-filter-1">
+                                            <div class="input-group-append" id="appointment-search-filter-1">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
-                                            </div> -->
+                                            </div>
 
                                             <!-- <div class="d-none input-group-append" > -->
-                                                <button class=" d-none btn btn-sm btn-outline-primary shadow-none" id="appointment-search-reset-1"type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                                <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1"type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                             <!-- </div> -->
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@ if ($allAppointments->status) {
                                             <option value="PFY">Previous Fiscal Year</option>
                                             <option value="CR">Custom Range </option>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="appointment-search-reset-2" onclick="resteUrl(this.id)" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
 
                                         <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
                                         <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
@@ -229,7 +229,7 @@ if ($allAppointments->status) {
 
                                             ?>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
 
                                         <label class="d-none" id="select-docId"><?php echo $docId; ?></label>
                                     </div>
@@ -246,7 +246,7 @@ if ($allAppointments->status) {
 
                                             ?>
                                         </select>
-                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="appointment-search-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
 
                                         <label class="d-none" id="select-empId"><?php echo $empId; ?></label>
                                     </div>
@@ -254,6 +254,7 @@ if ($allAppointments->status) {
                             </div>
 
                             <label class="d-none" id="date-range-control-flag">0</label>
+                            <label class="d-none" id="url-control-flag">0</label>
                             <div class="dropdown-menu  p-2 row ml-4 mt-2" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
