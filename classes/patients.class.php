@@ -5,33 +5,35 @@ require_once 'dbconnect.php';
 
 
 
-class Patients extends DatabaseConnection{
+class Patients extends DatabaseConnection
+{
 
-    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId){
+    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId)
+    {
 
-    try {
-        $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmt = $this->conn->prepare($insertPatients);
+            $stmt = $this->conn->prepare($insertPatients);
 
-        if ($stmt) {
-            $stmt->bind_param("ssssssssssssissss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId);
+            if ($stmt) {
+                $stmt->bind_param("ssssssssssssissss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId);
 
-            if ($stmt->execute()) {
-                $stmt->close();
-                return true;
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    return true;
+                } else {
+                    $stmt->close();
+                    return false;
+                }
             } else {
-                $stmt->close();
-                return false;
+                throw new Exception("Error preparing statement: " . $this->conn->error);
             }
-        } else {
-            throw new Exception("Error preparing statement: " . $this->conn->error);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
     }
-}
 
 
 
@@ -107,7 +109,7 @@ class Patients extends DatabaseConnection{
     }
 
 
-    function allPatients($admin='')
+    function allPatients($admin = '')
     {
 
         $data = array();
@@ -144,16 +146,16 @@ class Patients extends DatabaseConnection{
 
 
 
-    function filterPatientByNameOrPid($data='', $adminId='')
+    function filterPatientByNameOrPid($data = '', $adminId = '')
     {
         // function filterAppointmentsByIdOrName($col, $data, $adminId){
         try {
             if (!empty($adminId)) {
-            $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? AND admin_id = ? ORDER BY id DESC");
-            $searchPattern = "%" . $data . "%";
-            $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
-            }else{
-                $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? ORDER BY id DESC");  
+                $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? AND admin_id = ? ORDER BY id DESC");
+                $searchPattern = "%" . $data . "%";
+                $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
+            } else {
+                $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? ORDER BY id DESC");
                 $searchPattern = "%" . $data . "%";
                 $stmt->bind_param("ss", $searchPattern, $searchPattern);
             }
@@ -187,21 +189,22 @@ class Patients extends DatabaseConnection{
 
 
 
-    function chekPatientsDataOnColumn($column, $data, $adminId){
+    function chekPatientsDataOnColumn($column, $data, $adminId)
+    {
         try {
             $selectData = "SELECT * FROM `patient_details` WHERE $column = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($selectData);
-            
-            if(!$stmt){
+
+            if (!$stmt) {
                 throw new Exception('Error in preparing SQL statement');
             }
-            
-            $stmt->bind_param("ss", $data, $adminId); 
-            
+
+            $stmt->bind_param("ss", $data, $adminId);
+
             $stmt->execute();
-            
+
             $result = $stmt->get_result();
-    
+
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {
@@ -211,29 +214,28 @@ class Patients extends DatabaseConnection{
             } else {
                 return json_encode(['status' => 0, 'message' => 'No data found', 'data' => '']);
             }
-            
+
             $stmt->close();
-            
         } catch (Exception $e) {
             return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => '']);
         }
     }
-    
-    
 
 
 
 
-    function patientFilterByColData($col='', $data='', $admin='')
+
+
+    function patientFilterByColData($col = '', $data = '', $admin = '')
     {
         try {
             if (!empty($adminId)) {
-            $selectById = "SELECT * FROM patient_details WHERE `$col` = ? AND `admin_id` = ?";
-            $stmt = $this->conn->prepare($selectById);
-            $stmt->bind_param("si", $data, $admin);
-            }else{
-            $selectById = "SELECT * FROM patient_details WHERE `$col` = ?";
-            $stmt = $this->conn->prepare($selectById);
+                $selectById = "SELECT * FROM patient_details WHERE `$col` = ? AND `admin_id` = ?";
+                $stmt = $this->conn->prepare($selectById);
+                $stmt->bind_param("si", $data, $admin);
+            } else {
+                $selectById = "SELECT * FROM patient_details WHERE `$col` = ?";
+                $stmt = $this->conn->prepare($selectById);
             }
 
             if ($stmt) {
@@ -296,19 +298,18 @@ class Patients extends DatabaseConnection{
 
 
 
-    function patientFilterByDate($fromDate='', $toDate='', $admin='')
+    function patientFilterByDate($fromDate = '', $toDate = '', $admin = '')
     {
         try {
             if (!empty($adminId)) {
-            $selectByDate = "SELECT * FROM `patient_details`
+                $selectByDate = "SELECT * FROM `patient_details`
                             WHERE added_on BETWEEN '$fromDate' AND '$toDate'
                             AND admin_id = '$admin'";
-             $stmt = $this->conn->prepare($selectByDate);
-
-            }else{
-            $selectByDate = "SELECT * FROM `patient_details`
+                $stmt = $this->conn->prepare($selectByDate);
+            } else {
+                $selectByDate = "SELECT * FROM `patient_details`
                             WHERE added_on BETWEEN '$fromDate' AND '$toDate'";
-            $stmt = $this->conn->prepare($selectByDate);                
+                $stmt = $this->conn->prepare($selectByDate);
             }
             // $stmt = $this->conn->prepare($selectByDate);
 
@@ -444,13 +445,13 @@ class Patients extends DatabaseConnection{
 
 
     /// find new patient using visited and lab_visited attribute ///
-    function newPatientCount($adminId='')
+    function newPatientCount($adminId = '')
     {
         try {
 
-            if(!empty($adminId)){
+            if (!empty($adminId)) {
                 $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
-            }else{
+            } else {
                 $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE  `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
             }
 
@@ -472,13 +473,13 @@ class Patients extends DatabaseConnection{
     }
 
     // new patient by day //
-    function newPatientByDay($adminId='', $startDate='')
+    function newPatientByDay($adminId = '', $startDate = '')
     {
         try {
 
-            if(!empty($adminId)){
-            $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
-            }else{
+            if (!empty($adminId)) {
+                $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
+            } else {
                 $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
             }
             $result = $this->conn->query($sql);
@@ -500,16 +501,16 @@ class Patients extends DatabaseConnection{
     }
 
     /// new patient count last 24 hrs ///
-    function newPatientCountLast24Hours($adminId='')
+    function newPatientCountLast24Hours($adminId = '')
     {
         try {
-            if(!empty($adminId)){
-            $sql = "SELECT COUNT(*) as patient_count , added_on
+            if (!empty($adminId)) {
+                $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
-            }else{
+            } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `visited` = '1' AND `lab_visited` = '1'
@@ -531,16 +532,16 @@ class Patients extends DatabaseConnection{
     }
 
     /// new patient count last 7 days /// 
-    function newPatientCountLast7Days($adminId='')
+    function newPatientCountLast7Days($adminId = '')
     {
         try {
-            if(!empty($adminId)){
-            $sql = "SELECT COUNT(*) as patient_count , added_on
+            if (!empty($adminId)) {
+                $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
-            }else{
+            } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `visited` = '1' AND `lab_visited` = '1'
@@ -563,20 +564,20 @@ class Patients extends DatabaseConnection{
 
 
     /// new patient count last 30 Days ///
-    function newPatientCountLast30Days($adminId='')
+    function newPatientCountLast30Days($adminId = '')
     {
         try {
-            if(!empty($adminId)){
-            $sql = "SELECT COUNT(*) as patient_count , added_on 
+            if (!empty($adminId)) {
+                $sql = "SELECT COUNT(*) as patient_count , added_on 
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
-            }else{
+            } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on 
                 FROM `patient_details` 
                 WHERE `visited` = '1' AND `lab_visited` = '1'
-                AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)"; 
+                AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
             }
             $result = $this->conn->query($sql);
             if ($result !== false) {
@@ -594,16 +595,16 @@ class Patients extends DatabaseConnection{
     }
 
     /// new patient count based on range //
-    function findPatientsInRangeDate($adminId='', $startDate='', $endDate='')
+    function findPatientsInRangeDate($adminId = '', $startDate = '', $endDate = '')
     {
         try {
-            if(!empty($adminId)){
-            $sql = "SELECT COUNT(*) AS patient_count,added_on
+            if (!empty($adminId)) {
+                $sql = "SELECT COUNT(*) AS patient_count,added_on
             FROM `patient_details` 
             WHERE `admin_id` = '$adminId' 
             AND `visited` = '1' AND `lab_visited` = '1'
             AND `added_on` BETWEEN '$startDate' AND '$endDate' GROUP BY added_on";
-            }else{
+            } else {
                 $sql = "SELECT COUNT(*) AS patient_count,added_on
                 FROM `patient_details` 
                 WHERE `visited` = '1' AND `lab_visited` = '1'
@@ -624,4 +625,73 @@ class Patients extends DatabaseConnection{
             return [];
         }
     }
-}//end class
+    //end class
+
+
+
+    // patient data filter function
+    function patientDataSearchFilter($searchVal='', $startDate='', $endDate='', $empId='', $adminId='')
+    {
+        try {
+            $searchSQL = "SELECT * FROM patient_details WHERE 1=1";
+
+            // Array to hold query parameters
+            $params = array();
+            $types = '';
+
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (patient_id LIKE ? OR 'name' LIKE ? OR phno LIKE ?)";
+                $searchValParam = "%$searchVal%";
+                $params[] = $searchValParam;
+                $params[] = $searchValParam;
+                $params[] = $searchValParam;
+                $types .= 'sss';
+            }
+
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE(added_on) BETWEEN ? AND ?";
+                $params[] = $startDate;
+                $params[] = $endDate;
+                $types .= 'ss';
+            }
+
+            if (!empty($empId)) {
+                $searchSQL .= " AND added_by = ?";
+                $params[] = $empId;
+                $types .= 's';
+            }
+
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = ?";
+                $params[] = $adminId;
+                $types .= 's';
+            }
+
+            $stmt = $this->conn->prepare($searchSQL);
+
+            if (!$stmt) {
+                throw new Exception('Statement preparation exception');
+            }
+
+            // Bind parameters dynamically
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $appointmentsResult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsResult[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $appointmentsResult]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+}

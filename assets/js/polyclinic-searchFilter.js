@@ -32,16 +32,17 @@ function calculateDate(days) {
 
 // data fetch area
 const filterAppointmentByValue = () => {
-    var currentUrl = newUrl = window.location.origin + window.location.pathname;
+    let currentUrl = newUrl = window.location.origin + window.location.pathname;
 
     // custom range control
     document.getElementById('dtPickerDiv').style.display = 'none'; // date picker div control
-    var customDateRangeFlag = document.getElementById('date-range-control-flag');
+    let customDateRangeFlag = document.getElementById('date-range-control-flag');
+    let urlControlFlag = document.getElementById('url-control-flag');
     let parameters = ''
     
     // filter data fetch area
-    let searchKey = document.getElementById('appointment_search');  // search by input value
-    let fIlter1 = document.getElementById('added_on');    // date filter
+    let searchKey = document.getElementById('search-by-id-name-contact');  // search by input value
+    let filter = document.getElementById('added_on');    // date filter
     let filter2 = document.getElementById('doctor_id');   // doctor filter
     let filter3 = document.getElementById('added_by');    // employee filter
 
@@ -68,9 +69,9 @@ const filterAppointmentByValue = () => {
     
 
     // date filter check and data control area 
-    if(fIlter1.value != ''){
+    if(filter.value != ''){
 
-        if(fIlter1.value == 'T'){            // 'T' -> (date filter today)   
+        if(filter.value == 'T'){            // 'T' -> (date filter today)   
             startDate = currentDate;
             endDate = currentDate;
             
@@ -78,7 +79,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'Y'){            // 'Y' -> (date filter yeesterday)  
+        if(filter.value == 'Y'){            // 'Y' -> (date filter yeesterday)  
             startDate = calculateDate('1');
             endDate = currentDate;
             
@@ -86,7 +87,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'LW'){            // 'LW' -> (date filter last 7 days)  
+        if(filter.value == 'LW'){            // 'LW' -> (date filter last 7 days)  
             startDate = calculateDate('7');
             endDate = currentDate;
             
@@ -94,7 +95,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'LM'){            // 'LM' -> (date filter last 30 days)  
+        if(filter.value == 'LM'){            // 'LM' -> (date filter last 30 days)  
             startDate = calculateDate('30');
             endDate = currentDate;
             
@@ -102,7 +103,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'LQ'){            // 'LQ' -> (date filter last 90 days)  
+        if(filter.value == 'LQ'){            // 'LQ' -> (date filter last 90 days)  
             startDate = calculateDate('90');
             endDate = currentDate;
             
@@ -110,7 +111,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'CFY'){           // 'T' -> (date filter today)  
+        if(filter.value == 'CFY'){           // 'T' -> (date filter today)  
             let currentYr =  year;
             let fiscalYr = parseInt(year) + 1;
                      
@@ -121,7 +122,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'PFY'){            // 'T' -> (date filter today)  
+        if(filter.value == 'PFY'){            // 'T' -> (date filter today)  
             let fiscalYr = parseInt(year) - 1;
 
             startDate = '01-04-'+fiscalYr;
@@ -131,12 +132,13 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(fIlter1.value == 'CR'){            // 'CR' -> (custom range)
-
+        console.log(filter.value);
+        if(filter.value == 'CR'){            // 'CR' -> (custom range)
             document.getElementById('dtPickerDiv').style.display = 'block';
             if(customDateRangeFlag.innerHTML == '1'){
                 startDate = formatDate(document.getElementById('from-date').value);
                 endDate = formatDate(document.getElementById('to-date').value);
+                urlControlFlag.innerHTML = '1';
             }
             customDateRangeFlag.innerHTML = '1';
         }
@@ -151,7 +153,6 @@ const filterAppointmentByValue = () => {
     // doctor filter set
     if(filter2.value != ''){
         docIdVal.innerHTML = filter2.value;
-        
     }
     if(docIdVal.innerHTML != ''){
         parameters +=  `&docIdFilter=${docIdVal.innerHTML}`;
@@ -165,53 +166,61 @@ const filterAppointmentByValue = () => {
         parameters +=  `&staffIdFilter=${empIdVal.innerHTML}`;
     }
 
+    if(urlControlFlag.innerHTML == '1'){
+        customDateRangeFlag.innerHTML = '0';
+        urlControlFlag.innerHTML = '0';
+        document.getElementById('dtPickerDiv').style.display = 'none';
+    }
+
 
     // update url
-    var newUrl = `${currentUrl}?${parameters}`;
-    window.location.replace(newUrl);
+    if(customDateRangeFlag.innerHTML == '0'){
+        var newUrl = `${currentUrl}?${parameters}`;
+        window.location.replace(newUrl);
+    }
 }
 
 
 const checkResetFilter = ()=>{
-    if(document.getElementById('appointment_search').value != ''){
-        document.getElementById('appointment-search-reset-1').classList.remove('d-none');
+    if(document.getElementById('search-by-id-name-contact').value != ''){
+        document.getElementById('filter-reset-1').classList.remove('d-none');
     }else{
-        document.getElementById('appointment-search-reset-1').classList.add('d-none');
+        document.getElementById('filter-reset-1').classList.add('d-none');
     }
     if(document.getElementById('select-start-date').innerHTML != ''){
-        document.getElementById('appointment-search-reset-2').classList.remove('d-none');
+        document.getElementById('filter-reset-2').classList.remove('d-none');
     }else{
-        document.getElementById('appointment-search-reset-2').classList.add('d-none');
+        document.getElementById('filter-reset-2').classList.add('d-none');
     }
     if(document.getElementById('select-docId').innerHTML != ''){
-        document.getElementById('appointment-search-reset-3').classList.remove('d-none');
+        document.getElementById('filter-reset-3').classList.remove('d-none');
     }else{
-        document.getElementById('appointment-search-reset-3').classList.add('d-none');
+        document.getElementById('filter-reset-3').classList.add('d-none');
     }
     if(document.getElementById('select-empId').innerHTML != ''){
-        document.getElementById('appointment-search-reset-4').classList.remove('d-none');
+        document.getElementById('filter-reset-4').classList.remove('d-none');
     }else{
-        document.getElementById('appointment-search-reset-4').classList.add('d-none');
+        document.getElementById('filter-reset-4').classList.add('d-none');
     }
 }
 
 // reset url function
 const resteUrl = (thisId)=>{
     console.log(thisId);
-    if(thisId == 'appointment-search-reset-1'){
-        document.getElementById('appointment_search').value = ''; 
+    if(thisId == 'filter-reset-1'){
+        document.getElementById('search-by-id-name-contact').value = ''; 
     }
 
-    if(thisId == 'appointment-search-reset-2'){
+    if(thisId == 'filter-reset-2'){
         document.getElementById('select-start-date').innerHTML = '';
         document.getElementById('select-end-date').innerHTML = '';
     }
 
-    if(thisId == 'appointment-search-reset-3'){
+    if(thisId == 'filter-reset-3'){
         document.getElementById('select-docId').innerHTML = '';
     }
 
-    if(thisId == 'appointment-search-reset-4'){
+    if(thisId == 'filter-reset-4'){
         document.getElementById('select-empId').innerHTML = ''; 
     }
 

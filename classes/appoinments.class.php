@@ -290,7 +290,7 @@ class Appointments extends DatabaseConnection
             $params = array();
     
             if (!empty($searchVal)) {
-                $searchSQL .= " AND (appointment_id LIKE '%$searchVal%' OR patient_id LIKE '%$searchVal%' OR patient_name LIKE '%$searchVal%')";
+                $searchSQL .= " AND (appointment_id LIKE '%$searchVal%' OR patient_id LIKE '%$searchVal%' OR patient_name LIKE '%$searchVal%' OR patient_phno LIKE '%$searchVal%')";
             }
             
             if (!empty($startDate) && !empty($endDate)) {
