@@ -1,7 +1,3 @@
-// ==========================================================
-// ================= DATA FILTER ACTION AREA ================
-// ==========================================================
-
 // ============= date format controler ===============
 function formatDate(dateString) {
     let dateParts = dateString.split('-');
@@ -30,9 +26,12 @@ function calculateDate(days) {
     return formattedDate;
 }
 
-// data fetch area
-const filterAppointmentByValue = () => {
-    let currentUrl = newUrl = window.location.origin + window.location.pathname;
+
+
+const pharmacySearchFilter1 = () => {
+
+    // current url path
+    let currentUrl = newUrl = window.location.origin + window.location.pathname; // holding current location
 
     // custom range control
     document.getElementById('dtPickerDiv').style.display = 'none'; // date picker div control
@@ -41,15 +40,13 @@ const filterAppointmentByValue = () => {
     let parameters = ''
     
     // filter data fetch area
-    let searchKey = document.getElementById('search-by-id-name-contact');  // search by input value
+    let searchKey = document.getElementById('data-search');  // search by input value
     let filter = document.getElementById('added_on');    // date filter
-    let filter2 = document.getElementById('doctor_id');   // doctor filter
-    let filter3 = document.getElementById('added_by');    // employee filter
+    let filter2 = document.getElementById('payment_mode');  // payment mode filter
 
     let dtValStart = document.getElementById('select-start-date');
     let dtValEnd = document.getElementById('select-end-date');
-    let docIdVal = document.getElementById('select-docId');
-    let empIdVal = document.getElementById('select-empId');
+    let paymentModeVal = document.getElementById('select-payment-mode');
 
     // date contorl area
     let date = new Date();
@@ -61,12 +58,13 @@ const filterAppointmentByValue = () => {
     let startDate = '';
     let endDate = '';
 
-    
     // search key check
     if(searchKey.value != ''){
+
+        // ajax code for 
+
         parameters +=  `&search=${searchKey.value}`;
     }
-    
 
     // date filter check and data control area 
     if(filter.value != ''){
@@ -111,7 +109,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(filter.value == 'CFY'){           // 'T' -> (date filter today)  
+        if(filter.value == 'CFY'){           // 'CFY' -> (date filter curremt fiscal year)  
             let currentYr =  year;
             let fiscalYr = parseInt(year) + 1;
                      
@@ -122,7 +120,7 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        if(filter.value == 'PFY'){            // 'T' -> (date filter today)  
+        if(filter.value == 'PFY'){            // 'PFY' -> (date filter previous fiscal year)  
             let fiscalYr = parseInt(year) - 1;
 
             startDate = '01-04-'+fiscalYr;
@@ -132,7 +130,6 @@ const filterAppointmentByValue = () => {
             document.getElementById('dtPickerDiv').style.display = 'none';
         }
 
-        console.log(filter.value);
         if(filter.value == 'CR'){            // 'CR' -> (custom range)
             document.getElementById('dtPickerDiv').style.display = 'block';
             if(customDateRangeFlag.innerHTML == '1'){
@@ -152,26 +149,17 @@ const filterAppointmentByValue = () => {
 
     // doctor filter set
     if(filter2.value != ''){
-        docIdVal.innerHTML = filter2.value;
+        paymentModeVal.innerHTML = filter2.value;
     }
-    if(docIdVal.innerHTML != ''){
-        parameters +=  `&docIdFilter=${docIdVal.innerHTML}`;
+    if(paymentModeVal.innerHTML != ''){
+        parameters +=  `&paymentMode=${paymentModeVal.innerHTML}`;
     }
-
-    // employee filter set
-    if(filter3.value != ''){
-        empIdVal.innerHTML = filter3.value;
-    }
-    if(empIdVal.innerHTML != ''){
-        parameters +=  `&staffIdFilter=${empIdVal.innerHTML}`;
-    }
-
+  
     if(urlControlFlag.innerHTML == '1'){
         customDateRangeFlag.innerHTML = '0';
         urlControlFlag.innerHTML = '0';
         document.getElementById('dtPickerDiv').style.display = 'none';
     }
-
 
     // update url
     if(customDateRangeFlag.innerHTML == '0'){
@@ -181,8 +169,10 @@ const filterAppointmentByValue = () => {
 }
 
 
+
+
 const checkResetFilter = ()=>{
-    if(document.getElementById('search-by-id-name-contact').value != ''){
+    if(document.getElementById('data-search').value != ''){
         document.getElementById('filter-reset-1').classList.remove('d-none');
     }else{
         document.getElementById('filter-reset-1').classList.add('d-none');
@@ -192,21 +182,15 @@ const checkResetFilter = ()=>{
     }else{
         document.getElementById('filter-reset-2').classList.add('d-none');
     }
-    if(document.getElementById('select-docId').innerHTML != ''){
+    if(document.getElementById('select-payment-mode').innerHTML != ''){
         document.getElementById('filter-reset-3').classList.remove('d-none');
     }else{
         document.getElementById('filter-reset-3').classList.add('d-none');
-    }
-    if(document.getElementById('select-empId').innerHTML != ''){
-        document.getElementById('filter-reset-4').classList.remove('d-none');
-    }else{
-        document.getElementById('filter-reset-4').classList.add('d-none');
     }
 }
 
 // reset url function
 const resteUrl = (thisId)=>{
-    console.log(thisId);
     if(thisId == 'filter-reset-1'){
         document.getElementById('search-by-id-name-contact').value = ''; 
     }
@@ -217,14 +201,10 @@ const resteUrl = (thisId)=>{
     }
 
     if(thisId == 'filter-reset-3'){
-        document.getElementById('select-docId').innerHTML = '';
+        document.getElementById('select-payment-mode').innerHTML = '';
     }
 
-    if(thisId == 'filter-reset-4'){
-        document.getElementById('select-empId').innerHTML = ''; 
-    }
-
-    filterAppointmentByValue();
+    pharmacySearchFilter1();
     checkResetFilter();
 }
 

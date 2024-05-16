@@ -22,82 +22,35 @@ $employeeDetails = $employeeDetails->data;
 
 
 // ============== PATIENT DATA ===============
-if (isset($_GET['search'])) {
-    if ($_GET['search'] == 'added_by') {
-        $col = $_GET['search'];
-        $data = $_GET['searchKey'];
+$searchVal = '';
+$match = '';
+$startDate = '';
+$endDate = '';
+$docId = '';
+$empId = '';
 
-        $allPatients = $Patients->patientFilterByColData($col, $data, $adminId);
+
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['staffIdFilter'])) {
+
+    if (isset($_GET['search'])) {
+        $searchVal = $match = $_GET['search'];
     }
 
-    if ($_GET['search'] == 'search-by-id-name') {
-        $data = $_GET['searchKey'];
-
-        $allPatients = $Patients->filterPatientByNameOrPid($data, $adminId);
+    if (isset($_GET['dateFilterStart'])) {
+        $startDate = $_GET['dateFilterStart'];
+        $endDate = $_GET['dateFilterEnd'];
     }
 
-    if ($_GET['search'] == 'added_on') {
-        $value = $_GET['searchKey'];
-
-        if ($value == 'T') {
-            $fromDt = date('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'Y') {
-            $fromDt = new DateTime('yesterday');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = $fromDt;
-        }
-
-        if ($value == 'LW') {
-            $fromDt = new DateTime('-7 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LM') {
-            $fromDt = new DateTime('-30 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LQ') {
-            $fromDt = new DateTime('-90 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'CFY') {
-            $currentYear = new DateTime();
-            $fiscalYear = $currentYear->format('Y');
-            $fiscalYear = intval($fiscalYear) + 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $currentYear . '-04-01';
-            $toDt = $fiscalYear . '-03-31';
-        }
-
-        if ($value == 'PFY') {
-            $currentYear = new DateTime();
-            $prevFiscalYr = $currentYear->format('Y');
-            $prevFiscalYr = intval($prevFiscalYr) - 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $prevFiscalYr . '-04-01';
-            $toDt = $currentYear . '-03-31';
-        }
-
-        if ($value == 'CR') {
-            $fromDt = $_GET['fromDt'];
-            $toDt = $_GET['toDt'];
-        }
-
-        // echo "$fromDt<br>";
-        // echo $toDt;
-
-        $allPatients = $Patients->patientFilterByDate($fromDt, $toDt, $adminId);
+    if (isset($_GET['docIdFilter'])) {
+        $docId = $_GET['docIdFilter'];
     }
+
+    if (isset($_GET['staffIdFilter'])) {
+        $empId = $_GET['staffIdFilter'];
+    }
+
+    $allPatients = $Patients->patientDataSearchFilter($searchVal, $startDate, $endDate, $empId, $adminId);
+    // print_r($allAppointments);
 } else {
     $allPatients = $Patients->allPatients($adminId);
 }
@@ -112,8 +65,8 @@ if ($allPatients->status) {
             $slicedPatients = '';
             $paginationHTML = '';
             $totalItem = '';
-            if (property_exists($response, 'totalitem')) 
-            $totalItem = $slicedPatients = $response->totalitem;
+            if (property_exists($response, 'totalitem'))
+                $totalItem = $slicedPatients = $response->totalitem;
 
             if ($response->status == 1) {
                 $slicedPatients = $response->items;
@@ -186,48 +139,73 @@ if ($allPatients->status) {
                         <div class="card-header py-3 justify-content-between">
 
                             <div class="row">
-                                <div class="col-md-3 mt-md-2">
+                                <div class="col-3 col-md-3 mt-md-2">
                                     <h6 class="font-weight-bold text-primary">List of Patients : <?= $totalItem ?></h6>
                                 </div>
 
-                                <div class="col-md-3 mt-2">
+                                <div class="col-2 col-md-3 mt-2">
                                     <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Patients ID / Patient Name" name="search-by-id-name" id="search-by-id-name" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
+                                        <input class="cvx-inp" type="text" placeholder="Patients ID / Patient Name" name="search-by-id-name" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
 
                                         <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterPatients()"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                         </div>
+
+                                        <button class=" btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear Search Filter" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 mt-2">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
-                                        <option value="" disabled="" selected="">Select Duration</option>
-                                        <option value="T">Today</option>
-                                        <option value="Y">yesterday</option>
-                                        <option value="LW">Last 7 Days</option>
-                                        <option value="LM">Last 30 Days</option>
-                                        <option value="LQ">Last 90 Days</option>
-                                        <option value="CFY">Current Fiscal Year</option>
-                                        <option value="PFY">Previous Fiscal Year</option>
-                                        <option value="CR">Custom Range </option>
-                                    </select>
+                                <div class="col-3 col-md-3 mt-2 d-flex">
+                                    <div class="input-group">
+                                        <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue()">
+                                            <option value="" disabled="" selected="">Select Duration</option>
+                                            <option value="T">Today</option>
+                                            <option value="Y">yesterday</option>
+                                            <option value="LW">Last 7 Days</option>
+                                            <option value="LM">Last 30 Days</option>
+                                            <option value="LQ">Last 90 Days</option>
+                                            <option value="CFY">Current Fiscal Year</option>
+                                            <option value="PFY">Previous Fiscal Year</option>
+                                            <option value="CR">Custom Range </option>
+                                        </select>
+                                    </div>
+
+                                    <button class="input-group-append  btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white; height: 29px" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear Date Filter" ><i class="fas fa-times"></i></button>
+
+
+                                    <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
+                                    <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
                                 </div>
 
-                                <div class="col-md-3 mt-2">
-                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
-                                        <option value="" disabled="" selected="">Select Staff
-                                        </option>
-                                        <?php
-                                        foreach ($employeeDetails as $empData) {
-                                            echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
-                                        }
-                                        ?>
-                                    </select>
+                                <div class="doc-control d-none">
+                                    <input class="d-none" type="text" id="doctor_id" value="">
+                                    <label class="d-none" id="select-docId"></label>
+                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                </div>
+
+                                <div class="col 3 col-md-3 mt-2 d-flex">
+                                    <div class="input-group">
+                                        <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue()">
+                                            <option value="" disabled="" selected="">Select Staff
+                                            </option>
+                                            <?php
+                                            foreach ($employeeDetails as $empData) {
+                                                echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-4" style="z-index: 100; background: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear Epployee Filter" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+
+
+                                    <label class="d-none" id="select-empId"><?php echo $empId; ?></label>
                                 </div>
                             </div>
 
                             <div class="dropdown-menu row " id="dtPickerDiv" style="display: none;position: relative;margin-left: 356px; background-color: rgba(255, 255, 255, 0.8);">
+                                <label class="d-none" id="date-range-control-flag">0</label>
+                                <label class="d-none" id="url-control-flag">0</label>
                                 <div class="col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
@@ -277,20 +255,20 @@ if ($allPatients->status) {
                                                 $slicedPatientsLabVisited = $slicedPatientsdetails->lab_visited;
                                                 $slicedPatientsPin = $slicedPatientsdetails->patient_pin;
                                                 echo '<tr>
-                                         <td>'. $slicedPatientsID .'</td>
-                                         <td>'. $slicedPatientsName .'</td>
-                                         <td>'. $slicedPatientsAge .'</td>
-                                         <td><a class="text-decoration-none" href="tel:$slicedPatientsPhone">'. $slicedPatientsPhone .'</a></td>
+                                         <td>' . $slicedPatientsID . '</td>
+                                         <td>' . $slicedPatientsName . '</td>
+                                         <td>' . $slicedPatientsAge . '</td>
+                                         <td><a class="text-decoration-none" href="tel:$slicedPatientsPhone">' . $slicedPatientsPhone . '</a></td>
                                          <td class="align-middle pb-0 pt-0">
                                              <small class="small">
-                                                 <span>Doctor: '. $slicedPatientsVisited .'</span>
+                                                 <span>Doctor: ' . $slicedPatientsVisited . '</span>
                                                  <br>
-                                                 <span>Lab: '. $slicedPatientsLabVisited .'</span></small>
+                                                 <span>Lab: ' . $slicedPatientsLabVisited . '</span></small>
                                          </td>
-                                         <td> '.$slicedPatientsPin.'</td>
+                                         <td> ' . $slicedPatientsPin . '</td>
 
                                          <td class="text-center">
-                                             <a class="text-primary" href="patient-details.php?patient='. url_enc($slicedPatientsID).'"
+                                             <a class="text-primary" href="patient-details.php?patient=' . url_enc($slicedPatientsID) . '"
                                                  title="View and Edit"><i class="fas fa-eye"></i>
                                              </a>
                                          </td>
@@ -361,16 +339,12 @@ if ($allPatients->status) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-    <!-- Page level plugins -->
-    <!-- <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script> -->
-    <!-- Page level custom scripts -->
-    <!-- <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script> -->
-    <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
+    <!-- polyclinic search filter script  -->
+    <script src="<?= JS_PATH ?>polyclinic-searchFilter.js"></script>
 
-    
+
     <script>
-
+        /*
         const returnFilter = (t) => {
 
             document.getElementById('dtPickerDiv').style.display = 'none';
@@ -421,7 +395,7 @@ if ($allPatients->status) {
 
             window.location.replace(newUrl);
         }
-
+        */
     </script>
 </body>
 

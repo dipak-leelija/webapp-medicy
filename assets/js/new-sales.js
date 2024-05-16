@@ -114,6 +114,7 @@ const searchItem = (searchFor) => {
 
     if (searchFor.length == "") {
         searchReult.innerHTML = '';
+        document.getElementById('searched-batchNo').innerHTML = '';
 
         document.getElementById("product-name").value = '';
         document.getElementById("weightage").value = '';
@@ -249,11 +250,14 @@ const chekForm = () =>{
 }
 
 
+
        
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
 
+    document.getElementById('searched-batchNo').innerHTML = '';
+    
     var selectedItem = productId;
     var SelectedBatch = batchNo;
 
