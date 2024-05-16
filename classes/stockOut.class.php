@@ -70,34 +70,66 @@ class StockOut extends DatabaseConnection
 
 
 
-    function stockOutSearch($searchVal, $adminId){
+    function stockOutSearch($searchVal = '', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '') {
         try {
-            $billData = array();
-
-            $selectBill = "SELECT * FROM `stock_out` WHERE (`invoice_id` LIKE '%$searchVal%' OR `items` LIKE '%$searchVal%' OR `amount` LIKE '%$searchVal%' OR `payment_mode` LIKE '%$searchVal%' OR `bill_date` LIKE '%$searchVal%') AND `admin_id` = '$adminId'";
-
-            $stmt = $this->conn->prepare($selectBill);
-
-            if ($stmt) {
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_array()) {
-                        $billData[] = $row;
-                    }
-                    return $billData;
-                } else {
-                    return null;
+            // Base query
+            $searchSQL = "SELECT * FROM stock_out WHERE 1=1";
+            $params = array();
+            $types = '';
+    
+            // Adding search conditions
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (invoice_id LIKE '$searchVal' OR customer_id IN (SELECT patient_id FROM patient_details WHERE name LIKE '$searchVal') OR amount LIKE '$searchVal' OR bill_date LIKE '$searchVal' OR customer_id IN (SELECT patient_id FROM patient_details WHERE phno LIKE '$searchVal'))";
+            }
+    
+            // Adding date range condition
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE(added_on) BETWEEN STR_TO_DATE('$startDate', '%d-%m-%Y') AND STR_TO_DATE('$endDate', '%d-%m-%Y')";
+            }
+    
+            // Adding payment mode condition
+            if (!empty($paymentMode)) {
+                $searchSQL .= " AND payment_mode = '$paymentMode'";
+            }
+    
+            // Adding admin ID condition
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+    
+            // Prepare statement
+            $stmt = $this->conn->prepare($searchSQL);
+            if (!$stmt) {
+                throw new Exception('Statement preparation exception: ' . $this->conn->error);
+            }
+            
+            // Bind parameters dynamically
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            // Execute statement
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // Fetch data
+            if ($result->num_rows > 0) {
+                $salseData = array();
+                while ($row = $result->fetch_object()) {
+                    $salseData[] = $row;
                 }
-                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $salseData]);
             } else {
-                echo "Statement preparation failed: " . $this->conn->error;
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
             }
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
         }
     }
+    
+    
+    
+    
 
 
 

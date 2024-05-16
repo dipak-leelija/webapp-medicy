@@ -18,14 +18,37 @@ $Patients = new Patients();
 $Pagination      = new Pagination;
 
 
-if (isset($_GET['searchKey'])) {
-    $searchOn = $_GET['searchKey'];
-    $soldItems = $StockOut->stockOutSearch($searchOn, $adminId);
-    // print_r($soldItems);
+/// ======== SEARCH FILTER ACTION AREA ========
+$searchOn = '';
+$match = '';
+$startDate = '';
+$endDate = '';
+$payment = '';
+
+
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['paymentMode'])) {
+
+    if(isset($_GET['search'])){
+        $searchVal = $match = $_GET['search'];
+    }
+    
+    if(isset($_GET['dateFilterStart'])){
+        $startDate = $_GET['dateFilterStart'];
+        $endDate = $_GET['dateFilterEnd'];
+    }
+
+    if(isset($_GET['paymentMode'])){
+        $payment = $_GET['paymentMode'];
+    }
+
+    $soldItems = json_decode($StockOut->stockOutSearch($searchOn, $startDate, $endDate, $payment, $adminId));
+    $soldItems = $soldItems->data;
+
 } else {
     $soldItems = $StockOut->stockOutDisplay(strval($adminId));
 }
 
+/// ======== EOF SEARCH FILTER =========
 
 if (!empty($soldItems)) {
     if (is_array($soldItems)) {
@@ -45,7 +68,7 @@ if (!empty($soldItems)) {
     $totalItem = 0;
     $paginationHTML = '';
 }
-
+// print_r($slicedLabBills);
 
 ?>
 
@@ -106,19 +129,80 @@ if (!empty($soldItems)) {
                     </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
-                            <div class="col-md-10">
+                            <!-- search on invoice, patient name, contact number -->
+                            <div class="col-3 col-md-4">
                                 <div class="input-group">
-                                    <input class="cvx-inp" type="text" placeholder="Search..." name="sales-search" id="sales-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>">
+                                    <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>" autocomplete="off">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterSalesSearch()"><i class="fas fa-search"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
                                     </div>
+
+                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex justify-content-end">
+
+                            <!-- date filter select -->
+                            <div class="col-3 col-md-3 d-flex">
+                                <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
+                                    <option value="" disabled selected>Select Duration</option>
+                                    <option value="T">Today</option>
+                                    <option value="Y">yesterday</option>
+                                    <option value="LW">Last 7 Days</option>
+                                    <option value="LM">Last 30 Days</option>
+                                    <option value="LQ">Last 90 Days</option>
+                                    <option value="CFY">Current Fiscal Year</option>
+                                    <option value="PFY">Previous Fiscal Year</option>
+                                    <option value="CR">Custom Range </option>
+                                </select>
+                                <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
+                                <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
+                            </div>
+
+                            <!-- payment mode filter select -->
+                            <div class="col-3 col-md-3 d-flex">
+                                <select class="input-group cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
+                                    <option value="" disabled selected>Payment Mode</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Credit">Credit</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="CARD">CARD</option>
+                                </select>
+                                <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-3" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                <label class="d-none" id="select-payment-mode"><?php echo $payment; ?></label>
+                            </div>
+
+                            <div class="col-3 col-md-2 d-flex justify-content-end">
                                 <a class="btn btn-sm btn-primary" href="new-sales.php"> New Sell <i class="fas fa-plus"></i></a>
                             </div>
                         </div>
+
+
+                        <label class="d-none" id="date-range-control-flag">0</label>
+                        <label class="d-none" id="url-control-flag">0</label>
+                        <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class=" col-md-12" style="margin-left: 15rem;">
+                                <div class="d-flex">
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>Strat Date</label>
+                                        <input type="date" id="from-date" name="from-date">
+                                    </div>
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>End Date</label>
+                                        <input type="date" id="to-date" name="to-date">
+                                    </div>
+                                    <div class="dtPicker">
+                                        <button class="btn btn-sm btn-primary" onclick="pharmacySearchFilter1()">Find</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-sm " id="dataTable" width="100%" cellspacing="0">
@@ -136,14 +220,14 @@ if (!empty($soldItems)) {
                                     <tbody>
 
                                         <?php
-                                        if (count($soldItems) > 0) :
-                                            foreach ($soldItems as $soldItem) {
-                                                $invoice    = $soldItem['invoice_id'];
-                                                $patient    = $soldItem['customer_id'];
-                                                $billDate   = date_create($soldItem['bill_date']);
+                                        if ($totalItem > 0) :
+                                            foreach ($slicedLabBills  as $soldItem) {
+                                                $invoice    = $soldItem->invoice_id;
+                                                $patient    = $soldItem->customer_id;
+                                                $billDate   = date_create($soldItem->bill_date);
                                                 $billDate   = date_format($billDate, "d-m-Y");
-                                                $billAmount = $soldItem['amount'];
-                                                $paymentMode = $soldItem['payment_mode'];
+                                                $billAmount = $soldItem->amount;
+                                                $paymentMode = $soldItem->payment_mode;
 
                                                 if ($patient != 'Cash Sales') {
                                                     $patientName = json_decode($Patients->patientsDisplayByPId($patient));
@@ -170,7 +254,7 @@ if (!empty($soldItems)) {
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $invoice . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $patientName . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $billDate . "</td>
-                                                        <td onclick='viewBills(" . $invoice . ")'>" . $soldItem['items'] . "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $soldItem->items. "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $billAmount . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $paymentMode, $creditIcon . "</td>
                                                         <td>
@@ -247,13 +331,8 @@ if (!empty($soldItems)) {
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>pharmacy-searchFilter.js"></script>
 
-    <!--Data Table plugins -->
-    <!-- <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script> -->
-    <!-- <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script> -->
-
-    <!-- Page level custom scripts -->
-    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
 
     <script>
         $(function() {
@@ -268,21 +347,6 @@ if (!empty($soldItems)) {
                 url + '"></iframe>');
         }
 
-
-        //=========================================================
-
-        const filterSalesSearch = () => {
-
-            var searchFor = document.getElementById('sales-search').value;
-            console.log(searchFor);
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            if (searchFor.length > 0) {
-                var newURL = `${currentURLWithoutQuery}?searchKey=${searchFor}`;
-                window.location.replace(newURL);
-            } else {
-                alert('Please Enter Minimum 3 Character!');
-            }
-        }
     </script>
 
 </body>
