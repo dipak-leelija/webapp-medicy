@@ -331,7 +331,7 @@ if (!empty($soldItems)) {
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-    <script src="<?= JS_PATH ?>pharmacy-searchFilter.js"></script>
+    <script src="<?= JS_PATH ?>pharmacy-stockIn-stokOut-searchFilter.js"></script>
 
 
     <script>
