@@ -1,5 +1,5 @@
 <div class="col-12 alert alert-success alert-dismissible fade show" role="alert" id="drugPermit-update-success">
-    <strong>Success!</strong> Your provided data is uploaded successfully!.
+    <strong>Success!</strong> Your documents is uploaded successfully!.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
