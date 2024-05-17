@@ -197,7 +197,7 @@ const checkResetFilter = ()=>{
 // reset url function
 const resteUrl = (thisId)=>{
     if(thisId == 'filter-reset-1'){
-        document.getElementById('search-by-id-name-contact').value = ''; 
+        document.getElementById('data-search').value = ''; 
     }
 
     if(thisId == 'filter-reset-2'){

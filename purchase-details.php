@@ -166,7 +166,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                                 <div class="row mt-2 p-2">
                                     <div class="col-3 col-md-4">
                                         <div class="input-group">
-                                            <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>" autocomplete="off">
+                                            <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
