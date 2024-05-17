@@ -591,6 +591,66 @@ class StockIn extends DatabaseConnection
 
 
 
+    /// data filter function 
+    function stockInSearch($searchVal = '', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '') {
+        try {
+            // Base query
+            $searchSQL = "SELECT * FROM stock_in WHERE 1=1";
+            $params = array();
+            $types = '';
+    
+            // Adding search conditions
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (distributor_bill LIKE '$searchVal' OR distributor_id  IN (SELECT id  FROM distributor WHERE name LIKE '$searchVal') OR amount LIKE '$searchVal' OR bill_date LIKE '$searchVal' OR payment_mode LIKE '$searchVal')";
+            }
+    
+            // Adding date range condition
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE(added_on) BETWEEN STR_TO_DATE('$startDate', '%d-%m-%Y') AND STR_TO_DATE('$endDate', '%d-%m-%Y')";
+            }
+    
+            // Adding payment mode condition
+            if (!empty($paymentMode)) {
+                $searchSQL .= " AND payment_mode = '$paymentMode'";
+            }
+    
+            // Adding admin ID condition
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+    
+            // Prepare statement
+            $stmt = $this->conn->prepare($searchSQL);
+            if (!$stmt) {
+                throw new Exception('Statement preparation exception: ' . $this->conn->error);
+            }
+            
+            // Bind parameters dynamically
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            // Execute statement
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // Fetch data
+            if ($result->num_rows > 0) {
+                $purchaseData = array();
+                while ($row = $result->fetch_object()) {
+                    $purchaseData[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $purchaseData]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+    
+
+
 
 
 
