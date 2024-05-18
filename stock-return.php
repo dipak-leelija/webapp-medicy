@@ -190,7 +190,7 @@ if ($stockReturnLists->status == '1') {
 
                                         <div class="col-md-3 col-sm-3 d-flex">
                                             <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter2()">
-                                                <option value="" disabled selected>Select Duration</option>
+                                                <option value="" disabled selected>Filter by date</option>
                                                 <option value="T">Today</option>
                                                 <option value="Y">yesterday</option>
                                                 <option value="LW">Last 7 Days</option>
@@ -387,7 +387,7 @@ if ($stockReturnLists->status == '1') {
 
                                     <div class="col-md-3 col-sm-3 d-flex">
                                         <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter2()">
-                                            <option value="" disabled selected>Select Duration</option>
+                                            <option value="" disabled selected>Filter by date</option>
                                             <option value="T">Today</option>
                                             <option value="Y">yesterday</option>
                                             <option value="LW">Last 7 Days</option>
@@ -581,20 +581,6 @@ if ($stockReturnLists->status == '1') {
     <!-- custom script for stock return page -->
     <script src="<?= JS_PATH ?>stock-return-control.js"></script>
 
-    <script>
-        // // ---------------- local script -------------
-        // const filterData = () => {
-        //     var value = document.getElementById('stock-return-data-search').value;
-
-        //     var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-        //     if (value.length > 2) {
-        //         var newURL = `${currentURLWithoutQuery}?searchKey=${value}`;
-        //         window.location.replace(newURL);
-        //     } else {
-        //         alert('Please Enter Minimum 3 Character!');
-        //     }
-        // }
-    </script>
 </body>
 
 </html>

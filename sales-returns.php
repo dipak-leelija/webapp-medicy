@@ -11,23 +11,65 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
+require_once CLASS_DIR . 'admin.class.php';
+require_once CLASS_DIR . 'employee.class.php';
 
 $SalesReturn   = new SalesReturn();
 $Patients      = new Patients();
 $stockOut      = new StockOut();
 $currentStock  = new CurrentStock();
 $Pagination      = new Pagination;
+$Admin          = new Admin;
+$Employees       = new Employees;
+
+$empLists              = $Employees->employeesDisplay($adminId);
+
+/// ======== SEARCH FILTER ACTION AREA ========
+$searchVal = '';
+$match = '';
+$salesFrom = '';
+$salesTo = '';
+$returnFrom = '';
+$returnTo = '';
+$returnedBy = '';
 
 
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['itemReturnStartDt']) || isset($_GET['itemReturnEndDt']) || isset($_GET['addedBy'])) {
 
-if (isset($_GET['searchKey'])) {
-    $searchOn = $_GET['searchKey'];
-    $salesReturns = $SalesReturn->salesReturnSearch($searchOn, $adminId);
-    // print_r($salesReturns);
+    if (isset($_GET['search'])) {
+        $searchVal = $match = $_GET['search'];
+    }
+
+    if (isset($_GET['dateFilterStart'])) {
+        $salesFrom = $_GET['dateFilterStart'];
+        $salesTo = $_GET['dateFilterEnd'];
+    }
+
+    if (isset($_GET['itemReturnStartDt'])) {
+        $returnFrom = $_GET['itemReturnStartDt'];
+        $returnTo = $_GET['itemReturnEndDt'];
+    }
+
+
+    if (isset($_GET['addedBy'])) {
+        $returnedBy = $_GET['addedBy'];
+    }
+
+    $salesReturns = json_decode($SalesReturn->salesReturnSearchFilter($searchVal, $salesFrom, $salesTo, $returnFrom, $returnTo, $returnedBy,  $adminId));
+
+    if ($salesReturns->status) {
+        $salesReturns = $salesReturns->data;
+    } else {
+        $salesReturns = [];
+    }
 } else {
     $table1 = 'admin_id';
     $salesReturns = $SalesReturn->selectSalesReturn($table1, $adminId);
 }
+
+// print_r($salesReturns);
+/// ======== EOF SEARCH FILTER =========
+
 
 if (!empty($salesReturns)) {
     if (is_array($salesReturns)) {
@@ -111,19 +153,126 @@ if (!empty($salesReturns)) {
                     <!-- Showing Sell Items  -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
-                            <div class="col-md-10">
-                                <div class="input-group w-25">
-                                    <input class="cvx-inp" type="text" placeholder="Search..." name="sales-return-search" id="sales-return-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>">
+                            <!-- search on invoice, patient name, contact number -->
+                            <div class="col-10 d-flex">
+                                <div class="col-md-3 col-md-3">
+                                    <div class="input-group">
+                                        <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterSalesReturnSearch()"><i class="fas fa-search"></i></button>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter3()"><i class="fas fa-search"></i></button>
+                                        </div>
+
+                                        <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- sales date filter -->
+                                <div class="col-3 col-md-3 d-flex">
+                                    <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter3()">
+                                        <option value="" disabled selected>Bill Date Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="select-sales-start-date"><?php echo $salesFrom; ?></label>
+                                    <label class="d-none" id="select-sales-end-date"><?php echo $salesTo; ?></label>
+                                </div>
+
+
+                                <!-- sales return date filter -->
+                                <div class="col-3 col-md-3 d-flex">
+                                    <select class="input-group cvx-inp1" name="sales-return-on" id="sales-return-on" onchange="pharmacySearchFilter3()">
+                                        <option value="" disabled selected>Return Date Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-3" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="select-sales-return-start-date"><?php echo $returnFrom; ?></label>
+                                    <label class="d-none" id="select-sales-return-end-date"><?php echo $returnTo; ?></label>
+                                </div>
+
+                                <div class="col-3 col-md-3 d-flex">
+                                    <select class="input-group cvx-inp1" name="sales-return-processed-by" id="sales-return-processed-by" onchange="pharmacySearchFilter3()">
+                                        <option value="" disabled selected>Filter by staff</option>
+                                        <option value="">Admin</option>
+                                        <?php
+                                        foreach ($empLists as $emp) {
+                                            echo '<option value="' . $emp['emp_id'] . '">' . $emp['emp_username'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-4" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="return-processed-by"><?php echo $returnedBy; ?></label>
+                                </div>
+
+                            </div>
+                            <!-- add new -->
+                            <div class="col-2">
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <a class="btn btn-sm btn-primary" href="sales-returns-items.php"> New <i class="fas fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                            <label class="" id="date-range-control-flag1">0</label>
+                            <label class="d-none" id="url-control-flag1">0</label>
+                            
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv1" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                                <div class=" col-md-12" style="margin-left: 15rem;">
+                                    <div class="d-flex">
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>Strat Date</label>
+                                            <input type="date" id="from-date" name="from-date">
+                                        </div>
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>End Date</label>
+                                            <input type="date" id="to-date" name="to-date">
+                                        </div>
+                                        <div class="dtPicker">
+                                            <button class="btn btn-sm btn-primary" onclick="pharmacySearchFilter3('from-date','to-date')">Find</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex justify-content-end">
-                                <a class="btn btn-sm btn-primary" href="sales-returns-items.php"> New <i class="fas fa-plus"></i></a>
+                        
+
+                            <label class="d-none" id="date-range-control-flag2">0</label>
+                            <label class="d-none" id="url-control-flag2">0</label>
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv2" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                                <div class=" col-md-12" style="margin-left: 15rem;">
+                                    <div class="d-flex">
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>Strat Date</label>
+                                            <input type="date" id="from-date" name="from-date">
+                                        </div>
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>End Date</label>
+                                            <input type="date" id="to-date" name="to-date">
+                                        </div>
+                                        <div class="dtPicker">
+                                            <button class="btn btn-sm btn-primary" onclick="pharmacySearchFilter3()">Find</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        
 
                         <div class="card-body">
                             <div class="table-responsive">
@@ -154,6 +303,25 @@ if (!empty($salesReturns)) {
                                                 $patientName = ($item->patient_id == "Cash Sales") ? "Cash Sales" : json_decode($Patients->patientsDisplayByPId($item->patient_id))->name;
                                                 $rowStyle = ($item->status == 0) ? 'style="color: white; background-color: red;"' : '';
 
+                                                $salesReturnAddedBy = $item->added_by;
+
+                                                $adminData = json_decode($Admin->adminDetails($salesReturnAddedBy));
+                                                if ($adminData->status) {
+                                                    $adminData = $adminData->data;
+                                                    // print_r($adminData);
+                                                    $salesReturnInitiatedBy = $adminData[0]->fname . ' ' . $adminData[0]->lname;
+                                                }
+
+
+                                                $empData = json_decode($Employees->employeeDetails($salesReturnAddedBy, $adminId));
+                                                if ($empData->status) {
+                                                    $empData = $empData->data;
+                                                    // print_r($adminData);
+                                                    $salesReturnInitiatedBy = $empData[0]->emp_namey;
+                                                }
+
+
+
                                                 echo '<tr ' . $rowStyle . '>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
                                                         <td hidden>' . $salesReturnId . '</td>
@@ -161,7 +329,7 @@ if (!empty($salesReturns)) {
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->items . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item->bill_date)) . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item->return_date)) . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->added_by . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $salesReturnInitiatedBy . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item->refund_amount . '</td>
                                                         <td>';
 
@@ -240,97 +408,9 @@ if (!empty($salesReturns)) {
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <!-- <script src="<?= PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script> -->
-    <!-- <script src="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script> -->
-    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
-
-    <!-- Page level custom scripts -->
-
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-
-    <script>
-        const xmlhttp = new XMLHttpRequest();
-
-        const viewReturnItem = (invoice, id) => {
-            let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`;
-            xmlhttp.open("GET", url, false);
-            xmlhttp.send(null);
-            document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
-        }
-
-
-        const editSalesReturn = (invoiceId, salesReturnId) => {
-            let editUrl = `sales-return-edit.php?invoice=${invoiceId}&salesReturnId=${salesReturnId}`;
-            window.location.href = editUrl;
-        };
-
-
-        const cancelSalesReturn = (t) => {
-
-            cancelId = t.id;
-
-            swal({
-                    title: "Are you sure?",
-                    text: "Do you really cancel theis transaction?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-
-                        $.ajax({
-                            url: "ajax/salesReturnCancle.ajax.php?",
-                            type: "POST",
-                            data: {
-                                id: cancelId
-                            },
-                            success: function(response) {
-                                console.log(response);
-                                if (response.includes('1')) {
-                                    swal(
-                                        "Canceled",
-                                        "Transaction Has Been Canceled",
-                                        "success"
-                                    ).then(function() {
-                                        $(t).closest("tr").css({
-                                            "background-color": "red",
-                                            "color": "white"
-                                        });
-                                        window.location.reload();
-                                    });
-
-                                } else {
-                                    swal("Failed", "Transaction Deletion Failed!",
-                                        "error");
-                                    $("#error-message").html("Deletion Field !!!")
-                                        .slideDown();
-                                    $("success-message").slideUp();
-                                }
-                            }
-                        });
-                    }
-                    return false;
-                });
-        }
-
-        // ====================================================================
-
-        const filterSalesReturnSearch = () => {
-
-            var searchFor = document.getElementById('sales-return-search').value;
-            console.log(searchFor);
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            if (searchFor.length > 0) {
-                var newURL = `${currentURLWithoutQuery}?searchKey=${searchFor}`;
-                window.location.replace(newURL);
-            } else {
-                alert('Please Enter Minimum 3 Character!');
-            }
-        }
-    </script>
-
+    <!-- sales return control script -->
+    <script src="<?= JS_PATH ?>sales-return.js"></script>
 
 </body>
 
