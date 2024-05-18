@@ -1,23 +1,6 @@
-<?php
-require_once 'config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-
-require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR . 'subscription.class.php';
-require_once CLASS_DIR . 'utility.class.php';
-
-$Subscription   = new Subscription;
-$Utility        = new Utility;
-
-$currentUrl = $Utility->currentUrl();
-
-?>
-
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
 
     <!-- New Section -->
     <div class="col">
@@ -73,17 +56,17 @@ $currentUrl = $Utility->currentUrl();
 
                         </div>
 
-                        <div class="col-md-6 mt-2">
+                        <div class="col-md-6">
                             <div class="col-md-12">
                                 <label class="mb-0 mt-1" for="address-1">Address 1 <span class="text-danger font-weight-bold">*</span></label>
                                 <textarea class="form-control" maxlength="50" name="address-1" id="address-1" rows="2" required><?= $healthCareAddress1; ?></textarea>
                             </div>
 
-                            <div class="col-md-12 mt-1">
+                            <div class="col-md-12">
                                 <label class="mb-0 mt-1" for="address-2">Address 2</label>
                                 <textarea class="form-control" type="text" maxlength="50" name="address-2" id="address-2" rows="2"><?= $healthCareAddress2; ?></textarea>
                             </div>
-                            <div class="col-md-12 mt-1">
+                            <div class="col-md-12">
                                 <label class="mb-0 mt-1" for="city">City <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="text" maxlength="50" name="city" id="city" value="<?php echo $healthCareCity; ?>" required>
                             </div>
@@ -91,7 +74,7 @@ $currentUrl = $Utility->currentUrl();
                                 <label class="mb-0 mt-1" for="dist">Dist <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="text" maxlength="50" name="dist" id="dist" value="<?php echo $healthCareDist; ?>" required>
                             </div>
-                            <div class="col-md-12 mt-1">
+                            <div class="col-md-12">
                                 <label class="mb-0 mt-1" for="state">Select State <span class="text-danger font-weight-bold">*</span></label>
                                 <select class="form-control" name="state" id="state" required>
                                     <?php echo '<option value="' . $healthCareState . '">' . $healthCareState . '</option>'; ?>
@@ -136,6 +119,7 @@ $currentUrl = $Utility->currentUrl();
 <script>
     function validateFileType() {
         var fileName = document.getElementById("img-uv-input").value;
+        console.log(fileName);
         var idxDot = fileName.lastIndexOf(".") + 1;
         var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
         if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
@@ -147,4 +131,3 @@ $currentUrl = $Utility->currentUrl();
         }
     }
 </script>
-
