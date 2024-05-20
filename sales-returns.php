@@ -281,9 +281,9 @@ if (!empty($salesReturns)) {
                                                 if ($empData->status) {
                                                     $empData = $empData->data;
                                                     // print_r($adminData);
-                                                    $salesReturnInitiatedBy = $empData[0]->emp_namey;
+                                                    $salesReturnInitiatedBy = $empData[0]->emp_name;
                                                 }
-
+                                                
 
 
                                                 echo '<tr ' . $rowStyle . '>
