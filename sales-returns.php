@@ -270,7 +270,7 @@ if (!empty($salesReturns)) {
                                                 $salesReturnAddedBy = $item->added_by;
 
                                                 $adminData = json_decode($Admin->adminDetails($salesReturnAddedBy));
-                                                print_r($adminData);
+                                                // print_r($adminData);
                                                 if ($adminData->status) {
                                                     $adminData = $adminData->data;
                                                     // print_r($adminData);
@@ -284,7 +284,7 @@ if (!empty($salesReturns)) {
                                                     // print_r($adminData);
                                                     $salesReturnInitiatedBy = $empData[0]->emp_name;
                                                 }
-                                                echo $salesReturnInitiatedBy;
+                                                // echo $salesReturnInitiatedBy;
 
 
                                                 echo '<tr ' . $rowStyle . '>
