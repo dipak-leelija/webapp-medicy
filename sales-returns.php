@@ -270,6 +270,7 @@ if (!empty($salesReturns)) {
                                                 $salesReturnAddedBy = $item->added_by;
 
                                                 $adminData = json_decode($Admin->adminDetails($salesReturnAddedBy));
+                                                print_r($adminData);
                                                 if ($adminData->status) {
                                                     $adminData = $adminData->data;
                                                     // print_r($adminData);
