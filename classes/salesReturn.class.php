@@ -277,69 +277,76 @@ class SalesReturn extends DatabaseConnection
 
     //end of sales return table update-----------------------------------------------------------
 
+    // ============ sales retun search and filter =======================
+    
 
+    function salesReturnSearchFilter($searchVal = '', $salestartDate = '', $saleEndDate = '', $returnStartDt = '', $returnEndDt = '', $returnInitiatedBy = '',  $adminId = '') {
+        try {
+            // Base query
+            $searchSQL = "SELECT * FROM sales_return WHERE 1=1";
+            $params = array();
+            $types = '';
+    
+            // Adding search conditions
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (invoice_id  LIKE '$searchVal' OR patient_id LIKE '$searchVal' OR patient_id IN (SELECT patient_id FROM patient_details WHERE name LIKE '$searchVal') OR refund_amount LIKE '$searchVal')";
+            }
+            
+            // Adding date range condition1
+            if (!empty($salestartDate) && !empty($saleEndDate)) {
+                $searchSQL .= " AND DATE(bill_date) BETWEEN STR_TO_DATE('$salestartDate', '%d-%m-%Y') AND STR_TO_DATE('$saleEndDate', '%d-%m-%Y')";
+            }
 
+            // Adding date range condition2
+            if (!empty($returnStartDt) && !empty($returnEndDt)) {
+                $searchSQL .= " AND DATE(added_on) BETWEEN STR_TO_DATE('$returnStartDt', '%d-%m-%Y') AND STR_TO_DATE('$returnEndDt', '%d-%m-%Y')";
+            }
+    
+            // Adding return initieted by condition
+            if (!empty($returnInitiatedBy)) {
+                $searchSQL .= " AND added_by = '$returnInitiatedBy'";
+            }
 
-    //     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
-
-    //         $updateBill = "UPDATE stock_out SET `customer_id` = '$customerId', `reff_by` = '$reffBy', `items` = '$itemsNo', `qty` = '$qty', `mrp` = '$mrp', `disc` = '$disc', `gst` = '$gst', `amount` = '$amount', `payment_mode` = '$paymentMode', `bill_date` = '$billDate', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId'";
-
-    //         // echo $insertEmp.$this->conn->error;
-    //         // exit;
-    //         $updateBillQuery = $this->conn->query($updateBill);
-    //         return $updateBillQuery;
-
-    //     }//end updateLabBill function
-
-
-    //     function amountSoldBy($pharmacist){
-    //         $sold = array();
-    //         $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`added_by` = '$pharmacist'";
-    //         $sqlQuery = $this->conn->query($sql);
-    //         while($result = $sqlQuery->fetch_array()){
-    //             $sold[]	= $result;
-    //         }
-    //         return $sold;
-    //     }// eof amountSoldBy
-
-
-
-    //     function soldByDate($billDate){
-    //         $data = array();
-    //         $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`added_on` = '$billDate'";
-    //         $sqlQuery = $this->conn->query($sql);
-    //         while($result = $sqlQuery->fetch_array()){
-    //             $data[]	= $result;
-    //         }
-    //         return $data;
-    //     }// eof amountSoldBy
-
-
-
-    //     function needsToCollect(){
-    //         $data = array();
-    //         $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`payment_mode` = 'Credit'";
-    //         $sqlQuery = $this->conn->query($sql);
-    //         while($result = $sqlQuery->fetch_array()){
-    //             $data[]	= $result;
-    //         }
-    //         return $data;
-    //     }// eof amountSoldBy
-
-
-
-
-    //     function cancelLabBill($billId, $status){
-
-    //         $cancelBill = "UPDATE `stock_out` SET `status` = '$status' WHERE `stock_out`.`bill_id` = '$billId'";
-    //         // echo $cancelBill.$this->conn->error;
-    //         // exit;
-    //         $cancelBillQuery = $this->conn->query($cancelBill);
-    //         // echo $cancelBillQuery.$this->conn->error;
-    //         // exit;
-    //         return $cancelBillQuery;
-
-    //     }//end cancelLabBill function
+            // Adding payment mode condition
+            if (!empty($paymentMode)) {
+                $searchSQL .= " AND refund_mode = '$paymentMode'";
+            }
+    
+            // Adding admin ID condition
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+    
+            // print_r($searchSQL);
+            // Prepare statement
+            $stmt = $this->conn->prepare($searchSQL);
+            if (!$stmt) {
+                throw new Exception('Statement preparation exception: ' . $this->conn->error);
+            }
+            
+            // Bind parameters dynamically
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            // Execute statement
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // Fetch data
+            if ($result->num_rows > 0) {
+                $purchaseData = array();
+                while ($row = $result->fetch_object()) {
+                    $purchaseData[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $purchaseData]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
 
 
     //     ################################################################################################################################

@@ -52,7 +52,11 @@ if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['da
 
 
     if (isset($_GET['addedBy'])) {
-        $returnedBy = $_GET['addedBy'];
+        if(($_GET['addedBy']) == 'admin'){
+            $returnedBy = $adminId;
+        }else{
+            $returnedBy = $_GET['addedBy'];
+        }
     }
 
     $salesReturns = json_decode($SalesReturn->salesReturnSearchFilter($searchVal, $salesFrom, $salesTo, $returnFrom, $returnTo, $returnedBy,  $adminId));
@@ -167,26 +171,6 @@ if (!empty($salesReturns)) {
                                     </div>
                                 </div>
 
-                                <!-- sales date filter -->
-                                <div class="col-3 col-md-3 d-flex">
-                                    <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter3()">
-                                        <option value="" disabled selected>Bill Date Duration</option>
-                                        <option value="T">Today</option>
-                                        <option value="Y">yesterday</option>
-                                        <option value="LW">Last 7 Days</option>
-                                        <option value="LM">Last 30 Days</option>
-                                        <option value="LQ">Last 90 Days</option>
-                                        <option value="CFY">Current Fiscal Year</option>
-                                        <option value="PFY">Previous Fiscal Year</option>
-                                        <option value="CR">Custom Range </option>
-                                    </select>
-                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
-
-                                    <label class="d-none" id="select-sales-start-date"><?php echo $salesFrom; ?></label>
-                                    <label class="d-none" id="select-sales-end-date"><?php echo $salesTo; ?></label>
-                                </div>
-
-
                                 <!-- sales return date filter -->
                                 <div class="col-3 col-md-3 d-flex">
                                     <select class="input-group cvx-inp1" name="sales-return-on" id="sales-return-on" onchange="pharmacySearchFilter3()">
@@ -200,7 +184,7 @@ if (!empty($salesReturns)) {
                                         <option value="PFY">Previous Fiscal Year</option>
                                         <option value="CR">Custom Range </option>
                                     </select>
-                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-3" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
 
                                     <label class="d-none" id="select-sales-return-start-date"><?php echo $returnFrom; ?></label>
                                     <label class="d-none" id="select-sales-return-end-date"><?php echo $returnTo; ?></label>
@@ -209,14 +193,14 @@ if (!empty($salesReturns)) {
                                 <div class="col-3 col-md-3 d-flex">
                                     <select class="input-group cvx-inp1" name="sales-return-processed-by" id="sales-return-processed-by" onchange="pharmacySearchFilter3()">
                                         <option value="" disabled selected>Filter by staff</option>
-                                        <option value="">Admin</option>
+                                        <option value="admin">Admin</option>
                                         <?php
                                         foreach ($empLists as $emp) {
                                             echo '<option value="' . $emp['emp_id'] . '">' . $emp['emp_username'] . '</option>';
                                         }
                                         ?>
                                     </select>
-                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-4" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-3" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
 
                                     <label class="d-none" id="return-processed-by"><?php echo $returnedBy; ?></label>
                                 </div>
@@ -231,10 +215,9 @@ if (!empty($salesReturns)) {
                         </div>
 
                        
-                            <label class="" id="date-range-control-flag1">0</label>
-                            <label class="d-none" id="url-control-flag1">0</label>
-                            
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv1" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <label class="d-none" id="date-range-control-flag">0</label>
+                            <label class="d-none" id="url-control-flag">0</label>
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12" style="margin-left: 15rem;">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
@@ -253,25 +236,6 @@ if (!empty($salesReturns)) {
                             </div>
                         
 
-                            <label class="d-none" id="date-range-control-flag2">0</label>
-                            <label class="d-none" id="url-control-flag2">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv2" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
-                                <div class=" col-md-12" style="margin-left: 15rem;">
-                                    <div class="d-flex">
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date">
-                                        </div>
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date">
-                                        </div>
-                                        <div class="dtPicker">
-                                            <button class="btn btn-sm btn-primary" onclick="pharmacySearchFilter3()">Find</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         
 
                         <div class="card-body">
