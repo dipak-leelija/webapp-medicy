@@ -283,7 +283,7 @@ if (!empty($salesReturns)) {
                                                     // print_r($adminData);
                                                     $salesReturnInitiatedBy = $empData[0]->emp_name;
                                                 }
-                                                
+                                                echo $salesReturnInitiatedBy;
 
 
                                                 echo '<tr ' . $rowStyle . '>
