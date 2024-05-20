@@ -63,20 +63,20 @@ $Utility        = new Utility;
                         <div class="otp-input">
 
                             <div class="col-12 mb-3 mt-1 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
+                                <input type="password" class="form-control form-control-user" id="password" name="password" minlength="8" maxlength="12" placeholder="Enter New Password" required>
                             </div>
 
                             <div class="col-12 mb-3 mt-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="confirm-password" name="confirm-password" maxlength="12" placeholder="Retype New Password" required onfocusout="chechMatch(this)">
+                                <input type="password" class="form-control form-control-user" id="confirm-password" name="confirm-password" minlength="8" maxlength="12" placeholder="Retype New Password" required onfocusout="chechMatch(this)">
                             </div>
 
                             <div class="d-flex justify-content-center mt-4">
-                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveToNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveToNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveToNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveToNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveToNext(this)" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveToNext(this)" required>
                             </div>
 
                             <div class="d-flex justify-content-center col-12 mb-3 mt-1 mb-sm-0">
