@@ -29,9 +29,7 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 	$userNm 		= strip_tags(trim($_SESSION['username']));
 
-	header("location: verification-sent.php");
-
-	/*
+	// header("location: verification-sent.php");
 
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
 	$Utility->delSessArr($sess_arr);
@@ -57,7 +55,7 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 
 	/*===================================================================================================
 	|									    send mail to new customer									|
-	====================================================================================================*//*
+	====================================================================================================*/
 
 	try {
 		$PHPMailer->IsSendmail();
@@ -83,7 +81,7 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
-	}*/
+	}
 } else {
 	session_destroy();
 }
