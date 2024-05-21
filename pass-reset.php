@@ -110,8 +110,7 @@ $Utility        = new Utility;
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- custom script for register.php -->
-    <script src="<?= JS_PATH ?>adminRegistration.js"></script>
+   
 
 
 
