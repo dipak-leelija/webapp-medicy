@@ -145,7 +145,7 @@ $form21Data;
 
         var file = obj.files[0];
         var reader = new FileReader();
-
+        console.log(reader);
         reader.onloadend = function() {
             var filePreview = document.getElementById(previewId);
 
@@ -184,14 +184,15 @@ $form21Data;
     const drugFormDataUpload = () => {
         const formData = new FormData();
         const form20File = document.getElementById('form-20').files[0];
+        // console.log(form20File);
         const form21File = document.getElementById('form-21').files[0];
         const gstin = document.getElementById('gstin').value;
         const pan = document.getElementById('pan').value;
 
-        if (!form20File && !form21File) {
-            alert("No files selected.");
-            return;
-        }
+        // if (!form20File && !form21File) {
+        //     alert("No files selected.");
+        //     return;
+        // }
 
         if (form20File) {
             formData.append('form_20', form20File);
@@ -201,7 +202,7 @@ $form21Data;
         }
         formData.append('gstin', gstin);
         formData.append('pan', pan);
-
+        // console.log(formData);
         $.ajax({
             url: '<?= URL ?>_config/form-submission/navTab-drug-permit-data-submit.php',
             type: 'POST',
@@ -209,7 +210,7 @@ $form21Data;
             processData: false,
             contentType: false,
             success: function(response) {
-                // console.log("Response from server:", response);
+                console.log("Response from server:", response);
                 // response = '00';
                 let alertValue;
                 switch (response) {

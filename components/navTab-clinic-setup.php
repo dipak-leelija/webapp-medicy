@@ -17,6 +17,7 @@
                     </div>
                 <?php endif; ?>
                 <form action="<?= PAGE ?>" method="post" enctype="multipart/form-data">
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="alert alert-danger d-none" id="err-show" role="alert">
@@ -29,10 +30,9 @@
                                     <label for="img-uv-input" class="btn btn-primary">Change
                                         Logo</label>
                                 </div>
-
                             </div>
-
-                            <div class="col-md-12 mt-md-5">
+                            
+                            <div class="col-md-12 mt-5">
                                 <label class="mb-0 mt-1" for="helthcare-name">Organization/Helth Care
                                     Name <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="text" name="helthcare-name" id="helthcare-name" value="<?= $healthCareName; ?>" required>
@@ -57,25 +57,25 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="address-1">Address 1 <span class="text-danger font-weight-bold">*</span></label>
-                                <textarea class="form-control" maxlength="50" name="address-1" id="address-1" rows="2" required><?= $healthCareAddress1; ?></textarea>
+                            <div class="col-sm-12">
+                                <label class="" for="address-1">Address 1 <span class="text-danger font-weight-bold">*</span></label>
+                                <textarea class="form-control mt-n2" maxlength="50" name="address-1" id="address-1" rows="2" required><?= $healthCareAddress1; ?></textarea>
                             </div>
 
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="address-2">Address 2</label>
+                                <label class="" for="address-2">Address 2</label>
                                 <textarea class="form-control" type="text" maxlength="50" name="address-2" id="address-2" rows="2"><?= $healthCareAddress2; ?></textarea>
                             </div>
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="city">City <span class="text-danger font-weight-bold">*</span></label>
+                                <label class="" for="city">City <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="text" maxlength="50" name="city" id="city" value="<?php echo $healthCareCity; ?>" required>
                             </div>
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="dist">Dist <span class="text-danger font-weight-bold">*</span></label>
+                                <label class="" for="dist">Dist <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="text" maxlength="50" name="dist" id="dist" value="<?php echo $healthCareDist; ?>" required>
                             </div>
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="state">Select State <span class="text-danger font-weight-bold">*</span></label>
+                                <label class="" for="state">Select State <span class="text-danger font-weight-bold">*</span></label>
                                 <select class="form-control" name="state" id="state" required>
                                     <?php echo '<option value="' . $healthCareState . '">' . $healthCareState . '</option>'; ?>
                                     <option value="West Bengal">West Bengal</option>
@@ -83,12 +83,12 @@
                                 </select>
                             </div>
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1 ps-1" for="pin">PIN <span class="text-danger font-weight-bold">*</span></label>
+                                <label class="" for="pin">PIN <span class="text-danger font-weight-bold">*</span></label>
                                 <input class="form-control" type="number" maxlength="7" minlength="7" name="pin" id="pin" value="<?php echo $healthCarePin; ?>" required>
                             </div>
 
                             <div class="col-md-12">
-                                <label class="mb-0 mt-1 ps-1" for="country">Country <span class="text-danger font-weight-bold">*</span></label>
+                                <label class="" for="country">Country <span class="text-danger font-weight-bold">*</span></label>
                                 <select class="form-control" name="country" id="country" required>
                                     <option value="India">India</option>
                                     <option value="Others">Others</option>
