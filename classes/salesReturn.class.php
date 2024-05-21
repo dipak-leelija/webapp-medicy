@@ -317,7 +317,7 @@ class SalesReturn extends DatabaseConnection
                 $searchSQL .= " AND admin_id = '$adminId'";
             }
     
-            print_r($searchSQL);
+            // print_r($searchSQL);
             // Prepare statement
             $stmt = $this->conn->prepare($searchSQL);
             if (!$stmt) {
