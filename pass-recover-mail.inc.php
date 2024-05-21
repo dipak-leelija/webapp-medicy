@@ -35,8 +35,9 @@ if (isset($_SESSION['PASS_RECOVERY'])) {
 	$sess_arr	= array('passRecoverySession', 'fisrt-name', 'email', 'vkey');
 	$Utility->delSessArr($sess_arr);
 
-	// header("location: pass-reset.php");
+	header("location: pass-reset.php");
 
+	/*
 	$msgBody = $msgBody = "Hello $firstName,
 
 	We're delighted to welcome you back!
@@ -58,7 +59,7 @@ if (isset($_SESSION['PASS_RECOVERY'])) {
 
 	/*===================================================================================================
 	|									    send mail for password reset								|
-	===================================================================================================*/
+	===================================================================================================*//*
 
 	try {
 		$PHPMailer->IsSendmail();
@@ -85,6 +86,7 @@ if (isset($_SESSION['PASS_RECOVERY'])) {
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
 	} 
+	*/
 
 }else {
 	session_destroy();

@@ -286,8 +286,7 @@ $Admin          = new Admin;
 
         // ============ new otp generation =============
         const getNewotp = () => {
-            console.log('get new otp');
-
+            
             document.getElementById("resendOTP").style.display = 'none';
             document.getElementById("timer-div").style.display = 'block';
 
