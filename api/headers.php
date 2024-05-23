@@ -1,6 +1,6 @@
 <?php
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowed_origins = ['http://localhost', 'https://leelija.com'];
+$allowed_origins = ['https://medicy.in', 'http://localhost:5173'];
 
 // $origin = '*';
 // $allowed_origins = ['*'];
