@@ -2,6 +2,8 @@
 
 namespace Models;
 
+require_once dirname(__DIR__, 2) . '/classes/dbconnection.php';
+
 use DatabaseConnection\DatabaseConnection;
 use Exception;
 

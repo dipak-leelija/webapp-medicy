@@ -1,8 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once dirname(__DIR__) . '/classes/dbconnection.php';
 
-require_once __DIR__.'/Models/PlanModel.php';
 require_once __DIR__.'/Controllers/PlansController.php';
 
 use Controllers\PlansController;
