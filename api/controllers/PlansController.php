@@ -1,7 +1,8 @@
 <?php
-// PlansController.php
 
-namespace Controllers;
+namespace Api\Controllers;
+
+require_once dirname(__DIR__, 1) . '/models/PlanModel.php';
 
 use Models\PlanModel;
 
