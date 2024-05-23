@@ -6,18 +6,7 @@ require_once 'Controllers/PlansController.php';
 
 use Controllers\PlansController;
 
-// Get the origin of the request
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-
-$allowed_origin = 'http://localhost:5173';
-
-// Set headers for CORS and response content type
-if ($origin === $allowed_origin) {
-    header("Access-Control-Allow-Origin: $allowed_origin");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-    header("Content-Type: application/json; charset=UTF-8");
-}
+require_once "./headers.php";
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
