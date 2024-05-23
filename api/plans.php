@@ -1,8 +1,9 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once dirname(__DIR__) . '/classes/dbconnection.php';
-require_once 'Models/PlanModel.php';
-require_once 'Controllers/PlansController.php';
+
+require_once __DIR__.'/Models/PlanModel.php';
+require_once __DIR__.'/Controllers/PlansController.php';
 
 use Controllers\PlansController;
 
@@ -19,7 +20,7 @@ $uri = explode('/', $uri);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[2] === 'api' && str_contains($uri[3], 'plans')) {
+if ($uri[1] === 'api' && str_contains($uri[2], 'plans')) {
 
     $controller = new PlansController();
 
