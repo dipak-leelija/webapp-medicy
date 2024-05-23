@@ -21,10 +21,40 @@ $Pagination         = new Pagination;
 
 $showDistributor       = $Distributor->showDistributor();
 
-// ============ data fetch area =======================
-if (isset($_GET['searchKey'])) {
-    $searchData = $_GET['searchKey'];
-    $showStockIn = $StockIn->stockInDataAsLike($searchData, $adminId);
+
+/// ======== SEARCH FILTER ACTION AREA ========
+$searchVal = '';
+$match = '';
+$startDate = '';
+$endDate = '';
+$payment = '';
+
+
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['paymentMode'])) {
+
+    if(isset($_GET['search'])){
+        $searchVal = $match = $_GET['search'];
+    }
+    
+    if(isset($_GET['dateFilterStart'])){
+        $startDate = $_GET['dateFilterStart'];
+        $endDate = $_GET['dateFilterEnd'];
+    }
+
+    if(isset($_GET['paymentMode'])){
+        $payment = $_GET['paymentMode'];
+    }
+
+    $showStockIn = json_decode($StockIn->stockInSearch($searchVal, $startDate, $endDate, $payment, $adminId));
+    if($showStockIn->status){
+        $showStockIn = $showStockIn->data;
+    }else{
+        $showStockIn = [];
+    }
+
+    // $soldItems = json_decode($StockOut->stockOutSearch($searchOn, $startDate, $endDate, $payment, $adminId));
+    // $soldItems = $soldItems->data;
+
 } else {
     $showStockIn = $StockIn->showStockInDecendingOrder($adminId);
     // print_r($showStockIn);
@@ -32,6 +62,8 @@ if (isset($_GET['searchKey'])) {
         $StockInId = $showStockIn[0]['id'];
     }
 }
+
+
 // print_r($showStockIn);
 // ===================== pagination area =========================
 $slicedData = '';
@@ -53,7 +85,7 @@ if (!empty($showStockIn)) {
     $totalItem = 0;
     $paginationHTML = '';
 }
-// print_r($slicedData);
+// print_r($totalItem);
 
 
 // =================== eof pagination ===========================
@@ -91,7 +123,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
     <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Datatable Style CSS -->
-    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet"> -->
 
 </head>
 
@@ -124,27 +156,87 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                     <div class="card shadow mb-4">
 
                         <div class="card-header booked_btn">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="col-md-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Number of Purchase :<?php echo $totalItem; ?></h6>
+                            <!-- <div class="col-12 p-2"> -->
+                                <div class="row mt-2 p-2">
+                                    <!-- <div class="col-3 col-md-3"> -->
+                                        <h6 class="m-0 font-weight-bold text-primary">Number of Purchase :&nbsp;<?php echo $totalItem; ?></h6>
+                                    <!-- </div> -->
                                 </div>
+                                <!-- data search filter -->
+                                <div class="row mt-2 p-2">
+                                    <div class="col-3 col-md-4">
+                                        <div class="input-group">
+                                            <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Search..." name="purchase-data-search" id="purchase-data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchData) ? $searchData : ''; ?>">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
+                                            </div>
 
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterData()"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                         </div>
                                     </div>
-                                </div>
+                                    <!-- date filter -->
+                                    <div class="col-3 col-md-3 d-flex">
+                                        <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
+                                            <option value="" disabled selected>Select purchase date</option>
+                                            <option value="T">Today</option>
+                                            <option value="Y">yesterday</option>
+                                            <option value="LW">Last 7 Days</option>
+                                            <option value="LM">Last 30 Days</option>
+                                            <option value="LQ">Last 90 Days</option>
+                                            <option value="CFY">Current Fiscal Year</option>
+                                            <option value="PFY">Previous Fiscal Year</option>
+                                            <option value="CR">Custom Range </option>
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
 
-                                <div class="col-md-3 d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">Import </button>
-                                    <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>
+                                        <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
+                                        <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
+                                    </div>
+                                    <!-- payment mode filter -->
+                                    <div class="col-3 col-md-3 d-flex">
+                                        <select class="input-group cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
+                                            <option value="" disabled selected>Payment Mode</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Credit">Credit</option>
+                                            <option value="UPI">UPI</option>
+                                            <option value="CARD">CARD</option>
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-primary rounded-0 shadow-none input-group-append" type="button" id="filter-reset-3" onclick="resteUrl(this.id)" style="z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                        <label class="d-none" id="select-payment-mode"><?php echo $payment; ?></label>
+                                    </div>
+                                    <!-- add and import button seccession -->
+                                    <div class="col-3 col-md-2 d-flex justify-content-end">
+                                        <button class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#staticBackdrop">Import </button>
+                                        <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>
+                                    </div>
+                                </div>
+                            <!-- </div> -->
+                        </div>
+
+
+                        <!-- date picker div -->
+                        <label class="d-none" id="date-range-control-flag">0</label>
+                        <label class="d-none" id="url-control-flag">0</label>
+                        <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class=" col-md-12" style="margin-left: 15rem;">
+                                <div class="d-flex">
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>Strat Date</label>
+                                        <input type="date" id="from-date" name="from-date">
+                                    </div>
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>End Date</label>
+                                        <input type="date" id="to-date" name="to-date">
+                                    </div>
+                                    <div class="dtPicker">
+                                        <button class="btn btn-sm btn-primary" onclick="pharmacySearchFilter1()">Find</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="card-body">
                             <div class="table-responsive">
@@ -218,6 +310,14 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                             <div class="d-flex justify-content-center">
                                 <?= $paginationHTML ?>
                             </div>
+
+                            <?php 
+                            if($totalItem == 0){
+                                echo '<div class="d-flex justify-content-center text-danger font-weight-bold">
+                                        NO MATCH FOUND
+                                    </div>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -291,12 +391,11 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <!-- <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script> -->
-    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+
+    <!-- data search filter script -->
+    <script src="<?= JS_PATH ?>pharmacy-stockIn-stokOut-searchFilter.js"></script>
+
 
     <script>
         const stockDetails = (distBill, id) => {
@@ -308,93 +407,6 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                 url + '"></iframe>');
 
         } //end of viewAndEdit
-
-        // const showImportModal = () => {
-        //     url = "ajax/import-purchase.ajax.php";
-        //     let frameBody = document.getElementById("import-body");
-
-        //     // Fetch content from the specified URL
-        //     fetch(url)
-        //         .then(response => response.text())
-        //         .then(htmlContent => {
-        //             // Inject fetched HTML content into the frameBody element
-        //             frameBody.innerHTML = htmlContent;
-        //         })
-        //         .catch(error => {
-        //             console.error('Error fetching content:', error);
-        //         });
-        // }
-
-        // const purchaseImport = (e) => {
-
-        //     // Serialize the form data
-        //     var formData = new FormData($('#importPurchaseForm')[0]);
-        //     console.log(formData);
-        //     // Perform AJAX request
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: 'ajax/import-purchase.ajax.php',
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false,
-        //         success: function(response) {
-        //             // Handle success response here
-        //             console.log('Success:', response);
-        //         },
-        //         error: function(xhr, status, error) {
-        //             // Handle error response here
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-
-        // const purchaseImport = (e) => {
-        //     // Prevent the default form submission behavior
-        //     e.preventDefault();
-
-        //     // Get all input elements within the form
-        //     const inputs = document.querySelectorAll('#importPurchaseForm input');
-
-        //     // Create a FormData object to serialize the form data
-        //     var formData = new FormData();
-
-        //     // Iterate over each input element and append its data to the FormData object
-        //     inputs.forEach(input => {
-        //         // Check if the input element is a file input
-        //         if (input.type === 'file') {
-        //             // Append each file separately if multiple files are allowed
-        //             const files = input.files;
-        //             for (let i = 0; i < files.length; i++) {
-        //                 formData.append(input.name, files[i]);
-        //             }
-        //         } else {
-        //             // For non-file inputs, append their name and value to the FormData object
-        //             formData.append(input.name, input.value);
-        //         }
-        //     });
-
-        //     // Perform AJAX request
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: 'ajax/import-purchase.ajax.php', // Specify your endpoint URL here
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false,
-        //         success: function(response) {
-        //             // Handle success response here
-        //             console.log('Success:', response);
-        //         },
-        //         error: function(xhr, status, error) {
-        //             // Handle error response here
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-
-
-
-        // document.getElementById("importPurchaseBtn").addEventListener("click", purchaseImport);
-
 
 
         function resizeIframe(obj) {
@@ -448,19 +460,6 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                 });
 
 
-        }
-
-        //====================== url modification for data search ======================
-        const filterData = () => {
-            var value = document.getElementById('purchase-data-search').value;
-
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            if (value.length > 2) {
-                var newURL = `${currentURLWithoutQuery}?searchKey=${value}`;
-                window.location.replace(newURL);
-            } else {
-                alert('Please Enter Minimum 3 Character!');
-            }
         }
     </script>
 

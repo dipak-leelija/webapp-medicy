@@ -227,7 +227,7 @@ if ($bills->status) {
 
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-    <!-- <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script> -->
+    <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
 
     <!-- Sweet alert plugins -->
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>

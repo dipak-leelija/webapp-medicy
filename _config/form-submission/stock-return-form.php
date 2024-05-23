@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $refundMode      = $_POST['refund-mode'];
         $status          = 1;
 
-        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $EMPID, NOW, $ADMINID);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, NOW, $ADMINID);
 
         if(is_array($returned) && $returned['result'] == 1){
 

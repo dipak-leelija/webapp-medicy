@@ -169,18 +169,18 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="tel" class="form-control form-control-user" id="mobile-number" name="mobile-number" pattern="[0-9]{5} [0-9]{5}" placeholder="12345 67890" onkeydown="validateMobileNumber()" onfocusout="verifyMobileNumber()" maxlength="10" required>
+                            <input type="tel" class="form-control form-control-user" id="mobile-number" name="mobile-number" pattern="[0-9]{10}" placeholder="12345 67890" onkeydown="validateMobileNumber()" onfocusout="verifyMobileNumber()" maxlength="10" required>
                         </div>
 
                         <div class="form-group row">
                             <div class="form-group col-sm-6 mb-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password"
-                                    name="password" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
+                                    name="password" minlength="8" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
                                     <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
                             </div>
                             <div class="form-group col-sm-6 mb-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="cpassword"
-                                    name="cpassword" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
+                                    name="cpassword" minlength="8" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
                                     <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
                             </div>
                         </div>

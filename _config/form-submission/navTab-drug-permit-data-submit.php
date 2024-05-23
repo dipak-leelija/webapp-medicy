@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move uploaded files to destination folder
         if (move_uploaded_file($form20File['tmp_name'], $form20Path) && move_uploaded_file($form21File['tmp_name'], $form21Path)) {
 
-            // Assuming $HealthCare and $adminId are defined elsewhere
             $uplodClinicData = $HealthCare->updateDrugPermissionData($form20FileName, $form21FileName, $gstin, $pan, $adminId);
 
             if ($uplodClinicData) {

@@ -317,6 +317,71 @@ class StockReturn extends DatabaseConnection
         }
     }
 
+    // ========================= stock return filter =======================
+
+    function stockReturnUpdatedFilter($searchVal = '', $startDate = '', $endDate = '', $returnInitiatedBy = '', $paymentMode = '', $adminId = '') {
+        try {
+            // Base query
+            $searchSQL = "SELECT * FROM stock_return WHERE 1=1";
+            $params = array();
+            $types = '';
+    
+            // Adding search conditions
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (id LIKE '$searchVal' OR distributor_id  IN (SELECT id  FROM distributor WHERE name LIKE '$searchVal') OR refund_amount LIKE '$searchVal' OR refund_mode LIKE '$searchVal')";
+            }
+            
+            // Adding date range condition
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE(return_date) BETWEEN STR_TO_DATE('$startDate', '%d-%m-%Y') AND STR_TO_DATE('$endDate', '%d-%m-%Y')";
+            }
+    
+            // Adding return initieted by condition
+            if (!empty($returnInitiatedBy)) {
+                $searchSQL .= " AND added_by = '$returnInitiatedBy'";
+            }
+
+            // Adding payment mode condition
+            if (!empty($paymentMode)) {
+                $searchSQL .= " AND refund_mode = '$paymentMode'";
+            }
+    
+            // Adding admin ID condition
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+    
+            // print_r($searchSQL);
+            // Prepare statement
+            $stmt = $this->conn->prepare($searchSQL);
+            if (!$stmt) {
+                throw new Exception('Statement preparation exception: ' . $this->conn->error);
+            }
+            
+            // Bind parameters dynamically
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            // Execute statement
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // Fetch data
+            if ($result->num_rows > 0) {
+                $purchaseData = array();
+                while ($row = $result->fetch_object()) {
+                    $purchaseData[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $purchaseData]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+
 
     // ------------------------- DELETE STOCK RETURN DATA -----------------------------
 

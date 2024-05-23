@@ -37,6 +37,7 @@ if (isset($_SESSION['PASS_RECOVERY'])) {
 
 	// header("location: pass-reset.php");
 
+	
 	$msgBody = $msgBody = "Hello $firstName,
 
 	We're delighted to welcome you back!
@@ -85,6 +86,7 @@ if (isset($_SESSION['PASS_RECOVERY'])) {
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
 	} 
+	
 
 }else {
 	session_destroy();

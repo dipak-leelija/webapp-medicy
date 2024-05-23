@@ -19,7 +19,7 @@ $Pagination      = new Pagination;
 
 
 /// ======== SEARCH FILTER ACTION AREA ========
-$searchOn = '';
+$searchVal = '';
 $match = '';
 $startDate = '';
 $endDate = '';
@@ -41,7 +41,7 @@ if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['da
         $payment = $_GET['paymentMode'];
     }
 
-    $soldItems = json_decode($StockOut->stockOutSearch($searchOn, $startDate, $endDate, $payment, $adminId));
+    $soldItems = json_decode($StockOut->stockOutSearch($searchVal, $startDate, $endDate, $payment, $adminId));
     $soldItems = $soldItems->data;
 
 } else {
@@ -132,7 +132,7 @@ if (!empty($soldItems)) {
                             <!-- search on invoice, patient name, contact number -->
                             <div class="col-3 col-md-4">
                                 <div class="input-group">
-                                    <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($searchOn) ? $searchOn : ''; ?>" autocomplete="off">
+                                    <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                     <div class="input-group-append">
                                         <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
@@ -331,7 +331,7 @@ if (!empty($soldItems)) {
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-    <script src="<?= JS_PATH ?>pharmacy-searchFilter.js"></script>
+    <script src="<?= JS_PATH ?>pharmacy-stockIn-stokOut-searchFilter.js"></script>
 
 
     <script>
