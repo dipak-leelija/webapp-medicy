@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once 'Controllers/PlansController.php';
+require_once 'controllers/PlansController.php';
 
 use Api\Controllers\PlansController;
 
