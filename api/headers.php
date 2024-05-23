@@ -1,9 +1,9 @@
 <?php
-// $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$origin = '*';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowed_origins = ['http://localhost', 'https://leelija.com'];
 
-// $allowed_origins = ['http://localhost', 'https://leelija.com'];
-$allowed_origins = ['*'];
+// $origin = '*';
+// $allowed_origins = ['*'];
 
 // Set headers for CORS and response content type
 if (in_array($origin, $allowed_origins)) {
