@@ -15,10 +15,10 @@ class Contact {
     }
 
     public function createContact($data) {
-        $query = "INSERT INTO contact_details (name, email, subject, message) 
-                  VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO contact_details (name, contact_number, email, subject, message) 
+                  VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('ssss', $data['name'], $data['email'], $data['subject'], $data['message']);
+        $stmt->bind_param('sisss', $data['name'], $data['contact_number'], $data['email'], $data['subject'], $data['message']);
         return $stmt->execute();
     }
 
