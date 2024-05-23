@@ -24,7 +24,6 @@ if ($uri[2] === 'api' && str_contains($uri[3], 'contact')) {
     switch ($method) {
         case 'POST':
             $data = json_decode(file_get_contents('php://input'), true);
-            print_r($data);
             $controller->createContact($data);
             break;
     }
