@@ -10,8 +10,15 @@ class ApiContactController {
 
     public function createContact($data) {
         $contactModel = new Contact();
-        $result = $contactModel->createContact($data);
+        $result = json_decode($contactModel->createContact($data));
         header("Content-Type: application/json; charset=UTF-8");
-        echo json_encode(['success' => $result]);
+
+        if($result->status == '1'){
+            echo json_encode(['status'=>true]);
+        }
+
+        if($result->status == '0'){
+            echo json_encode(['status'=>false]);
+        }
     }
 }
