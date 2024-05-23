@@ -1,9 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once 'controllers/PlansController.php';
 
-require_once __DIR__.'/Controllers/PlansController.php';
-
-use Controllers\PlansController;
+use Api\Controllers\PlansController;
 
 require_once "./headers.php";
 
