@@ -2,7 +2,6 @@
 require_once __DIR__ . '/config/constant.php';
 // Check if a specific session variable exists to determine if the user is logged in
 if (isset($_SESSION['LOGGEDIN'])) {
-    echo 'logged in';
     header("Location: " . URL);
     exit;
 }
@@ -25,93 +24,105 @@ $diffrentPassword = false;
 // $adminId  = $IdGenerate->generateAdminId();
 // echo $adminId;
 
-if (isset($_POST['register'])) {
-    $Fname      = $_POST['fname'];
-    $Lname      = $_POST['lname'];
-    $username   = $_POST['user-name'];
-    $email      = $_POST['email'];
-    $mobNo      = $_POST['mobile-number'];
-    $password   =  $_POST['password'];
-    $cpassword  = $_POST['cpassword'];
+if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
-    // echo $Fname;
-
-    $currentDate = new DateTime(TODAY);
-
-    // Add 30 days to the current date
-    $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
-
-    $adminId  = $IdGenerate->generateAdminId();
+    if (isset($_POST['pid'])) {
+        $planId = $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
+    } 
     
-    $clinicId = $IdGenerate->generateClinicId($adminId);
+    if(isset($_SESSION['PURCHASEPLANID'])) {
+        $planId = $_SESSION['PURCHASEPLANID'];
+    }
 
-    $status = '0';
-    $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
+    if (isset($_POST['register'])) {
+        $Fname      = $_POST['fname'];
+        $Lname      = $_POST['lname'];
+        $username   = $_POST['user-name'];
+        $email      = $_POST['email'];
+        $mobNo      = $_POST['mobile-number'];
+        $password   = $_POST['password'];
+        $cpassword  = $_POST['cpassword'];
 
-    // ======== OTP GENERATOR =========
-    $OTP  = $IdGenerate->otpGgenerator();
-    //----------------------------------
+        // echo $Fname;
 
-    $checkUser = $admin->echeckUsername($username);
-    // print_r($checkUser->data);
+        $currentDate = new DateTime(TODAY);
 
-    if ($checkUser) {
-        $userExists = true;
-    } else {
-        $userExists = false;
-        $checkMail = $admin->echeckEmail($email);
-        if ($checkMail > 0) {
-            $emailExists = true;
+        // Add 30 days to the current date
+        $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
+
+        $adminId  = $IdGenerate->generateAdminId();
+
+        $clinicId = $IdGenerate->generateClinicId($adminId);
+
+        $planId = $_SESSION['PURCHASEPLANID'];
+
+        $status = '0';
+        $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
+
+        // ======== OTP GENERATOR =========
+        $OTP  = $IdGenerate->otpGgenerator();
+        //----------------------------------
+
+        $checkUser = $admin->echeckUsername($username);
+        // print_r($checkUser->data);
+
+        if ($checkUser) {
+            $userExists = true;
         } else {
-            $emailExists = false;
-            if ($password == $cpassword) {
-                $diffrentPassword = false;
-
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
-
-                // print_r($register);
-
-                if($register){
-
-                    session_unset();
-                    
-                    session_destroy();
-
-                    session_start();
-                    
-                    $_SESSION['REGISTRATION']       = true;
-                    $_SESSION['ADMIN_REGISER']      = true;
-                    $_SESSION['PRIMARY_REGISTER']   = true;
-                    $_SESSION['SECONDARY_REGISTER'] = false;
-                    $_SESSION['session_start_time']  = date('H:i:s');
-                    $_SESSION['time_out']           = $timeout_duration;
-                    $_SESSION['verify_key']         = $OTP;
-                    $_SESSION['first-name']         = $Fname;
-                    $_SESSION['email']              = $email;
-                    $_SESSION['username']           = $username;
-                    $_SESSION['adm_id']             = $adminId;
-
-
-                    $subscribed = $Subscription->createSubscription($adminId, 1, NOW, $expiry, 0);
-
-                    if ($subscribed === true) {
-                        // echo 'True';
-                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-                        if ($addToClinicInfo) {
-                            header("Location: register-mail.inc.php");
-                            exit;
-                        } else {
-                            $errMsg = "Clinic Info Can't Added!";
-                        }
-                    } else {
-                        $errMsg =  $subscribed;
-                    }
-                }
+            $userExists = false;
+            $checkMail = $admin->echeckEmail($email);
+            if ($checkMail > 0) {
+                $emailExists = true;
             } else {
-                $diffrentPassword = true;
+                $emailExists = false;
+                if ($password == $cpassword) {
+                    $diffrentPassword = false;
+
+                    $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
+
+                    if ($register) {
+
+                        session_unset();
+                        session_destroy();
+                        session_start();
+
+                        $_SESSION['REGISTRATION']       = true;
+                        $_SESSION['ADMIN_REGISER']      = true;
+                        $_SESSION['PRIMARY_REGISTER']   = true;
+                        $_SESSION['SECONDARY_REGISTER'] = false;
+                        $_SESSION['session_start_time']  = date('H:i:s');
+                        $_SESSION['time_out']           = $timeout_duration;
+                        $_SESSION['verify_key']         = $OTP;
+                        $_SESSION['first-name']         = $Fname;
+                        $_SESSION['email']              = $email;
+                        $_SESSION['username']           = $username;
+                        $_SESSION['adm_id']             = $adminId;
+
+
+                        $subscribed = $Subscription->createSubscription($adminId, $planId, NOW, $expiry, 0);
+
+                        if ($subscribed === true) {
+                            // echo 'True';
+                            $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
+                            if ($addToClinicInfo) {
+                                header("Location: register-mail.inc.php");
+                                exit;
+                            } else {
+                                $errMsg = "Clinic Info Can't Added!";
+                            }
+                        } else {
+                            $errMsg =  $subscribed;
+                        }
+                    }
+                } else {
+                    $diffrentPassword = true;
+                }
             }
         }
     }
+}else {
+    header("Location: https://medicy.in/pricing");
+    exit;
 }
 
 ?>
@@ -174,14 +185,12 @@ if (isset($_POST['register'])) {
 
                         <div class="form-group row">
                             <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password"
-                                    name="password" minlength="8" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
-                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
+                                <input type="password" class="form-control form-control-user" id="password" name="password" minlength="8" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
+                                <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
                             </div>
                             <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="cpassword"
-                                    name="cpassword" minlength="8" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
-                                    <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
+                                <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" minlength="8" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
+                                <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
                             </div>
                         </div>
                         <?php
