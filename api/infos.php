@@ -12,7 +12,7 @@ $uri = explode('/', $uri);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[$uriPos] === 'api' && str_contains($uri[$linkPos], 'infos')) {
+if ($uri[$uriPosition] === 'api' && str_contains($uri[$uriContains], 'infos')) {
     $controller = new ApiInfoController();
 
     switch ($method) {

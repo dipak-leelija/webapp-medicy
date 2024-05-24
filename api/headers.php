@@ -6,13 +6,13 @@ $allowed_origins = ['https://medicy.in', 'http://localhost:5173'];
 $server = LOCAL_DIR;
 // echo $server;
 if ($server === '/') {
-    $uriPos = 1;
-    $linkPos = 2;
+    $uriPosition = 1;
+    $uriContains = 2;
 }
 
 if ($server === '/medicy.in/') {
-    $uriPos = 2;
-    $linkPos = 3;
+    $uriPosition = 2;
+    $uriContains = 3;
 }
 
 // Set headers for CORS and response content type

@@ -14,24 +14,9 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
 
 
-for($i=0; $i<count($uri); $i++){
-    if($i == 1 || $i == 2){
-        if($uri[$i] == 'api'){
-            $uriPos = $i;
-        }
-    }
-
-    if($i == 2 || $i == 3){
-        if(str_contains($uri[$i], 'contact')){
-            $contactPos = $i;
-        }
-    }
-}
-
-
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[$uriPos] === 'api' && str_contains($uri[$contactPos], 'contact')) {
+if ($uri[$uriPosition] === 'api' && str_contains($uri[$uriContains], 'contact')) {
     $controller = new ApiContactController();
 
     switch ($method) {
