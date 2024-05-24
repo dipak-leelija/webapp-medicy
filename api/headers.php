@@ -4,7 +4,16 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 $allowed_origins = ['https://medicy.in', 'http://localhost:5173'];
 
 $server = LOCAL_DIR;
-echo $server;
+// echo $server;
+if ($server === '/') {
+    $uriPos = 1;
+    $linkPos = 2;
+}
+
+if ($server === '/medicy.in/') {
+    $uriPos = 2;
+    $linkPos = 3;
+}
 
 // Set headers for CORS and response content type
 if (in_array($origin, $allowed_origins)) {
@@ -14,5 +23,3 @@ if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     header("Content-Type: application/json; charset=UTF-8");
 }
-
-?>

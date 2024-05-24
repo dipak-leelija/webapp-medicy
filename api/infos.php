@@ -7,13 +7,12 @@ use Api\Controllers\ApiInfoController;
 require_once "./headers.php";
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
 $uri = explode('/', $uri);
 
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[2] === 'api' && str_contains($uri[3], 'infos')) {
+if ($uri[$uriPos] === 'api' && str_contains($uri[$linkPos], 'infos')) {
     $controller = new ApiInfoController();
 
     switch ($method) {
