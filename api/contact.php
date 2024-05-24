@@ -7,13 +7,18 @@ use Api\Controllers\ApiContactController;
 // Set headers for CORS and response content type
 require_once "./headers.php";
 
-echo $origin;
-print_r($allowed_origins);
+// echo "origin : ".$origin;
+
+// echo "<br>allowed_origin : ";
+// print_r($allowed_origins);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-echo $uri;
+// echo "<br><br>uri : ".$uri;
+
 $uri = explode('/', $uri);
-print_r($uri);
+
+// echo "<br><br>array uri : ";
+// print_r($uri);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -30,3 +35,4 @@ if ($uri[2] === 'api' && str_contains($uri[3], 'contact')) {
     header("HTTP/1.1 404 Not Found");
     echo json_encode(["message" => "Endpoint not found"]);
 }
+
