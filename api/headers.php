@@ -4,6 +4,7 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 $allowed_origins = ['https://medicy.in', 'http://localhost:5173'];
 
 $server = LOCAL_DIR;
+echo $server;
 
 // Set headers for CORS and response content type
 if (in_array($origin, $allowed_origins)) {
