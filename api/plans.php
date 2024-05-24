@@ -17,7 +17,7 @@ $uri = explode('/', $uri);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[1] === 'api' && str_contains($uri[2], 'plans')) {
+if ($uri[$uriPosition] === 'api' && str_contains($uri[$uriContains], 'plans')) {
 
     $controller = new PlansController();
 
