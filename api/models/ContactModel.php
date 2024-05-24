@@ -23,11 +23,10 @@ class Contact {
             $stmt->bind_param('sisss', $data['name'], $data['contact_number'], $data['email'], $data['subject'], $data['message']);
 
             if ($stmt->execute()) {
-                // $insertId = $stmt->insert_id;
-                return json_encode(['status'=>'1', 'insertId'=>$stmt->insert_id]);
+                return json_encode(['status'=>true, 'insertId'=>$stmt->insert_id]);
             } else {
-                error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-                return json_encode(['status'=>'0']);
+                $errorMsg = error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                return json_encode(['status'=>false, 'message'=>$errorMsg]);
             }
         } else {
             return error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);

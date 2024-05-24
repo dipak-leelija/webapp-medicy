@@ -13,11 +13,9 @@ class ApiContactController {
         $result = json_decode($contactModel->createContact($data));
         header("Content-Type: application/json; charset=UTF-8");
 
-        if($result->status == '1'){
+        if($result->status){
             echo json_encode(['status'=>true]);
-        }
-
-        if($result->status == '0'){
+        }else{
             echo json_encode(['status'=>false]);
         }
     }
