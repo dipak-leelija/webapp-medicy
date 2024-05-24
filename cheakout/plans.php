@@ -70,7 +70,7 @@ if($getPlans->status){
                     <div class="text-center">
                         <h1 class="h4 font-weight-bold text-gray-900 mb-4">Choose a Plan</h1>
                     </div>
-                    <form class="user" action="cheakout.php" method="post">
+                    <form class="user" action="index.php" method="post">
 
                         <div class="choose-plan">
 

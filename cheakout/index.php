@@ -14,8 +14,18 @@ $Utility    = new Utility;
 $HealthCare = new HealthCare;
 
 
-$planId = $_POST['plan'];
+if (isset($_POST['plan']) ||  isset($_SESSION['PURCHASEPLANID'])) {
 
+    if (isset($_POST['plan'])) {
+        $planId = $_POST['plan'];
+    }
+
+    if (isset($_SESSION['PURCHASEPLANID'])) {
+        $planId = $_POST['plan'];
+    }
+} else {
+    header("Location: plans.php");
+}
 
 ######################################################################################################################
 $currentPage    = $Utility->setCurrentPageSession();
@@ -26,7 +36,6 @@ if ($clinicInfo->status == 1) {
     $clinicCity     = $clinic->city;
     $clinicState    = $clinic->health_care_state;
     $clinicPIN      = $clinic->pin;
-
 }
 
 $planResponse = json_decode($Plan->getPlan($planId));
@@ -37,6 +46,70 @@ if ($planResponse->status == 1) {
     $planPrice      = $plan->price;
     $planDuration   = $plan->duration;
 }
+
+
+#######################################################################################################
+
+// Cashfree configuration    
+// define('APPID', '6898986b4a87b6c17e44798154898986'); // Replace "TEST" AppId to PROD AppId
+// define('SECRECTKEY', 'cfsk_ma_prod_d0dcabd99b3cfcdc498faea97ccff060_7288151e'); // Replace "TEST" Secret key to PROD Secret key
+define('APPID', 'TEST101978339429a8c9ddfa1aed0eb633879101'); // Replace "TEST" AppId to PROD AppId
+define('SECRECTKEY', 'cfsk_ma_test_b383defee9a89462969452886a4840de_fa75a730'); // Replace "TEST" Secret key to PROD Secret key
+
+define('RETURNURL', 'http://localhost/medicy.in/cheakout/success.php');
+define('NOTIFYURL', 'http://localhost/medicy.in/cheakout/error.php');
+$mode = "TEST"; // Change to TEST for test server, PROD for production
+
+$secretKey = SECRECTKEY; // Secret key
+$orderId = "WC" . mt_rand(11111, 99999); // Create a unique order ID
+
+$postData = array(
+    "appId" => APPID,
+    "orderId" => $orderId,
+    "orderAmount" => '1',
+    "orderCurrency" => "INR",
+    "customerName" => "Dipak",
+    "customerPhone" => "7699753019",
+    "customerEmail" => "rahulmajumdar400@gmail.com",
+    "returnUrl" => RETURNURL,
+    "notifyUrl" => NOTIFYURL,
+);
+
+ksort($postData);
+$signatureData = "";
+foreach ($postData as $key => $value) {
+    $signatureData .= $key . $value;
+}
+
+$signature = hash_hmac('sha256', $signatureData, $secretKey, true);
+$signature = base64_encode($signature);
+
+if ($mode == "PROD") {
+    $url = "https://www.cashfree.com/checkout/post/submit";
+} else {
+    $url = "https://test.cashfree.com/billpay/checkout/post/submit";
+}
+
+?>
+
+
+<form action="" name="formSubmit" method="post">
+    <p>Please wait.......</p>
+    <input type="hidden" name="orderCurrency" value='INR' />
+    <input type="hidden" name="customerName" value='Dipak' />
+    <input type="hidden" name="customerEmail" value='rahulmajumdar400@gmail.com' />
+    <input type="hidden" name="customerPhone" value='7699753019' />
+    <input type="hidden" name="orderAmount" value='1' />
+    <input type="hidden" name="notifyUrl" value='<?php echo NOTIFYURL; ?>' />
+    <input type="hidden" name="returnUrl" value='<?php echo RETURNURL; ?>' />
+    <input type="hidden" name="appId" value='<?php echo APPID; ?>' />
+    <input type="hidden" name="orderId" value='<?php echo $orderId; ?>' />
+    <button type="submit">submit</button>
+</form>
+
+<?php
+
+#######################################################################################################
 
 ?>
 
@@ -60,35 +133,31 @@ if ($planResponse->status == 1) {
     <div>
         <section class="order-summary-section pb-4 px-3 px-md-0">
             <div class="container">
-
-                <form id="paymentForm" name="paymentForm" action="" method="POST">
+                <form id="paymentForm" name="paymentForm" action="<?php echo $url; ?>" method="POST">
                     <div class="row pt-4 px-4 mt-4">
-                        <h4
-                            class="text-light bg-secondary rounded w-100 py-2 border-start border-4 border-primary px-4 mb-4">
+                        <h4 class="text-light bg-secondary rounded w-100 py-2 border-start border-4 border-primary px-4 mb-4">
                             Billing Summary</h4>
+                            <input type="hidden" name="signature" value='<?php echo $signature; ?>' />
 
                         <div class="col-lg-7 px-4">
                             <div class="row">
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                    
-                                    <input type="hidden" name="planid" value="<?= url_enc($planId) ?>">
-                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname"
-                                            name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required>
+
+                                        <input type="hidden" name="planid" value="<?= url_enc($planId) ?>">
+                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="text" minlength="4" class="form-control shadow-none" id="lastName"
-                                            name="lastName" value="<?= $adminLname; ?>" placeholder="Last Name" required>
+                                        <input type="text" minlength="4" class="form-control shadow-none" id="lastName" name="lastName" value="<?= $adminLname; ?>" placeholder="Last Name" required>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="email" class="form-control shadow-none" id="email" name="email"
-                                            value="<?= $userEmail; ?>" placeholder="Email Address" disabled required>
+                                        <input type="email" class="form-control shadow-none" id="email" name="email" value="<?= $userEmail; ?>" placeholder="Email Address" disabled required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mb-3">
@@ -104,7 +173,7 @@ if ($planResponse->status == 1) {
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control shadow-none" name="state" id="state" value="<?= $clinicState; ?>" required />
+                                        <input class="form-control shadow-none" name="state" id="state" value="<?= $clinicState; ?>" placeholder="State" required />
                                     </div>
                                 </div>
 
@@ -116,11 +185,7 @@ if ($planResponse->status == 1) {
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="text"
-                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                            minlength="6" pattern="[0-9]+" maxlength="6"
-                                            class="form-control shadow-none" id="pin-code" name="pin-code"
-                                            value="<?= $clinicPIN;  ?>" required>
+                                        <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" minlength="6" pattern="[0-9]+" maxlength="6" class="form-control shadow-none" id="pin-code" name="pin-code" value="<?= $clinicPIN;  ?>" placeholder="PIN Code" required>
                                     </div>
                                 </div>
 
@@ -163,42 +228,40 @@ if ($planResponse->status == 1) {
 
                                     <hr>
                                     <!-- Show total and payment terms -->
-                                    <!-- <div class="mb-1 d-flex justify-content-between">
+                                    <div class="mb-1 d-flex justify-content-between">
                                         <div class="text-start">
                                             <p>Gross Total</p>
                                         </div>
                                         <div class="text-end">
                                             <p><?= CURRENCY . $planPrice; ?></p>
                                         </div>
-                                    </div> -->
+                                    </div>
 
-                                    <!-- <div class="mb-1 d-flex justify-content-between">
+                                    <div class="mb-1 d-flex justify-content-between">
                                         <div class="text-start">
                                             Discount
                                         </div>
                                         <div class="text-end">10%</div>
-                                    </div> -->
+                                    </div>
 
-                                    <!-- <div class="mb-4 d-flex justify-content-between">
+                                    <div class="mb-4 d-flex justify-content-between">
                                         <div class="text-start">
                                             <h2 class="text-500">Net Pay</h2>
                                         </div>
                                         <div class="text-end">
                                             <h2 class="text-500"><?= CURRENCY . $planPrice; ?></h2>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                     <!-- <hr> -->
 
                                     <button type="button" id="continue-btn" class="btn btn-primary w-100">
                                         Continue
                                     </button>
-                                    
-                                    <!-- <button type="button" class="btn btn-secondary w-100 mt-2 "> -->
-                                        <a href="#" class="text-info" onclick="goback()">
-                                            Previous Page
-                                        </a>
-                                    <!-- </button> -->
+
+                                    <a href="#" class="text-info" onclick="goback()">
+                                        Previous Page
+                                    </a>
                                 </div>
 
                             </div>
@@ -215,30 +278,30 @@ if ($planResponse->status == 1) {
 
 
     <script>
-    let continueBtn = document.getElementById('continue-btn');
+        // let continueBtn = document.getElementById('continue-btn');
 
-    continueBtn.addEventListener("click", function() {
-        document.getElementById("paymentForm").action = "<?= URL?>premium/success.php";
-        if (checkAddress("paymentForm") != false) {
-            document.getElementById("paymentForm").submit();
-        }
-    });
+        // continueBtn.addEventListener("click", function() {
+        //     document.getElementById("paymentForm").action = "<?= URL ?>cheakout/success.php";
+        //     if (checkAddress("paymentForm") != false) {
+        //         document.getElementById("paymentForm").submit();
+        //     }
+        // });
 
 
-    const checkAddress = (formName) => {
+        const checkAddress = (formName) => {
             var elements = document.forms[formName].elements;
             for (i = 0; i < elements
                 .length; i++) {
-                    console.log(elements[i]);
-                    let type=elements[i].type;
-                    if (type != 'button' && type != 'submit') {
-                        if (elements[i].value=='' ) {
-                            alert('Please Fill The Complete Biling Address!');
-                            return false;
-                        }
+                console.log(elements[i]);
+                let type = elements[i].type;
+                if (type != 'button' && type != 'submit') {
+                    if (elements[i].value == '') {
+                        alert('Please Fill The Complete Biling Address!');
+                        return false;
                     }
                 }
-            } 
+            }
+        }
     </script>
 </body>
 

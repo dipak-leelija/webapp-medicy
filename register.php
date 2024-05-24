@@ -27,11 +27,7 @@ $diffrentPassword = false;
 if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
     if (isset($_POST['pid'])) {
-        $planId = $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
-    } 
-    
-    if(isset($_SESSION['PURCHASEPLANID'])) {
-        $planId = $_SESSION['PURCHASEPLANID'];
+        $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
     }
 
     if (isset($_POST['register'])) {
@@ -45,16 +41,9 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
 
         // echo $Fname;
 
-        $currentDate = new DateTime(TODAY);
-
-        // Add 30 days to the current date
-        $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
-
         $adminId  = $IdGenerate->generateAdminId();
 
         $clinicId = $IdGenerate->generateClinicId($adminId);
-
-        $planId = $_SESSION['PURCHASEPLANID'];
 
         $status = '0';
         $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
@@ -98,20 +87,12 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                         $_SESSION['username']           = $username;
                         $_SESSION['adm_id']             = $adminId;
 
-
-                        $subscribed = $Subscription->createSubscription($adminId, $planId, NOW, $expiry, 0);
-
-                        if ($subscribed === true) {
-                            // echo 'True';
-                            $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-                            if ($addToClinicInfo) {
-                                header("Location: register-mail.inc.php");
-                                exit;
-                            } else {
-                                $errMsg = "Clinic Info Can't Added!";
-                            }
+                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
+                        if ($addToClinicInfo) {
+                            header("Location: register-mail.inc.php");
+                            exit;
                         } else {
-                            $errMsg =  $subscribed;
+                            $errMsg = "Clinic Info Can't Added!";
                         }
                     }
                 } else {
@@ -120,7 +101,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
             }
         }
     }
-}else {
+} else {
     header("Location: https://medicy.in/pricing");
     exit;
 }

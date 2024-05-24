@@ -15,7 +15,7 @@ $checkSubscription = $Subscription->checkSubscription($adminId, NOW);
 // ========================== CHECK SUBSCRIPTION ========================== 
 
 if (!$checkSubscription){
-    header("Location:".URL."premium/plans.php");
+    header("Location:".URL."cheakout/");
     exit;
 }
 

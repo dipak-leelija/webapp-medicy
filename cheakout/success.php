@@ -1,4 +1,6 @@
 <?php
+exit;
+print_r($_POST);
 require_once dirname(__DIR__) . '/config/constant.php';
 // // Prevent page from being cached
 // header("Cache-Control: no-cache, must-revalidate");
@@ -44,14 +46,18 @@ if($planResponse->status == 1){
 
 }
 
-$startDate  = new DateTime(TODAY);
-$startDate  = $startDate->format('Y-m-d');
 $expDate    = getNextDate(TODAY, $planDuration);
 $paidAmount = 00;
 
-$response = json_decode($Subscription->updateSubscription($adminId, $planId, $startDate, $expDate, $paidAmount));
-$result = $response->status;
-if ($result != 1) {
+// $response = json_decode($Subscription->updateSubscription($adminId, $planId, $startDate, $expDate, $paidAmount));
+// $result = $response->status;
+// if ($result != 1) {
+//     header("Location: error.php");
+//     exit;
+// }
+
+$subscribed = $Subscription->createSubscription($adminId, $planId, NOW, $expiry, 0);
+if ($subscribed === true) {
     header("Location: error.php");
     exit;
 }
