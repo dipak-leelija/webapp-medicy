@@ -28,17 +28,17 @@ class Contact {
                     
                     if ($stmt->execute()) {
                         $insertId = $stmt->insert_id;
-                        return json_encode(['status' => true, 'insertId' => $insertId]);
+                        return json_encode(['status' => true, 'insertId' => $insertId, 'message'=>'Data stored successfully']);
                     } else {
                         error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-                        return json_encode(['status' => false, 'message' => 'Execute failed: ' . $stmt->error]);
+                        return json_encode(['status' => false, 'message' => 'Code Executin failed: ' . $stmt->error]);
                     }
                 } else {
                     error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
-                    return json_encode(['status' => false, 'message' => 'Prepare failed: ' . $this->conn->error]);
+                    return json_encode(['status' => false, 'message' => 'Data Preparation failed: ' . $this->conn->error]);
                 }
             } else {
-                return json_encode(['status' => false, 'message' => 'Blank data']);
+                return json_encode(['status' => false, 'message' => 'Blank data input']);
             }
         } catch (Exception $e) {
             // error_log("Exception: " . $e->getMessage());

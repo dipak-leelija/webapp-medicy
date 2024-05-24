@@ -15,9 +15,9 @@ class ApiContactController {
         header("Content-Type: application/json; charset=UTF-8");
 
         if($result->status){
-            echo json_encode(['status'=>true]);
+            echo json_encode(['status'=>true, 'message'=>$result->message]);
         }else{
-            echo json_encode(['status'=>false]);
+            echo json_encode(['status'=>false, 'message'=>$result->message]);
         }
     }
 }
