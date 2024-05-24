@@ -6,9 +6,13 @@ use Api\Controllers\ApiInfoController;
 
 require_once "./headers.php";
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = explode('/', $uri);
+echo $origin;
+print_r($allowed_origins);
 
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+echo $uri;
+$uri = explode('/', $uri);
+print_r($uri);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
