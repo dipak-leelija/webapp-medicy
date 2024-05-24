@@ -6,25 +6,9 @@ use Api\Controllers\ApiInfoController;
 
 require_once "./headers.php";
 
-echo $origin;
-
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// echo $uri;
 
 $uri = explode('/', $uri);
-
-
-
-// for($i = 0; $i<count(($uri)); $i++){
-//     if($uri[1] === 'api' || $uri[2] === 'api'){
-//         $api = $i;
-//     }
-
-//     if( str_contains($uri[$i], 'infos')){
-//         $infos = $i;
-//     }
-// }
-
 
 
 $method = $_SERVER['REQUEST_METHOD'];

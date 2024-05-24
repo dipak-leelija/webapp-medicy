@@ -7,22 +7,31 @@ use Api\Controllers\ApiContactController;
 // Set headers for CORS and response content type
 require_once "./headers.php";
 
-// echo "origin : ".$origin;
 
-// echo "<br>allowed_origin : ";
-// print_r($allowed_origins);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// echo "<br><br>uri : ".$uri;
 
 $uri = explode('/', $uri);
 
-// echo "<br><br>array uri : ";
-// print_r($uri);
+
+for($i=0; $i<count($uri); $i++){
+    if($i == 1 || $i == 2){
+        if($uri[$i] == 'api'){
+            $uriPos = $i;
+        }
+    }
+
+    if($i == 2 || $i == 3){
+        if(str_contains($uri[$i], 'contact')){
+            $contactPos = $i;
+        }
+    }
+}
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri[2] === 'api' && str_contains($uri[3], 'contact')) {
+if ($uri[$uriPos] === 'api' && str_contains($uri[$contactPos], 'contact')) {
     $controller = new ApiContactController();
 
     switch ($method) {
