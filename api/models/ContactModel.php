@@ -16,22 +16,34 @@ class Contact {
     }
 
     public function createContact($data) {
-        $query = "INSERT INTO contact_details (name, contact_number, email, subject, message) 
-                  VALUES (?, ?, ?, ?, ?)";
-
-        if ($stmt = $this->conn->prepare($query)) {
-            $stmt->bind_param('sisss', $data['name'], $data['contact_number'], $data['email'], $data['subject'], $data['message']);
-
-            if ($stmt->execute()) {
-                return json_encode(['status'=>true, 'insertId'=>$stmt->insert_id]);
+        try {
+            
+            if (!empty($data['name']) && !empty($data['contact_number']) && !empty($data['email']) && !empty($data['subject']) && !empty($data['message'])) {
+                
+                $query = "INSERT INTO contact_details (name, contact_number, email, subject, message) 
+                          VALUES (?, ?, ?, ?, ?)";
+                
+                if ($stmt = $this->conn->prepare($query)) {
+                    $stmt->bind_param('sisss', $data['name'], $data['contact_number'], $data['email'], $data['subject'], $data['message']);
+                    
+                    if ($stmt->execute()) {
+                        $insertId = $stmt->insert_id;
+                        return json_encode(['status' => true, 'insertId' => $insertId]);
+                    } else {
+                        error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                        return json_encode(['status' => false, 'message' => 'Execute failed: ' . $stmt->error]);
+                    }
+                } else {
+                    error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
+                    return json_encode(['status' => false, 'message' => 'Prepare failed: ' . $this->conn->error]);
+                }
             } else {
-                $errorMsg = error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-                return json_encode(['status'=>false, 'message'=>$errorMsg]);
+                return json_encode(['status' => false, 'message' => 'Blank data']);
             }
-        } else {
-            return error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
+        } catch (Exception $e) {
+            // error_log("Exception: " . $e->getMessage());
+            return json_encode(['status' => false, 'message' => 'Exception: ' . $e->getMessage()]);
         }
     }
+
 }
-
-
