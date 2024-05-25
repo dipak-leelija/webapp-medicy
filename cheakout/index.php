@@ -68,9 +68,9 @@ $postData = array(
     "orderId" => $orderId,
     "orderAmount" => '1',
     "orderCurrency" => "INR",
-    "customerName" => "Dipak",
-    "customerPhone" => "7699753019",
-    "customerEmail" => "rahulmajumdar400@gmail.com",
+    "customerName" => "Roodro",
+    "customerPhone" => "1234567890",
+    "customerEmail" => "roodro.leelija@gmail.com",
     "returnUrl" => RETURNURL,
     "notifyUrl" => NOTIFYURL,
 );
@@ -93,12 +93,13 @@ if ($mode == "PROD") {
 ?>
 
 
-<form action="" name="formSubmit" method="post">
+<form action="<?php echo $url; ?>" name="formSubmit" method="post">
     <p>Please wait.......</p>
+    <input type="hidden" name="signature" value='<?php echo $signature; ?>' />
     <input type="hidden" name="orderCurrency" value='INR' />
-    <input type="hidden" name="customerName" value='Dipak' />
-    <input type="hidden" name="customerEmail" value='rahulmajumdar400@gmail.com' />
-    <input type="hidden" name="customerPhone" value='7699753019' />
+    <input type="hidden" name="customerName" value='Roodro' />
+    <input type="hidden" name="customerEmail" value='roodro.leelija@gmail.com' />
+    <input type="hidden" name="customerPhone" value='1234567890' />
     <input type="hidden" name="orderAmount" value='1' />
     <input type="hidden" name="notifyUrl" value='<?php echo NOTIFYURL; ?>' />
     <input type="hidden" name="returnUrl" value='<?php echo RETURNURL; ?>' />
@@ -133,19 +134,17 @@ if ($mode == "PROD") {
     <div>
         <section class="order-summary-section pb-4 px-3 px-md-0">
             <div class="container">
-                <form id="paymentForm" name="paymentForm" action="<?php echo $url; ?>" method="POST">
+                <form id="formSubmit" name="formSubmit" action="<?php echo $url; ?>" method="POST">
                     <div class="row pt-4 px-4 mt-4">
                         <h4 class="text-light bg-secondary rounded w-100 py-2 border-start border-4 border-primary px-4 mb-4">
                             Billing Summary</h4>
-                            <input type="hidden" name="signature" value='<?php echo $signature; ?>' />
-
                         <div class="col-lg-7 px-4">
+
                             <div class="row">
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-
                                         <input type="hidden" name="planid" value="<?= url_enc($planId) ?>">
-                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required>
+                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required onfocusout="checkData()">
                                     </div>
                                 </div>
 
@@ -202,6 +201,15 @@ if ($mode == "PROD") {
                                     </div> -->
 
                                 </div>
+                                <div class="col-sm-12 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="itemCheck" name="itemCheck" disabled>
+                                        <label class="form-check-label text-danger" for="flexCheckDisabled">
+                                            <strong>Please Accept terms and conditions</strong>
+                                        </label>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -253,11 +261,9 @@ if ($mode == "PROD") {
                                         </div>
                                     </div>
 
-                                    <!-- <hr> -->
+                                    <button type="submit" id="continue-btn" name="continue-btn" class="btn btn-primary w-100">Continue</button>
 
-                                    <button type="button" id="continue-btn" class="btn btn-primary w-100">
-                                        Continue
-                                    </button>
+                                    <!-- <button type="submit">Continue</button> -->
 
                                     <a href="#" class="text-info" onclick="goback()">
                                         Previous Page
@@ -267,14 +273,19 @@ if ($mode == "PROD") {
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" name="orderId" value='<?php echo $orderId; ?>' />
+
                 </form>
             </div>
 
         </section>
     </div>
     <!-- /Footer -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script> -->
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
+    <script src="<?= JS_PATH ?>palan-checkOut-Index.js"></script>
 
 
     <script>
