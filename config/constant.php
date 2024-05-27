@@ -122,11 +122,15 @@ session_start();
 	const CSS_PATH							=	URL.'assets/css/';
 	const JS_PATH							=	URL.'assets/js/';
 	const IMG_PATH							=	URL.'assets/img/';
+	const IMG_DIR							=	ROOT_DIR.'assets/images/';
+
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
 	const SITE_IMG_PATH						=	IMG_PATH.'site-imgs/';
 	// const ORGS_IMG_PATH						= 	ASSETS_PATH.'images/orgs/';
 
-	const LABTEST_IMG_PATH					= 	URL.'img/lab-tests/';
+	const LABTEST_IMG_PATH					= 	ASSETS_PATH.'images/lab-tests/';
+	const LABTEST_IMG_DIR					= 	IMG_DIR.'lab-tests/';
+
 	const PROD_IMG_PATH						=	URL.'images/product-image/';
 	const ADM_IMG_PATH						=	URL.'images/admin-images/';
 	const SUP_ADM_IMG_PATH					=	URL.'admin/images/admin-images/';
