@@ -8,6 +8,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 
+require_once CLASS_DIR . 'UtilityFiles.class.php';
 require_once CLASS_DIR . 'labtypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
@@ -17,7 +18,7 @@ $subTests = new SubTests;
 
 //######################################################
 // Adding Lab Category
-if (isset($_POST['submit-lab-type']) == true) {
+if (isset($_POST['submit-lab-type'])) {
 
     $img = $_FILES['lab-image']['name'];
     // echo "img name : $img<br>";
@@ -25,20 +26,12 @@ if (isset($_POST['submit-lab-type']) == true) {
     $tempImgname = $_FILES['lab-image']['tmp_name'];
     // echo "tempImg name : $tempImgname<br>";
 
-    $imgFolder = "img/lab-tests/" . $img;
+    $imgFolder = LABTEST_IMG_DIR.$img;
     move_uploaded_file($tempImgname, $imgFolder);
 
-    $testName = $_POST['test-name'];
-    $testName = str_replace("<", "&lt", $testName);
-    $testName = str_replace("'", "\\", $testName);
-
-    $testPvdBy = $_POST['provided-by'];
-    $testPvdBy = str_replace("<", "&lt", $testPvdBy);
-    $testPvdBy = str_replace("'", "\\", $testPvdBy);
-
-    $testDsc = $_POST['test-dsc'];
-    $testDsc = str_replace("<", "&lt", $testDsc);
-    $testDsc = str_replace("'", "\\", $testDsc);
+    $testName   = $_POST['test-name'];
+    $testPvdBy  = $_POST['provided-by'];
+    $testDsc    = $_POST['test-dsc'];
 
     //Object initilizing for Adding Main/Parent Tests/Labs
     $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
@@ -189,7 +182,7 @@ if (isset($_POST['subtest-submit']) == true) {
 
                                                                                     echo '<div class="col-sm-3">
                                                                                 <div class="card mt-3" style="min-width: 14rem; min-height: 20rem; max-height: 20rem;">
-                                                                                    <img src=' . LABTEST_IMG_PATH . $showLabTypesShow['image'] . '
+                                                                                    <img src="'.LABTEST_IMG_PATH . $showLabTypesShow['image'].'"
                                                                                         class="card-img-top mt-2 mh-25 mw-25 min-vw-25 min-vh-25" alt="...">
                                                                                         <a href="' . $delTestTypeId . '" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
                                                                                     

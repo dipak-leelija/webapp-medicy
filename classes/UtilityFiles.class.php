@@ -1,7 +1,47 @@
 <?php
 
-class UtilityFiles extends DatabaseConnection
-{
+class UtilityFiles{
+
+    use DatabaseConnection;
+    
+    /**
+	*	This function will delete a file from the server and update the
+	*	file field, set it to blank
+	*
+	*	@param
+	*			$data_id		Primary key associated with the table
+	*			$column_id		Primary key column name
+	*			$column     	Column name of the file
+	*			$table			Name of the file
+	*			$path			Path to the file or location of the file
+	*
+	*	@return NULL
+	*/
+	function deleteFile($data_id, $column_id , $column, $table, $path){
+
+		//get the file name before deleting
+		$select = "SELECT ".$column." FROM ".$table." WHERE ".$column_id."='".$data_id."'";
+		
+		$query  = $this->conn->query($select);
+		
+		$result = $query->fetch_array();
+		
+		if($query->num_rows > 0){
+
+			$fileName = $result[$column];
+            if (file_exists($path . $fileName)) {
+                if (unlink($path . $fileName)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+		}
+		//echo $select." <br />".$sql;exit;
+	}//eof
+
 
     function purchaseImport($fileName, $ADMINID)
     {
