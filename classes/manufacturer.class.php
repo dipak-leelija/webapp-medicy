@@ -1,9 +1,7 @@
 <?php
-require_once 'dbconnect.php';
-
-
-class Manufacturer extends DatabaseConnection
+class Manufacturer
 {
+    use DatabaseConnection;
 
 
     function addManufacturer($id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $newData, $adminId)

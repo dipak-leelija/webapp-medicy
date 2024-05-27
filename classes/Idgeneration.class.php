@@ -1,6 +1,7 @@
  <?php
 
-class IdGeneration extends DatabaseConnection{
+class IdGeneration{
+    use DatabaseConnection;
 
 
     function gettingDoctor ($appointmentDate, $patientDoctor){

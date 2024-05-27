@@ -3,10 +3,11 @@ require_once 'dbconnect.php';
 
 
 
-class StockReturn extends DatabaseConnection
+class StockReturn
 {
 
 
+    use DatabaseConnection;
 
 
     ##################################################################################################################################

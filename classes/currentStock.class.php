@@ -1,9 +1,9 @@
 <?php
 
 
-class CurrentStock extends DatabaseConnection
-{
-
+class CurrentStock {
+    use DatabaseConnection;
+    
     function addCurrentStock($stockInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy, $addedOn, $adminId)
     {
         try {

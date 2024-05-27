@@ -1,11 +1,7 @@
 <?php
-
-require_once 'dbconnect.php';
-
-
-
-class LabAppointments extends DatabaseConnection
+class LabAppointments
 {
+    use DatabaseConnection;
 
 
 

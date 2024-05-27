@@ -1,7 +1,7 @@
 <?php
 
-class PackagingUnits extends DatabaseConnection
-{
+class PackagingUnits{
+    use DatabaseConnection;
 
     function addPackagingUnit($unitName, $addedby, $addedOn, $packStatus, $newData, $adminId)
     {

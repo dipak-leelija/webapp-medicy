@@ -1,7 +1,8 @@
 <?php
 
-class Gst extends DatabaseConnection
+class Gst
 {
+    use DatabaseConnection;
 
     function seletGst(){
         try {

@@ -1,9 +1,9 @@
 <?php
 
 
-class StockIn extends DatabaseConnection
+class StockIn
 {
-
+    use DatabaseConnection;
 
     function addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $Gst, $amount, $addedBy, $addedOn, $adminId)
     {

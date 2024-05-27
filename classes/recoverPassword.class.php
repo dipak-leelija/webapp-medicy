@@ -1,8 +1,9 @@
 <?php
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-class recoverPass extends DatabaseConnection
+class recoverPass
 {
+    use DatabaseConnection;
 
 
     // function recoverPassword($user)

@@ -1,5 +1,6 @@
 <?php
-class Plan extends DatabaseConnection{
+class Plan{
+    use DatabaseConnection;
     
     function allPlans(){
         try {

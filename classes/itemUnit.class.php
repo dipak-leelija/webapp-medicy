@@ -1,7 +1,8 @@
 <?php
 
-class ItemUnit extends DatabaseConnection
+class ItemUnit
 {
+    use DatabaseConnection;
 
     function addItemUnit($unitName, $status, $new, $addedby, $addedOn, $adminId) {
         try {

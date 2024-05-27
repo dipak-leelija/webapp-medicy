@@ -1,9 +1,9 @@
 <?php
 require_once CLASS_DIR.'encrypt.inc.php';
 
-class Employees extends DatabaseConnection
+class Employees
 {
-
+    use DatabaseConnection;
 
     function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $empPass)
     {

@@ -1,6 +1,7 @@
 <?php
 
-class SearchForAll extends DatabaseConnection{
+class SearchForAll{
+    use DatabaseConnection;
 
     function searchAllFilterForAppointment($searchData, $adminId){
         $appointmentsResultData = array();

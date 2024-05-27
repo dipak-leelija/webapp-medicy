@@ -2,9 +2,10 @@
 
 
 
-class Appointments extends DatabaseConnection
-{
+class Appointments {
 
+    use DatabaseConnection;
+    
     // ============ apointments book by patients him/her self ==========
     function addAppointments($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift)
     {

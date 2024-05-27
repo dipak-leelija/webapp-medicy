@@ -2,8 +2,7 @@
 require_once dirname(__DIR__).'/config/constant.php';
 
 
-class DatabaseConnection
-{
+trait DatabaseConnection {
 
 
     private $servername;

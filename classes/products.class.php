@@ -1,9 +1,8 @@
 <?php
 
-class Products extends DatabaseConnection
+class Products
 {
-
-
+    use DatabaseConnection;
 
     ##############################################################################################
     #                                        Product Type                                        #

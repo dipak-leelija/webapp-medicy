@@ -1,7 +1,8 @@
 <?php
 require_once 'dbconnect.php';
-class LabReport extends DatabaseConnection
+class LabReport
 {
+    use DatabaseConnection;
 
     function patientDatafetch($patientId)
     {

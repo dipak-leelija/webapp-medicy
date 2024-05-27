@@ -1,5 +1,6 @@
 <?php
-class ImageUtil extends DatabaseConnection {
+class ImageUtil {
+    use DatabaseConnection;
 
     // public function uploadAndDeleteImage($imageName, $imageTempName, $imageDirPath, $databaseTable, $imgColumn, $identifierColumn, $identifierValue) {
 

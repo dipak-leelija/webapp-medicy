@@ -1,7 +1,8 @@
 <?php
 
-class HealthCare extends DatabaseConnection
+class HealthCare
 {
+    use DatabaseConnection;
 
     
     function addClinicInfo($clinicId, $adminId, $addedTime){

@@ -1,8 +1,9 @@
 <?php
 require_once CLASS_DIR . 'encrypt.inc.php';
-class Admin extends DatabaseConnection
-{
+class Admin {
 
+    use DatabaseConnection;
+    
     function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status) {
         
         $password = pass_enc($password, ADMIN_PASS);

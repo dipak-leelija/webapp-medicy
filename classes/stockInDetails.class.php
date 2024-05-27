@@ -1,7 +1,8 @@
 <?php
 
-class StockInDetails extends DatabaseConnection
+class StockInDetails
 {
+    use DatabaseConnection;
 
     function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $gst, $gstPerItem, $base, $amount, $ADDEDBY, $ADDEDON)
     {

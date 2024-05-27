@@ -1,6 +1,8 @@
 <?php 
-class AccessPermission extends DatabaseConnection{
+class AccessPermission{
 
+    use DatabaseConnection;
+    
 
     function showPermission($roleId, $adminId) {
         try {

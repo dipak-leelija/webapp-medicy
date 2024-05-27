@@ -1,7 +1,8 @@
 <?php
 
-class Emproles extends DatabaseConnection
+class Emproles
 {
+    use DatabaseConnection;
 
     function addDesigRole($desigName)
     {

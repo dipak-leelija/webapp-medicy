@@ -1,6 +1,7 @@
 <?php
 
-Class Pagination extends DatabaseConnection{
+Class Pagination{
+    use DatabaseConnection;
 
     function productsWithPagination() {
         // Number of records per page

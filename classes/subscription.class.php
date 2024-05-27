@@ -1,6 +1,7 @@
 <?php
-class Subscription extends DatabaseConnection
+class Subscription
 {
+    use DatabaseConnection;
 
     function allPlans()
     {

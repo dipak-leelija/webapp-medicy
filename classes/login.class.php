@@ -4,9 +4,9 @@ require_once CLASS_DIR . 'idsgeneration.class.php';
 
 
 
-class LoginForm extends DatabaseConnection
+class LoginForm
 {
-
+    use DatabaseConnection;
 
     function login($email, $password, $roleData)
     {

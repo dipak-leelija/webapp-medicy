@@ -1,8 +1,9 @@
 <?php
-class DoctorCategory extends DatabaseConnection
+class DoctorCategory
 {
 
-
+    use DatabaseConnection;
+    
 
     function addDoctorCategory($docCatName, $docDesc, $employee, $addedOn, $adminId){
         
