@@ -222,12 +222,20 @@ if (isset($_POST['subtest-submit']) == true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
+                                    <!-- <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
                                         Add Test Types
                                     </div>
                                     <div class="border rounded bg-light text-center py-2">
                                         Add Sub Test
-                                    </div>
+                                    </div> -->
+
+                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestTypeModel" onclick="addTestAndSubTest(this)">
+                                        Add Test Types
+                                    </button>
+                                    
+                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestTypeModel" onclick="addTestAndSubTest(this)">
+                                        Add Sub Test
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -411,6 +419,8 @@ if (isset($_POST['subtest-submit']) == true) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+
+    <script src="<?= JS_PATH ?>lab-tests.js"></script>
 
 
 </body>
