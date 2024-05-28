@@ -31,7 +31,6 @@ if (isset($_POST['plan']) ||  isset($_SESSION['PURCHASEPLANID'])) {
 $currentPage    = $Utility->setCurrentPageSession();
 $clinicInfo     = json_decode($HealthCare->showHealthCare($adminId));
 if ($clinicInfo->status == 1) {
-    // print_r($clinicInfo);
     $clinic = $clinicInfo->data;
     $clinicCity     = $clinic->city;
     $clinicState    = $clinic->health_care_state;
@@ -39,7 +38,6 @@ if ($clinicInfo->status == 1) {
 }
 
 $planResponse = json_decode($Plan->getPlan($planId));
-// print_r($planResponse);
 if ($planResponse->status == 1) {
     $plan           = $planResponse->data;
     $planName       = $plan->name;
@@ -50,67 +48,6 @@ if ($planResponse->status == 1) {
 
 #######################################################################################################
 
-// Cashfree configuration    
-// define('APPID', '6898986b4a87b6c17e44798154898986'); // Replace "TEST" AppId to PROD AppId
-// define('SECRECTKEY', 'cfsk_ma_prod_d0dcabd99b3cfcdc498faea97ccff060_7288151e'); // Replace "TEST" Secret key to PROD Secret key
-define('APPID', 'TEST101978339429a8c9ddfa1aed0eb633879101'); // Replace "TEST" AppId to PROD AppId
-define('SECRECTKEY', 'cfsk_ma_test_b383defee9a89462969452886a4840de_fa75a730'); // Replace "TEST" Secret key to PROD Secret key
-
-define('RETURNURL', 'http://localhost/medicy.in/cheakout/success.php');
-define('NOTIFYURL', 'http://localhost/medicy.in/cheakout/error.php');
-$mode = "TEST"; // Change to TEST for test server, PROD for production
-
-$secretKey = SECRECTKEY; // Secret key
-$orderId = "WC" . mt_rand(11111, 99999); // Create a unique order ID
-
-$postData = array(
-    "appId" => APPID,
-    "orderId" => $orderId,
-    "orderAmount" => '1',
-    "orderCurrency" => "INR",
-    "customerName" => "Roodro",
-    "customerPhone" => "1234567890",
-    "customerEmail" => "roodro.leelija@gmail.com",
-    "returnUrl" => RETURNURL,
-    "notifyUrl" => NOTIFYURL,
-);
-
-ksort($postData);
-$signatureData = "";
-foreach ($postData as $key => $value) {
-    $signatureData .= $key . $value;
-}
-
-$signature = hash_hmac('sha256', $signatureData, $secretKey, true);
-$signature = base64_encode($signature);
-
-if ($mode == "PROD") {
-    $url = "https://www.cashfree.com/checkout/post/submit";
-} else {
-    $url = "https://test.cashfree.com/billpay/checkout/post/submit";
-}
-
-?>
-
-
-<form action="<?php echo $url; ?>" name="formSubmit" method="post">
-    <p>Please wait.......</p>
-    <input type="hidden" name="signature" value='<?php echo $signature; ?>' />
-    <input type="hidden" name="orderCurrency" value='INR' />
-    <input type="hidden" name="customerName" value='Roodro' />
-    <input type="hidden" name="customerEmail" value='roodro.leelija@gmail.com' />
-    <input type="hidden" name="customerPhone" value='1234567890' />
-    <input type="hidden" name="orderAmount" value='1' />
-    <input type="hidden" name="notifyUrl" value='<?php echo NOTIFYURL; ?>' />
-    <input type="hidden" name="returnUrl" value='<?php echo RETURNURL; ?>' />
-    <input type="hidden" name="appId" value='<?php echo APPID; ?>' />
-    <input type="hidden" name="orderId" value='<?php echo $orderId; ?>' />
-    <button type="submit">submit</button>
-</form>
-
-<?php
-
-#######################################################################################################
 
 ?>
 
@@ -123,8 +60,6 @@ if ($mode == "PROD") {
     <link rel="shortcut icon" href="<?= FAVCON_PATH ?>" type="image/png" />
     <link rel="apple-touch-icon" href="<?= FAVCON_PATH ?>" />
     <title><?= $planName ?> Plan - <?= SITE_NAME; ?></title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
     <!-- Plugins Files -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -134,7 +69,7 @@ if ($mode == "PROD") {
     <div>
         <section class="order-summary-section pb-4 px-3 px-md-0">
             <div class="container">
-                <form id="formSubmit" name="formSubmit" action="<?php echo $url; ?>" method="POST">
+                <form id="formSubmit" name="formSubmit" action="payment.php" method="POST">
                     <div class="row pt-4 px-4 mt-4">
                         <h4 class="text-light bg-secondary rounded w-100 py-2 border-start border-4 border-primary px-4 mb-4">
                             Billing Summary</h4>
@@ -156,7 +91,7 @@ if ($mode == "PROD") {
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="email" class="form-control shadow-none" id="email" name="email" value="<?= $userEmail; ?>" placeholder="Email Address" disabled required>
+                                        <input type="email" class="form-control shadow-none" id="email" name="email" value="<?= $userEmail; ?>" placeholder="Email Address" readonly required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mb-3">
@@ -193,14 +128,8 @@ if ($mode == "PROD") {
                                     <small class="fw-normal">
                                         Please ensure that you provide accurate and complete information to avoid any delays or issues with your order. Once you have reviewed and submitted your details you can place order.
                                     </small>
-                                    <!-- <div class="d-flex justify-content-start p-4 ps-0">
-                                        <button type="button" class="btn btn-secondary d-none d-lg-block"
-                                            onclick="goback()">
-                                            Previous Page
-                                        </button>
-                                    </div> -->
-
                                 </div>
+
                                 <div class="col-sm-12 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="itemCheck" name="itemCheck" disabled>
@@ -258,10 +187,11 @@ if ($mode == "PROD") {
                                         </div>
                                         <div class="text-end">
                                             <h2 class="text-500"><?= CURRENCY . $planPrice; ?></h2>
+                                            <input type="hidden" name="plan-price" value="<?= $planPrice ?>">
                                         </div>
                                     </div>
 
-                                    <button type="submit" id="continue-btn" name="continue-btn" class="btn btn-primary w-100">Continue</button>
+                                    <button type="submit" id="payment-btn" name="payment-btn" class="btn btn-primary w-100">Continue</button>
 
                                     <!-- <button type="submit">Continue</button> -->
 
@@ -273,9 +203,6 @@ if ($mode == "PROD") {
                             </div>
                         </div>
                     </div>
-
-                    <input type="hidden" name="orderId" value='<?php echo $orderId; ?>' />
-
                 </form>
             </div>
 
@@ -285,20 +212,10 @@ if ($mode == "PROD") {
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script> -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
-    <script src="<?= JS_PATH ?>palan-checkOut-Index.js"></script>
+    <!-- <script src="<?= JS_PATH ?>palan-checkOut-Index.js"></script> -->
 
 
     <script>
-        // let continueBtn = document.getElementById('continue-btn');
-
-        // continueBtn.addEventListener("click", function() {
-        //     document.getElementById("paymentForm").action = "<?= URL ?>cheakout/success.php";
-        //     if (checkAddress("paymentForm") != false) {
-        //         document.getElementById("paymentForm").submit();
-        //     }
-        // });
-
-
         const checkAddress = (formName) => {
             var elements = document.forms[formName].elements;
             for (i = 0; i < elements
