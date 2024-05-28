@@ -1,7 +1,8 @@
 <?php
 require_once 'dbconnect.php';
-class IdsGeneration extends DatabaseConnection
+class IdsGeneration
 {
+    use DatabaseConnection;
 
 
     function patientidGenerate()

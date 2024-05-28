@@ -1,14 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+class LabBillDetails{
 
-require_once 'dbconnect.php';
-
-
-
-class LabBillDetails extends DatabaseConnection{
-
+    use DatabaseConnection;
 
 
     function addLabBillDetails($billId, $billingDate, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount){

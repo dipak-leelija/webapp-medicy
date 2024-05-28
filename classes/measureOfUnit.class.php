@@ -1,8 +1,6 @@
 <?php
-require_once 'dbconnect.php';
-
-
-class MeasureOfUnits extends DatabaseConnection{
+class MeasureOfUnits{
+    use DatabaseConnection;
 
     function addMeasureOfUnits($shortName, $fullName, $addedBy, $addedOn,$newData, $adminId) {
         try {

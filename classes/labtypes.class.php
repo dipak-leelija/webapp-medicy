@@ -1,17 +1,42 @@
 <?php
-require_once 'dbconnect.php';
 
-class LabTypes extends DatabaseConnection
-{
+class LabTypes extends UtilityFiles{
+    
+    use DatabaseConnection;
+    
 
-    function addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc)
-    {
-        $insert = "INSERT INTO `tests_types` (`image`, `test_type_name`, `provided_by`, `dsc`) VALUES ('$imgFolder','$testName', '$testPvdBy', '$testDsc')";
-        $insertQuery = $this->conn->query($insert);
-        // echo $insert.$this->conn->error;
+    function addLabTypes($image, $testName, $testPvdBy, $testDsc){
+    try {
+        $addLabType = "INSERT INTO `tests_types` (`image`, `test_type_name`, `provided_by`, `dsc`) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($addLabType);
+        
+        if ($stmt === false) {
+            throw new Exception('Prepare failed: ' . $this->conn->error);
+        }
 
-        return $insertQuery;
-    } // end addLabTypes function
+        // Bind the input parameters to the prepared statement
+        $stmt->bind_param('ssss', $image, $testName, $testPvdBy, $testDsc);
+
+        // Execute the prepared statement
+        $result = $stmt->execute();
+        
+        if ($result === false) {
+            throw new Exception('Execute failed: ' . $stmt->error);
+        }
+
+        // Close the statement
+        $stmt->close();
+
+        return $result;
+    } catch (Exception $e) {
+        // Handle the exception (log it, rethrow it, or handle it as needed)
+        // For demonstration, we just echo the error message
+        echo 'Error: ' . $e->getMessage();
+        return false;
+    }
+} // end addLabTypes function
+
+
 
 
 
@@ -68,14 +93,49 @@ class LabTypes extends DatabaseConnection
 
 
 
-    function deleteLabTypes($delTestTypeId)
-    {
-        $deletelabType = "DELETE FROM `tests_types` WHERE `tests_types`.`id` = '$delTestTypeId'";
-        $deletelabQuery = $this->conn->query($deletelabType);
-        return $deletelabQuery;
+    // function deleteLabTypes($delTestTypeId){
+
+    //     $deletelabType = "DELETE FROM `tests_types` WHERE `tests_types`.`id` = '$delTestTypeId'";
+    //     $deletelabQuery = $this->conn->query($deletelabType);
+    //     return $deletelabQuery;
+    // } // end deleteLabTypes function
+
+    function deleteLabTypes($delTestTypeId) {
+        try {
+
+            $imgdelete = $this->deleteFile($delTestTypeId, 'id' , 'image', 'tests_types', LABTEST_IMG_DIR);
+            if ($imgdelete) {
+                $deletelabType = "DELETE FROM `tests_types` WHERE `id` = ?";
+                
+                $stmt = $this->conn->prepare($deletelabType);
+                
+                if ($stmt === false) {
+                    throw new Exception('Statement preparation failed: ' . $this->conn->error);
+                }
+                
+                $stmt->bind_param("i", $delTestTypeId);
+                
+                $stmt->execute();
+                
+                if ($stmt->error) {
+                    throw new Exception('Statement execution failed: ' . $stmt->error);
+                }
+                
+                if($stmt->affected_rows > 0){
+                    return json_encode(['status'=> true, 'message'=> 'success']);
+                }else {
+                    return json_encode(['status'=> false, 'message'=> 'Image Deleted But Details Not Deleted!']);
+                }
+                
+                $stmt->close();
+            }else {
+                return json_encode(['status'=> false, 'message'=> 'Image Not Deleted!']);
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage()); // Log the error message
+            return false; // Return false in case of error
+        }
     } // end deleteLabTypes function
-
-
-
+    
 
 } //end of LabTypes Class

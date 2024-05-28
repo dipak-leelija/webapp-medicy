@@ -1,12 +1,7 @@
 <?php
-
-require_once 'dbconnect.php';
-
-
-
-
-class Patients extends DatabaseConnection
+class Patients
 {
+    use DatabaseConnection;
 
     function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId)
     {

@@ -1,9 +1,10 @@
 <?php
 require_once 'dbconnect.php';
 
-class SubTests extends DatabaseConnection
+class SubTests
 {
 
+    use DatabaseConnection;
 
 
     function showSubTests()

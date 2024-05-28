@@ -1,7 +1,8 @@
 <?php
 
-class StockOut extends DatabaseConnection
+class StockOut
 {
+    use DatabaseConnection;
 
     function addStockOut($invoiceId, $customerId, $reffBy, $items, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $status, $billDate, $addedBy, $addedOn, $adminId)
     {

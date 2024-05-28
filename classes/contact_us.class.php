@@ -1,14 +1,8 @@
 <?php
-require_once 'dbconnect.php';
 
+class insert{
 
-
-class insert extends DatabaseConnection{
-
-
-   
-
-  
+    use DatabaseConnection;
 
     
     function adddata( $name,$email,$subject,$message){

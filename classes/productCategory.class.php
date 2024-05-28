@@ -1,6 +1,7 @@
 <?php
 
-class ProductCategory extends DatabaseConnection{
+class ProductCategory{
+    use DatabaseConnection;
 
     function addCategory($category, $addedBy, $addedOn) {
         try {

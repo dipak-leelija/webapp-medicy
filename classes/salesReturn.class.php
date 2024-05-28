@@ -1,7 +1,8 @@
 <?php
 
-class SalesReturn extends DatabaseConnection
+class SalesReturn
 {
+    use DatabaseConnection;
 
     function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $status, $added_by, $addedOn, $adminId)
     {

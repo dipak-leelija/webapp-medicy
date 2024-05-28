@@ -1,7 +1,8 @@
 <?php
 
-class Request extends DatabaseConnection
+class Request
 {
+    use DatabaseConnection;
 
     function addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status)
     {

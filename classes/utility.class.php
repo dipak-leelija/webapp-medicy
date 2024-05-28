@@ -1,5 +1,7 @@
 <?php 
-class Utility extends DatabaseConnection{
+
+class Utility{
+    use DatabaseConnection;
 
    ##########################################################################################
    #
@@ -177,43 +179,6 @@ class Utility extends DatabaseConnection{
 		//return the message
 		return $msg;
 		
-	}//eof
-	
-	/**
-	*	This function will delete a file from the server and update the
-	*	file field, set it to blank
-	*
-	*	@param
-	*			$id				Primary key associated with the table
-	*			$column_id		Primary key column name
-	*			$path			Path to the file or location of the file
-	*			$column_file	Column name of the file
-	*			$table			Name of the file
-	*
-	*	@return NULL
-	*/
-	function deleteFile($id, $column_id ,$path, $column_file, $table){
-
-		//get the file name before deleting
-		$select = "SELECT ".$column_file." FROM ".$table." WHERE ".$column_id."='".$id."'";
-		
-		$query  = $this->conn->query($select);
-		
-		$result = $query->fetch_array();
-		
-		if($query->num_rows > 0){
-
-			$fileName = $result[$column_file];
-			if ($fileName != null) {
-				unlink($path.$fileName);
-			}
-		}
-		
-		//set the column value
-		$sql = "UPDATE ".$table." SET ".$column_file."= '' WHERE ".$column_id."='".$id."'";
-		$this->conn->query($sql);
-		
-		//echo $select." <br />".$sql;exit;
 	}//eof
 
 

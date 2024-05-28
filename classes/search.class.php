@@ -1,12 +1,8 @@
 <?php
 
-require_once 'dbconnect.php';
-
-
-
-
-class Search extends DatabaseConnection
+class Search
 {
+    use DatabaseConnection;
 
     function searchForSale($data)
     {

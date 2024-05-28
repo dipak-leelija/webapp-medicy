@@ -1,6 +1,7 @@
 <?php
 require_once CLASS_DIR . 'encrypt.inc.php';
-class SuperAdmin extends DatabaseConnection{
+class SuperAdmin{
+    use DatabaseConnection;
     
     function supAdminDetails(){
         try{

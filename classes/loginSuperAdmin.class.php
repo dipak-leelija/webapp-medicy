@@ -1,7 +1,8 @@
 <?php
 require_once CLASS_DIR.'encrypt.inc.php';
 
-class SuperAdminLoginForm extends DatabaseConnection{
+class SuperAdminLoginForm{
+    use DatabaseConnection;
 
     function supAdminLogin($email, $password){
 

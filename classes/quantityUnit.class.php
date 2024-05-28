@@ -1,6 +1,7 @@
 <?php
 
-class QuantityUnit extends DatabaseConnection{
+class QuantityUnit{
+    use DatabaseConnection;
 
     // function addPackagingUnit($unitName, $addedby, $addedOn, $adminId) {
     //     try {

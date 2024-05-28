@@ -1,13 +1,7 @@
 <?php
-
-require_once 'dbconnect.php';
-
-
-
-
-
-class LabBilling extends DatabaseConnection
+class LabBilling
 {
+use DatabaseConnection;
 
     function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId)
     {

@@ -1,7 +1,8 @@
 <?php
 
-class Distributor extends DatabaseConnection{
-
+class Distributor{
+    use DatabaseConnection;
+    
 
     function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $newData, $adminId){
 

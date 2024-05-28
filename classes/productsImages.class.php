@@ -1,7 +1,8 @@
 <?php
 
-class ProductImages extends DatabaseConnection
+class ProductImages
 {
+    use DatabaseConnection;
 
     function addImagesBySupAdmin($productId, $productImage, $status, $addedBy, $addedOn, $adminId)
     {

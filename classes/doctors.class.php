@@ -1,10 +1,10 @@
 <?php
-require_once 'dbconnect.php';
 
-class Doctors extends DatabaseConnection
+class Doctors
 {
 
-
+    use DatabaseConnection;
+    
 
     function addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId)
     {
