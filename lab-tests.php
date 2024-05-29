@@ -229,11 +229,11 @@ if (isset($_POST['subtest-submit']) == true) {
                                         Add Sub Test
                                     </div> -->
 
-                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestTypeModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Test Types
                                     </button>
                                     
-                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestTypeModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-subTest" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Sub Test
                                     </button>
                                 </div>
@@ -243,12 +243,12 @@ if (isset($_POST['subtest-submit']) == true) {
 
 
                     <!-- Lab Test Text -->
-                    <div class="card shadow mb-4">
+                    <!-- <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Add New Sub Category Tests</h6>
                         </div>
-                        <div class="card-body">
-                            <form action="lab-tests.php" method="post">
+                        <div class="card-body"> -->
+                            <!-- <form action="lab-tests.php" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-12">
@@ -306,9 +306,9 @@ if (isset($_POST['subtest-submit']) == true) {
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
                                     <button class="btn btn-success me-md-2" name="subtest-submit" type="submit">Submit</button>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
+                            </form> -->
+                        <!-- </div>
+                    </div> -->
 
                     <!-- End Lab Test Text -->
                     <!-- /Add New Catagory Section -->
@@ -331,18 +331,18 @@ if (isset($_POST['subtest-submit']) == true) {
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestTypeModel" tabindex="-1" aria-labelledby="addTestTypeModelLabel" aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
+                    <h5 class="modal-title" id="editNicheDetails"></h5>
                     <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
 
-                <div class="modal-body">
-                    <form action="lab-tests.php" method="post" enctype="multipart/form-data">
+                <div class="modal-body add-new-test-data-modal">
+                    <!-- <form action="lab-tests.php" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="col-md-12">
@@ -371,7 +371,7 @@ if (isset($_POST['subtest-submit']) == true) {
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
                             <button class="btn btn-success me-md-2" type="submit" name="submit-lab-type">Submit</button>
                         </div>
-                    </form>
+                    </form> -->
                 </div>
                 <!-- Modal Body end -->
 
