@@ -7,14 +7,22 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'UtilityFiles.class.php';
+require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+
 
 
 //Classes Initilizing
+
 $Patients        = new Patients();
 $IdsGeneration   = new IdsGeneration();
 $HealthCare      = new HealthCare;
+$labTypes        = new LabTypes;
+$subTests        = new SubTests;
 
 
+$showLabTypes = $labTypes->showLabTypes();
 
 $clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
@@ -28,6 +36,29 @@ if ($clinicInfo['status'] == 1) {
 } else {
     echo "Error: " . $clinicInfo['msg'];
 }
+
+
+////////////////////////////////////////////////////////////
+$swalControl = 2;
+if (isset($_POST['add-new-subtest']) == true) {
+
+    $subTestName = $_POST['subtest-name'];
+    $parentTestId = $_POST['parent-test'];
+    $ageGroup = $_POST['age-group'];
+    $subTestPrep = $_POST['test-prep'];
+    $subTestDsc = $_POST['subtest-dsc'];
+    $price = $_POST['price'];
+    $SubTestUnit = $_POST['subtest-unit'];
+
+    $addsubTests = json_decode($subTests->addSubTests($subTestName, $SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price));
+
+    if ($addsubTests->status) {
+        $swalControl = 1;
+    } else {
+        $swalControl = 0;
+    }
+}
+
 ?>
 
 <!doctype html>
@@ -59,33 +90,27 @@ if ($clinicInfo['status'] == 1) {
 </head>
 
 <body>
+
     <?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        //Patient Id Generate
-        $patientId = $IdsGeneration->patientidGenerate();
-
-        $visited = 0;
-
-        $added = $Patients->addPatients($patientId, $_POST['patientName'], ' ', $email, $_POST['patientPhoneNumber'], ' ', ' ', $_POST['patientAddress1'], ' ', $district, $pin, $state, $visited, $employeeId, ' ', NOW, $adminId);
-
-        if ($added == TRUE) {
+    if ($swalControl == 1) {
     ?>
-
-            <script>
-                swal("Success", "Customer Added Successfuly!", "success");
-            </script>
-
-        <?php
-        } else {
-        ?>
-
-            <script>
-                swal("Failed", "Customer Addition Failed !", "error");
-            </script>
-
+        <script>
+            alert('Data insert successfully');
+            // console.log(<?php echo $swalControl; ?>);
+            Swal.fire("Success", "Data Addition successfull!", "success");
+        </script>
     <?php
-        }
+    }
+
+    if ($swalControl == 0) {
+    ?>
+        <script>
+            alert('Data insertion fail!');
+            Swal.fire("Failed", "Data Addition Failed!", "error");
+        </script>
+    <?php
+
     }
 
     ?>
@@ -96,63 +121,70 @@ if ($clinicInfo['status'] == 1) {
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
                 <div class="bg-light p-4 pb-0">
                     <!-- <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4> -->
-                    <form action="lab-tests.php" method="post">
+                    <form form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <!-- first row -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="parent-test">Parent Test Name <span class="text-danger font-weight-bold">*</span></label>
-                                    <select name="parent-test" class="form-control" id="parent-test" required>
-                                        <option value="" disabled selected>Select Main Test</option>
-                                        <?php
-                                        // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
-                                        foreach ($showLabTypes as $labTypeName) {
-                                            echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
-                                        }
-                                        // }
-                                        ?>
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="parent-test" style="color: #5A59EB; margin-right: 8px;">Parent Test Name <span class="text-danger font-weight-bold">*</span></label>
+                                <select name="parent-test" class="newsalesAdd" id="parent-test" required>
+                                    <option value="" disabled selected>Select Main Test</option>
+                                    <?php
+                                    // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
+                                    foreach ($showLabTypes as $labTypeName) {
+                                        echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
+                                    }
+                                    // }
+                                    ?>
 
-                                    </select>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="test-prep">What preparation is needed for this
-                                        Checkup? <span class="text-danger font-weight-bold">*</span></Address></label>
-                                    <textarea class="form-control" id="test-prep" name="test-prep" cols="30" rows="4" required></textarea>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="age-group">Age Group <span class="text-danger font-weight-bold">*</span></label>
-                                    <select class="form-control" id="age-group" name="age-group" required>
-                                        <option value="" disabled selected>Select Age Group <span class="text-danger font-weight-bold">*</span></option>
-                                        <option value="Any Age Group">Any Age Group <span class="text-danger font-weight-bold">*</span></option>
-                                        <option value="Bellow 18">Bellow 18</option>
-                                        <option value="Above 18">Above 18</option>
-                                    </select>
-                                </div>
+                                </select>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name <span class="text-danger font-weight-bold">*</span></label>
-                                    <input class="form-control" id="subtest-name" name="subtest-name" type="text" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="subtest-unit"> Sub Test Unit <span class="text-danger font-weight-bold">*</span></label>
-                                    <input class="form-control" id="subtest-unit" name="subtest-unit" type="text" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="subtest-dsc">Description <span class="text-danger font-weight-bold">*</span></label>
-                                    <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30" rows="4" required></textarea>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="price">Price <span class="text-danger font-weight-bold">*</span></label>
-                                    <input class="form-control" id="price" name="price" type="number" required>
-                                </div>
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="subtest-name" style="color: #5A59EB; margin-right: 8px;"> Sub Test Name <span class="text-danger font-weight-bold">*</span></label>
+                                <input class="newsalesAdd" id="subtest-name" name="subtest-name" type="text" required autocomplete="off">
+                            </div>
+                        </div>
+                        <!-- second row -->
+                        <div class="row mt-2">
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="age-group" style="color: #5A59EB; margin-right: 8px;">Age Group <span class="text-danger font-weight-bold">*</span></label>
+                                <select class="newsalesAdd" id="age-group" name="age-group" required>
+                                    <option value="" disabled selected>Select Age Group <span class="text-danger font-weight-bold">*</span></option>
+                                    <option value="Any Age Group">Any Age Group <span class="text-danger font-weight-bold">*</span></option>
+                                    <option value="Bellow 18">Bellow 18</option>
+                                    <option value="Above 18">Above 18</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="subtest-unit" style="color: #5A59EB; margin-right: 8px;"> Sub Test Unit <span class="text-danger font-weight-bold">*</span></label>
+                                <input class="newsalesAdd" id="subtest-unit" name="subtest-unit" type="text" required autocomplete="off">
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                            <button class="btn btn-success me-md-2" name="add-new-subtest" type="submit">Submit</button>
+                        <div class="row mt-2">
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="test-prep" style="color: #5A59EB; margin-right: 8px;">Pre Checkup Procedure for patient <span class="text-danger font-weight-bold">*</span></Address></label>
+
+                                <textarea class="newsalesAdd" id="test-prep" name="test-prep" cols="30" rows="3" required></textarea>
+
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="subtest-dsc" style="color: #5A59EB; margin-right: 8px;">Description <span class="text-danger font-weight-bold">*</span></label>
+
+                                <textarea class="newsalesAdd" id="subtest-dsc" name="subtest-dsc" cols="30" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left">
+                                <label class="form-control-label h7 font-weight-bold" for="price" style="color: #5A59EB; margin-right: 8px;">Price <span class="text-danger font-weight-bold">*</span></label>
+                                <input class="newsalesAdd" id="price" name="price" type="number" min="0" required>
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex justify-content-between text-left mt-5">
+                                <button class="btn btn-success me-md-2" name="add-new-subtest" type="submit">Submit</button>
+                            </div>
                         </div>
                     </form>
                 </div>

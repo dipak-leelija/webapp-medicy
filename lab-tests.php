@@ -12,84 +12,57 @@ require_once CLASS_DIR . 'UtilityFiles.class.php';
 require_once CLASS_DIR . 'labtypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
+require_once CLASS_DIR . 'pagination.class.php';
 
-$labTypes = new LabTypes;
-$subTests = new SubTests;
+$labTypes       = new LabTypes;
+$subTests       = new SubTests;
+$Pagination     = new Pagination;
 
-//######################################################
-// Adding Lab Category
-if (isset($_POST['new-lab-test-data'])) {
 
-    $img = $_FILES['lab-image']['name'];
-    echo "img name : $img<br>";
+//=====================================================================
+// ============= APPOINTMENT DATA ================
+$searchVal = '';
+$match = '';
 
-    $tempImgname = $_FILES['lab-image']['tmp_name'];
-    // echo "tempImg name : $tempImgname<br>";
-
-    $imgFolder = LABTEST_IMG_DIR . $img;
-    move_uploaded_file($tempImgname, $imgFolder);
-
-    $testName   = $_POST['test-name'];
-    $testPvdBy  = $_POST['provided-by'];
-    $testDsc    = $_POST['test-dsc'];
-
-    //Object initilizing for Adding Main/Parent Tests/Labs
-    // $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
+if (isset($_GET['search'])) {
+    $searchVal = $match = $_GET['search'];
+    $showLabTypes = json_decode($labTypes->searchLabTest($searchVal));
+} else {
+    $showLabTypes = json_decode($labTypes->showLabTypes());
 }
-// End of Adding Lab Category
 
-//######################################################
-//Object initilizing for Fetching Tests/Labs
-$showLabTypes = $labTypes->showLabTypes();
+if ($showLabTypes->status) {
+    $labData = $showLabTypes->data;
 
-// $showLabTypes = json_decode($showLabTypes);
-// print_r($showLabTypes);
-//######################################################
-// Adding Sub tests Category
-if (isset($_POST['add-new-subtest']) == true) {
+    if (!empty($labData)) {
 
+        $allLabTestData = $labData;
 
-    $subTestName = $_POST['subtest-name'];
-    $subTestName = str_replace("<", "&lt", $subTestName);
-    $subTestName = str_replace("'", "\\", $subTestName);
+        if (is_array($allLabTestData)) {
 
-    $parentTestId = $_POST['parent-test'];
-    $parentTestId = str_replace("<", "&lt", $parentTestId);
-    $parentTestId = str_replace("'", "\\", $parentTestId);
+            $response = json_decode($Pagination->arrayPagination($allLabTestData));
 
-    $ageGroup = $_POST['age-group'];
-    $ageGroup = str_replace("<", "&lt", $ageGroup);
-    $ageGroup = str_replace("'", "\\", $ageGroup);
+            $slicedLabTestData = '';
+            $paginationHTML = '';
+            $labTestTotalItem = $slicedLabTestData = $response->totalitem;
 
-    $subTestPrep = $_POST['test-prep'];
-    $subTestPrep = str_replace("<", "&lt", $subTestPrep);
-    $subTestPrep = str_replace("'", "\\", $subTestPrep);
-
-    $subTestDsc = $_POST['subtest-dsc'];
-    $subTestDsc = str_replace("<", "&lt", $subTestDsc);
-    $subTestDsc = str_replace("'", "\\", $subTestDsc);
-
-    $price = $_POST['price'];
-    $price = str_replace("<", "&lt", $price);
-    $price = str_replace("'", "\\", $price);
-
-    $SubTestUnit = $_POST['subtest-unit'];
-    $SubTestUnit = str_replace("<", "&lt", $SubTestUnit);
-    $SubTestUnit = str_replace("'", "\\", $SubTestUnit);
-
-    $addsubTests = $subTests->addSubTests($subTestName, $SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
-    if (!$addsubTests) {
-        echo "Something is wrong!";
+            if ($response->status == 1) {
+                $slicedLabTestData = $response->items;
+                $paginationHTML = $response->paginationHTML;
+            }
+        } else {
+            $labTestTotalItem = 0;
+        }
+    }else{
+        $labTestTotalItem = 0;
+        $paginationHTML = '';
     }
-    // else {
-    //     echo '<script>
-    //     alert("'.$subTestName.' Test has been added!")
-    //     </script>';
-    // }
+} else {
+    $labTestTotalItem = 0;
+    $paginationHTML = '';
 }
-// End of Adding Sub tests Category
 
-// $updateClicked = $_GET['updateClicked'];
+
 
 
 ?>
@@ -107,9 +80,7 @@ if (isset($_POST['add-new-subtest']) == true) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -146,9 +117,23 @@ if (isset($_POST['add-new-subtest']) == true) {
                         <div class="col-12 col-md-8">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 booked_btn">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="m-0 font-weight-bold text-primary">Lab Tests</h6>
+                                    <div class="row d-flex">
+                                        <div class="col-md-4">
+                                            <h6 class="m-0 font-weight-bold text-primary">Lab Test List</h6>
+                                        </div>
+                                        <label class="d-none" for="" id="base-url-holder"></label>
+                                        <label class="d-none" for="" id="srch-btn-controler">0</label>
+                                        <div class="col-md-8 input-group d-flex justify-content-end">
+                                            <input class="cvx-inp w-75" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
+
+                                            <div class="input-group-append" id="dataSearch-btnDiv">
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>
+                                            </div>
+
+                                            <div class="input-group-append" id="reset-searchBtn-div">
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="reset-search" onclick="testDataSearch(this)"><i class="fas fa-times"></i></button>
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -169,19 +154,20 @@ if (isset($_POST['add-new-subtest']) == true) {
                                             </thead>
                                             <tbody id="table-data">
                                                 <?php
-                                                if ($showLabTypes == 0) {
+                                                if ($labTestTotalItem == 0) {
                                                     echo "No Test Type Avilable.";
                                                 } else {
-                                                    foreach ($showLabTypes as $showLabTypesShow) {
-                                                        $testTypeId = $showLabTypesShow['id'];
-                                                        $testName   = $showLabTypesShow['test_type_name'];
-                                                        $testDsc    = $showLabTypesShow['dsc'];
-                                                        $testPvdBy  = $showLabTypesShow['provided_by'];
-                                                        $testImg    =  $showLabTypesShow['image'];
+
+                                                    foreach ($slicedLabTestData as $showLabTypesShow) {
+                                                        $testTypeId = $showLabTypesShow->id;
+                                                        $testName   = $showLabTypesShow->test_type_name;
+                                                        $testDsc    = $showLabTypesShow->dsc;
+                                                        $testPvdBy  = $showLabTypesShow->provided_by;
+                                                        $testImg    =  $showLabTypesShow->image;
                                                         // $testImg = LABTEST_IMG_PATH . $testImg;
-                                                        if(!empty($testImg)){
+                                                        if (!empty($testImg)) {
                                                             $testImg = LABTEST_IMG_PATH . $testImg;
-                                                        }else{
+                                                        } else {
                                                             $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
                                                         }
 
@@ -218,6 +204,9 @@ if (isset($_POST['add-new-subtest']) == true) {
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="d-flex justify-content-center" id="pagination-control">
+                                        <?= $paginationHTML ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -233,23 +222,18 @@ if (isset($_POST['add-new-subtest']) == true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal'
-                                        data-bs-target="#addTestTypeModel">
+                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
                                         Add Test Types
                                     </div>
                                     <div class="border rounded bg-light text-center py-2">
                                         Add Sub Test
                                     </div>
 
-                                    <button type="button" id="add-testType"
-                                        class="btn btn-primary btn-small border rounded text-center" data-toggle="modal"
-                                        data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Test Types
                                     </button>
 
-                                    <button type="button" id="add-subTest"
-                                        class="btn btn-primary btn-small border rounded text-center" data-toggle="modal"
-                                        data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-subTest" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Sub Test
                                     </button>
                                 </div>
@@ -271,14 +255,12 @@ if (isset($_POST['add-new-subtest']) == true) {
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails"></h5>
-                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
@@ -300,8 +282,7 @@ if (isset($_POST['add-new-subtest']) == true) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="far fa-times-circle"></i></button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-times-circle"></i></button>
                 </div>
                 <div class="modal-body">
 
@@ -326,6 +307,7 @@ if (isset($_POST['add-new-subtest']) == true) {
     <!-- Bootstrap Js -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 
     <!-- Core plugin JavaScript-->
@@ -336,7 +318,45 @@ if (isset($_POST['add-new-subtest']) == true) {
 
     <script src="<?= JS_PATH ?>lab-tests.js"></script>
 
+    <!-- inline script -->
+    <script>
+        const baseUrl = window.location.origin + window.location.pathname;
+        document.getElementById('base-url-holder').innerHTML = baseUrl;
 
+        function testDataSearch(t) {
+            console.log(t.id);
+            let searchParameter = '';
+            let currentUrl = window.location.origin + window.location.pathname
+
+            if (t.id == 'dataSearch-btn') {
+                let searchData = document.getElementById('search-test');
+                if (searchData.value.length > 2) {
+
+                    searchParameter += `&search=${searchData.value}`
+
+                    let searchUrl = `${currentUrl}?${searchParameter}`;
+
+                    window.location.replace(searchUrl);
+                }else{
+                    alert('Enter minimum 3 charechter');
+                }
+
+                document.getElementById('srch-btn-controler').innerHTML = '1';
+            }
+
+            if (t.id == 'reset-search') {
+                window.location.replace(baseUrl);
+
+                document.getElementById('dataSearch-btnDiv').classList.remove('d-none');
+                document.getElementById('reset-searchBtn-div').classList.add('d-none');
+
+                document.getElementById('srch-btn-controler').innerHTML == '0'
+            }
+        }
+
+    </script>
+
+    
 
 </body>
 
