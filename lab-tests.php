@@ -107,7 +107,9 @@ if (isset($_POST['add-new-subtest']) == true) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -175,11 +177,20 @@ if (isset($_POST['add-new-subtest']) == true) {
                                                         $testName   = $showLabTypesShow['test_type_name'];
                                                         $testDsc    = $showLabTypesShow['dsc'];
                                                         $testPvdBy  = $showLabTypesShow['provided_by'];
+                                                        $testImg    =  $showLabTypesShow['image'];
+                                                        // $testImg = LABTEST_IMG_PATH . $testImg;
+                                                        if(!empty($testImg)){
+                                                            $testImg = LABTEST_IMG_PATH . $testImg;
+                                                        }else{
+                                                            $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+                                                        }
 
                                                         $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
 
                                                         echo "<tr>
-                                                <td></td>
+                                                <td class='testImg'>
+                                                <img src=' $testImg' alt=''>
+                                                </td>
                                                 <td>$testName</td>
                                                 <td>$testPvdBy</td>
                                                 <td>0</td>
@@ -222,18 +233,23 @@ if (isset($_POST['add-new-subtest']) == true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
+                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal'
+                                        data-bs-target="#addTestTypeModel">
                                         Add Test Types
                                     </div>
                                     <div class="border rounded bg-light text-center py-2">
                                         Add Sub Test
                                     </div>
 
-                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-testType"
+                                        class="btn btn-primary btn-small border rounded text-center" data-toggle="modal"
+                                        data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Test Types
                                     </button>
 
-                                    <button type="button" id="add-subTest" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-subTest"
+                                        class="btn btn-primary btn-small border rounded text-center" data-toggle="modal"
+                                        data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Sub Test
                                     </button>
                                 </div>
@@ -243,9 +259,9 @@ if (isset($_POST['add-new-subtest']) == true) {
                 </div>
             </div>
             <!-- /.container-fluid -->
-            
-                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            
+
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+
         </div>
         <!-- End of Main Content -->
     </div>
@@ -255,12 +271,14 @@ if (isset($_POST['add-new-subtest']) == true) {
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails"></h5>
-                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
@@ -282,7 +300,8 @@ if (isset($_POST['add-new-subtest']) == true) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-times-circle"></i></button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="far fa-times-circle"></i></button>
                 </div>
                 <div class="modal-body">
 
@@ -318,7 +337,7 @@ if (isset($_POST['add-new-subtest']) == true) {
     <script src="<?= JS_PATH ?>lab-tests.js"></script>
 
 
-    
+
 </body>
 
 </html>
