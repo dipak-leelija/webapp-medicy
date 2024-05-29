@@ -222,7 +222,8 @@ if (isset($_POST['subtest-submit']) == true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!-- <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
+                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal'
+                                        data-bs-target="#addTestTypeModel">
                                         Add Test Types
                                     </div>
                                     <div class="border rounded bg-light text-center py-2">
@@ -236,6 +237,7 @@ if (isset($_POST['subtest-submit']) == true) {
                                     <button type="button" id="add-subTest" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Sub Test
                                     </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +254,8 @@ if (isset($_POST['subtest-submit']) == true) {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="parent-test">Parent Test Name <span class="text-danger font-weight-bold">*</span></label>
+                                            <label class="mb-0 mt-1" for="parent-test">Parent Test Name <span
+                                                    class="text-danger font-weight-bold">*</span></label>
                                             <select name="parent-test" class="form-control" id="parent-test" required>
                                                 <option value="" disabled selected>Select Main Test</option>
                                                 <?php
@@ -268,15 +271,20 @@ if (isset($_POST['subtest-submit']) == true) {
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="test-prep">What preparation is needed for this
-                                                Checkup? <span class="text-danger font-weight-bold">*</span></Address></label>
-                                            <textarea class="form-control" id="test-prep" name="test-prep" cols="30" rows="4" required></textarea>
+                                                Checkup? <span class="text-danger font-weight-bold">*</span></Address>
+                                            </label>
+                                            <textarea class="form-control" id="test-prep" name="test-prep" cols="30"
+                                                rows="4" required></textarea>
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="age-group">Age Group <span class="text-danger font-weight-bold">*</span></label>
+                                            <label class="mb-0 mt-1" for="age-group">Age Group <span
+                                                    class="text-danger font-weight-bold">*</span></label>
                                             <select class="form-control" id="age-group" name="age-group" required>
-                                                <option value="" disabled selected>Select Age Group <span class="text-danger font-weight-bold">*</span></option>
-                                                <option value="Any Age Group">Any Age Group <span class="text-danger font-weight-bold">*</span></option>
+                                                <option value="" disabled selected>Select Age Group <span
+                                                        class="text-danger font-weight-bold">*</span></option>
+                                                <option value="Any Age Group">Any Age Group <span
+                                                        class="text-danger font-weight-bold">*</span></option>
                                                 <option value="Bellow 18">Bellow 18</option>
                                                 <option value="Above 18">Above 18</option>
                                             </select>
@@ -285,26 +293,34 @@ if (isset($_POST['subtest-submit']) == true) {
 
                                     <div class="col-md-6">
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" id="subtest-name" name="subtest-name" type="text" required>
+                                            <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name <span
+                                                    class="text-danger font-weight-bold">*</span></label>
+                                            <input class="form-control" id="subtest-name" name="subtest-name"
+                                                type="text" required>
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-unit"> Sub Test Unit <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" id="subtest-unit" name="subtest-unit" type="text" required>
+                                            <label class="mb-0 mt-1" for="subtest-unit"> Sub Test Unit <span
+                                                    class="text-danger font-weight-bold">*</span></label>
+                                            <input class="form-control" id="subtest-unit" name="subtest-unit"
+                                                type="text" required>
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-dsc">Description <span class="text-danger font-weight-bold">*</span></label>
-                                            <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30" rows="4" required></textarea>
+                                            <label class="mb-0 mt-1" for="subtest-dsc">Description <span
+                                                    class="text-danger font-weight-bold">*</span></label>
+                                            <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30"
+                                                rows="4" required></textarea>
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="price">Price <span class="text-danger font-weight-bold">*</span></label>
+                                            <label class="mb-0 mt-1" for="price">Price <span
+                                                    class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" id="price" name="price" type="number" required>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" name="subtest-submit" type="submit">Submit</button>
+                                    <button class="btn btn-success me-md-2" name="subtest-submit"
+                                        type="submit">Submit</button>
                                 </div>
                             </form> -->
                         <!-- </div>
@@ -331,12 +347,14 @@ if (isset($_POST['subtest-submit']) == true) {
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails"></h5>
-                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
@@ -346,24 +364,30 @@ if (isset($_POST['subtest-submit']) == true) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="lab-image">Feature Image <span class="text-danger font-weight-bold">*</span></label>
+                                    <label class="mb-0 mt-1" for="lab-image">Feature Image <span
+                                            class="text-danger font-weight-bold">*</span></label>
                                     <input class="form-control" id="lab-image" name="lab-image" type="file" required>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Provided By <span class="text-danger font-weight-bold">*</span></Address></label>
-                                    <textarea class="form-control" name="provided-by" id="" cols="30" rows="5" required></textarea>
+                                    <label class="mb-0 mt-1" for="name">Provided By <span
+                                            class="text-danger font-weight-bold">*</span></Address></label>
+                                    <textarea class="form-control" name="provided-by" id="" cols="30" rows="5"
+                                        required></textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Test Name <span class="text-danger font-weight-bold">*</span></label>
+                                    <label class="mb-0 mt-1" for="name">Test Name <span
+                                            class="text-danger font-weight-bold">*</span></label>
                                     <input class="form-control" type="text" name="test-name" required>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Description <span class="text-danger font-weight-bold">*</span></label>
-                                    <textarea class="form-control" name="test-dsc" id="" cols="30" rows="5" required></textarea>
+                                    <label class="mb-0 mt-1" for="name">Description <span
+                                            class="text-danger font-weight-bold">*</span></label>
+                                    <textarea class="form-control" name="test-dsc" id="" cols="30" rows="5"
+                                        required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +411,8 @@ if (isset($_POST['subtest-submit']) == true) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-times-circle"></i></button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="far fa-times-circle"></i></button>
                 </div>
                 <div class="modal-body">
 
@@ -419,8 +444,6 @@ if (isset($_POST['subtest-submit']) == true) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-
-    <script src="<?= JS_PATH ?>lab-tests.js"></script>
 
 
 </body>
