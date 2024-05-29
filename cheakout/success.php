@@ -1,7 +1,8 @@
 <?php
-exit;
-print_r($_POST);
+session_start();
 require_once dirname(__DIR__) . '/config/constant.php';
+
+// exit;
 // // Prevent page from being cached
 // header("Cache-Control: no-cache, must-revalidate");
 // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
@@ -35,9 +36,22 @@ $Plan           = new Plan;
 $Subscription   = new Subscription;
 $Utility        = new Utility;
 
-$planId     = url_dec($_POST['planid']);
+print_r($_POST);
+if (isset($_POST['orderAmount']) || isset($_POST['orderId']) || isset($_POST['paymentMode']) || isset($_POST['referenceId']) || isset($_POST['signature']) || isset($_POST['txMsg']) || isset($_POST['txStatus']) || isset($_POST['txTime'])) {
 
-$planResponse = json_decode($Plan->getPlan($planId));
+    $ORDERID        = $_POST['orderId'];
+    $amount         = $_POST['orderAmount'];
+    $payment_mode   = $_POST['paymentMode'];
+    $referenceId    = $_POST['referenceId'];
+    $signature      = $_POST['signature'];
+    $txn_msg        = $_POST['txMsg'];
+    $status         = $_POST['txStatus'];
+    $txn_time       = $_POST['txTime'];
+
+}
+
+$planId         = $_SESSION['PURCHASEPLANID'];
+$planResponse   = json_decode($Plan->getPlan($planId));
 if($planResponse->status == 1){
     $plan = $planResponse->data;
 
@@ -47,21 +61,14 @@ if($planResponse->status == 1){
 }
 
 $expDate    = getNextDate(TODAY, $planDuration);
-$paidAmount = 00;
 
-// $response = json_decode($Subscription->updateSubscription($adminId, $planId, $startDate, $expDate, $paidAmount));
-// $result = $response->status;
+$response = json_decode($Subscription->updateSubscription($ADMINID, $ORDERID, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, TODAY, $expDate));
+$result = $response->status;
 // if ($result != 1) {
 //     header("Location: error.php");
 //     exit;
 // }
-
-$subscribed = $Subscription->createSubscription($adminId, $planId, NOW, $expiry, 0);
-if ($subscribed === true) {
-    header("Location: error.php");
-    exit;
-}
-
+exit;
 ?>
 <html>
 
@@ -71,50 +78,52 @@ if ($subscribed === true) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <style>
-/* body {
+    /* body {
     background: #EBF0F5;
 } */
 
-h1 {
-    color: #88B04B;
-    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-    font-weight: 900;
-    font-size: 40px;
-    margin-bottom: 10px;
-}
+    h1 {
+        color: #88B04B;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
 
-p {
-    color: #404F5E;
-    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-    font-size: 20px;
-    margin: 0;
-}
+    p {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size: 20px;
+        margin: 0;
+    }
 
-i {
-    color: #9ABC66;
-    font-size: 100px;
-    line-height: 200px;
-    margin-left: -15px;
-}
+    i {
+        color: #9ABC66;
+        font-size: 100px;
+        line-height: 200px;
+        margin-left: -15px;
+    }
 
-.card {
-    background: white;
-    padding: 60px;
-    /* border-radius: 4px; */
-    box-shadow: 0 2px 3px #C8D0D8;
-    display: inline-block;
-    margin: 0 auto;
-}
+    .card {
+        background: white;
+        padding: 60px;
+        /* border-radius: 4px; */
+        box-shadow: 0 2px 3px #C8D0D8;
+        display: inline-block;
+        margin: 0 auto;
+    }
 </style>
 
-<body class="d-flex justify-content-center align-items-center text-center bg-light">
-    <div class="card rounded shadow">
-        <div class="rounded-circle" style="height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-            <i class="checkmark">✓</i>
+<body>
+    <div class="d-flex justify-content-center align-items-center text-center bg-light">
+        <div class="card rounded shadow">
+            <div class="rounded-circle" style="height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+                <i class="checkmark">✓</i>
+            </div>
+            <h1>Success</h1>
+            <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
+            <a href="<?= URL ?>" class="btn btn-sm btn-primary w-100 mt-4">Dashboard</a>
         </div>
-        <h1>Success</h1>
-        <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
-        <a href="<?= URL ?>" class="btn btn-sm btn-primary w-100 mt-4">Dashboard</a>
     </div>
 </body>
 
