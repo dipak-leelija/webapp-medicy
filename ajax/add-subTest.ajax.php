@@ -152,7 +152,7 @@ if ($clinicInfo['status'] == 1) {
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                            <button class="btn btn-success me-md-2" name="subtest-submit" type="submit">Submit</button>
+                            <button class="btn btn-success me-md-2" name="add-new-subtest" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>

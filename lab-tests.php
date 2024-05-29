@@ -18,10 +18,10 @@ $subTests = new SubTests;
 
 //######################################################
 // Adding Lab Category
-if (isset($_POST['submit-lab-type'])) {
+if (isset($_POST['new-lab-test-data'])) {
 
     $img = $_FILES['lab-image']['name'];
-    // echo "img name : $img<br>";
+    echo "img name : $img<br>";
 
     $tempImgname = $_FILES['lab-image']['tmp_name'];
     // echo "tempImg name : $tempImgname<br>";
@@ -34,7 +34,7 @@ if (isset($_POST['submit-lab-type'])) {
     $testDsc    = $_POST['test-dsc'];
 
     //Object initilizing for Adding Main/Parent Tests/Labs
-    $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
+    // $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
 }
 // End of Adding Lab Category
 
@@ -46,7 +46,7 @@ $showLabTypes = $labTypes->showLabTypes();
 // print_r($showLabTypes);
 //######################################################
 // Adding Sub tests Category
-if (isset($_POST['subtest-submit']) == true) {
+if (isset($_POST['add-new-subtest']) == true) {
 
 
     $subTestName = $_POST['subtest-name'];

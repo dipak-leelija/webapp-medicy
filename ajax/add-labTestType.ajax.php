@@ -68,14 +68,20 @@ if ($clinicInfo['status'] == 1) {
         <div class="row d-flex justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
                 <div class="bg-light p-4 pb-0">
-                    <form action="lab-tests.php" method="post" enctype="multipart/form-data">
+                    <form action="../lab-tests.php" method="post" enctype="multipart/form-data">
                         <div class="col-12 d-flex">
                             <div class="col-md-6 justify-content-between text-left">
                                 <div class="form-group col-sm-12">
-                                    <div class="card mt-5 d-flex justify-content-center" style="width: 15rem; height: 15rem;">
-
-                                        <input type="file" style="display:none;" id="testImage" accept=".jpg,.jpeg,.png" name="test-image" onchange="validateFileType(this)">
-
+                                    <div class="alert alert-danger d-none" id="err-show" role="alert">
+                                        Only jpg/jpeg and png files are allowed!
+                                    </div>
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <img class="mb-0 mt-3 rounded img-uv-view border border-dark" src="" width="100%" height="180" alt="">
+                                    </div>
+                                    <div class="mt-1">
+                                        <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="labTest-img" onchange="validateFileType()">
+                                        <label for="img-uv-input" class="btn btn-primary">Change
+                                            Image</label>
                                     </div>
                                 </div>
                             </div>
@@ -104,9 +110,9 @@ if ($clinicInfo['status'] == 1) {
 
                         <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
 
-                        <div class="row justify-content-center mt-5">
+                        <div class="row justify-content-center mt-2">
                             <div class="form-group col-sm-4">
-                                <button class="btn btn-success me-md-2" type="submit" name="submit-lab-type">Submit</button>
+                                <button class="btn btn-success me-md-2" type="submit" name="new-lab-test-data">Submit</button>
                             </div>
                         </div>
 
@@ -118,6 +124,22 @@ if ($clinicInfo['status'] == 1) {
 
     <!--/End Part 1  -->
 
+    <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
+    <script>
+        function validateFileType() {
+            var fileName = document.getElementById("img-uv-input").value;
+            console.log(fileName);
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                document.getElementById("err-show").classList.add("d-none");
+            } else {
+                document.getElementById("err-show").classList.remove("d-none");
+                // Show current image when error occurs
+                document.querySelector('.img-uv-view').src = "";
+            }
+        }
+    </script>
 </body>
 
 </html>
