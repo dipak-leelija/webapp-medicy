@@ -1,7 +1,7 @@
-.card img{
+/* .card img{
     width: 55px;
     padding-left: 15px;
-}
+} */
 .delete{
     width: 20px;
     position: absolute;
@@ -15,4 +15,13 @@
     display: flex;
     justify-content: space-between;
 }
-
+.testImg{
+    width: 8%;
+    object-fit: cover;
+}
+.testImg img{
+width: 100%;
+aspect-ratio: 1/1;
+border: 1px solid gray;
+border-radius: 50%;
+}

@@ -115,8 +115,6 @@ if ($clinicInfo['status'] == 1) {
                             </div>
                         </div>
 
-
-
                         <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-12 flex-column d-flex">
