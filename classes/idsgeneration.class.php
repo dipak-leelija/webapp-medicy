@@ -350,7 +350,7 @@ class IdsGeneration{
         $orderId = "MED" . str_pad($randomNumber, 12, "0", STR_PAD_LEFT);
     
         // Check if product ID exists in the database
-        $stmt = $this->conn->prepare("SELECT * FROM plans WHERE order_id = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM subscription WHERE order_id = ?");
         $stmt->bind_param("s", $orderId);
         $stmt->execute();
         $result = $stmt->get_result();
