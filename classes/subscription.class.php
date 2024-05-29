@@ -3,15 +3,15 @@ class Subscription
 {
     use DatabaseConnection;
 
-    function createSubscription($adminId, $plan, $startDate, $endDate, $paidAmount, $status)
+    function createSubscription($order_id, $adminId, $plan, $startDate, $endDate, $paidAmount, $status)
     {
         try {
             // Query to insert subscription information for the given admin ID
-            $query = "INSERT INTO subscription (admin_id, plan, start, end, paid, status) VALUES (?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO subscription (order_id, admin_id, plan, start, end, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
 
             if ($stmt) {
-                $stmt->bind_param("sssssi", $adminId, $plan, $startDate, $endDate, $paidAmount, $status);
+                $stmt->bind_param("ssssssi", $order_id, $adminId, $plan, $startDate, $endDate, $paidAmount, $status);
                 $success = $stmt->execute();
 
                 if ($success) {
@@ -128,18 +128,77 @@ class Subscription
 
 
 
-    function updateSubscription($adminId, $plan, $startDate, $expiry, $paidAmount, $status)
+    // function updateSubscription($admin_id, $order_id, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
+    // {
+    //     try {
+    //         // Start a transaction
+    //         $this->conn->begin_transaction();
+
+    //         // Query to insert subscription information for the given admin ID
+    //         $subscriptionQuery = "UPDATE subscription SET referenceId = ?, txn_msg = ?, txn_time = ?, amount = ?, payment_mode = ?, status = ?, start = ?, end = ? WHERE admin_id = ? AND order_id = ?";
+
+    //         $subscriptionStmt = $this->conn->prepare($subscriptionQuery);
+
+    //         if ($subscriptionStmt) {
+    //             $subscriptionStmt->bind_param("sssdssssss", $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $start, $expiry, $status, $admin_id, $order_id);
+    //             $subscriptionSuccess = $subscriptionStmt->execute();
+
+    //             if ($subscriptionSuccess) {
+    //                 $subscriptionStmt->close();
+
+    //                 // Query to update expiry in the admin table
+    //                 $updateAdminQuery = "UPDATE admin SET expiry = ? WHERE admin_id = ?";
+    //                 $updateAdminStmt = $this->conn->prepare($updateAdminQuery);
+
+    //                 if ($updateAdminStmt) {
+    //                     $updateAdminStmt->bind_param("ss", $expiry, $admin_id);
+    //                     $updateAdminSuccess = $updateAdminStmt->execute();
+
+    //                     if ($updateAdminSuccess) {
+    //                         $updateAdminStmt->close();
+
+    //                         // Commit the transaction
+    //                         $this->conn->commit();
+
+    //                         // return true;
+    //                         return json_encode(['status' => 1, 'msg' => "success"]);
+    //                     } else {
+    //                         $updateAdminStmt->close();
+    //                         throw new Exception("Admin update failed: " . $updateAdminStmt->error);
+    //                     }
+    //                 } else {
+    //                     throw new Exception("Error preparing admin update statement: " . $this->conn->error);
+    //                 }
+    //             } else {
+    //                 $subscriptionStmt->close();
+    //                 throw new Exception("Subscription creation failed: " . $subscriptionStmt->error);
+    //             }
+    //         } else {
+    //             throw new Exception("Error preparing subscription statement: " . $this->conn->error);
+    //         }
+    //     } catch (Exception $e) {
+    //         // Rollback the transaction on error
+    //         $this->conn->rollback();
+
+    //         // Log the error and return false
+    //         error_log("Error: " . $e->getMessage());
+    //         return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
+    //     }
+    // }
+
+    function updateSubscription($admin_id, $order_id, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
     {
         try {
             // Start a transaction
             $this->conn->begin_transaction();
 
             // Query to insert subscription information for the given admin ID
-            $subscriptionQuery = "UPDATE subscription SET plan = ?, start = ?, end = ?, paid = ?, status = ? WHERE admin_id = ?";
+            $subscriptionQuery = "UPDATE subscription SET referenceId = ?, txn_msg = ?, txn_time = ?, amount = ?, payment_mode = ?, status = ?, start = ?, end = ? WHERE admin_id = ? AND order_id = ?";
+
             $subscriptionStmt = $this->conn->prepare($subscriptionQuery);
 
             if ($subscriptionStmt) {
-                $subscriptionStmt->bind_param("ssssis", $plan, $startDate, $expiry, $paidAmount, $status, $adminId);
+                $subscriptionStmt->bind_param("sssdssssss", $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry, $admin_id, $order_id);
                 $subscriptionSuccess = $subscriptionStmt->execute();
 
                 if ($subscriptionSuccess) {
@@ -150,7 +209,7 @@ class Subscription
                     $updateAdminStmt = $this->conn->prepare($updateAdminQuery);
 
                     if ($updateAdminStmt) {
-                        $updateAdminStmt->bind_param("ss", $expiry, $adminId);
+                        $updateAdminStmt->bind_param("ss", $expiry, $admin_id);
                         $updateAdminSuccess = $updateAdminStmt->execute();
 
                         if ($updateAdminSuccess) {
@@ -159,7 +218,7 @@ class Subscription
                             // Commit the transaction
                             $this->conn->commit();
 
-                            // return true;
+                            // Return success response
                             return json_encode(['status' => 1, 'msg' => "success"]);
                         } else {
                             $updateAdminStmt->close();
@@ -170,7 +229,7 @@ class Subscription
                     }
                 } else {
                     $subscriptionStmt->close();
-                    throw new Exception("Subscription creation failed: " . $subscriptionStmt->error);
+                    throw new Exception("Subscription update failed: " . $subscriptionStmt->error);
                 }
             } else {
                 throw new Exception("Error preparing subscription statement: " . $this->conn->error);
@@ -179,9 +238,10 @@ class Subscription
             // Rollback the transaction on error
             $this->conn->rollback();
 
-            // Log the error and return false
+            // Log the error and return error response
             error_log("Error: " . $e->getMessage());
             return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
         }
     }
+    
 }
