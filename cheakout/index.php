@@ -80,7 +80,7 @@ if ($planResponse->status == 1) {
                             <div class="row">
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="hidden" name="planid" value="<?= url_enc($planId) ?>">
+                                        <input type="hidden" name="planid" value="<?= $planId ?>">
                                         <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required onfocusout="checkData()">
                                     </div>
                                 </div>
