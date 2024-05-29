@@ -16,80 +16,8 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $labTypes = new LabTypes;
 $subTests = new SubTests;
 
-//######################################################
-// Adding Lab Category
-if (isset($_POST['new-lab-test-data'])) {
 
-    $img = $_FILES['lab-image']['name'];
-    echo "img name : $img<br>";
-
-    $tempImgname = $_FILES['lab-image']['tmp_name'];
-    // echo "tempImg name : $tempImgname<br>";
-
-    $imgFolder = LABTEST_IMG_DIR . $img;
-    move_uploaded_file($tempImgname, $imgFolder);
-
-    $testName   = $_POST['test-name'];
-    $testPvdBy  = $_POST['provided-by'];
-    $testDsc    = $_POST['test-dsc'];
-
-    //Object initilizing for Adding Main/Parent Tests/Labs
-    // $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
-}
-// End of Adding Lab Category
-
-//######################################################
-//Object initilizing for Fetching Tests/Labs
 $showLabTypes = $labTypes->showLabTypes();
-
-// $showLabTypes = json_decode($showLabTypes);
-// print_r($showLabTypes);
-//######################################################
-// Adding Sub tests Category
-if (isset($_POST['add-new-subtest']) == true) {
-
-
-    $subTestName = $_POST['subtest-name'];
-    $subTestName = str_replace("<", "&lt", $subTestName);
-    $subTestName = str_replace("'", "\\", $subTestName);
-
-    $parentTestId = $_POST['parent-test'];
-    $parentTestId = str_replace("<", "&lt", $parentTestId);
-    $parentTestId = str_replace("'", "\\", $parentTestId);
-
-    $ageGroup = $_POST['age-group'];
-    $ageGroup = str_replace("<", "&lt", $ageGroup);
-    $ageGroup = str_replace("'", "\\", $ageGroup);
-
-    $subTestPrep = $_POST['test-prep'];
-    $subTestPrep = str_replace("<", "&lt", $subTestPrep);
-    $subTestPrep = str_replace("'", "\\", $subTestPrep);
-
-    $subTestDsc = $_POST['subtest-dsc'];
-    $subTestDsc = str_replace("<", "&lt", $subTestDsc);
-    $subTestDsc = str_replace("'", "\\", $subTestDsc);
-
-    $price = $_POST['price'];
-    $price = str_replace("<", "&lt", $price);
-    $price = str_replace("'", "\\", $price);
-
-    $SubTestUnit = $_POST['subtest-unit'];
-    $SubTestUnit = str_replace("<", "&lt", $SubTestUnit);
-    $SubTestUnit = str_replace("'", "\\", $SubTestUnit);
-
-    $addsubTests = $subTests->addSubTests($subTestName, $SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
-    if (!$addsubTests) {
-        echo "Something is wrong!";
-    }
-    // else {
-    //     echo '<script>
-    //     alert("'.$subTestName.' Test has been added!")
-    //     </script>';
-    // }
-}
-// End of Adding Sub tests Category
-
-// $updateClicked = $_GET['updateClicked'];
 
 
 ?>
@@ -146,9 +74,12 @@ if (isset($_POST['add-new-subtest']) == true) {
                         <div class="col-12 col-md-8">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 booked_btn">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="m-0 font-weight-bold text-primary">Lab Tests</h6>
+                                    <div class="row d-flex">
+                                        <div class="col-md-4">
+                                            <h6 class="m-0 font-weight-bold text-primary">Lab Test List</h6>
+                                        </div>
+                                        <div class="col-md-8 d-flex justify-content-end">
+                                            <h6 class="m-0 font-weight-bold text-primary">Lab Test List</h6>
                                         </div>
                                     </div>
 
@@ -326,6 +257,7 @@ if (isset($_POST['add-new-subtest']) == true) {
     <!-- Bootstrap Js -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 
     <!-- Core plugin JavaScript-->

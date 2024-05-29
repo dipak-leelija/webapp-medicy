@@ -6,35 +6,31 @@ class LabTypes extends UtilityFiles{
     
 
     function addLabTypes($image, $testName, $testPvdBy, $testDsc){
-    try {
-        $addLabType = "INSERT INTO `tests_types` (`image`, `test_type_name`, `provided_by`, `dsc`) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($addLabType);
-        
-        if ($stmt === false) {
-            throw new Exception('Prepare failed: ' . $this->conn->error);
+        try {
+            $addLabType = "INSERT INTO `tests_types` (`image`, `test_type_name`, `provided_by`, `dsc`) VALUES (?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($addLabType);
+    
+            if ($stmt === false) {
+                throw new Exception('Prepare failed: ' . $this->conn->error);
+            }
+    
+            $stmt->bind_param('ssss', $image, $testName, $testPvdBy, $testDsc);
+    
+            $result = $stmt->execute();
+    
+            if ($stmt->affected_rows > 0) {
+                $response = ['status' => true, 'message' => 'success'];
+            } else {
+                $response = ['status' => false, 'message' => 'Data insertion fails'];
+            }
+    
+            $stmt->close();
+            return json_encode($response);
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
-
-        // Bind the input parameters to the prepared statement
-        $stmt->bind_param('ssss', $image, $testName, $testPvdBy, $testDsc);
-
-        // Execute the prepared statement
-        $result = $stmt->execute();
-        
-        if ($result === false) {
-            throw new Exception('Execute failed: ' . $stmt->error);
-        }
-
-        // Close the statement
-        $stmt->close();
-
-        return $result;
-    } catch (Exception $e) {
-        // Handle the exception (log it, rethrow it, or handle it as needed)
-        // For demonstration, we just echo the error message
-        echo 'Error: ' . $e->getMessage();
-        return false;
     }
-} // end addLabTypes function
+    
 
 
 

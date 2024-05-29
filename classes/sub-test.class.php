@@ -25,21 +25,34 @@ class SubTests
 
 
 
-    function addSubTests($subTestName,$SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price)
+    function addSubTests($subTestName, $subTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price)
     {
-        $insertTest = "INSERT INTO sub_tests (sub_test_name, unit, parent_test_id, age_group, test_preparation, test_dsc, price) VALUES ('$subTestName','$SubTestUnit', '$parentTestId', '$ageGroup', '$subTestPrep', '$subTestDsc', '$price')";
-        $insertTestQuery = $this->conn->query($insertTest);
-        // echo $insertTest.$this->conn->error;
-        // exit;
+        try {
+            $insertTest = "INSERT INTO sub_tests (sub_test_name, unit, parent_test_id, age_group, test_preparation, test_dsc, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($insertTest);
 
-        return $insertTestQuery;
-    } // end addLabTypes function
+            $stmt->bind_param("ssisssd", $subTestName, $subTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
+
+            $stmt->execute();
+
+            if($stmt->affected_rows > 0){
+                $result = ['status'=>true, 'message'=>'data insert success'];
+            }else{
+                $result = ['status'=>false, 'message'=>'insertion fails'];
+            }
+            $stmt->close();
+
+            return json_encode($result);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
 
 
     function showSubTestsId($subTestId)
     {
-        $data=[];
+        $data = [];
         $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
         $subTestQuery = $this->conn->query($selectTestById);
         while ($result = $subTestQuery->fetch_array()) {
