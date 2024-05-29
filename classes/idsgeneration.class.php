@@ -1,9 +1,7 @@
 <?php
-require_once 'dbconnect.php';
-class IdsGeneration
-{
-    use DatabaseConnection;
+class IdsGeneration{
 
+    use DatabaseConnection;
 
     function patientidGenerate()
     {
@@ -340,6 +338,30 @@ class IdsGeneration
         } else {
             // Product ID does not exist, return the generated ID
             return $productId;
+        }
+    }
+
+
+    function generateOrderId() {
+        // Generate random number
+        $randomNumber = mt_rand(1, 99999);
+    
+        // Generate product ID with prefix "MED"
+        $orderId = "MED" . str_pad($randomNumber, 12, "0", STR_PAD_LEFT);
+    
+        // Check if product ID exists in the database
+        $stmt = $this->conn->prepare("SELECT * FROM plans WHERE order_id = ?");
+        $stmt->bind_param("s", $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        // If product ID exists, generate a new one recursively
+        if ($result->num_rows > 0) {
+            // Generate a new product ID recursively
+            return $this->generateOrderId();
+        } else {
+            // Product ID does not exist, return the generated ID
+            return $orderId;
         }
     }
 
