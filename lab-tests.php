@@ -107,9 +107,7 @@ if (isset($_POST['subtest-submit']) == true) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -177,20 +175,11 @@ if (isset($_POST['subtest-submit']) == true) {
                                                         $testName   = $showLabTypesShow['test_type_name'];
                                                         $testDsc    = $showLabTypesShow['dsc'];
                                                         $testPvdBy  = $showLabTypesShow['provided_by'];
-                                                        $testImg    =  $showLabTypesShow['image'];
-                                                        // $testImg = LABTEST_IMG_PATH . $testImg;
 
-                                                        if(!empty($testImg)){
-                                                            $testImg = LABTEST_IMG_PATH . $testImg;
-                                                        }else{
-                                                            $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
-                                                        }
                                                         $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
-                                                        
+
                                                         echo "<tr>
-                                                <td class='testImg'>
-                                                <img src=' $testImg' alt=''>
-                                                </td>
+                                                <td></td>
                                                 <td>$testName</td>
                                                 <td>$testPvdBy</td>
                                                 <td>0</td>
@@ -233,171 +222,51 @@ if (isset($_POST['subtest-submit']) == true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal'
-                                        data-bs-target="#addTestTypeModel">
+                                    <div class="border rounded bg-light text-center py-2 mb-2" data-bs-toggle='modal' data-bs-target="#addTestTypeModel">
                                         Add Test Types
                                     </div>
                                     <div class="border rounded bg-light text-center py-2">
                                         Add Sub Test
                                     </div>
+
+                                    <button type="button" id="add-testType" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                        Add Test Types
+                                    </button>
+
+                                    <button type="button" id="add-subTest" class="btn btn-primary btn-small border rounded text-center" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                        Add Sub Test
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- Lab Test Text -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add New Sub Category Tests</h6>
-                        </div>
-                        <div class="card-body">
-                            <form action="lab-tests.php" method="post">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="parent-test">Parent Test Name <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <select name="parent-test" class="form-control" id="parent-test" required>
-                                                <option value="" disabled selected>Select Main Test</option>
-                                                <?php
-                                                // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
-                                                foreach ($showLabTypes as $labTypeName) {
-                                                    echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
-                                                }
-                                                // }
-                                                ?>
-
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="test-prep">What preparation is needed for this
-                                                Checkup? <span class="text-danger font-weight-bold">*</span></Address>
-                                            </label>
-                                            <textarea class="form-control" id="test-prep" name="test-prep" cols="30"
-                                                rows="4" required></textarea>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="age-group">Age Group <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <select class="form-control" id="age-group" name="age-group" required>
-                                                <option value="" disabled selected>Select Age Group <span
-                                                        class="text-danger font-weight-bold">*</span></option>
-                                                <option value="Any Age Group">Any Age Group <span
-                                                        class="text-danger font-weight-bold">*</span></option>
-                                                <option value="Bellow 18">Bellow 18</option>
-                                                <option value="Above 18">Above 18</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" id="subtest-name" name="subtest-name"
-                                                type="text" required>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-unit"> Sub Test Unit <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" id="subtest-unit" name="subtest-unit"
-                                                type="text" required>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="subtest-dsc">Description <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30"
-                                                rows="4" required></textarea>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="price">Price <span
-                                                    class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" id="price" name="price" type="number" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" name="subtest-submit"
-                                        type="submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- End Lab Test Text -->
-                    <!-- /Add New Catagory Section -->
-
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
+            <!-- /.container-fluid -->
+            
+                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            
         </div>
-        <!-- End of Content Wrapper -->
-
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestTypeModel" tabindex="-1" aria-labelledby="addTestTypeModelLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <h5 class="modal-title" id="editNicheDetails"></h5>
+                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
+                <!-- MODAL BODY -->
+                <div class="modal-body add-new-test-data-modal">
 
-                <div class="modal-body">
-                    <form action="lab-tests.php" method="post" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="lab-image">Feature Image <span
-                                            class="text-danger font-weight-bold">*</span></label>
-                                    <input class="form-control" id="lab-image" name="lab-image" type="file" required>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Provided By <span
-                                            class="text-danger font-weight-bold">*</span></Address></label>
-                                    <textarea class="form-control" name="provided-by" id="" cols="30" rows="5"
-                                        required></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Test Name <span
-                                            class="text-danger font-weight-bold">*</span></label>
-                                    <input class="form-control" type="text" name="test-name" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="mb-0 mt-1" for="name">Description <span
-                                            class="text-danger font-weight-bold">*</span></label>
-                                    <textarea class="form-control" name="test-dsc" id="" cols="30" rows="5"
-                                        required></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                            <button class="btn btn-success me-md-2" type="submit" name="submit-lab-type">Submit</button>
-                        </div>
-                    </form>
                 </div>
                 <!-- Modal Body end -->
 
@@ -413,8 +282,7 @@ if (isset($_POST['subtest-submit']) == true) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="far fa-times-circle"></i></button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-times-circle"></i></button>
                 </div>
                 <div class="modal-body">
 
@@ -446,6 +314,8 @@ if (isset($_POST['subtest-submit']) == true) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+
+    <script src="<?= JS_PATH ?>lab-tests.js"></script>
 
 
     

@@ -122,6 +122,7 @@ session_start();
 	const CSS_PATH							=	URL.'assets/css/';
 	const JS_PATH							=	URL.'assets/js/';
 	const IMG_PATH							=	URL.'assets/img/';
+	const IMAGES_PATH						=	URL.'assets/images/';
 	const IMG_DIR							=	ROOT_DIR.'assets/images/';
 
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
