@@ -3,45 +3,15 @@ class Subscription
 {
     use DatabaseConnection;
 
-    function allPlans()
-    {
-        try {
-            $query = "SELECT * FROM plans";
-            $stmt = $this->conn->prepare($query);
-
-            if ($stmt) {
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    $subscriptions = [];
-                    while ($row = $result->fetch_assoc()) {
-                        $subscriptions[] = $row;
-                    }
-                    return json_encode(['status' => 1, 'msg' => 'success', 'data' => $subscriptions]);
-                }
-
-                $stmt->close();
-            }
-
-            return json_encode(['status' => 0, 'msg' => 'No subscriptions found for the given admin ID']);
-        } catch (Exception $e) {
-            // Handle any exceptions that may occur during the database operation
-            error_log("Error getting subscription: " . $e->getMessage());
-            return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
-        }
-    }
-
-
-    function createSubscription($adminId, $plan, $startDate, $endDate, $paidAmount)
+    function createSubscription($adminId, $plan, $startDate, $endDate, $paidAmount, $status)
     {
         try {
             // Query to insert subscription information for the given admin ID
-            $query = "INSERT INTO subscription (admin_id, plan, start, end, paid) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO subscription (admin_id, plan, start, end, paid, status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
 
             if ($stmt) {
-                $stmt->bind_param("sssss", $adminId, $plan, $startDate, $endDate, $paidAmount);
+                $stmt->bind_param("sssssi", $adminId, $plan, $startDate, $endDate, $paidAmount, $status);
                 $success = $stmt->execute();
 
                 if ($success) {
@@ -158,18 +128,18 @@ class Subscription
 
 
 
-    function updateSubscription($adminId, $plan, $startDate, $expiry, $paidAmount)
+    function updateSubscription($adminId, $plan, $startDate, $expiry, $paidAmount, $status)
     {
         try {
             // Start a transaction
             $this->conn->begin_transaction();
 
             // Query to insert subscription information for the given admin ID
-            $subscriptionQuery = "INSERT INTO subscription (admin_id, plan, start, end, paid) VALUES (?, ?, ?, ?, ?)";
+            $subscriptionQuery = "UPDATE subscription SET plan = ?, start = ?, end = ?, paid = ?, status = ? WHERE admin_id = ?";
             $subscriptionStmt = $this->conn->prepare($subscriptionQuery);
 
             if ($subscriptionStmt) {
-                $subscriptionStmt->bind_param("sssss", $adminId, $plan, $startDate, $expiry, $paidAmount);
+                $subscriptionStmt->bind_param("ssssis", $plan, $startDate, $expiry, $paidAmount, $status, $adminId);
                 $subscriptionSuccess = $subscriptionStmt->execute();
 
                 if ($subscriptionSuccess) {
@@ -211,37 +181,6 @@ class Subscription
 
             // Log the error and return false
             error_log("Error: " . $e->getMessage());
-            return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
-        }
-    }
-
-
-    // get plans features//
-
-    function planFeatures(){
-        try {
-            $query = "SELECT * FROM plans_features";
-            $stmt = $this->conn->prepare($query);
-
-            if ($stmt) {
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    $subscriptions = [];
-                    while ($row = $result->fetch_assoc()) {
-                        $subscriptions[] = $row;
-                    }
-                    return json_encode(['status' => 1, 'msg' => 'success', 'data' => $subscriptions]);
-                }
-
-                $stmt->close();
-            }
-
-            return json_encode(['status' => 0, 'msg' => 'No subscriptions found for the given admin ID']);
-        } catch (Exception $e) {
-            // Handle any exceptions that may occur during the database operation
-            error_log("Error getting subscription: " . $e->getMessage());
             return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
         }
     }
