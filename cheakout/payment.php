@@ -5,6 +5,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'plan.class.php';
 require_once CLASS_DIR . 'subscription.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
@@ -12,8 +13,8 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 
 $Plan           = new Plan;
 $Subscription   = new Subscription;
+$IdsGeneration  = new IdsGeneration;
 $Utility        = new Utility;
-$HealthCare     = new HealthCare;
 
 if (isset($_POST['payment-btn'])) {
     $planid         = $_POST['planid'];
@@ -25,8 +26,10 @@ if (isset($_POST['payment-btn'])) {
     $state          = $_POST['state'];
     $country        = $_POST['country'];
     $pin_code       = $_POST['pin-code'];
+    
+    $ORDERID = $IdsGeneration->generateOrderId();
 
-    $Subscription->createSubscription($ADMINID, $planid, NOW, NOW, 00, 0);
+    $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, NOW, 00, 0);
 }
 
 // Cashfree configuration    
@@ -40,11 +43,10 @@ define('NOTIFYURL', 'http://localhost/medicy.in/cheakout/error.php');
 $mode = "TEST"; // Change to TEST for test server, PROD for production
 
 $secretKey = SECRECTKEY; // Secret key
-$orderId = "WC" . mt_rand(11111, 99999); // Create a unique order ID
 
 $postData = array(
     "appId" => APPID,
-    "orderId" => $orderId,
+    "orderId" => $ORDERID,
     "orderAmount" => $plan_price,
     "orderCurrency" => "INR",
     "customerName" => $customerName,
@@ -76,7 +78,7 @@ if ($mode == "PROD") {
     <p>Please wait.......</p>
     <input type="hidden" name="signature" value='<?= $signature; ?>' />
     <input type="hidden" name="appId" value='<?= APPID; ?>' />
-    <input type="hidden" name="orderId" value='<?= $orderId; ?>' />
+    <input type="hidden" name="orderId" value='<?= $ORDERID; ?>' />
     <input type="hidden" name="orderCurrency" value='INR' />
     <input type="hidden" name="customerName" value='<?= $customerName ?>' />
     <input type="hidden" name="customerEmail" value='<?= $email ?>' />
