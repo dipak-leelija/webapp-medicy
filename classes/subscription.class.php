@@ -120,14 +120,14 @@ class Subscription
 
 
 
-    function updateSubscription($admin_id, $order_id, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
+    function updateSubscription($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
     {
         try {
             // Start a transaction
             $this->conn->begin_transaction();
 
             // Update subscription information
-            $subscriptionUpdate = $this->updateSubscriptionDetails($admin_id, $order_id, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry);
+            $subscriptionUpdate = $this->updateSubscriptionDetails($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry);
 
             if ($subscriptionUpdate) {
                 // Update admin expiry date
@@ -154,15 +154,15 @@ class Subscription
     }
 
     
-    private function updateSubscriptionDetails($admin_id, $order_id, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
+    private function updateSubscriptionDetails($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
     {
-        $subscriptionQuery = "UPDATE subscription SET referenceId = ?, txn_msg = ?, txn_time = ?, amount = ?, payment_mode = ?, status = ?, start = ?, end = ? WHERE admin_id = ? AND order_id = ?";
+        $subscriptionQuery = "UPDATE subscription SET referenceId = ?, cf_order_id = ?, txn_msg = ?, txn_time = ?, amount = ?, payment_mode = ?, status = ?, start = ?, end = ? WHERE admin_id = ? AND order_id = ?";
 
         $subscriptionStmt = $this->conn->prepare($subscriptionQuery);
 
         if ($subscriptionStmt) {
             // Bind parameters with correct types
-            $subscriptionStmt->bind_param("sssdssssss", $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry, $admin_id, $order_id);
+            $subscriptionStmt->bind_param("ssssdssssss", $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry, $admin_id, $order_id);
 
             $subscriptionSuccess = $subscriptionStmt->execute();
 
