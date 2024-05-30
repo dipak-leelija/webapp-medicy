@@ -4,12 +4,15 @@ require_once dirname(__DIR__) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'UtilityFiles.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'labtypes.class.php';
 
 
 
 //Classes Initilizing
 $HealthCare      = new HealthCare;
+$labTypes = new LabTypes;
 
 $clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
@@ -23,6 +26,36 @@ if ($clinicInfo['status'] == 1) {
 } else {
     echo "Error: " . $clinicInfo['msg'];
 }
+
+
+////////////////////////////////////////////////////////
+$swalControl = 2;
+
+if (isset($_POST['new-lab-test-data']) == true) {
+
+    $imgName = $_FILES['labTest-img']['name'];
+
+    $tempImgname = $_FILES['labTest-img']['tmp_name'];
+    // echo "tempImg name : $tempImgname<br>";
+
+    $imgFolder = LABTEST_IMG_DIR . $imgName;
+    move_uploaded_file($tempImgname, $imgFolder);
+
+    $testName   = $_POST['test-name'];
+    $testPvdBy  = $_POST['provided-by'];
+    $testDsc    = $_POST['test-dsc'];
+
+    //Object initilizing for Adding Main/Parent Tests/Labs
+    $addLabTestType = json_decode($labTypes->addLabTypes($imgName, $testName, $testPvdBy, $testDsc));
+
+    if ($addLabTestType->status) {
+        $swalControl = 1;
+    } else {
+        $swalControl = 0;
+    }
+}
+
+// echo $swalControl;
 ?>
 
 <!doctype html>
@@ -55,27 +88,48 @@ if ($clinicInfo['status'] == 1) {
 
 <body>
     <?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if ($swalControl == 1) {
     ?>
         <script>
-            swal("Failed", "Customer Addition Failed !", "error");
+            alert('Data insert successfully');
+            // console.log(<?php echo $swalControl; ?>);
+            Swal.fire("Success", "Data Addition successfull!", "success");
         </script>
     <?php
     }
+
+    if ($swalControl == 0) {
     ?>
+        <script>
+            alert('Data insertion fail!');
+            Swal.fire("Failed", "Data Addition Failed!", "error");
+        </script>
+    <?php
+
+    }
+
+    ?>
+
     <!-- Page Wrapper -->
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
                 <div class="bg-light p-4 pb-0">
-                    <form action="lab-tests.php" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                         <div class="col-12 d-flex">
                             <div class="col-md-6 justify-content-between text-left">
                                 <div class="form-group col-sm-12">
-                                    <div class="card mt-5 d-flex justify-content-center" style="width: 15rem; height: 15rem;">
-
-                                        <input type="file" style="display:none;" id="testImage" accept=".jpg,.jpeg,.png" name="test-image" onchange="validateFileType(this)">
-
+                                    <div class="alert alert-danger d-none" id="err-show" role="alert">
+                                        Only jpg/jpeg and png files are allowed!
+                                    </div>
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <img class="mb-0 mt-3 rounded img-uv-view border border-dark" src="" width="100%" height="180" alt="">
+                                    </div>
+                                    <div class="mt-1">
+                                        <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="labTest-img" onchange="validateFileType()">
+                                        <label for="img-uv-input" class="btn btn-primary">Change
+                                            Image</label>
                                     </div>
                                 </div>
                             </div>
@@ -84,18 +138,18 @@ if ($clinicInfo['status'] == 1) {
                             <div class="col-md-6 justify-content-between text-left">
 
                                 <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h6" for="patientName"><i class="fas fa-vial" style="color: #8584e9; margin-right: 8px;"></i> Test Name<span class="text-danger"> *</span></label>
+                                    <label class="form-control-label h7 font-weight-bold" for="patientName" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-vial"></i> Test Name<span class="text-danger"> *</span></label>
                                     <input class="newsalesAdd" type="text" id="test-name" name="test-name" placeholder="Enter Test Name" value="" required autocomplete="off">
                                 </div>
 
                                 <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h6" for="provided-by"><i class="fas fa-flask-vial" style="color: #8584e9; margin-right: 8px;"></i> Provided By<span class="text-danger"> *</span></label>
+                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-flask-vial"></i> Provided By<span class="text-danger"> *</span></label>
 
                                     <input class="newsalesAdd" type="text" id="provided-by" name="provided-by" placeholder="Test Provider" required autocomplete="off">
                                 </div>
 
                                 <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h6" for="provided-by"><i class="fas fa-waveform" style="color: #8584e9; margin-right: 8px;"></i>Description<span class="text-danger"> *</span></label>
+                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-waveform"></i>Description<span class="text-danger"> *</span></label>
 
                                     <textarea class="newsalesAdd" type="text" name="test-dsc" id="test-dsc" cols="30" rows="3" required autocomplete="off"></textarea>
                                 </div>
@@ -104,9 +158,9 @@ if ($clinicInfo['status'] == 1) {
 
                         <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
 
-                        <div class="row justify-content-center mt-5">
+                        <div class="row justify-content-center mt-2">
                             <div class="form-group col-sm-4">
-                                <button class="btn btn-success me-md-2" type="submit" name="submit-lab-type">Submit</button>
+                                <button class="btn btn-success me-md-2" type="submit" name="new-lab-test-data">Submit</button>
                             </div>
                         </div>
 
@@ -117,7 +171,24 @@ if ($clinicInfo['status'] == 1) {
     </div>
 
     <!--/End Part 1  -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
+    <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
+    <script>
+        function validateFileType() {
+            var fileName = document.getElementById("img-uv-input").value;
+            console.log(fileName);
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                document.getElementById("err-show").classList.add("d-none");
+            } else {
+                document.getElementById("err-show").classList.remove("d-none");
+                // Show current image when error occurs
+                document.querySelector('.img-uv-view').src = "";
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -13,15 +13,16 @@ $Plan       = new Plan;
 $Utility    = new Utility;
 $HealthCare = new HealthCare;
 
-
 if (isset($_POST['plan']) ||  isset($_SESSION['PURCHASEPLANID'])) {
 
     if (isset($_POST['plan'])) {
         $planId = $_POST['plan'];
+        $_SESSION['PURCHASEPLANID'] = $planId;
     }
 
     if (isset($_SESSION['PURCHASEPLANID'])) {
-        $planId = $_POST['plan'];
+        $planId = $_SESSION['PURCHASEPLANID'];
+        $_SESSION['PURCHASEPLANID'] = $planId;
     }
 } else {
     header("Location: plans.php");
@@ -62,7 +63,8 @@ if ($planResponse->status == 1) {
     <title><?= $planName ?> Plan - <?= SITE_NAME; ?></title>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
     <!-- Plugins Files -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap/bootstrap.css">
+
 </head>
 
 <body>
@@ -78,7 +80,7 @@ if ($planResponse->status == 1) {
                             <div class="row">
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="hidden" name="planid" value="<?= url_enc($planId) ?>">
+                                        <input type="hidden" name="planid" value="<?= $planId ?>">
                                         <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required onfocusout="checkData()">
                                     </div>
                                 </div>
@@ -130,15 +132,6 @@ if ($planResponse->status == 1) {
                                     </small>
                                 </div>
 
-                                <div class="col-sm-12 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="itemCheck" name="itemCheck" disabled>
-                                        <label class="form-check-label text-danger" for="flexCheckDisabled">
-                                            <strong>Please Accept terms and conditions</strong>
-                                        </label>
-
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -191,9 +184,16 @@ if ($planResponse->status == 1) {
                                         </div>
                                     </div>
 
-                                    <button type="submit" id="payment-btn" name="payment-btn" class="btn btn-primary w-100">Continue</button>
+                                    <div class="mb-2">
+                                        <div class="form-check text-start">
+                                            <input class="form-check-input" type="checkbox" value="tncAccept" id="itemCheck" name="itemCheck">
+                                            <label class="form-check-label" for="itemCheck">
+                                                <span>Please Accept terms and conditions</span>
+                                            </label>
+                                        </div>
+                                    </div>
 
-                                    <!-- <button type="submit">Continue</button> -->
+                                    <button type="submit" id="payment-btn" name="payment-btn" class="btn btn-primary w-100">Continue</button>
 
                                     <a href="#" class="text-info" onclick="goback()">
                                         Previous Page
@@ -208,11 +208,10 @@ if ($planResponse->status == 1) {
 
         </section>
     </div>
-    <!-- /Footer -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script> -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
-    <!-- <script src="<?= JS_PATH ?>palan-checkOut-Index.js"></script> -->
+    <script src="<?= JS_PATH ?>main.js"></script>
+    <script src="<?= JS_PATH ?>cheakout.js"></script>
+
 
 
     <script>

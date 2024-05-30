@@ -55,5 +55,34 @@ class Plan{
             return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
         }   
     }
+
+
+    function planFeatures(){
+        try {
+            $query = "SELECT * FROM plan_features";
+            $stmt = $this->conn->prepare($query);
+
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $subscriptions = [];
+                    while ($row = $result->fetch_assoc()) {
+                        $subscriptions[] = $row;
+                    }
+                    return json_encode(['status' => 1, 'msg' => 'success', 'data' => $subscriptions]);
+                }
+
+                $stmt->close();
+            }
+
+            return json_encode(['status' => 0, 'msg' => 'No subscriptions found for the given admin ID']);
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur during the database operation
+            error_log("Error getting subscription: " . $e->getMessage());
+            return json_encode(['status' => 0, 'msg' => "Error: " . $e->getMessage()]);
+        }
+    }
 }
 ?>

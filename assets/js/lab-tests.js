@@ -7,7 +7,7 @@ const addTestAndSubTest = (t) => {
         document.getElementById('editNicheDetails').innerHTML = 'Add new test type';
 
     $(".add-new-test-data-modal").html(
-        '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+        '<iframe width="99%" height="450px" frameborder="0" allowtransparency="true" src="' +
         url + '"></iframe>');
     }
 
