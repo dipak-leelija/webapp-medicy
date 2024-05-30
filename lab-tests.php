@@ -199,7 +199,6 @@ if ($showLabTypes->status) {
                                                                 <span class='badge badge-danger'>
                                                                     <a class='text-light' href="<?php echo $delTestTypeId ?>" onclick="deleteConfirmation()">Delete</i></a>
                                                                 </span>
-
                                                             </td>
                                                         </tr>
                                                 <?php
@@ -210,9 +209,15 @@ if ($showLabTypes->status) {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-center" id="pagination-control">
+                                    <?php 
+                                        if($labTestTotalItem > 16){
+                                            ?>
+                                            <div class="d-flex justify-content-center" id="pagination-control">
                                         <?= $paginationHTML ?>
                                     </div>
+                                    <?php
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>

@@ -50,11 +50,6 @@ if ($clinicInfo['status'] == 1) {
 
 ?>
 
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head> -->
-
 
 <div class="container-fluid px-1  mx-auto">
     <div class="row d-flex justify-content-center">
