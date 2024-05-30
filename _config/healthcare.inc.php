@@ -5,17 +5,13 @@ require_once CLASS_DIR.'subscription.class.php';
 $HealthCare     = new HealthCare;
 $Subscription   = new Subscription;
 
-$healthCare   = json_decode($HealthCare->showHealthCare($adminId));
+$healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
 // print_r($healthCare);
-// $SubsDetails  = json_decode($Subscription->getSubscription($adminId));
-$checkSubscription = $Subscription->checkSubscription($adminId, NOW);
 
-// print_r($checkSubscription);
-// exit;
 // ========================== CHECK SUBSCRIPTION ========================== 
-
+$checkSubscription = $Subscription->checkSubscription($ADMINID, NOW);
 if (!$checkSubscription){
-    header("Location:".URL."cheakout/");
+    header("Location:".URL."cheakout/plans.php");
     exit;
 }
 

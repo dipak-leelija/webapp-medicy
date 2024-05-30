@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once dirname(__DIR__) . '/config/constant.php';
 
 // exit;
@@ -24,19 +23,14 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'plan.class.php';
-require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'subscription.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-$HealthCare     = new HealthCare;
 $Plan           = new Plan;
 $Subscription   = new Subscription;
-$Utility        = new Utility;
 
-print_r($_POST);
 if (isset($_POST['orderAmount']) || isset($_POST['orderId']) || isset($_POST['paymentMode']) || isset($_POST['referenceId']) || isset($_POST['signature']) || isset($_POST['txMsg']) || isset($_POST['txStatus']) || isset($_POST['txTime'])) {
 
     $ORDERID        = $_POST['orderId'];
@@ -55,20 +49,23 @@ $planResponse   = json_decode($Plan->getPlan($planId));
 if($planResponse->status == 1){
     $plan = $planResponse->data;
 
-    $planPrice      = $plan->price;
     $planDuration   = $plan->duration;
 
 }
 
 $expDate    = getNextDate(TODAY, $planDuration);
 
-$response = json_decode($Subscription->updateSubscription($ADMINID, $ORDERID, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, TODAY, $expDate));
+$response = $Subscription->updateSubscription($ADMINID, $ORDERID, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, NOW, $expDate);
+$response = json_decode($response);
 $result = $response->status;
-// if ($result != 1) {
-//     header("Location: error.php");
-//     exit;
-// }
-exit;
+if ($result != 1) {
+    header("Location: error.php");
+    exit;
+}
+if ($status != 'SUCCESS') {
+    echo "Something is Wrong!<br>";
+    print_r($_POST);
+}
 ?>
 <html>
 
@@ -115,7 +112,7 @@ exit;
 </style>
 
 <body>
-    <div class="d-flex justify-content-center align-items-center text-center bg-light">
+    <div class="h-100 d-flex justify-content-center align-items-center text-center bg-light">
         <div class="card rounded shadow">
             <div class="rounded-circle" style="height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
                 <i class="checkmark">✓</i>

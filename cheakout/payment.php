@@ -29,7 +29,7 @@ if (isset($_POST['payment-btn'])) {
     
     $ORDERID = $IdsGeneration->generateOrderId();
 
-    $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, NOW, 00, 0);
+    $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, '', 00, 0);
 }
 
 // Cashfree configuration    
@@ -76,6 +76,7 @@ if ($mode == "PROD") {
 
 <form action="<?= $url; ?>" name="formSubmit" method="post">
     <p>Please wait.......</p>
+    <p><?= $ORDERID ?></p>
     <input type="hidden" name="signature" value='<?= $signature; ?>' />
     <input type="hidden" name="appId" value='<?= APPID; ?>' />
     <input type="hidden" name="orderId" value='<?= $ORDERID; ?>' />
@@ -86,10 +87,10 @@ if ($mode == "PROD") {
     <input type="hidden" name="orderAmount" value='<?= $plan_price ?>' />
     <input type="hidden" name="notifyUrl" value='<?= NOTIFYURL; ?>' />
     <input type="hidden" name="returnUrl" value='<?= RETURNURL; ?>' />
-    <!-- <button type="submit">submit</button> -->
+    <button type="submit">submit</button>
 </form>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     window.onload = function() {
         document.forms['formSubmit'].submit();
     };
-</script>
+</script> -->

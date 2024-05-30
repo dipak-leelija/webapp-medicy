@@ -347,7 +347,7 @@ class IdsGeneration{
         $randomNumber = mt_rand(1, 99999);
     
         // Generate product ID with prefix "MED"
-        $orderId = "MED" . str_pad($randomNumber, 12, "0", STR_PAD_LEFT);
+        $orderId = "MED" . str_pad($randomNumber, 9, "0", STR_PAD_LEFT);
     
         // Check if product ID exists in the database
         $stmt = $this->conn->prepare("SELECT * FROM subscription WHERE order_id = ?");
@@ -366,7 +366,6 @@ class IdsGeneration{
     }
 
 }
-
 
 // $id = new IdsGeneration();
 
