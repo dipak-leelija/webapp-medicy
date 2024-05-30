@@ -148,7 +148,7 @@ $responseData = json_decode($response, true);
         const cashfree = Cashfree({
             // "production" for Production
             // "sandbox" for Testing
-            mode: "sandbox",
+            mode: "production",
         });
         document.getElementById("renderBtn").addEventListener("click", () => {
             let checkoutOptions = {
