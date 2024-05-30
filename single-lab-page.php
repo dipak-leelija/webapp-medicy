@@ -4,7 +4,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'labTestTypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
@@ -13,7 +13,7 @@ $showLabtypeId = $_GET['labtypeid'];
 if (isset($_GET['labtypeid'])) {
     $showLabtypeId = url_dec($_GET['labtypeid']);
     //Fetching Test Categories
-    $labTypes = new LabTypes();
+    $labTypes       = new LabTestTypes;
     $showLabType = $labTypes->showLabTypesById($showLabtypeId);
     if(is_array($showLabType))
     foreach ($showLabType as $labtype) {

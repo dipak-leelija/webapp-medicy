@@ -8,7 +8,7 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'labTestTypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 
 
@@ -18,11 +18,17 @@ require_once CLASS_DIR . 'sub-test.class.php';
 $Patients        = new Patients();
 $IdsGeneration   = new IdsGeneration();
 $HealthCare      = new HealthCare;
-$labTypes        = new LabTypes;
+$labTypes        = new LabTestTypes;
 $subTests        = new SubTests;
 
 
-$showLabTypes = $labTypes->showLabTypes();
+$showLabTypes = json_decode($labTypes->showLabTypes());
+if($showLabTypes->status){
+    if(!empty($showLabTypes->data)){
+        $showLabTypes = $showLabTypes->data;
+    }
+}
+// print_r($showLabTypes);
 
 $clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
@@ -131,7 +137,8 @@ if (isset($_POST['add-new-subtest']) == true) {
                                     <?php
                                     // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
                                     foreach ($showLabTypes as $labTypeName) {
-                                        echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
+                                        print_r($labTypeName);
+                                        echo '<option value="' . $labTypeName->id . '">' . $labTypeName->test_type_name . '</option>';
                                     }
                                     // }
                                     ?>
