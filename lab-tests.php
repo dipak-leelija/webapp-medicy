@@ -180,19 +180,19 @@ if ($showLabTypes->status) {
 
                                                         <tr>
                                                             <td class='testImg'>
-                                                                <img src=' $testImg' alt=''>
+                                                                <img src="<?php echo $testImg; ?>" alt="">
                                                             </td>
                                                             <td><?php echo $testName; ?></td>
                                                             <td><?php echo $testPvdBy; ?></td>
                                                             <td></td>
                                                             <td class='text-center'>
                                                                 <span class='badge badge-secondary'>
-                                                                    <a class='text-light' href='single-lab-page.php?labtypeid=" . url_enc($testTypeId) . "'>
+                                                                    <a class='text-light' href=" single-lab-page.php?labtypeid=url_enc<?php echo $testTypeId ?>">
                                                                         View
                                                                     </a>
                                                                 </span>
 
-                                                                <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal($testTypeId)">
+                                                                <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)">
                                                                     Edit
                                                                 </span>
 
@@ -202,7 +202,6 @@ if ($showLabTypes->status) {
 
                                                             </td>
                                                         </tr>
-
                                                 <?php
                                                     }
                                                 }
