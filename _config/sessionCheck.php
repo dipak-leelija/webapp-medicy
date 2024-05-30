@@ -16,7 +16,7 @@ if($_SESSION['ADMIN']){
   $userImg      = $_SESSION['ADMIN_IMG'] ;
   $adminAddress = $_SESSION['ADMIN_ADDRESS'];
   $username     = $_SESSION['ADMIN_USERNAME'];
-  // $adminPass    = $_SESSION['ADMIN_PASSWORD'];
+  $adminPass    = $_SESSION['ADMIN_PASSWORD'];
   $adminId      = $_SESSION['ADMINID'];
   $employeeId   = $_SESSION['ADMINID'];
   $addedBy      = $adminId;
@@ -45,7 +45,7 @@ if($_SESSION['ADMIN']){
   $userImg        = $_SESSION['EMP_IMG']; 
   $empAddress     = $_SESSION['EMP_ADDRESS'];
   $username       = $_SESSION['EMP_USERNAME'];
-  // $empPass        = $_SESSION['EMP_PASSWORD'];
+  $empPass        = $_SESSION['EMP_PASSWORD'];
   $employeeId     = $_SESSION['EMPID'];
   $adminId        = $_SESSION['ADMIN_ID'];
   $addedBy        = $employeeId;
