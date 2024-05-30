@@ -187,7 +187,7 @@ if ($showLabTypes->status) {
                                                             <td></td>
                                                             <td class='text-center'>
                                                                 <span class='badge badge-secondary'>
-                                                                    <a class='text-light' href=" single-lab-page.php?labtypeid=url_enc<?php echo $testTypeId ?>">
+                                                                    <a class='text-light' href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
                                                                         View
                                                                     </a>
                                                                 </span>
