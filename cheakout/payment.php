@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
+require_once 'keys.php';
 
 $Plan           = new Plan;
 $Subscription   = new Subscription;
@@ -26,71 +27,199 @@ if (isset($_POST['payment-btn'])) {
     $state          = $_POST['state'];
     $country        = $_POST['country'];
     $pin_code       = $_POST['pin-code'];
-    
+
     $ORDERID = $IdsGeneration->generateOrderId();
 
     $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, '', 00, 0);
 }
 
-// Cashfree configuration    
-// define('APPID', '6898986b4a87b6c17e44798154898986'); // Replace "TEST" AppId to PROD AppId
-// define('SECRECTKEY', 'cfsk_ma_prod_d0dcabd99b3cfcdc498faea97ccff060_7288151e'); // Replace "TEST" Secret key to PROD Secret key
-define('APPID', 'TEST101978339429a8c9ddfa1aed0eb633879101'); // Replace "TEST" AppId to PROD AppId
-define('SECRECTKEY', 'cfsk_ma_test_b383defee9a89462969452886a4840de_fa75a730'); // Replace "TEST" Secret key to PROD Secret key
+// API credentials
+$clientId = APPID;
+$clientSecret = SECRECTKEY;
+// API URL
+$url = PAYMENTURL;
 
-define('RETURNURL', 'http://localhost/medicy.in/cheakout/success.php');
-define('NOTIFYURL', 'http://localhost/medicy.in/cheakout/error.php');
-$mode = "TEST"; // Change to TEST for test server, PROD for production
+// Request headers
+$headers = [
+    'X-Client-Secret: ' . $clientSecret,
+    'X-Client-Id: ' . $clientId,
+    'x-api-version: 2023-08-01',
+    'Content-Type: application/json',
+    'Accept: application/json'
+];
 
-$secretKey = SECRECTKEY; // Secret key
+// Request data
+$data = [
+    "order_id" => $ORDERID,
+    "order_amount" => $plan_price,
+    "order_currency" => "INR",
+    "customer_details" => [
+        "customer_id" => $ADMINID,
+        "customer_name" => $customerName,
+        "customer_email" => $email,
+        "customer_phone" => $mob_no
+    ],
+    "order_meta" => [
+        "return_url" => RETURNURL . '?key=' . url_enc($ORDERID),
+        "notify_url" => NOTIFYURL . '?key=' . url_enc($ORDERID)
+    ]
+];
 
-$postData = array(
-    "appId" => APPID,
-    "orderId" => $ORDERID,
-    "orderAmount" => $plan_price,
-    "orderCurrency" => "INR",
-    "customerName" => $customerName,
-    "customerPhone" => $mob_no,
-    "customerEmail" => $email,
-    "returnUrl" => RETURNURL,
-    "notifyUrl" => NOTIFYURL,
-);
+// Initialize cURL session
+$ch = curl_init($url);
 
-ksort($postData);
-$signatureData = "";
-foreach ($postData as $key => $value) {
-    $signatureData .= $key . $value;
+// Set cURL options
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+// Execute cURL request
+$response = curl_exec($ch);
+
+// Check for cURL errors
+if ($response === false) {
+    $error = curl_error($ch);
+    curl_close($ch);
+    die('cURL error: ' . $error);
 }
 
-$signature = hash_hmac('sha256', $signatureData, $secretKey, true);
-$signature = base64_encode($signature);
+// Close cURL session
+curl_close($ch);
 
-if ($mode == "PROD") {
-    $url = "https://www.cashfree.com/checkout/post/submit";
-} else {
-    $url = "https://test.cashfree.com/billpay/checkout/post/submit";
-}
+// Handle response
+$responseData = json_decode($response, true);
 
 ?>
 
 
-<form action="<?= $url; ?>" name="formSubmit" method="post">
-    <p>Please wait.......</p>
-    <p><?= $ORDERID ?></p>
-    <input type="hidden" name="signature" value='<?= $signature; ?>' />
-    <input type="hidden" name="appId" value='<?= APPID; ?>' />
-    <input type="hidden" name="orderId" value='<?= $ORDERID; ?>' />
-    <input type="hidden" name="orderCurrency" value='INR' />
-    <input type="hidden" name="customerName" value='<?= $customerName ?>' />
-    <input type="hidden" name="customerEmail" value='<?= $email ?>' />
-    <input type="hidden" name="customerPhone" value='<?= $mob_no ?>' />
-    <input type="hidden" name="orderAmount" value='<?= $plan_price ?>' />
-    <input type="hidden" name="notifyUrl" value='<?= NOTIFYURL; ?>' />
-    <input type="hidden" name="returnUrl" value='<?= RETURNURL; ?>' />
-    <button type="submit">submit</button>
-</form>
-<!-- <script type="text/javascript">
-    window.onload = function() {
-        document.forms['formSubmit'].submit();
-    };
-</script> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Please wait..</title>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .loading-circle {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="loading-circle"></div>
+    </div>
+    <button style="display: none;" id="renderBtn">Pay Now</button>
+    <script>
+        const cashfree = Cashfree({
+            // "production" for Production
+            // "sandbox" for Testing
+            mode: "sandbox",
+        });
+        document.getElementById("renderBtn").addEventListener("click", () => {
+            let checkoutOptions = {
+                paymentSessionId: "<?= $responseData['payment_session_id']; ?>",
+                redirectTarget: "_self",
+            };
+            cashfree.checkout(checkoutOptions);
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            // This function will be called when the DOM is fully loaded
+            var button = document.getElementById("renderBtn");
+            // Trigger the click event on the button
+            button.click();
+        });
+    </script>
+</body>
+
+</html>
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashfree Checkout Integration</title>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+</head>
+
+<body>
+    <div class="row">
+        <p>Click below to open the checkout page in popup</p>
+        <button id="renderBtn">Pay Now</button>
+    </div>
+    <script>
+        const cashfree = Cashfree({
+            mode: "sandbox",
+        });
+        document.getElementById("renderBtn").addEventListener("click", () => {
+            let checkoutOptions = {
+                paymentSessionId: "<?php //echo $responseData['payment_session_id']; 
+                                    ?>",
+                redirectTarget: "_modal",
+            };
+            cashfree.checkout(checkoutOptions).then((result) => {
+                console.log(result)
+                if (result.error) {
+                    // This will be true whenever user clicks on close icon inside the modal or any error happens during the payment
+                    // console.log("User has closed the popup or there is some payment error, Check for Payment Status");
+                    // console.log(result.error);
+                }
+                if (result.redirect) {
+                    // This will be true when the payment redirection page couldnt be opened in the same window
+                    // This is an exceptional case only when the page is opened inside an inAppBrowser
+                    // In this case the customer will be redirected to return url once payment is completed
+                    console.log("Payment will be redirected");
+                }
+                if (result.paymentDetails) {
+                    // This will be called whenever the payment is completed irrespective of transaction status
+                    console.log("Payment has been completed, Check for Payment Status");
+                    // console.log(result.paymentDetails.paymentMessage);
+                    console.log(result);
+
+                }
+            });
+        });
+    </script>
+</body>
+
+</html> -->
