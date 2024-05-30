@@ -71,7 +71,6 @@ if (isset($_POST['new-lab-test-data']) == true) {
     <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css">
 
     <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
-    <title>Enter Patient Details</title>
 
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= PLUGIN_PATH ?>font-asesome-5/font-awesome-5.15.4-all.min.css" rel="stylesheet" type="text/css">
@@ -82,6 +81,11 @@ if (isset($_POST['new-lab-test-data']) == true) {
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
+    <!-- Custom styles for this page -->
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
 
 </head>
 
@@ -133,23 +137,30 @@ if (isset($_POST['new-lab-test-data']) == true) {
                             </div>
 
                             <div class="col-md-6 justify-content-between text-left">
-                                <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h7 font-weight-bold" for="patientName" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-vial"></i> Test Name<span class="text-danger"> *</span></label>
-                                    <input class="newsalesAdd" type="text" id="test-name" name="test-name" placeholder="Enter Test Name" value="" required autocomplete="off">
+                                <div class="form-floating col-sm-12">
+                                    <input class="form-control newbillInput" type="text" id="test-name" name="test-name" placeholder="" value="" required autocomplete="off">
+                                    <label class="form-control-label h7 font-weight-bold" for="test-name" style="color: #5A59EB; margin-right: 8px;">
+                                        <i class="fas fa-vial"></i> Test Name<span class="text-danger"> *</span>
+                                    </label>
                                 </div>
 
-                                <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-flask-vial"></i> Provided By<span class="text-danger"> *</span></label>
-
-                                    <input class="newsalesAdd" type="text" id="provided-by" name="provided-by" placeholder="Test Provider" required autocomplete="off">
+                                <div class="form-floating col-sm-12 mt-2">
+                                    <input class="form-control newbillInput" type="text" id="provided-by" name="provided-by" placeholder="" required autocomplete="off">
+                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB; margin-right: 8px;">
+                                        <i class="fas fa-flask-vial"></i> Provided By<span class="text-danger"> *</span>
+                                    </label>
                                 </div>
 
-                                <div class="form-group col-sm-12 flex-column d-flex">
-                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-waveform"></i>Description<span class="text-danger"> *</span></label>
+                                <div class="form-group col-sm-12 mt-2">
+                                    <label class="form-control-label h7 font-weight-bold" for="test-dsc" style="color: #5A59EB; margin-right: 8px;">
+                                        <i class="fas fa-waveform"></i> Description<span class="text-danger"> *</span>
+                                    </label>
 
-                                    <textarea class="newsalesAdd" type="text" name="test-dsc" id="test-dsc" cols="30" rows="3" required autocomplete="off"></textarea>
+                                    <textarea class="form-control newbillInput" name="test-dsc" id="test-dsc" cols="30" rows="2" required autocomplete="off"></textarea>
+
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
@@ -166,6 +177,16 @@ if (isset($_POST['new-lab-test-data']) == true) {
     </div>
 
     <!--/End Part 1  -->
+
+
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery-3-5-1.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
     <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>

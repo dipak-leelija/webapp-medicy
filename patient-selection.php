@@ -189,7 +189,7 @@ if (isset($_POST['submit'])) {
                                 <div class="section col-12 col-md-6">
 
                                     <input type="text" class="d-none" id="patientId" name="patientId">
-                                    <input type="text" class="form-control w-100" id="patientName" name="patientName" placeholder='Enter patient name' onkeyup="getPatient(this.value)" autocomplete="off">
+                                    <input type="text" class="form-control w-100" id="patientName" name="patientName" placeholder='Enter patient name' onkeyup="getPatient(this.value)" autocomplete="off" required>
                                     <div id="patient-list">
                                     </div>
 
