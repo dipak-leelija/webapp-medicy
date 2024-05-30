@@ -9,12 +9,12 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'labTestTypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'pagination.class.php';
 
-$labTypes       = new LabTypes;
+$labTypes       = new LabTestTypes;
 $subTests       = new SubTests;
 $Pagination     = new Pagination;
 

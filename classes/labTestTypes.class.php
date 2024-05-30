@@ -1,6 +1,6 @@
 <?php
 
-class LabTypes extends UtilityFiles
+class LabTestTypes extends UtilityFiles
 {
 
     use DatabaseConnection;

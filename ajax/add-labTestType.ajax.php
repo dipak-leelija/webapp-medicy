@@ -6,12 +6,12 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
-require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'labTestTypes.class.php';
 
 
 //Classes Initilizing
 $HealthCare      = new HealthCare;
-$labTypes        = new LabTypes;
+$labTypes       = new LabTestTypes;
 
 $clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
