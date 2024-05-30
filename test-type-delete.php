@@ -2,11 +2,11 @@
 require_once __DIR__.'/config/constant.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR.'labtypes.class.php';
+require_once CLASS_DIR . 'labTestTypes.class.php';
 
 $delTestTypeId = $_GET['deletetestype'];
 
-$labTypes = new LabTypes();
+$labTypes = new LabTestTypes;
 
 $delLabType = $labTypes->deleteLabTypes($delTestTypeId);
 print_r($delLabType);

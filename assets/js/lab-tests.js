@@ -1,24 +1,31 @@
+
 const addTestAndSubTest = (t) => {
-    console.log(t.id);
+    let url;
+    const modalContent = document.querySelector(".add-new-test-data-modal");
+    const editNicheDetails = document.getElementById('editNicheDetails');
+    const modalSizeId = document.getElementById('modal-sizeId');
 
-    if(t.id == 'add-testType'){
-        url = `ajax/add-labTestType.ajax.php`; //  updated path for user.
-
-        document.getElementById('editNicheDetails').innerHTML = 'Add new test type';
-
-    $(".add-new-test-data-modal").html(
-        '<iframe width="99%" height="450px" frameborder="0" allowtransparency="true" src="' +
-        url + '"></iframe>');
+    if (!modalContent || !editNicheDetails || !modalSizeId) {
+        console.error("Required elements are not found in the DOM.");
+        return;
     }
 
-
-    if(t.id == 'add-subTest'){
-        url = `ajax/add-subTest.ajax.php`; //  updated path for user.
-
-        document.getElementById('editNicheDetails').innerHTML = 'Add subtest details';
-
-    $(".add-new-test-data-modal").html(
-        '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
-        url + '"></iframe>');
+    if (t.id === 'add-testType') {
+        url = 'ajax/add-labTestType.ajax.php';
+        editNicheDetails.innerHTML = 'Add new test type';
+        modalSizeId.classList.add('modal-md');
+        modalSizeId.classList.remove('modal-lg');
+        updateModalContent(modalContent, url, '450px');
+        
+    } else if (t.id === 'add-subTest') {
+        url = 'ajax/add-subTest.ajax.php';
+        editNicheDetails.innerHTML = 'Add subtest details';
+        modalSizeId.classList.add('modal-lg');
+        modalSizeId.classList.remove('modal-md');
+        updateModalContent(modalContent, url, '500px');
     }
+}
+
+const updateModalContent = (modalContent, url, height) => {
+    modalContent.innerHTML = `<iframe width="99%" height="${height}" frameborder="0" allowtransparency="true" src="${url}"></iframe>`;
 }

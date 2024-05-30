@@ -28,7 +28,12 @@ html{
     max-height: 250px;
 }
 .text_box{
-    width: 45%;
+    width: 50%;
+    /* background-color:#c5c5c521; */
+    padding: 4px;
+}
+.title{
+    margin-top: 20px;
 }
 .text_box .title h1{
     margin: 0;
@@ -39,7 +44,7 @@ html{
     line-height: 25px;
 }
 .title2{
-    padding-top: 25px;
+    padding-top: 18px;
 }
 .title2 h2{
     font-size: 15px;
@@ -53,18 +58,21 @@ html{
     font-weight: bolder;
 }
 .provide_lab{
-    padding-top: 15px;
+    /* padding-top: 15px; */
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid gray;
+    padding-bottom: 8px;
 }
 .medicy_lab{
-    font-size: 15px;
+    font-size: 18px;
 }
 .provide_lab .logo img{
     width: 90px;
 }
 .provide_lab_para p{
-    padding-top: 15px;
+    /* padding-top: 15px; */
+    font-size: 16px;
 }
 .need{
     padding-top: 25px;
@@ -136,9 +144,27 @@ p{
     }
     .text_box{
         width: 100%;
-        padding-top: 20px;
+        padding-top: 0px;
     }
     .image{
         width: 100%;
     }
+}
+
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 765px) {
+    .mobile-only {
+        display: flex;
+    }
+    .large-screen{
+        display: none;
+    }
+}
+.item-column{
+    border-radius: 8px;
+    background-color: #c5c5c521;
 }

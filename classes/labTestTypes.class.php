@@ -1,6 +1,6 @@
 <?php
 
-class LabTypes extends UtilityFiles
+class LabTestTypes extends UtilityFiles
 {
 
     use DatabaseConnection;
@@ -45,14 +45,16 @@ class LabTypes extends UtilityFiles
             $selectLabType = "SELECT * FROM `tests_types`";
             $labTypeQuery = $this->conn->query($selectLabType);
             $rows = $labTypeQuery->num_rows;
-            if ($rows == 0) {
-                $data = [];
-            } else {
+
+            if ($rows > 0) {
                 while ($result = $labTypeQuery->fetch_array()) {
                     $data[] = $result;
                 }
                 return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+            }else{
+                return json_encode(['status' => 0]);
             }
+
         } catch (Exception $e) {
             $e->getMessage();
         }
@@ -76,9 +78,12 @@ class LabTypes extends UtilityFiles
                     while ($resultData = $result->fetch_array()) {
                         $data[] = $resultData;
                     }
+                    return json_encode(['status' =>1, 'data' => $data]);
+                }else{
+                    return json_encode(['status' =>0]);
                 }
                 $stmt->close();
-                return json_encode(['status' => 1, 'data' => $data]);
+                
             } else {
                 throw new Exception("Failed to prepare statement");
             }

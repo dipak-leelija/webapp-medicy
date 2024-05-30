@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['new-password'];
     $cnfPassword = $_POST['cnf-password'];
 
+    $result = [];
 
     if ($_SESSION['ADMIN']) {
         $oldAdminPass = $adminPass;
@@ -25,22 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($oldPassword === $x_password) {
             if ($newPassword === $cnfPassword) {
                 $adminPassUpdate = $Admin->updateAdminPassword($newPassword, $adminId);
-
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success.</strong> password changed successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
+                $result = ['status' => true, 'message' => 'Password changed successfully!'];
             } else {
-                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Failed!</strong> Inputed password dosenot matched!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
+                $result = ['status' => false, 'message' => 'Inputed password dosenot matched!'];
             }
         } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Failed!</strong> Wrong Old password inputed!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
+            $result = ['status' => false, 'message' => 'Wrong Old password inputed!'];
         }
     } else {
 
@@ -55,27 +46,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // print_r($empPassUpdate);
 
                 if ($empPassUpdate['result']) {
-                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> password changed successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
+                    $result = ['status' => true, 'message' => 'Password changed successfully!'];
                 } else {
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Update fail! Internal server error.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
+                    $result = ['status' => false, 'message' => 'Update fail! Internal server error.'];
                 }
             } else {
-                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Inputed password dosenot matched!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
+                $result = ['status' => false, 'message' => 'Inputed password dosenot matched!'];
             }
         } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Failed!</strong> Password Updation Failed!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+            $result = ['status' => false, 'message' => 'Password Updation Failed!'];
         }
     }
 }
@@ -98,14 +77,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
-    <div class="mt-2 reportUpdate" id="reportUpdate">
-        <!-- Ajax Update Reporet Goes Here -->
-    </div>
 
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
-        
-    </form>
+    <?php
+    if (!empty($result)) {
+        $status = $result['status'];
+        $message = htmlspecialchars($result['message'], ENT_QUOTES, 'UTF-8');
+        $profileUrl = htmlspecialchars(LOCAL_DIR . 'profile.php', ENT_QUOTES, 'UTF-8');
+
+        if ($status) {
+    ?>
+            <script>
+                Swal.fire({
+                    title: "Success",
+                    text: <?php echo json_encode($message); ?>,
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "<?php echo $profileUrl; ?>";
+                    }
+                });
+            </script>
+        <?php
+        } else {
+        ?>
+            <script>
+                Swal.fire({
+                    title: "Alert",
+                    text: <?php echo json_encode($message); ?>,
+                    icon: "error",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "<?php echo $profileUrl; ?>";
+                    }
+                });
+            </script>
+    <?php
+        }
+    }
+    ?>
+
+
+
+
 
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
 
@@ -119,40 +138,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
     <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
-
-    <!-- <script>
-        var xmlResponse = request.responseText;
-
-        const updatePassword = () => {
-            let oldPass = document.getElementById("old-password").value;
-            let newPass = document.getElementById("new-password").value;
-            let cnfPass = document.getElementById("cnf-password").value;
-
-            let url = `update-profiel-password.ajax.php?oldPass=${oldPass}&newPass=${newPass}$cnfPass=${cnfPass}`;
-
-            request.open('GET', url, true);
-
-            request.onreadystatechange = getEditUpdates;
-
-            request.send(null);
-        }
-
-
-        function getEditUpdates() {
-            if (request.readyState == 4) {
-                if (request.status == 200) {
-                    // var xmlResponse = request.responseText;
-                    document.getElementById('reportUpdate').innerHTML = xmlResponse;
-                } else if (request.status == 404) {
-                    alert("Request page doesn't exist");
-                } else if (request.status == 403) {
-                    alert("Request page doesn't exist");
-                } else {
-                    alert("Error: Status Code is " + request.statusText);
-                }
-            }
-        } //eof getEditUpdates
-    </script> -->
 
 </body>
 

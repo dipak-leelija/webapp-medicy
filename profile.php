@@ -154,7 +154,6 @@ if ($_SESSION['ADMIN']) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
                     <div class="card-body">
                         <div class=" d-flex justify-content-center align-items-center">
                             <div class=" shadow bg-white rounded  profile">
@@ -192,6 +191,7 @@ if ($_SESSION['ADMIN']) {
 
                                     <!-- Tab panes -->
                                     <div class="tab-content">
+                                        <label class="d-none" id="menue-control">0</label>
                                         <div id="home" class="tab-pane active">
                                             <div class="user w-100 p-3 mb-2 ">
                                                 <form action="_config/form-submission/profileSetup-form.php" method="post" id="edit-profile">
@@ -215,7 +215,7 @@ if ($_SESSION['ADMIN']) {
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                                <textarea class="form-control mb-3" placeholder="Address" name="address" rows="3"><?= $address; ?></textarea>
+                                                            <textarea class="form-control mb-3" placeholder="Address" name="address" rows="3"><?= $address; ?></textarea>
                                                         </div>
                                                     </div>
 
@@ -334,6 +334,21 @@ if ($_SESSION['ADMIN']) {
             }
         };
 
+
+
+        if (document.getElementById("menue-control").innerHTML.trim() === '1') {
+
+            // control home menue
+            document.getElementById("home").classList.remove("active");
+            document.getElementById("home").classList.add("fade");
+
+            // control menue 1
+            document.getElementById("menu1").classList.remove("fade");
+            document.getElementById("menu1").classList.add("show", "active");
+            document.getElementById("menu1").classList.add("active");
+
+            document.getElementById("menue-control").innerHTML = '0';
+        }
     </script>
 </body>
 

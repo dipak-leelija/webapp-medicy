@@ -2,7 +2,7 @@
 require_once dirname(__DIR__).'/config/constant.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'UtilityFiles.class.php';
-require_once CLASS_DIR.'labtypes.class.php';
+require_once CLASS_DIR.'labTestTypes.class.php';
 
 $updateLabType = $_GET['editCatDtlsId'];
 
@@ -21,9 +21,9 @@ $dsc = $_GET['editTestCategoryDsc'];
 // echo $dsc.'<br> <br> <br>';
 // exit;
 
-$labtypes = new LabTypes();
+$labtypes = new LabTestTypes();
 $updateLabtypes = $labtypes->updateLabTypes($testTypeName, $pvdBy, $dsc, /*Last Veriable to select the id of the lab tyoe whichi we wants to delete*/ $updateLabType);
 // if ($updateLabtypes) {
-    echo "<p>Details has been succesfully Updated</p>";
+    echo "<p class='m-0'>Details has been succesfully Updated !</p>";
 // }
 ?>

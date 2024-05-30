@@ -25,3 +25,59 @@ aspect-ratio: 1/1;
 border: 1px solid gray;
 border-radius: 50%;
 }
+
+
+/* ///////edit css///// */
+.editDiv{
+    display: flex;
+    justify-content: space-between;
+}
+.editImgDiv{
+    width: 40%;
+}
+.editImg{
+    width: 100%;
+    object-fit: fill;
+    border: 1px solid gray;
+    padding: 8px;
+}
+.editImg img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+.editContDiv{
+    width: 55%;
+}
+.testEditInput{
+    outline: none;
+    border: none;
+    background: transparent;
+    border-bottom: 0.1rem solid #000000;
+    border-radius: 0px !important;
+}
+.testEditInput:focus{
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+#reportUpdate{
+    position: absolute;
+    z-index: 1;
+    margin-top: -18.5rem;
+    margin-left: -9.5rem;
+    border-radius: 8px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+/* @media screen and (max-width: 767px){
+    .editDiv{
+       flex-direction: column;
+       width: 100%;
+    }
+    .editImgDiv{
+        width: 100%;
+    }
+    .editContDiv{
+        margin-top: 12px;
+        width: 100%;
+    }
+} */

@@ -3,10 +3,10 @@ require_once dirname(__DIR__).'/config/constant.php';
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'UtilityFiles.class.php';
-require_once CLASS_DIR.'labtypes.class.php';
+require_once CLASS_DIR.'labTestTypes.class.php';
 
 $showLabtypeId = $_GET['labCategoryId'];
-$labTypes = new LabTypes();
+$labTypes = new LabTestTypes();
 $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
 
 ?>
@@ -37,34 +37,50 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
                 $testPvdBy = $lab['provided_by'];
                 $testDsc = $lab['dsc'];
 
+                if (!empty($testImage)) {
+                    $testImg = LABTEST_IMG_PATH . $testImage;
+                } else {
+                    $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+                }
             }
             ?>
-            <input type="hidden" id="editCatDtlsId" name="nm_option" value="<?php echo $showLabtypeId;?>">
-            <div class="mb-3">
-                <img src="<?php echo LABTEST_IMG_PATH .$testImage; ?>" alt="No Image">
-                <!-- <input type="file" class="form-control" name="editTestCategoryImage" id="editTestCategoryImage"> -->
-            </div>
-            <div class="mb-3">
-                <label for="editTestCategoryName" class="form-label"> Test Category Name</label>
-                <input type="text" class="form-control" name="editTestCategoryName" id="editTestCategoryName"
-                    value="<?php echo $testName; ?>">
-            </div>
-            <div class="mb-3">
-                <label for="edit-test-category-name" class="form-label">Test Category Provided By</label>
-                <textarea type="text" rows="3" class="form-control" name="edit-test-category-name"
-                    id="editTestCategoryProvidedBy"><?php echo $testPvdBy; ?></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="edit-test-category-name" class="form-label">Test Category Description</label>
-                <textarea type="text" rows="4" class="form-control" name="edit-test-category-name"
-                    id="editTestCategoryDsc"><?php echo $testDsc; ?></textarea>
-            </div>
-            <div id="reportUpdate" class="mb-3">
+            <div class="editDiv">
+                <div class="editImgDiv">
+                    <input type="hidden" id="editCatDtlsId" name="nm_option" value="<?php echo $showLabtypeId;?>">
+                    <div class="mb-3 editImg">
+                        <img src="<?php echo $testImg; ?>" alt="Image">
+                        <input type="file" class="form-control" name="editTestCategoryImage" id="editTestCategoryImage"
+                            hidden>
+                    </div>
+                    <label class="btn btn-primary w-100" for="editTestCategoryImage">Change Image</label>
+                </div>
+                <div class="editContDiv">
+                    <div class="mb-3">
+                        <label for="editTestCategoryName" class="form-label"> Test Category Name</label>
+                        <input type="text" class="form-control testEditInput" name="editTestCategoryName"
+                            id="editTestCategoryName" value="<?php echo $testName; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-test-category-name" class="form-label">Test Category Provided By</label>
+                        <input type="text" class="form-control testEditInput" name="edit-test-category-name"
+                            id="editTestCategoryProvidedBy" value="<?php echo $testPvdBy; ?>">
+                        <!-- <imput type="text" class="form-control testEditInput" name="edit-test-category-name"
+                            id="editTestCategoryProvidedBy"><?php echo $testPvdBy; ?></input> -->
+                    </div>
+                    <div class="">
+                        <label for="edit-test-category-name" class="form-label">Test Category Description</label>
+                        <textarea type="text" rows="3" class="form-control testEditInput mt-2"
+                            name="edit-test-category-name" id="editTestCategoryDsc"><?php echo $testDsc; ?></textarea>
+                    </div>
+                    <div id="reportUpdate" class="p-3 bg-success text-center text-white fw-2 w-75"
+                        style="display:none;">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button type="button" class="btn btn-primary" onclick="editLabCatDtls()">Save
+                            changes</button>
 
-            </div>
-            <div class="d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-sm btn-primary" onclick="editLabCatDtls()">Save changes</button>
-
+                    </div>
+                </div>
             </div>
         </form>
 
@@ -79,7 +95,9 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
         let editTestCategoryProvidedBy = document.getElementById("editTestCategoryProvidedBy").value;
         let editTestCategoryDsc = document.getElementById("editTestCategoryDsc").value;
         // console.log(editTestCategoryDsc);
-        let url = "updateLabCat-Ajax.php?editCatDtlsId=" + escape(editCatDtlsId) + "&editTestCategoryName=" + escape(editTestCategoryName) + "&editTestCategoryProvidedBy=" + escape(editTestCategoryProvidedBy) + "&editTestCategoryDsc=" + escape(editTestCategoryDsc);
+        let url = "updateLabCat-Ajax.php?editCatDtlsId=" + escape(editCatDtlsId) + "&editTestCategoryName=" + escape(
+                editTestCategoryName) + "&editTestCategoryProvidedBy=" + escape(editTestCategoryProvidedBy) +
+            "&editTestCategoryDsc=" + escape(editTestCategoryDsc);
         // console.log(url);
         // alert('Working');
         // $("#reportUpdate").html('<iframe width="99%" height="40px" frameborder="0" allowtransparency="true" src="'+url+'"></iframe>');
@@ -100,7 +118,7 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
 
                 var xmlResponse = request.responseText;
                 // alert(xmlResponse);
-
+                document.getElementById("reportUpdate").style.display = 'block';
                 document.getElementById('reportUpdate').innerHTML = xmlResponse;
             } else if (request.status == 404) {
                 alert("Request page doesn't exist");
