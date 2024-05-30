@@ -15,20 +15,21 @@ if (isset($_GET['labtypeid'])) {
     //Fetching Test Categories
     $labTypes       = new LabTestTypes;
     $showLabType = $labTypes->showLabTypesById($showLabtypeId);
-    if(is_array($showLabType))
-    foreach ($showLabType as $labtype) {
-        $labTypeImge = $labtype['image'];
-
-        if(!empty($labTypeImge)){
-            $labTypeImge = LABTEST_IMG_PATH .  $labTypeImge;
-        }else{
-            $labTypeImge = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+    
+    if(is_array($showLabType)){
+        foreach ($showLabType as $labtype) {
+            $labTypeImge = $labtype['image'];
+    
+            if(!empty($labTypeImge)){
+                $labTypeImge = LABTEST_IMG_PATH .  $labTypeImge;
+            }else{
+                $labTypeImge = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+            }
+            $labTypeName = $labtype['test_type_name'];
+            $pvdBy = $labtype['provided_by'];
+            $labTypeDsc = $labtype['dsc'];
         }
-        $labTypeName = $labtype['test_type_name'];
-        $pvdBy = $labtype['provided_by'];
-        $labTypeDsc = $labtype['dsc'];
     }
-
     //Fetching Sub Tests
     $subTests = new SubTests();
     $subTestShow = $subTests->showSubTestsByCatId($showLabtypeId);
