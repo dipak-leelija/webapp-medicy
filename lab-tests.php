@@ -77,7 +77,6 @@ if ($showLabTypes->status) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
