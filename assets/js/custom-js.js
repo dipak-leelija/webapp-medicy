@@ -2,7 +2,7 @@
 function LabCategoryEditModal(cardDetailsId) {
     let labCategoryId = cardDetailsId;
     let url = "ajax/editLabCat-Ajax.php?labCategoryId=" + labCategoryId;
-    $(".modal-body").html('<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' + url + '"></iframe>');
+    $(".modal-body").html('<iframe width="99%" height="360px" frameborder="0" allowtransparency="true" src="' + url + '"></iframe>');
 
 } // end of LabCategoryEditModal function
 
