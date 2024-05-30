@@ -9,10 +9,9 @@ require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'labtypes.class.php';
 
 
-
 //Classes Initilizing
 $HealthCare      = new HealthCare;
-$labTypes = new LabTypes;
+$labTypes        = new LabTypes;
 
 $clinicInfo  = $HealthCare->showHealthCare($adminId);
 $clinicInfo  = json_decode($clinicInfo, true);
@@ -117,26 +116,23 @@ if (isset($_POST['new-lab-test-data']) == true) {
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
                 <div class="bg-light p-4 pb-0">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-                        <div class="col-12 d-flex">
+                        <div class="col-12">
                             <div class="col-md-6 justify-content-between text-left">
                                 <div class="form-group col-sm-12">
                                     <div class="alert alert-danger d-none" id="err-show" role="alert">
                                         Only jpg/jpeg and png files are allowed!
                                     </div>
-                                    <div class="d-flex justify-content-around align-items-center">
-                                        <img class="mb-0 mt-3 rounded img-uv-view border border-dark" src="" width="100%" height="180" alt="">
+                                    <div class="d-flex justify-content-around align-items-center border border-dark">
+                                        <img class="p-1 rounded img-uv-view w-50" id="img-preview" src="" alt="" style="aspect-ratio: 1/1; object-fit: contain;">
                                     </div>
-                                    <div class="mt-1">
+                                    <div class="mt-3 d-flex justify-content-center">
                                         <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="labTest-img" onchange="validateFileType()">
-                                        <label for="img-uv-input" class="btn btn-primary">Change
-                                            Image</label>
+                                        <label for="img-uv-input" class="btn btn-primary">Change Image</label>
                                     </div>
                                 </div>
                             </div>
 
-
                             <div class="col-md-6 justify-content-between text-left">
-
                                 <div class="form-group col-sm-12 flex-column d-flex">
                                     <label class="form-control-label h7 font-weight-bold" for="patientName" style="color: #5A59EB; margin-right: 8px;"><i class="fas fa-vial"></i> Test Name<span class="text-danger"> *</span></label>
                                     <input class="newsalesAdd" type="text" id="test-name" name="test-name" placeholder="Enter Test Name" value="" required autocomplete="off">
@@ -163,7 +159,6 @@ if (isset($_POST['new-lab-test-data']) == true) {
                                 <button class="btn btn-success me-md-2" type="submit" name="new-lab-test-data">Submit</button>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>

@@ -19,7 +19,7 @@ $subTests       = new SubTests;
 $Pagination     = new Pagination;
 
 
-//=====================================================================
+//================================================
 // ============= APPOINTMENT DATA ================
 $searchVal = '';
 $match = '';
@@ -53,7 +53,7 @@ if ($showLabTypes->status) {
         } else {
             $labTestTotalItem = 0;
         }
-    }else{
+    } else {
         $labTestTotalItem = 0;
         $paginationHTML = '';
     }
@@ -153,7 +153,9 @@ if ($showLabTypes->status) {
                                                 </tr>
                                             </thead>
                                             <tbody id="table-data">
+
                                                 <?php
+
                                                 if ($labTestTotalItem == 0) {
                                                     echo "No Test Type Avilable.";
                                                 } else {
@@ -164,6 +166,7 @@ if ($showLabTypes->status) {
                                                         $testDsc    = $showLabTypesShow->dsc;
                                                         $testPvdBy  = $showLabTypesShow->provided_by;
                                                         $testImg    =  $showLabTypesShow->image;
+
                                                         // $testImg = LABTEST_IMG_PATH . $testImg;
                                                         if (!empty($testImg)) {
                                                             $testImg = LABTEST_IMG_PATH . $testImg;
@@ -173,30 +176,34 @@ if ($showLabTypes->status) {
 
                                                         $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
 
-                                                        echo "<tr>
-                                                <td class='testImg'>
-                                                <img src=' $testImg' alt=''>
-                                                </td>
-                                                <td>$testName</td>
-                                                <td>$testPvdBy</td>
-                                                <td>0</td>
-                                                <td class='text-center'>
-                                                    <span class='badge badge-secondary'>
-                                                        <a class='text-light' href='single-lab-page.php?labtypeid=" . url_enc($testTypeId) . "'>
-                                                        View
-                                                        </a>
-                                                    </span>
+                                                ?>
 
-                                                    <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target=\"#testEditModal\" onclick=\"LabCategoryEditModal($testTypeId)\">
-                                                    Edit
-                                                    </span>
-                                                    
-                                                    <span class='badge badge-danger'>
-                                                    <a class='text-light' href=\"' . $delTestTypeId . '\" onclick=\"return deleteConfirmation()\" >Delete</i></a>
-                                                    </span>
+                                                        <tr>
+                                                            <td class='testImg'>
+                                                                <img src=' $testImg' alt=''>
+                                                            </td>
+                                                            <td><?php echo $testName; ?></td>
+                                                            <td><?php echo $testPvdBy; ?></td>
+                                                            <td></td>
+                                                            <td class='text-center'>
+                                                                <span class='badge badge-secondary'>
+                                                                    <a class='text-light' href='single-lab-page.php?labtypeid=" . url_enc($testTypeId) . "'>
+                                                                        View
+                                                                    </a>
+                                                                </span>
 
-                                                </td>
-                                            </tr>";
+                                                                <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal($testTypeId)">
+                                                                    Edit
+                                                                </span>
+
+                                                                <span class='badge badge-danger'>
+                                                                    <a class='text-light' href="<?php echo $delTestTypeId ?>" onclick="deleteConfirmation()">Delete</i></a>
+                                                                </span>
+
+                                                            </td>
+                                                        </tr>
+
+                                                <?php
                                                     }
                                                 }
 
@@ -256,7 +263,7 @@ if ($showLabTypes->status) {
 
     <!-- Category Edit Modal -->
     <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog" id="modal-sizeId">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails"></h5>
@@ -337,7 +344,7 @@ if ($showLabTypes->status) {
                     let searchUrl = `${currentUrl}?${searchParameter}`;
 
                     window.location.replace(searchUrl);
-                }else{
+                } else {
                     alert('Enter minimum 3 charechter');
                 }
 
@@ -353,10 +360,9 @@ if ($showLabTypes->status) {
                 document.getElementById('srch-btn-controler').innerHTML == '0'
             }
         }
-
     </script>
 
-    
+
 
 </body>
 
