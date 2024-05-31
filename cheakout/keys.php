@@ -9,7 +9,7 @@
  * 2. production
  * 
  *  */ 
-$mode = "sandbox";
+$mode = "production";
 
 define('MODE', $mode);
 
