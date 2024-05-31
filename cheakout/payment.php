@@ -51,6 +51,7 @@ $headers = [
 // Request data
 $data = [
     "order_id" => $ORDERID,
+    "plan_id" => $planid,
     "order_amount" => $plan_price,
     "order_currency" => "INR",
     "customer_details" => [

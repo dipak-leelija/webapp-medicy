@@ -52,8 +52,8 @@ if (isset($_GET['key'])) {
 
     $amount         = $response->order_amount;
     $payment_mode   = $response->payment_group;
-    $gatewayId      = $response->payment_gateway_details->gateway_order_id;
-    $referenceId    = $response->payment_gateway_details->gateway_payment_id;
+    $gatewayId      = MODE === "production" ?  $response->cf_payment_id : $response->payment_gateway_details->gateway_order_id;
+    $referenceId    = MODE === "production" ?  $response->bank_reference : $response->payment_gateway_details->gateway_payment_id;
     $txn_msg        = $response->payment_message;
     $status         = $response->payment_status;
     $txn_time       = $response->payment_time;
