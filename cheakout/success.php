@@ -1,24 +1,6 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
 
-// exit;
-// // Prevent page from being cached
-// header("Cache-Control: no-cache, must-revalidate");
-// header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-
-// // Force the browser to check for updates on every request
-// header("Pragma: no-cache");
-
-// // Set the Content-Type header to HTML
-// header("Content-Type: text/html; charset=utf-8");
-
-// // Use JavaScript to disable the back button
-// echo '<script>
-//     if (window.history.replaceState) {
-//         window.history.replaceState(null, null, window.location.href);
-//     }
-// </script>';
-
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
@@ -27,35 +9,71 @@ require_once CLASS_DIR . 'subscription.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 require_once CLASS_DIR . 'encrypt.inc.php';
+require_once 'keys.php';
 
 $Plan           = new Plan;
 $Subscription   = new Subscription;
 
-if (isset($_POST['orderAmount']) || isset($_POST['orderId']) || isset($_POST['paymentMode']) || isset($_POST['referenceId']) || isset($_POST['signature']) || isset($_POST['txMsg']) || isset($_POST['txStatus']) || isset($_POST['txTime'])) {
+if (isset($_GET['key'])) {
+    
+    $ORDERID = url_dec($_GET['key']);
+    
+    $curl = curl_init();
+    $APPID          = APPID;
+    $SECRECTKEY     = SECRECTKEY;
 
-    $ORDERID        = $_POST['orderId'];
-    $amount         = $_POST['orderAmount'];
-    $payment_mode   = $_POST['paymentMode'];
-    $referenceId    = $_POST['referenceId'];
-    $signature      = $_POST['signature'];
-    $txn_msg        = $_POST['txMsg'];
-    $status         = $_POST['txStatus'];
-    $txn_time       = $_POST['txTime'];
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => RESPONSEAPI."$ORDERID/payments",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            "x-client-id: $APPID",
+            "x-client-secret: $SECRECTKEY",
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'x-api-version: 2023-08-01'
+        ),
+    ));
 
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    $response = json_decode($response);
+    $response = $response[0];
+    // echo '<pre>';
+    // print_r($response);
+    // echo '</pre>';
+
+    // exit;
+
+    $amount         = $response->order_amount;
+    $payment_mode   = $response->payment_group;
+    $gatewayId      = MODE === "production" ?  $response->cf_payment_id : $response->payment_gateway_details->gateway_order_id;
+    $referenceId    = MODE === "production" ?  $response->bank_reference : $response->payment_gateway_details->gateway_payment_id;
+    $txn_msg        = $response->payment_message;
+    $status         = $response->payment_status;
+    $txn_time       = $response->payment_time;
+
+}else {
+    header("Location: ".URL);
 }
 
 $planId         = $_SESSION['PURCHASEPLANID'];
 $planResponse   = json_decode($Plan->getPlan($planId));
-if($planResponse->status == 1){
+if ($planResponse->status == 1) {
     $plan = $planResponse->data;
 
     $planDuration   = $plan->duration;
-
 }
 
 $expDate    = getNextDate(TODAY, $planDuration);
 
-$response = $Subscription->updateSubscription($ADMINID, $ORDERID, $referenceId, $txn_msg, $txn_time, $amount, $payment_mode, $status, NOW, $expDate);
+$response = $Subscription->updateSubscription($ADMINID, $ORDERID, $referenceId, $gatewayId, $txn_msg, $txn_time, $amount, $payment_mode, $status, NOW, $expDate);
 $response = json_decode($response);
 $result = $response->status;
 if ($result != 1) {
