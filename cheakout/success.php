@@ -11,6 +11,7 @@ require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once 'keys.php';
 
+print_r($_SESSION);
 
 $Plan           = new Plan;
 $Subscription   = new Subscription;
@@ -46,7 +47,7 @@ if (isset($_GET['key'])) {
     curl_close($curl);
     $response = json_decode($response);
     $response = $response[0];
-    // print_r($response);
+    print_r($response);
     // exit;
 
     $amount         = $response->order_amount;
