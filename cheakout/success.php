@@ -11,8 +11,6 @@ require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once 'keys.php';
 
-print_r($_SESSION);
-
 $Plan           = new Plan;
 $Subscription   = new Subscription;
 
