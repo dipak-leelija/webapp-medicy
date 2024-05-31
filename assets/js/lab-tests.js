@@ -13,9 +13,9 @@ const addTestAndSubTest = (t) => {
     if (t.id === 'add-testType') {
         url = 'ajax/add-labTestType.ajax.php';
         editNicheDetails.innerHTML = 'Add new test type';
-        modalSizeId.classList.add('modal-md');
-        modalSizeId.classList.remove('modal-lg');
-        updateModalContent(modalContent, url, '450px');
+        modalSizeId.classList.add('modal-lg');
+        modalSizeId.classList.remove('modal-md');
+        updateModalContent(modalContent, url, '380px');
         
     } else if (t.id === 'add-subTest') {
         url = 'ajax/add-subTest.ajax.php';

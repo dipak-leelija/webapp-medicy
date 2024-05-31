@@ -37,8 +37,8 @@ border-radius: 50%;
 }
 .editImg{
     width: 100%;
-    object-fit: fill;
-    border: 1px solid gray;
+    object-fit: cover;
+    border: 2px solid rgb(175, 175, 175);
     padding: 8px;
 }
 .editImg img{
@@ -52,17 +52,18 @@ border-radius: 50%;
     outline: none;
     border: none;
     background: transparent;
-    border-bottom: 0.1rem solid #000000;
+    border-bottom: 0.1rem solid gray;
     border-radius: 0px !important;
 }
-.testEditInput:focus{
-    border-color: inherit;
+.testEditInput:focus,
+.testEditInput:active{
+    border-color: #5A59EB;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 #reportUpdate{
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     margin-top: -18.5rem;
     margin-left: -9.5rem;
     border-radius: 8px;

@@ -22,6 +22,7 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
 
@@ -49,29 +50,46 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
                     <input type="hidden" id="editCatDtlsId" name="nm_option" value="<?php echo $showLabtypeId;?>">
                     <div class="mb-3 editImg">
                         <img src="<?php echo $testImg; ?>" alt="Image">
-                        <input type="file" class="form-control" name="editTestCategoryImage" id="editTestCategoryImage"
-                            hidden>
+                        <!-- <input type="file" class="form-control" name="editTestCategoryImage" id="editTestCategoryImage"
+                            hidden> -->
                     </div>
-                    <label class="btn btn-primary w-100" for="editTestCategoryImage">Change Image</label>
+                    <!-- <label class="btn btn-primary w-100" for="editTestCategoryImage">Change Image</label> -->
                 </div>
                 <div class="editContDiv">
-                    <div class="mb-3">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control testEditInput" id="editTestCategoryName"
+                            name="editTestCategoryName" placeholder="" value="<?php echo $testName; ?>" required
+                            autocomplete="off">
+                        <label for="editTestCategoryName" style="color: #5A59EB; margin-left: -14px;"><i
+                                class="fas fa-vial"></i> Test Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control testEditInput" id="editTestCategoryProvidedBy"
+                            name="editTestCategoryProvidedBy" value="<?php echo $testPvdBy; ?>" placeholder="">
+                        <label for="editTestCategoryProvidedBy" style="color: #5A59EB; margin-left: -14px;"><i
+                                class="fas fa-clinic-medical"></i> Test Provided</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control testEditInput" placeholder="Leave a comment here" id="editTestCategoryDsc" name="editTestCategoryDsc" style="height: 148px"><?php echo $testDsc; ?></textarea>
+                        <label for="editTestCategoryDsc" style="color: #5A59EB; margin-left: -14px;"><i class="fas fa-file-medical"></i> Test Description</label>
+                    </div>
+                    <!-- <div class="mb-3">
                         <label for="editTestCategoryName" class="form-label"> Test Category Name</label>
                         <input type="text" class="form-control testEditInput" name="editTestCategoryName"
                             id="editTestCategoryName" value="<?php echo $testName; ?>">
-                    </div>
-                    <div class="mb-3">
+                    </div> -->
+                    <!-- <div class="mb-3">
                         <label for="edit-test-category-name" class="form-label">Test Category Provided By</label>
                         <input type="text" class="form-control testEditInput" name="edit-test-category-name"
                             id="editTestCategoryProvidedBy" value="<?php echo $testPvdBy; ?>">
-                        <!-- <imput type="text" class="form-control testEditInput" name="edit-test-category-name"
-                            id="editTestCategoryProvidedBy"><?php echo $testPvdBy; ?></input> -->
-                    </div>
-                    <div class="">
+                    </div> -->
+                    <!-- <div class="">
                         <label for="edit-test-category-name" class="form-label">Test Category Description</label>
                         <textarea type="text" rows="3" class="form-control testEditInput mt-2"
                             name="edit-test-category-name" id="editTestCategoryDsc"><?php echo $testDsc; ?></textarea>
-                    </div>
+                    </div> -->
                     <div id="reportUpdate" class="p-3 bg-success text-center text-white fw-2 w-75"
                         style="display:none;">
                     </div>
@@ -139,7 +157,7 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
 
     <!-- Bootstrap Js -->
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
+    <!-- <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script> -->
 
 
     <!-- Core plugin JavaScript-->
