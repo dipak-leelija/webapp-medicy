@@ -47,7 +47,10 @@ if (isset($_GET['key'])) {
     curl_close($curl);
     $response = json_decode($response);
     $response = $response[0];
+    echo '<pre>';
     print_r($response);
+    echo '</pre>';
+
     // exit;
 
     $amount         = $response->order_amount;
