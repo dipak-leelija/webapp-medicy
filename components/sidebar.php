@@ -12,7 +12,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= URL ?>">
             <div class="sidebar-brand-icon">
-                <div class="text-center"><img class="img-fluid" src="<?php echo ASSETS_PATH ?>img/logo.png" alt="">
+                <div class="text-center"><img class="img-fluid" src="<?= IMAGES_PATH ?>logo.png" alt="">
                 </div>
             </div>
         </a>

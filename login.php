@@ -62,12 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
-    <div class="d-flex align-items-center justify-content-center flex-column">
-        <h4 class=""><img style="width: 160px;margin-top:55%;" src="<?php echo ASSETS_PATH ?>img/lab-tests/logo.png" alt=""></h4>
+    <div class="d-flex align-items-center justify-content-center flex-column h-100">
         <form class="p-4 border rounded main" action="login.php" method="post" autocomplete="off">
 
             <div class="d-flex align-items-center justify-content-center mb-3">
-                <h5 class="">Log in to Medicy</h5>
+                <img style="width: 160px;" src="<?= IMAGES_PATH ?>logo.png" alt="">
             </div>
             <?php if (!empty($errorMessage)) : ?>
                 <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
