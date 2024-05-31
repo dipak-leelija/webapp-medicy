@@ -19,6 +19,9 @@ $Utility        = new Utility;
 
 if (isset($_POST['payment-btn'])) {
     $planid         = $_POST['planid'];
+    if (!isset($_SESSION['PURCHASEPLANID'])) {
+        $_SESSION['PURCHASEPLANID'] = $planid;
+    }
     $plan_price     = $_POST['plan-price'];
     $customerName   = $_POST['firstname'] . ' ' . $_POST['lastName'];
     $email          = $_POST['email'];
