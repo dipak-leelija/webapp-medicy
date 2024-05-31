@@ -45,9 +45,9 @@ if (isset($_GET['key'])) {
 
     curl_close($curl);
     $response = json_decode($response);
+    $response = $response[0];
     print_r($response);
     exit;
-    $response = $response[0];
 
     $amount         = $response->order_amount;
     $payment_mode   = $response->payment_group;
