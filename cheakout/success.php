@@ -24,7 +24,7 @@ if (isset($_GET['key'])) {
     $SECRECTKEY     = SECRECTKEY;
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://sandbox.cashfree.com/pg/orders/$ORDERID/payments",
+        CURLOPT_URL => RESPONSEAPI."$ORDERID/payments",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
