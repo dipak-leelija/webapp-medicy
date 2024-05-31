@@ -119,29 +119,65 @@ class Subscription
     }
 
 
+    function checkPaymentStatus($admin_id, $order_id, $match)
+    {
+        // Prepare the SQL query
+        $sql = "SELECT status FROM subscription WHERE admin_id = ? AND order_id = ?";
+
+        // Initialize the statement
+        if ($stmt = $this->conn->prepare($sql)) {
+            // Bind the parameters
+            $stmt->bind_param("ss", $admin_id, $order_id);
+
+            // Execute the statement
+            $stmt->execute();
+
+            // Bind the result variable
+            $stmt->bind_result($db_status);
+
+            // Fetch the result
+            if ($stmt->fetch()) {
+                // Check if the status matches
+                if ($db_status === $match) {
+                    return true;
+                }
+            }
+
+            // Close the statement
+            $stmt->close();
+        }
+
+        return false;
+    }
+
+
 
     function updateSubscription($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
     {
         try {
-            // Start a transaction
-            $this->conn->begin_transaction();
+            if (!$this->checkPaymentStatus($admin_id, $order_id, "SUCCESS")) {
+                // Start a transaction
+                $this->conn->begin_transaction();
 
-            // Update subscription information
-            $subscriptionUpdate = $this->updateSubscriptionDetails($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry);
+                // Update subscription information
+                $subscriptionUpdate = $this->updateSubscriptionDetails($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry);
 
-            if ($subscriptionUpdate) {
-                // Update admin expiry date
-                if ($this->updateAdminExpiry($admin_id, $expiry)) {
-                    // Commit the transaction
-                    $this->conn->commit();
+                if ($subscriptionUpdate) {
+                    // Update admin expiry date
+                    if ($this->updateAdminExpiry($admin_id, $expiry)) {
+                        // Commit the transaction
+                        $this->conn->commit();
 
-                    // Return success response
-                    return json_encode(['status' => 1, 'msg' => "success"]);
+                        // Return success response
+                        return json_encode(['status' => 1, 'msg' => "success"]);
+                    } else {
+                        throw new Exception("Admin update failed.");
+                    }
                 } else {
-                    throw new Exception("Admin update failed.");
+                    throw new Exception("Subscription update failed.");
                 }
-            } else {
-                throw new Exception("Subscription update failed.");
+            }else {
+                return json_encode(['status' => 1, 'msg' => "Already Paid"]);
             }
         } catch (Exception $e) {
             // Rollback the transaction on error
@@ -153,7 +189,7 @@ class Subscription
         }
     }
 
-    
+
     private function updateSubscriptionDetails($admin_id, $order_id, $referenceId, $cf_order_id, $txn_msg, $txn_time, $amount, $payment_mode, $status, $start, $expiry)
     {
         $subscriptionQuery = "UPDATE subscription SET referenceId = ?, cf_order_id = ?, txn_msg = ?, txn_time = ?, amount = ?, payment_mode = ?, status = ?, start = ?, end = ? WHERE admin_id = ? AND order_id = ?";
