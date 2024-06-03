@@ -20,8 +20,6 @@ if ($bills->status) {
     $allBills = array();
 }
 
-
-
 // date format convertion function
 function convertDateFormat($date) {
     $dateTime = DateTime::createFromFormat('Y-m-d', $date);
@@ -33,10 +31,8 @@ function convertDateFormat($date) {
 
 ?>
 
-
 <!-- Page Wrapper -->
 <div id="wrapper">
-
 
     <!-- New Section -->
     <div class="col">
