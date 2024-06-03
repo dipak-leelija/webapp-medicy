@@ -1,9 +1,12 @@
 @import url("main.css");
 
+
+/* login and registration form design  */
 .form-group {
   margin-bottom: 16px;
   position: relative;
 }
+
 .med-input {
   position: relative;
   display: block;
@@ -16,13 +19,13 @@
   height: 45px;
   outline: none !important;
   font-size: 16px;
-  color: rgba(0,0,0,0.85);
+  color: rgba(0, 0, 0, 0.85);
   transition: all .2s ease-in-out;
 }
 
 .med-label {
   position: absolute;
-  top: 16px; 
+  top: 16px;
   left: 12px;
   text-align: left;
   display: inline-block;
@@ -32,31 +35,45 @@
   font-size: 14px;
   font-weight: 400;
   background: #fff;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
   margin: 0px auto;
   cursor: text;
   transition: all .15s ease-in-out;
 }
-.med-input:hover, .med-input:focus { 
-  border: 1px solid var(--blue); 
+
+.med-input:hover,
+.med-input:focus {
+  border: 1px solid var(--blue);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-.med-input:valid + .med-label, .med-input:focus + .med-label { 
+.med-input:valid+.med-label,
+.med-input:focus+.med-label {
   top: -6px;
   color: var(--blue);
 }
+
 .form-asterisk {
-    background-color: inherit;
-    color: #e32b2b;
-    padding: 0;
-    padding-left: 3px;
-   
+  background-color: inherit;
+  color: #e32b2b;
+  padding: 0;
+  padding-left: 3px;
+
 }
+
 .form-asterisk:after {
-    content: "*";
+  content: "*";
 }
+
+.error-msg {
+  margin-top: -20px;
+  position: absolute;
+  color: red;
+  display: none;
+}
+
+/* end login and registration form design  */
 
 
 /* .med-input{

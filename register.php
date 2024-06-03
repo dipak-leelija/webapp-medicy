@@ -101,7 +101,8 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
             }
         }
     }
-} else {
+} 
+else {
     header("Location: https://medicy.in/pricing");
     exit;
 }
@@ -119,12 +120,15 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <title>Medicy Health Care - Admin Registration</title>
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
@@ -145,35 +149,60 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                     <form class="user" action="register.php" method="post">
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
+                                <!-- <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name"> -->
+                                <input type="text" class=" med-input" id="fname" name="fname" maxlength="20" required>
+                                <label class="med-label" style="left:22px" for="fname">First Name <span
+                                        class="form-asterisk"></span></label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
+                                <input type="text" class="med-input" id="lname" name="lname" maxlength="20"
+                                    maxlength="20" required>
+                                <label class="med-label" style="left:22px" for="lname">Last Name <span
+                                        class="form-asterisk"></span></label>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username" onfocusout="verifyUsername(this)">
+                            <input type="text" class="med-input" id="user-name" name="user-name" maxlength="24"
+                                onfocusout="verifyUsername(this)" required>
+                            <label class="med-label" for="user-name">Username <span
+                                    class="form-asterisk"></span></label>
                         </div>
 
                         <div class="form-group">
-                            <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address" onfocusout="verifyEmail()">
+                            <input type="email" class="med-input" id="email" name="email" maxlength="80"
+                                onfocusout="verifyEmail()" required>
+                            <label class="med-label" for="email">Email Address <span
+                                    class="form-asterisk"></span></label>
                         </div>
 
                         <div class="form-group">
-                            <input type="tel" class="form-control form-control-user" id="mobile-number" name="mobile-number" pattern="[0-9]{10}" placeholder="12345 67890" onkeydown="validateMobileNumber()" onfocusout="verifyMobileNumber()" maxlength="10" required>
+                            <input type="tel" class="med-input" id="mobile-number"
+                                name="mobile-number" pattern="[0-9]{10}" placeholder=""
+                                onkeydown="validateMobileNumber()" onfocusout="verifyMobileNumber()" maxlength="10"
+                                required>
+                                <label class="med-label" for="mobile-number">Mobile Number <span class="form-asterisk"></span>
                         </div>
 
                         <div class="form-group row">
-                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password" name="password" minlength="8" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
-                                <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="med-input" id="password"
+                                    name="password" maxlength="12" placeholder="" required
+                                    oninput="showToggleBtn('password','toggleBtn1')">
+                                    <label class="med-label" for="password" style="left:22px">Password <span class="form-asterisk"></span></label>
+                                <i class="fas fa-eye " id="toggleBtn1" style="display:none;"
+                                    onclick="togglePassword('password','toggleBtn1')"></i>
                             </div>
-                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" minlength="8" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
-                                <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="med-input" id="cpassword"
+                                    name="cpassword" maxlength="12" placeholder="" required
+                                    oninput="showToggleBtn('cpassword','toggleBtn2')">
+                                    <label class="med-label" for="cpassword" style="left:22px">Repeat Password <span class="form-asterisk"></span></label>
+                                <i class="fas fa-eye " id="toggleBtn2" style="display:none;"
+                                    onclick="togglePassword('cpassword','toggleBtn2')"></i>
                             </div>
                         </div>
+                        <span id="password-error" class="error-msg">Password must be at least 8 characters long.</span>
+                        <!-- <span id="cpassword-error" class="error-msg">Password must be at least 8 characters long.</span> -->
                         <?php
 
                         if ($emailExists) {
@@ -213,7 +242,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                         }
                         ?>
 
-                        <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Register
+                        <button class="btn btn-primary btn-block" type="submit" name="register">Register
                             Account</button>
                         <!-- <hr> -->
                         <!-- <a href="index.html" class="btn btn-google btn-user btn-block">

@@ -8,6 +8,7 @@ function showToggleBtn(inputId, toggleBtnId) {
     } else {
         toggleBtn.style.display = 'none';
     }
+    checkPasswordLength(inputId);
 }
 
 function togglePassword(inputId, toggleBtnId) {
@@ -20,5 +21,15 @@ function togglePassword(inputId, toggleBtnId) {
     } else {
         passwordInput.type = 'password';
         toggleBtn.className = 'fas fa-eye';
+    }
+}
+
+function checkPasswordLength(passwordId) {
+    const passwordInput = document.getElementById(passwordId);
+    const errorMsg = document.getElementById(passwordId + '-error');
+    if (passwordInput.value.length > 0 && passwordInput.value.length < 8) {
+        errorMsg.style.display = 'inline';
+    } else {
+        errorMsg.style.display = 'none';
     }
 }
