@@ -137,8 +137,8 @@ class LabTestTypes extends UtilityFiles
     {
         try {
 
-            $imgdelete = $this->deleteFile($delTestTypeId, 'id', 'image', 'tests_types', LABTEST_IMG_DIR);
-            if ($imgdelete) {
+            // $imgdelete = $this->deleteFile($delTestTypeId, 'id', 'image', 'tests_types', LABTEST_IMG_DIR);
+            // if ($imgdelete) {
                 $deletelabType = "DELETE FROM `tests_types` WHERE `id` = ?";
 
                 $stmt = $this->conn->prepare($deletelabType);
@@ -162,9 +162,9 @@ class LabTestTypes extends UtilityFiles
                 }
 
                 $stmt->close();
-            } else {
-                return json_encode(['status' => false, 'message' => 'Image Not Deleted!']);
-            }
+            // } else {
+            //     return json_encode(['status' => false, 'message' => 'Image Not Deleted!']);
+            // }
         } catch (Exception $e) {
             error_log($e->getMessage()); // Log the error message
             return false; // Return false in case of error

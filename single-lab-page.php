@@ -33,8 +33,6 @@ if (isset($_GET['labtypeid'])) {
     //Fetching Sub Tests
     $subTests = new SubTests();
     $subTestShow = $subTests->showSubTestsByCatId($showLabtypeId);
-    // echo $subTests.$this->conn->error;
-    // exit;
 }
 ?>
 
@@ -103,20 +101,6 @@ if (isset($_GET['labtypeid'])) {
                                     <p class="m-0 p-0"><?php echo $pvdBy; ?></p>
                                 </div>
                             </div>
-
-                            <!-- <div class="provide_lab">
-                                <div class="medicy_lab"><b>Medicy Health Care</b></div>
-                                <div class="logo"><img src="<?php echo ASSETS_PATH ?>img/Logo.png" alt=""></div>
-                            </div> -->
-
-                            <!-- <div class="provide_lab_para">
-                                <p><?php echo $pvdBy; ?></p>
-                            </div> -->
-
-                            <!-- <div class="need">
-                                <h2>What preparation is needed for this Checkup?</h2>
-                                <p>If any write here</p>
-                            </div> -->
 
                         </div>
 
@@ -199,7 +183,7 @@ if (isset($_GET['labtypeid'])) {
                     echo '</div>';
                 }
                 // Start a new column
-                echo '<div class="col m-2 p-3 py-4 item-column">';
+                echo '<div class="col-12 col-md-4 p-3 py-4 item-column">';
             }
 
             // Increment item counter

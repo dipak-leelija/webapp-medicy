@@ -65,18 +65,27 @@ class SubTests
 
     function showSubTestsByCatId($showLabtypeId)
     {
-        $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `sub_tests`.`parent_test_id` = '$showLabtypeId'";
-        $subTestCatQuery = $this->conn->query($selectTestByCatId);
-        $row = $subTestCatQuery->num_rows;
-        if ($row == 0) {
-            return 0;
-        } else {
-            while ($result = $subTestCatQuery->fetch_array()) {
-                $data[]    = $result;
+        try {
+            $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `parent_test_id` = '$showLabtypeId'";
+
+            $stmt = $this->conn->prepare($selectTestByCatId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = [];
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
             }
-            return $data;
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
         }
-    } // end showSubTestsByCatId function
+    }
 
 
 
@@ -92,11 +101,30 @@ class SubTests
 
 
 
-    // function deleteSubTests($delTestTypeId){
-    //     $deletelabType = "DELETE FROM `tests_types` WHERE `tests_types`.`id` = '$delTestTypeId'";
-    //     $deletelabQuery = $this->conn->query($deletelabType);
-    //     return $deletelabQuery;
-    // }// end deleteLabTypes function
+    function deleteSubTests($delTestTypeId)
+    {
+        try {
+            $deletelabType = "DELETE FROM `tests_types` WHERE `parent_test_id` = '$delTestTypeId'";
+
+            $stmt = $this->conn->prepare($deletelabType);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $result = ['status' => true, 'message' => 'deleted'];
+            } else {
+                $result = ['status' => false, 'message' => 'action fails'];
+            }
+    
+            $stmt->closeCursor();
+    
+            return json_encode($result);
+    
+        } catch (PDOException $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    
 
 
 } //eof SubTests class
