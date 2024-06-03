@@ -51,7 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>bootstrap/bootstrap.css" rel="stylesheet">
@@ -71,18 +73,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img style="width: 160px;" src="<?= IMAGES_PATH ?>logo.png" alt="">
             </div>
             <?php if (!empty($errorMessage)) : ?>
-                <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
+            <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?>
+            </div>
             <?php endif; ?>
 
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control med-input" name="username" id="username" placeholder="Username" value="<?php echo htmlspecialchars($enteredUsername); ?>">
+            <!-- <div class="form-floating mb-3">
+                <input type="text" class=" med-input" name="username" id="username" placeholder="Username" value="<?php echo htmlspecialchars($enteredUsername); ?>">
                 <label class="med-label" for="username">Username</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input type="password" class="form-control med-input" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
+                <input type="password" class=" med-input" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
                 <i class="fas fa-eye " id="toggleBtn" style="display:none;font-size:1.2rem" onclick="togglePassword('password','toggleBtn')"></i>
                 <label class="med-label" for="password">Password</label>
+            </div> -->
+
+            <div class="form-group">
+                <input type="text" class=" med-input" name="username" id="username" value="<?php echo htmlspecialchars($enteredUsername); ?>" required>
+                <label class="med-label" for="username">Username</label>
+            </div>
+
+            <div class="form-group">
+                <input type="password" class=" med-input" name="password" id="password"  autocomplete="off" oninput="showToggleBtn('password','toggleBtn')" placeholder="" required>
+                <label class="med-label" for="password">Password</label>
+                <i class="fas fa-eye " id="toggleBtn" style="display:none;" onclick="togglePassword('password','toggleBtn')"></i>
             </div>
 
             <div class="form-group ">
@@ -97,23 +111,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var errorMessageDiv = document.getElementById('errorMessage');
+    document.addEventListener('DOMContentLoaded', function() {
+        var errorMessageDiv = document.getElementById('errorMessage');
 
-            var usernameInput = document.getElementById('username');
-            var passwordInput = document.getElementById('password');
-            if (errorMessageDiv) {
-                usernameInput.addEventListener('input', function() {
-                    errorMessageDiv.innerHTML = '';
-                    errorMessageDiv.remove();
-                });
+        var usernameInput = document.getElementById('username');
+        var passwordInput = document.getElementById('password');
+        if (errorMessageDiv) {
+            usernameInput.addEventListener('input', function() {
+                errorMessageDiv.innerHTML = '';
+                errorMessageDiv.remove();
+            });
 
-                passwordInput.addEventListener('input', function() {
-                    errorMessageDiv.innerHTML = '';
-                    errorMessageDiv.remove();
-                });
-            }
-        });
+            passwordInput.addEventListener('input', function() {
+                errorMessageDiv.innerHTML = '';
+                errorMessageDiv.remove();
+            });
+        }
+    });
     </script>
 
     <!-- Custom scripts for all pages-->
