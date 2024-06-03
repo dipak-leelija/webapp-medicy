@@ -183,7 +183,7 @@ if (isset($_GET['labtypeid'])) {
                     echo '</div>';
                 }
                 // Start a new column
-                echo '<div class="col m-2 p-3 py-4 item-column">';
+                echo '<div class="col-12 col-md-4 p-3 py-4 item-column">';
             }
 
             // Increment item counter

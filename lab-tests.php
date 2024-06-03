@@ -108,10 +108,10 @@ if ($showLabTypes->status) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="row" style="z-index: 999;">
-                        <div class="col-12">
+                <div class="col-12">
                             <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
                         </div>
+                    <div class="row flex-wrap-reverse" style="z-index: 999;">
 
                         <div class="col-12 col-md-8">
                             <div class="card shadow mb-4">
