@@ -79,9 +79,7 @@ if ($showLabTypes->status) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -125,20 +123,14 @@ if ($showLabTypes->status) {
                                         <label class="d-none" for="" id="base-url-holder"></label>
                                         <label class="d-none" for="" id="srch-btn-controler">0</label>
                                         <div class="col-md-8 input-group d-flex justify-content-end">
-                                            <input class="cvx-inp w-75" type="text" placeholder="Search test..."
-                                                name="search-test" id="search-test" style="outline: none;"
-                                                value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
+                                            <input class="cvx-inp w-75" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append" id="dataSearch-btnDiv">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
-                                                    id="dataSearch-btn" onclick="testDataSearch(this)"><i
-                                                        class="fas fa-search"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>
                                             </div>
 
                                             <div class="input-group-append" id="reset-searchBtn-div">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
-                                                    id="reset-search" onclick="testDataSearch(this)"><i
-                                                        class="fas fa-times"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="reset-search" onclick="testDataSearch(this)"><i class="fas fa-times"></i></button>
                                             </div>
 
                                         </div>
@@ -185,35 +177,29 @@ if ($showLabTypes->status) {
 
                                                 ?>
 
-                                                <tr>
-                                                    <td class='testImg'>
-                                                        <img src="<?php echo $testImg; ?>" alt="">
-                                                    </td>
-                                                    <td><?php echo $testName; ?></td>
-                                                    <td><?php echo $testPvdBy; ?></td>
-                                                    <td></td>
-                                                    <td class='text-center'>
-                                                        <!-- <span class='badge badge-secondary'> -->
-                                                        <a class='text-light'
-                                                            href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
-                                                            <i class="fas fa-eye" style="color: #4e73df;"></i>
-                                                        </a>
-                                                        <!-- </span> -->
+                                                        <tr>
+                                                            <td class='testImg'>
+                                                                <img src="<?php echo $testImg; ?>" alt="">
+                                                            </td>
+                                                            <td><?php echo $testName; ?></td>
+                                                            <td><?php echo $testPvdBy; ?></td>
+                                                            <td></td>
+                                                            <td class='text-center'>
+                                                                <!-- <span class='badge badge-secondary'> -->
+                                                                <a class='text-light' href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
+                                                                    <i class="fas fa-eye" style="color: #4e73df;"></i>
+                                                                </a>
+                                                                <!-- </span> -->
 
-                                                        <!-- <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)"> -->
-                                                        <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal'
-                                                            data-bs-target="#testEditModal"
-                                                            onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)"
-                                                            style="color: #4e73df;"></i>
-                                                        <!-- </span> -->
+                                                                <!-- <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)"> -->
+                                                                <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)" style="color: #4e73df;"></i>
+                                                                <!-- </span> -->
 
-                                                        <!-- <span class='badge badge-danger'> -->
-                                                        <a class='text-light' href="<?php echo $delTestTypeId ?>"
-                                                            onclick="deleteConfirmation()"><i class="far fa-trash-alt"
-                                                                style="color: #ff0000;"></i></a>
-                                                        <!-- </span> -->
-                                                    </td>
-                                                </tr>
+                                                                <!-- <span class='badge badge-danger'> -->
+                                                                <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a>
+                                                                <!-- </span> -->
+                                                            </td>
+                                                        </tr>
                                                 <?php
                                                     }
                                                 }
@@ -222,14 +208,14 @@ if ($showLabTypes->status) {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php 
-                                        if($labTestTotalItem > 16){
-                                            ?>
-                                    <div class="d-flex justify-content-center" id="pagination-control">
-                                        <?= $paginationHTML ?>
-                                    </div>
                                     <?php
-                                        }
+                                    if ($labTestTotalItem > 16) {
+                                    ?>
+                                        <div class="d-flex justify-content-center" id="pagination-control">
+                                            <?= $paginationHTML ?>
+                                        </div>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>
@@ -247,16 +233,11 @@ if ($showLabTypes->status) {
                                 </div>
                                 <div class="card-body">
 
-                                    <button type="button" id="add-testType"
-                                        class="btn btn-light w-100 border rounded text-center py-2 mb-3"
-                                        data-toggle="modal" data-target="#addTestDataModel"
-                                        onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Test Types
                                     </button>
 
-                                    <button type="button" id="add-subTest"
-                                        class="btn btn-light w-100 border rounded text-center py-2" data-toggle="modal"
-                                        data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
+                                    <button type="button" id="add-subTest" class="btn btn-light w-100 border rounded text-center py-2" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
                                         Add Sub Test
                                     </button>
                                 </div>
@@ -278,14 +259,12 @@ if ($showLabTypes->status) {
 
 
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
         <div class="modal-dialog" id="modal-sizeId">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails"></h5>
-                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" onClick="refreshPage()" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>
                 </div>
@@ -307,8 +286,7 @@ if ($showLabTypes->status) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close btn-lg p-0" data-bs-dismiss="modal" aria-label="Close"
-                        onClick="refreshPage()"><i class="far fa-times-circle" style="color: #f80d0d;"></i></button>
+                    <button type="button" class="btn btn-close btn-lg p-0" data-bs-dismiss="modal" aria-label="Close" onClick="refreshPage()"><i class="far fa-times-circle" style="color: #f80d0d;"></i></button>
                 </div>
                 <div class="modal-body">
 
@@ -345,39 +323,64 @@ if ($showLabTypes->status) {
 
     <!-- inline script -->
     <script>
-    const baseUrl = window.location.origin + window.location.pathname;
-    document.getElementById('base-url-holder').innerHTML = baseUrl;
+        const baseUrl = window.location.origin + window.location.pathname;
+        document.getElementById('base-url-holder').innerHTML = baseUrl;
 
-    function testDataSearch(t) {
-        console.log(t.id);
-        let searchParameter = '';
-        let currentUrl = window.location.origin + window.location.pathname
+        function testDataSearch(t) {
+            console.log(t.id);
+            let searchParameter = '';
+            let currentUrl = window.location.origin + window.location.pathname
 
-        if (t.id == 'dataSearch-btn') {
-            let searchData = document.getElementById('search-test');
-            if (searchData.value.length > 2) {
+            if (t.id == 'dataSearch-btn') {
+                let searchData = document.getElementById('search-test');
+                if (searchData.value.length > 2) {
 
-                searchParameter += `&search=${searchData.value}`
+                    searchParameter += `&search=${searchData.value}`
 
-                let searchUrl = `${currentUrl}?${searchParameter}`;
+                    let searchUrl = `${currentUrl}?${searchParameter}`;
 
-                window.location.replace(searchUrl);
-            } else {
-                alert('Enter minimum 3 charechter');
+                    window.location.replace(searchUrl);
+                } else {
+                    alert('Enter minimum 3 charechter');
+                }
+
+                document.getElementById('srch-btn-controler').innerHTML = '1';
             }
 
-            document.getElementById('srch-btn-controler').innerHTML = '1';
+            if (t.id == 'reset-search') {
+                window.location.replace(baseUrl);
+
+                document.getElementById('dataSearch-btnDiv').classList.remove('d-none');
+                document.getElementById('reset-searchBtn-div').classList.add('d-none');
+
+                document.getElementById('srch-btn-controler').innerHTML == '0'
+            }
         }
 
-        if (t.id == 'reset-search') {
-            window.location.replace(baseUrl);
 
-            document.getElementById('dataSearch-btnDiv').classList.remove('d-none');
-            document.getElementById('reset-searchBtn-div').classList.add('d-none');
+        // ================================================
 
-            document.getElementById('srch-btn-controler').innerHTML == '0'
+        function deleteTestType(t) {
+            let testId = t.id;
+            $.ajax({
+                url: "ajax/testType-delete.php",
+                type: "POST",
+                data: {
+                    delId: testId
+                },
+                success: function(data) {
+                    if(data){
+                        console.log(data);
+                    }else{
+                        console.log('error');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error: " + textStatus, errorThrown);
+                }
+            });
+
         }
-    }
     </script>
 
 
