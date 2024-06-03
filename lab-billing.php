@@ -384,10 +384,7 @@ if(isset($_POST['bill-proceed'])){
 
 
                 </script>
-                <!-- Footer -->
-                <?php include ROOT_COMPONENT.'footer-text.php'; ?>
-                <!-- End of Footer -->
-
+                
                 <!-- Bootstrap core JavaScript-->
                 <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
                 <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>

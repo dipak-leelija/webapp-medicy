@@ -411,9 +411,7 @@ if ($labBillDisplay->status) {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
+            
 
         </div>
         <!-- End of Content Wrapper -->
