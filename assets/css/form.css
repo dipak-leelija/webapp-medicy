@@ -72,7 +72,6 @@
   color: red;
   display: none;
 }
-
 /* end login and registration form design  */
 
 
@@ -111,7 +110,7 @@
 /* label {
   display: inline-block;
   margin-bottom: 0.5rem;
-}
+} */
 
 .col-form-label {
   padding-top: calc(0.375rem + 1px);
@@ -226,7 +225,7 @@ select.form-control:focus::-ms-value {
   width: 100%;
 }
 
-.form-control[type="file"] {
+/* .form-control[type="file"] {
   == position: absolute; ==
   top: 0;
   right: 0;
@@ -236,7 +235,7 @@ select.form-control:focus::-ms-value {
   height: 100%;
   opacity: 1;
   cursor: pointer;
-}
+} */
 
 .form-control-plaintext {
   display: block;
@@ -1394,4 +1393,4 @@ form.user {
   font-size: 0.8rem;
   border-radius: 10rem;
   padding: 0.75rem 1rem;
-} */
+}
