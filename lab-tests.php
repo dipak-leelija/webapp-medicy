@@ -361,6 +361,7 @@ if ($showLabTypes->status) {
         // ================================================
 
         function deleteTestType(t) {
+            // console.log(t);
             let testId = t.id;
             $.ajax({
                 url: "ajax/testType-delete.php",
@@ -370,7 +371,7 @@ if ($showLabTypes->status) {
                 },
                 success: function(data) {
                     if(data){
-                        console.log(data);
+                        $(t).closest('tr').fadeOut();
                     }else{
                         console.log('error');
                     }
