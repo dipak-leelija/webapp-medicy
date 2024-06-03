@@ -13,13 +13,14 @@ $Utility        = new Utility;
 $currentUrl = $Utility->currentUrl();
 // Healthcare Addesss and details
 
-
 $bills = json_decode($Subscription->getSubscription($adminId));
 if ($bills->status) {
     $allBills = $bills->data;
 } else {
     $allBills = array();
 }
+
+// print_r($allBills);
 
 
 ?>
@@ -53,7 +54,7 @@ if ($bills->status) {
                                                 <th scope='row'>$eachBill->plan</th>
                                                 <td>$eachBill->start</td>
                                                 <td>$eachBill->end</td>
-                                                <td>$eachBill->paid</td>
+                                                <td>$eachBill->amount</td>
                                                 <td>$eachBill->status</td>
                                             </tr>
                                             ";
