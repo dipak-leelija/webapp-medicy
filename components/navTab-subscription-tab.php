@@ -20,8 +20,16 @@ if ($bills->status) {
     $allBills = array();
 }
 
-// print_r($allBills);
 
+
+// date format convertion function
+function convertDateFormat($date) {
+    $dateTime = DateTime::createFromFormat('Y-m-d', $date);
+    if ($dateTime === false) {
+        return false;
+    }
+    return $dateTime->format('d-m-Y');
+}
 
 ?>
 
@@ -40,8 +48,8 @@ if ($bills->status) {
                             <thead>
                                 <tr>
                                     <th scope="col">Plan</th>
-                                    <th scope="col">Start</th>
-                                    <th scope="col">Upto</th>
+                                    <th scope="col">Started From</th>
+                                    <th scope="col">Ended On</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
                                 </tr>
@@ -49,11 +57,16 @@ if ($bills->status) {
                             <tbody>
                                 <?php
                                 foreach ($allBills as $eachBill) {
+
+                                    // date type convertion
+                                    $convertedStartDate = convertDateFormat($eachBill->start);
+                                    $convertedEndDate = convertDateFormat($eachBill->end);
+                                    
                                     echo "
                                             <tr>
                                                 <th scope='row'>$eachBill->plan</th>
-                                                <td>$eachBill->start</td>
-                                                <td>$eachBill->end</td>
+                                                <td>$convertedStartDate</td>
+                                                <td>$convertedEndDate</td>
                                                 <td>$eachBill->amount</td>
                                                 <td>$eachBill->status</td>
                                             </tr>
