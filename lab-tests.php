@@ -147,7 +147,7 @@ if ($showLabTypes->status) {
                                                     <th></th>
                                                     <th>Test Name</th>
                                                     <th>Provided By</th>
-                                                    <th>No of Tests</th>
+                                                    <th>Sub Tests</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -173,8 +173,14 @@ if ($showLabTypes->status) {
                                                             $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
                                                         }
 
-                                                        $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
-
+                                                        // echo 
+                                                        // subtest count
+                                                        $subTestData = json_decode($subTests->showSubTestsByCatId($testTypeId));
+                                                        if($subTestData->status){
+                                                            $subTestCount = count($subTestData->data);
+                                                        }else{
+                                                            $subTestCount = 0;
+                                                        }
                                                 ?>
 
                                                         <tr>
@@ -183,7 +189,7 @@ if ($showLabTypes->status) {
                                                             </td>
                                                             <td><?php echo $testName; ?></td>
                                                             <td><?php echo $testPvdBy; ?></td>
-                                                            <td></td>
+                                                            <td><?php echo $subTestCount; ?></td>
                                                             <td class='text-center'>
                                                                 <!-- <span class='badge badge-secondary'> -->
                                                                 <a class='text-light' href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
