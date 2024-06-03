@@ -24,88 +24,88 @@ $diffrentPassword = false;
 // $adminId  = $IdGenerate->generateAdminId();
 // echo $adminId;
 
-// if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
+if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
-//     if (isset($_POST['pid'])) {
-//         $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
-//     }
+    if (isset($_POST['pid'])) {
+        $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
+    }
 
-//     if (isset($_POST['register'])) {
-//         $Fname      = $_POST['fname'];
-//         $Lname      = $_POST['lname'];
-//         $username   = $_POST['user-name'];
-//         $email      = $_POST['email'];
-//         $mobNo      = $_POST['mobile-number'];
-//         $password   = $_POST['password'];
-//         $cpassword  = $_POST['cpassword'];
+    if (isset($_POST['register'])) {
+        $Fname      = $_POST['fname'];
+        $Lname      = $_POST['lname'];
+        $username   = $_POST['user-name'];
+        $email      = $_POST['email'];
+        $mobNo      = $_POST['mobile-number'];
+        $password   = $_POST['password'];
+        $cpassword  = $_POST['cpassword'];
 
-//         // echo $Fname;
+        // echo $Fname;
 
-//         $adminId  = $IdGenerate->generateAdminId();
+        $adminId  = $IdGenerate->generateAdminId();
 
-//         $clinicId = $IdGenerate->generateClinicId($adminId);
+        $clinicId = $IdGenerate->generateClinicId($adminId);
 
-//         $status = '0';
-//         $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
+        $status = '0';
+        $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
 
-//         // ======== OTP GENERATOR =========
-//         $OTP  = $IdGenerate->otpGgenerator();
-//         //----------------------------------
+        // ======== OTP GENERATOR =========
+        $OTP  = $IdGenerate->otpGgenerator();
+        //----------------------------------
 
-//         $checkUser = $admin->echeckUsername($username);
-//         // print_r($checkUser->data);
+        $checkUser = $admin->echeckUsername($username);
+        // print_r($checkUser->data);
 
-//         if ($checkUser) {
-//             $userExists = true;
-//         } else {
-//             $userExists = false;
-//             $checkMail = $admin->echeckEmail($email);
-//             if ($checkMail > 0) {
-//                 $emailExists = true;
-//             } else {
-//                 $emailExists = false;
-//                 if ($password == $cpassword) {
-//                     $diffrentPassword = false;
+        if ($checkUser) {
+            $userExists = true;
+        } else {
+            $userExists = false;
+            $checkMail = $admin->echeckEmail($email);
+            if ($checkMail > 0) {
+                $emailExists = true;
+            } else {
+                $emailExists = false;
+                if ($password == $cpassword) {
+                    $diffrentPassword = false;
 
-//                     $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
+                    $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-//                     if ($register) {
+                    if ($register) {
 
-//                         session_unset();
-//                         session_destroy();
-//                         session_start();
+                        session_unset();
+                        session_destroy();
+                        session_start();
 
-//                         $_SESSION['REGISTRATION']       = true;
-//                         $_SESSION['ADMIN_REGISER']      = true;
-//                         $_SESSION['PRIMARY_REGISTER']   = true;
-//                         $_SESSION['SECONDARY_REGISTER'] = false;
-//                         $_SESSION['session_start_time']  = date('H:i:s');
-//                         $_SESSION['time_out']           = $timeout_duration;
-//                         $_SESSION['verify_key']         = $OTP;
-//                         $_SESSION['first-name']         = $Fname;
-//                         $_SESSION['email']              = $email;
-//                         $_SESSION['username']           = $username;
-//                         $_SESSION['adm_id']             = $adminId;
+                        $_SESSION['REGISTRATION']       = true;
+                        $_SESSION['ADMIN_REGISER']      = true;
+                        $_SESSION['PRIMARY_REGISTER']   = true;
+                        $_SESSION['SECONDARY_REGISTER'] = false;
+                        $_SESSION['session_start_time']  = date('H:i:s');
+                        $_SESSION['time_out']           = $timeout_duration;
+                        $_SESSION['verify_key']         = $OTP;
+                        $_SESSION['first-name']         = $Fname;
+                        $_SESSION['email']              = $email;
+                        $_SESSION['username']           = $username;
+                        $_SESSION['adm_id']             = $adminId;
 
-//                         $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-//                         if ($addToClinicInfo) {
-//                             header("Location: register-mail.inc.php");
-//                             exit;
-//                         } else {
-//                             $errMsg = "Clinic Info Can't Added!";
-//                         }
-//                     }
-//                 } else {
-//                     $diffrentPassword = true;
-//                 }
-//             }
-//         }
-//     }
-// } 
-// else {
-    // header("Location: https://medicy.in/pricing");
-    // exit;
-// }
+                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
+                        if ($addToClinicInfo) {
+                            header("Location: register-mail.inc.php");
+                            exit;
+                        } else {
+                            $errMsg = "Clinic Info Can't Added!";
+                        }
+                    }
+                } else {
+                    $diffrentPassword = true;
+                }
+            }
+        }
+    }
+} 
+else {
+    header("Location: https://medicy.in/pricing");
+    exit;
+}
 
 ?>
 
