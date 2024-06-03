@@ -76,9 +76,7 @@ if (isset($_POST['new-lab-test-data']) == true) {
     <link href="<?= PLUGIN_PATH ?>font-asesome-5/font-awesome-5.15.4-all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= ASSETS_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -92,37 +90,13 @@ if (isset($_POST['new-lab-test-data']) == true) {
 </head>
 
 <body>
-    <?php
-
-    if ($swalControl == 1) {
-    ?>
-    <script>
-    alert('Data insert successfully');
-    // console.log(<?php echo $swalControl; ?>);
-    Swal.fire("Success", "Data Addition successfull!", "success");
-    </script>
-    <?php
-    }
-
-    if ($swalControl == 0) {
-    ?>
-    <script>
-    alert('Data insertion fail!');
-    Swal.fire("Failed", "Data Addition Failed!", "error");
-    </script>
-    <?php
-
-    }
-
-    ?>
 
     <!-- Page Wrapper -->
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
                 <div class="bg-light pt-4 pb-0">
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"
-                        enctype="multipart/form-data">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-5 justify-content-between text-left">
                                 <div class="form-group">
@@ -130,12 +104,10 @@ if (isset($_POST['new-lab-test-data']) == true) {
                                         Only jpg/jpeg and png files are allowed!
                                     </div>
                                     <div class="border border-dark w-100" style="height: 247px">
-                                        <img class="p-1 rounded img-uv-view" id="img-preview" src="<?php echo LABTEST_IMG_PATH . 'default-lab-test/labtest.svg' ?>" alt=""
-                                            style="width:100%;height: 246px">
+                                        <img class="p-1 rounded img-uv-view" id="img-preview" src="<?php echo LABTEST_IMG_PATH . 'default-lab-test/labtest.svg' ?>" alt="" style="width:100%;height: 246px">
                                     </div>
                                     <div class="mt-3 d-flex justify-content-center">
-                                        <input type="file" style="display:none;" id="img-uv-input"
-                                            accept=".jpg,.jpeg,.png" name="labTest-img" onchange="validateFileType()">
+                                        <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="labTest-img" onchange="validateFileType()">
                                         <label for="img-uv-input" class="btn btn-primary">Change Image</label>
                                     </div>
                                 </div>
@@ -143,53 +115,38 @@ if (isset($_POST['new-lab-test-data']) == true) {
 
                             <div class="col-7 justify-content-between text-left">
                                 <div class="form-floating">
-                                    <input class="form-control newbillInput" type="text" id="test-name" name="test-name"
-                                        placeholder="" value="" required autocomplete="off">
-                                    <label class="form-control-label h7 font-weight-bold" for="test-name"
-                                        style="color: #5A59EB; margin-left: -14px;">
+                                    <input class="form-control newbillInput" type="text" id="test-name" name="test-name" placeholder="" value="" required autocomplete="off">
+                                    <label class="form-control-label h7 font-weight-bold" for="test-name" style="color: #5A59EB; margin-left: -14px;">
                                         <i class="fas fa-vial"></i> Test Name<span class="text-danger"> *</span>
                                     </label>
                                 </div>
 
                                 <div class="form-floating mt-3">
-                                    <input class="form-control newbillInput" type="text" id="provided-by"
-                                        name="provided-by" placeholder="" required autocomplete="off">
-                                    <label class="form-control-label h7 font-weight-bold" for="provided-by"
-                                        style="color: #5A59EB;  margin-left: -14px;">
+                                    <input class="form-control newbillInput" type="text" id="provided-by" name="provided-by" placeholder="" required autocomplete="off">
+                                    <label class="form-control-label h7 font-weight-bold" for="provided-by" style="color: #5A59EB;  margin-left: -14px;">
                                         <i class="fas fa-clinic-medical"></i> Provided By<span class="text-danger">
                                             *</span>
                                     </label>
                                 </div>
 
                                 <div class="form-group mt-4">
-                                    <label class="form-control-label h7 font-weight-bold" for="test-dsc"
-                                        style="color: #5A59EB; margin-right: 8px;">
+                                    <label class="form-control-label h7 font-weight-bold" for="test-dsc" style="color: #5A59EB; margin-right: 8px;">
                                         <i class="fas fa-file-medical"></i> Description<span class="text-danger">
                                             *</span>
                                     </label>
 
-                                    <textarea class="form-control newbillInput" name="test-dsc" id="test-dsc" cols="30"
-                                        rows="2" required autocomplete="off"></textarea>
+                                    <textarea class="form-control newbillInput" name="test-dsc" id="test-dsc" cols="30" rows="2" required autocomplete="off"></textarea>
                                 </div>
 
                                 <div class="row justify-content-center mt-2">
                                     <div class="form-group col-sm-4">
-                                        <button class="btn btn-success me-md-2" type="submit"
-                                            name="new-lab-test-data">Submit</button>
+                                        <button class="btn btn-success me-md-2" type="submit" name="new-lab-test-data">Submit</button>
                                     </div>
                                 </div>
 
                             </div>
 
                         </div>
-
-                        <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
-
-                        <!-- <div class="row justify-content-center mt-2">
-                            <div class="form-group col-sm-4">
-                                <button class="btn btn-success me-md-2" type="submit" name="new-lab-test-data">Submit</button>
-                            </div>
-                        </div> -->
                     </form>
                 </div>
             </div>
@@ -209,21 +166,46 @@ if (isset($_POST['new-lab-test-data']) == true) {
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
+
+    <?php
+
+    if ($swalControl == 1) {
+    ?>
+        <script>
+            // alert('Data insert successfully');
+            // console.log(<?php echo $swalControl; ?>);
+            Swal.fire("Success", "Data Addition successfull!", "success");
+        </script>
+    <?php
+    }
+
+    if ($swalControl == 0) {
+    ?>
+        <script>
+            // alert('Data insertion fail!');
+            Swal.fire("Failed", "Data Addition Failed!", "error");
+        </script>
+    <?php
+
+    }
+
+    ?>
+
     <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
     <script>
-    function validateFileType() {
-        var fileName = document.getElementById("img-uv-input").value;
-        console.log(fileName);
-        var idxDot = fileName.lastIndexOf(".") + 1;
-        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
-            document.getElementById("err-show").classList.add("d-none");
-        } else {
-            document.getElementById("err-show").classList.remove("d-none");
-            // Show current image when error occurs
-            document.querySelector('.img-uv-view').src = "";
+        function validateFileType() {
+            var fileName = document.getElementById("img-uv-input").value;
+            console.log(fileName);
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                document.getElementById("err-show").classList.add("d-none");
+            } else {
+                document.getElementById("err-show").classList.remove("d-none");
+                // Show current image when error occurs
+                document.querySelector('.img-uv-view').src = "";
+            }
         }
-    }
     </script>
 </body>
 

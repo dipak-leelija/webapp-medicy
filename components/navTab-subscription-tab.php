@@ -20,14 +20,6 @@ if ($bills->status) {
     $allBills = array();
 }
 
-// date format convertion function
-function convertDateFormat($date) {
-    $dateTime = DateTime::createFromFormat('Y-m-d', $date);
-    if ($dateTime === false) {
-        return false;
-    }
-    return $dateTime->format('d-m-Y');
-}
 
 ?>
 
@@ -55,8 +47,8 @@ function convertDateFormat($date) {
                                 foreach ($allBills as $eachBill) {
 
                                     // date type convertion
-                                    $convertedStartDate = convertDateFormat($eachBill->start);
-                                    $convertedEndDate = convertDateFormat($eachBill->end);
+                                    $convertedStartDate = $Utility->convertDateFormat($eachBill->start);
+                                    $convertedEndDate = $Utility->convertDateFormat($eachBill->end);
                                     
                                     echo "
                                             <tr>
