@@ -171,6 +171,10 @@ if (isset($_POST['bill-generate'])) {
             $testPrice              = array_shift($priceOfTestBck);
 
             $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
+
+            print_r(json_decode($addBillDetails));
+            
+            echo "<script>alert('Data check alert!');</script>";
         }
         /* ========================= Bill Details Insertion End ========================= */
 
