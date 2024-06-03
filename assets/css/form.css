@@ -1,5 +1,64 @@
 @import url("main.css");
 
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+.med-input {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.233);
+  border-radius: 4px;
+  background-color: transparent;
+  margin: 0px auto;
+  padding: 6px 4px 4px 14px;
+  height: 45px;
+  outline: none !important;
+  font-size: 16px;
+  color: rgba(0,0,0,0.85);
+  transition: all .2s ease-in-out;
+}
+
+.med-label {
+  position: absolute;
+  top: 16px; 
+  left: 12px;
+  text-align: left;
+  display: inline-block;
+  padding: 0 4px;
+  height: 14px;
+  line-height: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  background: #fff;
+  color: rgba(0,0,0,0.5);
+  margin: 0px auto;
+  cursor: text;
+  transition: all .15s ease-in-out;
+}
+.med-input:hover, .med-input:focus { 
+  border: 1px solid var(--blue); 
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.med-input:valid + .med-label, .med-input:focus + .med-label { 
+  top: -6px;
+  color: var(--blue);
+}
+.form-asterisk {
+    background-color: inherit;
+    color: #e32b2b;
+    padding: 0;
+    padding-left: 3px;
+   
+}
+.form-asterisk:after {
+    content: "*";
+}
+
+
 /* .med-input{
   outline: none;
   border: none;
