@@ -2,8 +2,10 @@ body {
     background-color: #f0f2f5;
 }
 
-.main {
-    /* margin-top: 100px; */
+.login-wrapper{
+    min-height: 100vh;
+}
+form {
     width: 30%;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     background-color: #fff;
@@ -18,25 +20,25 @@ body {
 }
 
 @media (min-width: 260px) and (max-width: 767.98px) {
-    .main {
+    form {
         width: 78%;
     }
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
-    .main {
+    form {
         width: 45%;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-    .main {
+    form {
         width: 35%;
     }
 }
 
 @media (min-width: 1200px) {
-    .main {
+    form {
         width: 30%;
     }
 }
