@@ -1,4 +1,38 @@
-label {
+@import url("main.css");
+
+/* .med-input{
+  outline: none;
+  border: none;
+  background: transparent;
+  border-bottom: 0.1rem solid #d3d2d2;
+  border-radius: 0px !important;
+}
+.med-input:focus,
+.med-input:active{
+  border-color: #5A59EB;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+} */
+
+/* .med-label{
+  font-weight: 600;
+  color: var(--dark);
+} */
+/* .form-floating .med-label{
+  left: -12px;
+  padding: 0.5rem 0.75rem;
+} */
+
+/* 
+.form-floating > .form-control:-webkit-autofill ~ .med-label {
+  opacity: 0.8;
+  transform: scale(0.85) translateY(-1rem) translateX(0.15rem);
+}
+
+.form-floating > .med-input {
+  height: calc(3.5rem + -10px);
+} */
+/* label {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
@@ -117,7 +151,7 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control[type="file"] {
-  /* position: absolute; */
+  == position: absolute; ==
   top: 0;
   right: 0;
   bottom: 0;
@@ -1284,4 +1318,4 @@ form.user {
   font-size: 0.8rem;
   border-radius: 10rem;
   padding: 0.75rem 1rem;
-}
+} */

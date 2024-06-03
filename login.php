@@ -54,16 +54,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>bootstrap/bootstrap.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
+
     <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <title>Login</title>
 </head>
 
 <body>
 
-    <div class="d-flex align-items-center justify-content-center flex-column h-100">
-        <form class="p-4 border rounded main" action="login.php" method="post" autocomplete="off">
+    <div class="login-wrapper d-flex align-items-center justify-content-center flex-column">
+        <form class="p-4 border rounded" action="login.php" method="post" autocomplete="off">
 
             <div class="d-flex align-items-center justify-content-center mb-3">
                 <img style="width: 160px;" src="<?= IMAGES_PATH ?>logo.png" alt="">
@@ -71,21 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php if (!empty($errorMessage)) : ?>
                 <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
             <?php endif; ?>
-            <div class="form-group ">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autocomplete="off" value="<?php echo htmlspecialchars($enteredUsername); ?>">
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control med-input" name="username" id="username" placeholder="Username" value="<?php echo htmlspecialchars($enteredUsername); ?>">
+                <label class="med-label" for="username">Username</label>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control med-input" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
                 <i class="fas fa-eye " id="toggleBtn" style="display:none;font-size:1.2rem" onclick="togglePassword('password','toggleBtn')"></i>
+                <label class="med-label" for="password">Password</label>
             </div>
+
             <div class="form-group ">
                 <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
             </div>
-            <div class=" d-flex justify-content-around mt-1">
+            <div class="d-flex justify-content-around mt-1">
                 <a href="register.php">Register</a>
-                <!-- <a href="reset-password.php">Forget password</a> -->
                 <a href="forgetPassword.php">Forget password</a>
             </div>
         </form>
@@ -112,15 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
 </body>
