@@ -29,3 +29,4 @@ const addTestAndSubTest = (t) => {
 const updateModalContent = (modalContent, url, height) => {
     modalContent.innerHTML = `<iframe width="99%" height="${height}" frameborder="0" allowtransparency="true" src="${url}"></iframe>`;
 }
+

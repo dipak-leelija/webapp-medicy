@@ -372,6 +372,7 @@ if ($showLabTypes->status) {
                     delId: testId
                 },
                 success: function(data) {
+                    // console.log(data);
                     if (data) {
                         $(t).closest('tr').fadeOut();
                     } else {
