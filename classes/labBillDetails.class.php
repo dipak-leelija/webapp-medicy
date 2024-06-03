@@ -16,7 +16,7 @@ class LabBillDetails{
             $stmt->bind_param("issssss", $billId, $billingDate, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
             
             if ($stmt->execute()) {
-                $stmt->close();
+    
                 return json_encode(['status'=>true, 'insertId'=>$stmt->insert_id]);
             }else{
                 throw new Exception("Execution failed: " . $stmt->error);

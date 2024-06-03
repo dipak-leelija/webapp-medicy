@@ -174,7 +174,7 @@ if (isset($_POST['bill-generate'])) {
 
             print_r(json_decode($addBillDetails));
             
-            echo "<script>alert('Data check alert!');</script>";
+            // echo "<script>alert('Data check alert!');</script>";
         }
         /* ========================= Bill Details Insertion End ========================= */
 
