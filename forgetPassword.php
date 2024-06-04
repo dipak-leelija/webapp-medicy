@@ -144,24 +144,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <title>Forget Password</title>
 </head>
 
-<body>
+<body class="bg-gradient-primary">
 
     <div class="d-flex align-items-center justify-content-center flex-column">
-        <h4 class=""><img style="width: 160px;margin-top:55%;" src="<?php echo ASSETS_PATH ?>img/lab-tests/logo.png" alt=""></h4>
+        <h4 class=""><img style="width: 160px;margin-top:55%;" src="<?php echo ASSETS_PATH ?>img/lab-tests/logo.png"
+                alt=""></h4>
 
-        <div class="col-12 p-4 border rounded main">
+        <div class="col-12 p-4 main">
 
             <div class="d-flex align-items-center justify-content-center mb-3">
-                <h5 class="">Recover Password</h5>
+                <h5 class="text-white">Recover Password</h5>
             </div>
 
             <!-- <div class="d-flex justify-content-around">
@@ -176,7 +180,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <?php if (!empty($errorMessage)) : ?>
-                <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
+            <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?>
+            </div>
             <?php endif; ?>
 
 
@@ -191,31 +196,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-            <div class="recoverPassword">
+            <div class="recoverPassword d-flex justify-content-center">
 
-                <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
+                <form class="p-4 rounded" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
                     <div class="form-group">
-                        <label for="username">Username / Email:</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter Your Username / Email" autocomplete="off">
+                        <input type="text" class=" med-input" id="username" name="username" placeholder=" "
+                            autocomplete="off" required>
+                        <label class="med-label" for="username">Username / Email</label>
                     </div>
-
                     <div class="form-group">
                         <button class="btn btn-primary btn-s w-100" type="submit" name="recover-password">Go</button>
                     </div>
+
+                    <div class="d-flex justify-content-center col-12">
+                        <div class="col-md-6 text-center">
+                            <a class="small" href="register.php"><b>Sign Up</b></a>
+                        </div>
+                        <div class=" col-md-6 text-center">
+                            <a class="small" href="login.php"><b>Sign In</b></a>
+                        </div>
+                    </div>
+
                 </form>
+
             </div>
-
-            <div class="d-flex justify-content-around col-12">
-                <div class="col-md-6 text-center">
-                    <a class="small" href="register.php"><b>Sign Up</b></a>
-                </div>
-                <div class=" col-md-6 text-center">
-                    <a class="small" href="login.php"><b>Sign In</b></a>
-                </div>
-            </div>
-
-
             <!-- <div class="recoverEmployee" style="display: none;">
 
                 <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
@@ -236,36 +241,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <script>
-        // const chkUsr = (val) => {
-        //     console.log("chk usr function val : " + val);
-        //     var recoverAdminDiv = document.querySelector('.recoverAdmin');
-        //     var recoverEmployeeDiv = document.querySelector('.recoverEmployee');
+    // const chkUsr = (val) => {
+    //     console.log("chk usr function val : " + val);
+    //     var recoverAdminDiv = document.querySelector('.recoverAdmin');
+    //     var recoverEmployeeDiv = document.querySelector('.recoverEmployee');
 
-        //     if (val == 'admin') {
-        //         recoverAdminDiv.style.display = 'block';
-        //         recoverEmployeeDiv.style.display = 'none';
-        //     }
+    //     if (val == 'admin') {
+    //         recoverAdminDiv.style.display = 'block';
+    //         recoverEmployeeDiv.style.display = 'none';
+    //     }
 
-        //     if (val == 'employee') {
-        //         recoverAdminDiv.style.display = 'none';
-        //         recoverEmployeeDiv.style.display = 'block';
-        //     }
-        // }
+    //     if (val == 'employee') {
+    //         recoverAdminDiv.style.display = 'none';
+    //         recoverEmployeeDiv.style.display = 'block';
+    //     }
+    // }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var errorMessageDiv = document.getElementById('errorMessage');
-            // var empErrorMessageDiv = document.getElementById('empErrorMessage');
+    document.addEventListener('DOMContentLoaded', function() {
+        var errorMessageDiv = document.getElementById('errorMessage');
+        // var empErrorMessageDiv = document.getElementById('empErrorMessage');
 
-            var usernmInput = document.getElementById('username');
-            // var empUsernmInput = document.getElementById('emp-username');
+        var usernmInput = document.getElementById('username');
+        // var empUsernmInput = document.getElementById('emp-username');
 
-            if (errorMessageDiv) {
-                usernmInput.addEventListener('input', function() {
-                    errorMessageDiv.innerHTML = '';
-                    errorMessageDiv.remove();
-                });
-            }
-        });
+        if (errorMessageDiv) {
+            usernmInput.addEventListener('input', function() {
+                errorMessageDiv.innerHTML = '';
+                errorMessageDiv.remove();
+            });
+        }
+    });
     </script>
 
     <!-- Bootstrap core JavaScript-->
