@@ -3,6 +3,46 @@ class Plan
 {
     use DatabaseConnection;
 
+    public function addPlanWithFeatures(string $planName, string $duration, float $price, string $status, array $featuresArr)
+    {
+        try {
+            // Begin transaction for data integrity
+            //   $this->conn->beginTransaction();
+
+            $insertedPlanId = $this->addPlan($planName, $duration, $price, $status);
+
+            if (!$insertedPlanId) {
+                throw new Exception("Failed to insert plan data");
+            }
+
+            $insertResult = $this->insertPlanFeatures($insertedPlanId, $featuresArr);
+
+            if (!$insertResult) {
+                throw new Exception("Failed to insert plan features");
+            }
+
+            $this->conn->commit();
+
+            return json_encode(['status' => 1, 'msg' => "Added Plan Id is: $insertedPlanId"]);
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            throw $e;
+            return json_encode(['status' => 0, 'msg' => 'ERROR: ' . $e]);
+        }
+    }
+
+    private function addPlan(string $planName, string $duration, float $price, int $status)
+    {
+        $sql = "INSERT INTO plans (name, duration, price, status) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('ssss', $planName, $duration, $price, $status);
+        $stmt->execute();
+
+        return $stmt->insert_id;
+    }
+
+
+
     function allPlans()
     {
         try {
@@ -108,6 +148,26 @@ class Plan
      *                                      Plans Features Management                                           *
      *                                                                                                          *
      ************************************************************************************************************/
+
+    private function insertPlanFeatures(int $planId, array $features)
+    {
+        $sql = "INSERT INTO plan_features (plan_id, features, status) VALUES (?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $success = true;
+        $status  = 1;
+
+        foreach ($features as $feature) {
+            $stmt->bind_param('sss', $planId, $feature, $status);
+            if (!$stmt->execute()) {
+                $success = false;
+                break;
+            }
+        }
+
+        return $success;
+    }
+
+
 
     function planFeatures()
     {

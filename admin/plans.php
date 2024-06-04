@@ -168,32 +168,62 @@ if (isset($_GET['return'])) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Add New Plan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="ajax/manufacturer.add.ajax.php">
+                    <div id="add-alert">
 
-                        <div class="col-md-12">
-                            <label class="mb-0" for="manufacturer-name">Plan Name</label>
-                            <input class="form-control" id="manufacturer-name" name="manufacturer-name" placeholder="Manufacturer Name" required>
+                    </div>
+                    <form onsubmit="addPlan(event)" id="plan-form">
+                        <div class="row mx-0">
+                            <div class="col-12 py-1">
+                                <input type="text" class="form-control" name="plan-name" placeholder="Plan Name">
+                            </div>
+                            <div class="col-12 py-1">
+                                <input type="text" class="form-control" name="plan-duration" placeholder="Plan Duration">
+                            </div>
+                            <div class="col-6 py-1">
+                                <input type="number" class="form-control" name="plan-price" placeholder="Price">
+                            </div>
+                            <div class="col-6 py-1">
+                                <div class="form-group">
+                                    <select class="form-control" name="plan-status">
+                                        <option value="" selected disabled>Select Status</option>
+                                        <option value="0">Deactive</option>
+                                        <option value="1">Active</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="features" class="col-12 py-1">
+                                <div class="form-group">
+                                    <div class="d-flex my-2">
+                                        <input type="text" class="form-control form-control-sm" name="features[]" placeholder="Feature">
+                                        <button type="button" class="btn btn-sm btn-danger remove-feature rounded-right">
+                                            <i class="far fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-sm btn-primary w-100" id="addFeature">
+                                    Add Feature <i class="fas fa-plus-circle"></i>
+                                </button>
+                            </div>
+
                         </div>
 
-                        <div class="col-md-12">
-                            <label class="mb-0" for="manufacturer-name">Duration</label>
-                            <input class="form-control" id="manufacturer-short-name" name="manufacturer-short-name"  required>
+                        <div class="mt-2 reportUpdate" id="reportUpdate">
+                            <!-- Ajax Update Reporet Goes Here -->
                         </div>
 
-                        <div class="col-md-12">
-                            <label class="mb-0" for="manufacturer-name">Price</label>
-                            <input class="form-control" id="manufacturer-short-name" name="manufacturer-short-name" placeholder="Manufacturer Mark" required>
+                        <div class="mt-2 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-sm btn-primary">Add</button>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                            <button class="btn btn-primary me-md-2" name="add-manufacturer" type="submit">Add Manufacturer</button>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -223,7 +253,9 @@ if (isset($_GET['return'])) {
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Sweet Alert Js  -->
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <!-- <script src="<?= JS_PATH ?>sweetAlert.min.js"></script> -->
+    <!-- <script src="<?= JS_PATH ?>sweetalrt2.all.js"></script> -->
+
 
 
     <!-- Core plugin JavaScript-->
@@ -235,68 +267,109 @@ if (isset($_GET['return'])) {
 
 
     <script>
-        // manufacturer request status update//
-        function updateReqStatus(manufacturerId, newStatus) {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('addFeature').addEventListener('click', function() {
+                var featureDiv = document.createElement('div');
+                featureDiv.className = 'form-group';
+                featureDiv.innerHTML = `<div class="d-flex my-2">
+                    <input type="text" class="form-control form-control-sm" name="features[]" placeholder="Feature">
+                    <button class="btn btn-sm btn-danger remove-feature rounded-right">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                </div>`;
 
-            if (confirm('Are you sure you want to change the status?')) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'ajax/manufactureReqStatus.update.ajax.php',
-                    data: {
-                        manufacturerId: manufacturerId,
-                        newStatus: newStatus
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        location.reload();
-                    },
-                    error: function(error) {
-                        console.error('Error updating status:', error);
-                    }
+                document.getElementById('features').appendChild(featureDiv);
+
+                // Add event listener to the new remove button
+                featureDiv.querySelector('.remove-feature').addEventListener('click', function() {
+                    featureDiv.remove();
                 });
-            }
-        } // end manufacturer request status update //
+            });
+
+            // Add event listener to the existing remove button
+            document.querySelectorAll('.remove-feature').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    this.parentElement.remove();
+                });
+            });
+        });
+
+        function addPlan(event) {
+            // Prevent default form submission
+            event.preventDefault();
+
+            // Get the form element
+            const form = event.target;
+
+            // Create a new FormData object (preferred way to handle form data)
+            const formData = new FormData(form);
+
+            // Send AJAX request
+            $.ajax({
+                type: "POST", // Adjust according to your server-side script (POST/GET)
+                url: "ajax/plans.add.ajax.php", // Replace with the actual target URL
+                data: formData,
+                processData: false, // Don't process data automatically with FormData
+                contentType: false, // Set content type to false for FormData
+                success: function(response) {
+                    // Handle successful response from the server
+                    if (response == 1) {
+                        const successAlert = `<div class="alert alert-primary" role="alert">
+                        <strong>Success</strong> New Plan Added!
+                        </div>`;
+                        document.getElementById('add-alert').innerHTML = successAlert;
+                    }
+                    document.getElementById("plan-form").reset();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Handle any errors during the request
+                    console.error("Error submitting form:", textStatus, errorThrown);
+                    // You can display an error message to the user here
+                }
+            });
+
+        }
 
         //delete manufacturer
-        $(document).ready(function() {
-            $(document).on("click", "#delete-btn", function() {
+        // $(document).ready(function() {
+        //     $(document).on("click", "#delete-btn", function() {
 
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Manufacturer?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
+        //         swal({
+        //                 title: "Are you sure?",
+        //                 text: "Want to Delete This Manufacturer?",
+        //                 icon: "warning",
+        //                 buttons: true,
+        //                 dangerMode: true,
+        //             })
+        //             .then((willDelete) => {
+        //                 if (willDelete) {
 
-                            manufId = $(this).data("id");
-                            btn = this;
+        //                     manufId = $(this).data("id");
+        //                     btn = this;
 
-                            $.ajax({
-                                url: "ajax/manufacturer.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: manufId
-                                },
-                                success: function(response) {
-                                    alert(response);
-                                    if (response) {
-                                        $(btn).closest("tr").fadeOut()
-                                        swal("Deleted", "Manufacturer Has Been Deleted", "success");
-                                    } else {
-                                        swal("Delete Not Possible", response, "warning");
-                                    }
-                                }
-                            });
+        //                     $.ajax({
+        //                         url: "ajax/manufacturer.Delete.ajax.php",
+        //                         type: "POST",
+        //                         data: {
+        //                             id: manufId
+        //                         },
+        //                         success: function(response) {
+        //                             alert(response);
+        //                             if (response) {
+        //                                 $(btn).closest("tr").fadeOut()
+        //                                 swal("Deleted", "Manufacturer Has Been Deleted", "success");
+        //                             } else {
+        //                                 swal("Delete Not Possible", response, "warning");
+        //                             }
+        //                         }
+        //                     });
 
-                        }
-                        return false;
-                    });
+        //                 }
+        //                 return false;
+        //             });
 
-            })
-        })
+        //     })
+        // })
     </script>
 
 
