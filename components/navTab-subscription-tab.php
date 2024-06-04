@@ -13,7 +13,6 @@ $Utility        = new Utility;
 $currentUrl = $Utility->currentUrl();
 // Healthcare Addesss and details
 
-
 $bills = json_decode($Subscription->getSubscription($adminId));
 if ($bills->status) {
     $allBills = $bills->data;
@@ -24,10 +23,8 @@ if ($bills->status) {
 
 ?>
 
-
 <!-- Page Wrapper -->
 <div id="wrapper">
-
 
     <!-- New Section -->
     <div class="col">
@@ -39,8 +36,8 @@ if ($bills->status) {
                             <thead>
                                 <tr>
                                     <th scope="col">Plan</th>
-                                    <th scope="col">Start</th>
-                                    <th scope="col">Upto</th>
+                                    <th scope="col">Started From</th>
+                                    <th scope="col">Ended On</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
                                 </tr>
@@ -48,12 +45,17 @@ if ($bills->status) {
                             <tbody>
                                 <?php
                                 foreach ($allBills as $eachBill) {
+
+                                    // date type convertion
+                                    $convertedStartDate = $Utility->convertDateFormat($eachBill->start);
+                                    $convertedEndDate = $Utility->convertDateFormat($eachBill->end);
+                                    
                                     echo "
                                             <tr>
                                                 <th scope='row'>$eachBill->plan</th>
-                                                <td>$eachBill->start</td>
-                                                <td>$eachBill->end</td>
-                                                <td>$eachBill->paid</td>
+                                                <td>$convertedStartDate</td>
+                                                <td>$convertedEndDate</td>
+                                                <td>$eachBill->amount</td>
                                                 <td>$eachBill->status</td>
                                             </tr>
                                             ";

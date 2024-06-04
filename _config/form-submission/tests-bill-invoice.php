@@ -148,11 +148,11 @@ if (isset($_POST['bill-generate'])) {
 
         $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $employeeId, NOW, $adminId);
 
-        if ($addLabBill) {
-            echo "<script>alert('Bill Generated.');</script>";
-        }else {
-            echo "<script>alert('Bill Addition Failed!');</script>";
-        }
+        // if ($addLabBill) {
+        //     echo "<script>alert('Bill Generated.');</script>";
+        // }else {
+        //     echo "<script>alert('Bill Addition Failed!');</script>";
+        // }
 
         /* ========================= Bill Insertion End ========================= */
 
@@ -170,8 +170,11 @@ if (isset($_POST['bill-generate'])) {
             $priceAfterDiscount     = array_shift($testAmountsBck);
             $testPrice              = array_shift($priceOfTestBck);
 
-
             $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
+
+            print_r(json_decode($addBillDetails));
+            
+            // echo "<script>alert('Data check alert!');</script>";
         }
         /* ========================= Bill Details Insertion End ========================= */
 
@@ -205,52 +208,56 @@ if (isset($_POST['bill-generate'])) {
     <div class="custom-container">
         <div class="custom-body <?php if($payable == $paidAmount){ echo "paid-bg";} ?>">
             <div class="card-body ">
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
-                            alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;position: absolute;"
+                            src="<?= $healthCareLogo?>" alt="Medicy">
                     </div>
-                    <div class="col-sm-8">
-                        <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
+                    <div class="col-sm-8 ps-4">
+                        <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2; ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p style="margin-top: -5px; margin-bottom: 0px;">
+                            <small><?php  echo $healthCareCity.', '.$healthCarePin; ?></small>
+                        </p>
+
+                        <p class="text-start" style="margin-top: -5px; margin-bottom: 2px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
                         </p>
 
                     </div>
-                    <div class="col-sm-3 border-start border-primary">
+                    <div class="col-sm-3 border-start border-secondary">
                         <p class="my-0">Invoice</p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id: <?php echo $billId; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date:
+                        <p style="margin-top: -5px; margin-bottom: 0px;width: 68%;"><small>Date:
                                 <?= NOW ?></small></p>
                     </div>
                 </div>
             </div>
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
-            <div class="row my-0">
+            <div class="row my-1">
                 <div class="col-sm-6 my-0">
                     <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
-                            <?php echo $patientName.', Age: '.$patientAge; ?></small></p>
-                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>M:
-                            <?php echo $patientPhno; echo ', Test date: '.$testDate;?></small></p>
+                            <?php echo $patientName.', <b>Age:</b> '.$patientAge; ?></small></p>
+                    <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>M:</b>
+                            <?php echo $patientPhno; echo ', <b>Test date:</b> '.$testDate;?></small></p>
                 </div>
                 <div class="col-sm-6 my-0">
                     <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
                             <?php echo $doctorName; ?></small></p>
                     <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php if($doctorReg != NULL){echo 'Reg: '.$doctorReg; } ?></small>
+                        <small><?php if($doctorReg != NULL){echo '<b>Reg:</b> '.$doctorReg; } ?></small>
                     </p>
                 </div>
 
             </div>
-            <hr class="my-0" style="height:1px;">
-            
-            <div class="row">
+            <hr class="my-0" style="height:1px;opacity: 1.25;">
+
+            <div class="row py-1">
                 <!-- table heading -->
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-2 ps-4">
                     <small><b>SL. NO.</b></small>
                 </div>
                 <div class="col-sm-4">
@@ -267,8 +274,8 @@ if (isset($_POST['bill-generate'])) {
                 </div>
                 <!--/end table heading -->
             </div>
-            
-            <hr class="my-0" style="height:1px;">
+
+            <hr class="my-0" style="height:2px;border: 1px solid;opacity: 1.25;">
 
             <div class="row">
                 <?php
@@ -286,21 +293,21 @@ if (isset($_POST['bill-generate'])) {
                                 $amount = array_shift($testAmountBck);
 
                                 if ($slno >1) {
-                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
                                 }
 
                                 echo '
-                                <div class="col-sm-2 text-center my-0">
+                                <div class="col-sm-2 ps-4 my-0">
                                             <small>'.$slno.'</small>
                                         </div>
                                         <div class="col-sm-4 my-0">
                                             <small>'.$testName.'</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small>'.$testPrice.'</b></small>
+                                            <small>'.$testPrice.'</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small><b>'.$disc.'</b></small>
+                                            <small>'.$disc.'</small>
                                         </div>
                                         <div class="col-sm-2 text-end my-0">
                                             <small>'.$amount.'</small>
@@ -317,53 +324,47 @@ if (isset($_POST['bill-generate'])) {
 
             <!-- </div> -->
             <div class="footer">
-                <hr calss="my-0" style="height: 1px;">
+                <hr calss="my-0" style="height: 1px;opacity: 1.25;">
 
                 <!-- table total calculation -->
                 <div class="row my-0">
                     <div class="col-sm-8 mt-0 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Total Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mt-0 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
                             <small><b>₹<?php echo floatval($subTotal); ?></small></b>
                         </p>
                     </div>
-                </div>
 
-                <?php
-                if($discountOnTotal != NULL && $discountOnTotal > 0){
-                    echo '<div class="row my-0">
+                    <?php
+                   if($discountOnTotal != NULL && $discountOnTotal > 0){
+                    echo '
                     <div class="col-sm-8 mt-0 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Less Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mt-0 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
                             <small><b>₹ '.$discountOnTotal.'</small></b>
                         </p>
-                    </div>
-                </div>';
-                }
+                    </div>';
+                   }
 
-                if ($dueAmount != NULL && $dueAmount > 0) {
-                    echo '<div class="row my-0">
+                   if ($dueAmount != NULL && $dueAmount > 0) {
+                    echo '
                     <div class="col-sm-8 mt-0 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Due Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Due Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mt-0 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
                             <small><b>₹ '.$dueAmount.'</small></b>
                         </p>
-                    </div>
-                </div>';
-                }
-                ?>
-                
-                
+                    </div>';
+                    }
+                    ?>
 
-                <div class="row my-0">
                     <div class="col-sm-8 mb-3 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Paid Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
@@ -371,11 +372,26 @@ if (isset($_POST['bill-generate'])) {
                         </p>
                     </div>
                 </div>
-                <!--/end table total calculation -->
 
-            </div>
-            <hr style="height: 1px; margin-top: 2px;">
+
+
+
+
+                <!-- <div class="row my-0">
+                    <div class="col-sm-8 mb-3 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
+                    </div>
+                    <div class="col-sm-4 mb-3 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;">
+                            <small><b>₹<?php echo floatval($paidAmount); ?></small></b>
+                        </p>
+                    </div>
+                </div> -->
+                <!--/end table total calculation -->
+            <hr style="height: 1px; margin-top: 2px;opacity: 1.25;">
         </div>
+
+    </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->

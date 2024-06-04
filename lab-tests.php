@@ -61,10 +61,7 @@ if ($showLabTypes->status) {
     $labTestTotalItem = 0;
     $paginationHTML = '';
 }
-
-
-
-
+// echo $labTestTotalItem;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,9 +105,9 @@ if ($showLabTypes->status) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                <div class="col-12">
-                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
-                        </div>
+                    <div class="col-12">
+                        <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
+                    </div>
                     <div class="row flex-wrap-reverse" style="z-index: 999;">
 
                         <div class="col-12 col-md-8">
@@ -140,24 +137,29 @@ if ($showLabTypes->status) {
                                 <div class="card-body">
                                     <div class="table-responsive" id="filter-table">
 
-                                        <!-- table start -->
-                                        <table class="table table-sm table-hover w-100">
-                                            <thead class="bg-primary text-light">
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Test Name</th>
-                                                    <th>Provided By</th>
-                                                    <th>No of Tests</th>
-                                                    <th class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="table-data">
+                                        <?php
 
-                                                <?php
+                                        if ($labTestTotalItem == 0) {
+                                            echo "<div class='text-center font-weight-bold text-danger'>No Test Type Avilable.</div>";
 
-                                                if ($labTestTotalItem == 0) {
-                                                    echo "No Test Type Avilable.";
-                                                } else {
+                                        } else {
+                                        ?>
+
+                                            <!-- table start -->
+                                            <table class="table table-sm table-hover w-100">
+                                                <thead class="bg-primary text-light">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Test Name</th>
+                                                        <th>Provided By</th>
+                                                        <th>Sub Tests</th>
+                                                        <th class="text-center">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table-data">
+                                                    <?php
+
+                                                
 
                                                     foreach ($slicedLabTestData as $showLabTypesShow) {
                                                         $testTypeId = $showLabTypesShow->id;
@@ -173,9 +175,13 @@ if ($showLabTypes->status) {
                                                             $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
                                                         }
 
-                                                        $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
-
-                                                ?>
+                                                        $subTestData = json_decode($subTests->showSubTestsByCatId($testTypeId));
+                                                        if ($subTestData->status) {
+                                                            $subTestCount = count($subTestData->data);
+                                                        } else {
+                                                            $subTestCount = 0;
+                                                        }
+                                                    ?>
 
                                                         <tr>
                                                             <td class='testImg'>
@@ -183,21 +189,17 @@ if ($showLabTypes->status) {
                                                             </td>
                                                             <td><?php echo $testName; ?></td>
                                                             <td><?php echo $testPvdBy; ?></td>
-                                                            <td></td>
+                                                            <td><?php echo $subTestCount; ?></td>
                                                             <td class='text-center'>
-                                                                <!-- <span class='badge badge-secondary'> -->
+
                                                                 <a class='text-light' href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
                                                                     <i class="fas fa-eye" style="color: #4e73df;"></i>
                                                                 </a>
-                                                                <!-- </span> -->
 
-                                                                <!-- <span class='badge badge-primary cursor-pointer' data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)"> -->
                                                                 <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)" style="color: #4e73df;"></i>
-                                                                <!-- </span> -->
 
-                                                                <!-- <span class='badge badge-danger'> -->
-                                                                <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a>
-                                                                <!-- </span> -->
+                                                                <!-- <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a> -->
+
                                                             </td>
                                                         </tr>
                                                 <?php
@@ -205,8 +207,8 @@ if ($showLabTypes->status) {
                                                 }
 
                                                 ?>
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
                                     </div>
                                     <?php
                                     if ($labTestTotalItem > 16) {
@@ -248,7 +250,7 @@ if ($showLabTypes->status) {
             </div>
             <!-- /.container-fluid -->
 
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
 
         </div>
         <!-- End of Main Content -->
@@ -370,9 +372,10 @@ if ($showLabTypes->status) {
                     delId: testId
                 },
                 success: function(data) {
-                    if(data){
+                    // console.log(data);
+                    if (data) {
                         $(t).closest('tr').fadeOut();
-                    }else{
+                    } else {
                         console.log('error');
                     }
                 },

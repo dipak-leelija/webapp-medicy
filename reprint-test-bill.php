@@ -100,53 +100,56 @@ if (isset($_GET['bill_id'])) {
     <div class="custom-container">
         <div class="custom-body">
             <div class="card-body ">
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
+                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo?>"
                             alt="Medicy">
                     </div>
-                    <div class="col-sm-8">
-                        <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
+                    <div class="col-sm-8 ps-4">
+                        <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2 ?></small>
                         </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
+                        <p class='' style="margin-top: -5px; margin-bottom: 0px;">
+                            <small><?php echo $healthCareCity.', ' .$healthCarePin;?></small>
+                        </p>
+                        <p class="text-start" style="margin-top: -5px; margin-bottom: 2px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
                         </p>
 
                     </div>
-                    <div class="col-sm-3 border-start border-primary">
+                    <div class="col-sm-3 border-start border-secondary">
                         <p class="my-0">Invoice</p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id: <?php echo $billId; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date:
+                        <p style="margin-top: -5px; margin-bottom: 0px;width: 68%;"><small>Date:
                                 <?php echo $billingDate;?></small></p>
                     </div>
                 </div>
             </div>
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
-            <div class="row my-0">
+            <div class="row my-1">
                 <div class="col-sm-6 my-0">
                     <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
-                            <?php echo $patientName.', Age: '.$patientAge; ?></small></p>
-                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>M:
-                            <?php echo $patientPhno; echo ', Test date: '.$testDate;?></small></p>
+                            <?php echo $patientName.', <b>Age:</b> '.$patientAge; ?></small></p>
+                    <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>M:</b>
+                            <?php echo $patientPhno; echo ', <b>Test date:</b> '.$testDate;?></small></p>
                 </div>
                 <div class="col-sm-6 my-0">
                     <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered Doctor:</b>
                             <?php echo $doctorName; ?></small></p>
                     <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php if($doctorReg != NULL){echo 'Reg: '.$doctorReg; } ?></small>
+                        <small><?php if($doctorReg != NULL){echo '<b>Reg:</b> '.$doctorReg; } ?></small>
                     </p>
                 </div>
 
             </div>
-            <hr class="my-0" style="height:1px;">
+            <hr class="my-0" style="height:1px;opacity: 1.25;">
             <!-- <div class="row"> -->
             <!-- <hr> -->
-            <div class="row">
+            <div class="row py-1">
                 <!-- table heading -->
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-2 ps-4">
                     <small><b>SL. NO.</b></small>
                 </div>
                 <div class="col-sm-4">
@@ -163,7 +166,7 @@ if (isset($_GET['bill_id'])) {
                 </div>
                 <!--/end table heading -->
             </div>
-            <hr class="my-0" style="height:1px;">
+            <hr class="my-0" style="height:2px;border: 1px solid;opacity: 1.25;">
             <!-- <div syle="min-height: 500px;"> -->
 
             <div class="row">
@@ -195,21 +198,21 @@ if (isset($_GET['bill_id'])) {
                                 // $amount = array_shift($testAmountBck);
 
                                 if ($slno >1) {
-                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
                                 }
 
                                 echo '
-                                <div class="col-sm-2 text-center my-0">
+                                <div class="col-sm-2 ps-4 my-0">
                                             <small>'.$slno.'</small>
                                         </div>
                                         <div class="col-sm-4 my-0">
                                             <small>'.$testName.'</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small>'.$testPrice.'</b></small>
+                                            <small>'.$testPrice.'</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small><b>'.$testDisc.'</b></small>
+                                            <small>'.$testDisc.'</small>
                                         </div>
                                         <div class="col-sm-2 text-end my-0">
                                             <small>'.$testAmount.'</small>
@@ -226,18 +229,18 @@ if (isset($_GET['bill_id'])) {
 
             <!-- </div> -->
             <div class="footer">
-                <hr calss="my-0" style="height: 1px;">
+                <hr calss="my-0" style="height: 1px;opacity: 1.25;">
                 <div class="row">
                     <!-- table total calculation -->
                     <div class="col-sm-8 mb-3 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Total Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
                             <small><b>₹<?php echo floatval($subTotal); ?></small></b></p>
                     </div>
                     <div class="col-sm-8 mb-3 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Paid Amount:</small></p>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
@@ -286,7 +289,7 @@ if (isset($_GET['bill_id'])) {
                     </div> -->
                     <!--/end table total calculation -->
                 </div>
-                <hr style="height: 1px; margin-top: 2px;">
+                <hr style="height: 1px; margin-top: 2px;opacity: 1.25;">
             </div>
         </div>
         <div class="justify-content-center print-sec d-flex my-5">

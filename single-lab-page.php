@@ -16,6 +16,7 @@ if (isset($_GET['labtypeid'])) {
     $labTypes       = new LabTestTypes;
     $showLabType = $labTypes->showLabTypesById($showLabtypeId);
     
+
     if(is_array($showLabType)){
         foreach ($showLabType as $labtype) {
             $labTypeImge = $labtype['image'];
@@ -30,9 +31,14 @@ if (isset($_GET['labtypeid'])) {
             $labTypeDsc = $labtype['dsc'];
         }
     }
-    //Fetching Sub Tests
+    //Fetching Sub Tests data
     $subTests = new SubTests();
-    $subTestShow = $subTests->showSubTestsByCatId($showLabtypeId);
+    $subTestShow = json_decode($subTests->showSubTestsByCatId($showLabtypeId));
+    if($subTestShow->status){
+        $subTestShow = $subTestShow->data;
+    }else{
+        $subTestShow = [];
+    }
 }
 ?>
 
@@ -131,7 +137,7 @@ if (isset($_GET['labtypeid'])) {
                             <!-- <div class="included_test">
 
                                 <h2>Includes
-                                    <?php if ($subTestShow != 0) {
+                                    <?php if (!empty($subTestShow)) {
                                         echo count($subTestShow) . 'tests';
                                     } else {
                                         echo '0 Tests';
@@ -170,11 +176,11 @@ if (isset($_GET['labtypeid'])) {
             $accordionId++;
 
             // Get subtest details
-            $subTestName = $subTest['sub_test_name'];
-            $subTestAge = $subTest['age_group'];
-            $subTestPrep = $subTest['test_preparation'];
-            $subTestDsc = $subTest['test_dsc'];
-            $subTestPrice = $subTest['price'];
+            $subTestName = $subTest->sub_test_name;
+            $subTestAge = $subTest->age_group;
+            $subTestPrep = $subTest->test_preparation;
+            $subTestDsc = $subTest->test_dsc;
+            $subTestPrice = $subTest->price;
 
             // If it's the first item or a multiple of the column count, start a new column
             if ($itemCount == 0 || $itemCount % $columnCount == 0) {

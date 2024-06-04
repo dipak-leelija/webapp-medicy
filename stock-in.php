@@ -139,9 +139,7 @@ $todayYr = date("y");
                                             </div>
                                         <?php endif; ?>
                                     </div>
-
                                 </div>
-
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
@@ -152,10 +150,12 @@ $todayYr = date("y");
                                     <label class="mb-1" for="bill-date">Bill Date</label>
                                     <input type="date" class="text-uppercase upr-inp" name="bill-date" id="bill-date" onchange="getbillDate(this)">
                                 </div>
+
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
                                     <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
                                 </div>
+
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
                                     <select class="upr-inp" name="payment-mode" id="payment-mode" onchange="setPaymentMode(this)">
@@ -170,7 +170,6 @@ $todayYr = date("y");
                                         <option value="Net Banking">Net Banking</option>
                                     </select>
                                 </div>
-
                             </div>
                             <!-- End Distributor Details  -->
 
