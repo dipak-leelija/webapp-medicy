@@ -119,8 +119,9 @@ function getBill() {
   var testId = document.getElementById("test-id").value;
   var testPrice = document.getElementById("price").innerHTML;
   var disc = document.getElementById("disc").value;
+  
   if (disc == "") {
-    disc = 00;
+    disc = 0;
   }
   var total = parseFloat(document.getElementById("total").innerHTML);
 
@@ -182,7 +183,7 @@ function getBill() {
   if (update == "Credit") {
     let payable = document.getElementById("payable").value;
     document.getElementById("due").value = payable;
-    document.getElementById("paid-amount").value = 00;
+    document.getElementById("paid-amount").value = 0;
   }
   document.getElementById("bill-generate").disabled = false;
 }
@@ -225,8 +226,14 @@ function removeField(count, total) {
 }
 
 //changes after changing on discount
-getDisc = (value) => {
-  let disc = value;
+getDisc = (val) => {
+  
+  if(val > 100){
+    val = 100;
+    document.getElementById('disc').value = val;
+  }
+
+  let disc = val;
   let price = document.getElementById("price").innerHTML;
   // let qty = document.getElementById("qty").value;
   // let total = price*qty;
