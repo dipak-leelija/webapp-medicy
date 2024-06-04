@@ -215,32 +215,105 @@ if ($labBillDisplay->status) {
                     </div>
 
                     <!-- Test Appointments -->
-                    <div class="card shadow mb-4">
-
-                        <div class="card-header py-3 justify-content-between">
-
-                            <div class=" col-12 d-flex justify-content-between">
-                                <div class="">
-                                    <h6 class="mt-2 m-0 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
-                                </div>
-
-                                <div class="col-3 text-right entry ml-5">
-                                    <a class="btn btn-sm btn-primary" href="lab-patient-selection.php?test=true">
-                                        <p class="m-0 p-0">Entry</p>
-                                    </a>
-
-                                    <!-- <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a> -->
-                                </div>
+                    <div class="card shadow mb-2">
+                        <!-- <div class="card-header py-3 justify-content-between"> -->
+                        <div class="row d-flex">
+                            <div class="col-md-5">
+                                <h6 class="mt-3 ml-4 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
                             </div>
+                            <div class="col-md-6 d-flex justify-content-end ml-5">
+                                <a class="mt-3   btn btn-sm btn-primary" href="lab-patient-selection.php?test=true">
+                                    <p class="m-0 p-0">Entry</p>
+                                </a>
+                            </div>
+                        </div>
 
+                        <div class="row d-flex">
+                            <!-- <div class="col-12 d-flex"> -->
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="d-none" id="control-flag"><?= $flagVal; ?></label>
+                                    <label class="d-none" id="parent-url"><?php echo URL; ?></label>
+
+                                    <div class="input-group">
+                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" aria-describedby="button-addon2" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
+
+                                        <div class="input-group-append" id="appointment-search-filter-1">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
+                                        </div>
+
+                                        <!-- <div class="d-none input-group-append" > -->
+                                        <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue()">
+                                        <option value="" disabled selected>Select Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+                                    <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
+                                    <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <select class="col-md-11 cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue()">
+                                        <option value="" selected disabled>Find By Doctor</option>
+
+                                        <?php
+                                        foreach ($DoctorList as $doctor) {
+                                            $selected = $doctorID ==  $doctor->doctor_id ? 'selected' : '';
+                                            echo "<option $selected value='$doctor->doctor_id'>$doctor->doctor_name</option>";
+                                        }
+                                        ?>
+
+                                    </select>
+                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="select-docId"><?php echo $docId; ?></label>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <select class="cl-md-11 cvx-inp1" id="added_by" onchange="filterAppointmentByValue()">
+                                        <option value="" disabled="" selected="">Select Staff</option>
+                                        <?php
+                                        foreach ($employeeDetails as $empData) {
+                                            echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+
+                                    <label class="d-none" id="select-empId"><?php echo $empId; ?></label>
+                                </div>
+                            <!-- </div> -->
+                        </div>
+
+                        <!--
                             <div class="row mt-2">
+                                <label class="d-none" id="control-flag"><?= $flagVal; ?></label>
+                                <label class="d-none" id="parent-url"><?php echo URL; ?></label>
+
                                 <div class="col-md-2 col-6 pb-2">
                                     <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" aria-describedby="button-addon2" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
 
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
+                                        <div class="input-group-append" id="appointment-search-filter-1">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                         </div>
+
+                                        <-- <div class="d-none input-group-append" > --
+                                        <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <-- </div> --
                                     </div>
                                 </div>
 
@@ -257,6 +330,8 @@ if ($labBillDisplay->status) {
                                         <option value="CR">Custom Range </option>
                                     </select>
                                 </div>
+
+
 
                                 <div class="col-md-2 col-6">
                                     <select class="cvx-inp1" name="refered_doctor" id="refered_doctor" onchange="returnFilter(this)">
@@ -279,26 +354,26 @@ if ($labBillDisplay->status) {
                                         ?>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
 
-                            <div class="row mt-3" id="dtPickerDiv" style="display: none;">
-                                <div class="col-md-12">
-                                    <div class="d-flex">
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date">
-                                        </div>
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date">
-                                        </div>
-                                        <div class="dtPicker">
-                                            <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
-                                        </div>
+                        <div class="row mt-3" id="dtPickerDiv" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>Strat Date</label>
+                                        <input type="date" id="from-date" name="from-date">
+                                    </div>
+                                    <div class="dtPicker" style="margin-right: 1rem;">
+                                        <label>End Date</label>
+                                        <input type="date" id="to-date" name="to-date">
+                                    </div>
+                                    <div class="dtPicker">
+                                        <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- </div> -->
 
                         <div class="card-body">
                             <div class="table-responsive">
@@ -411,7 +486,8 @@ if ($labBillDisplay->status) {
             </div>
             <!-- End of Main Content -->
 
-            
+
+
 
         </div>
         <!-- End of Content Wrapper -->
@@ -464,6 +540,8 @@ if ($labBillDisplay->status) {
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
+    <script src="<?= JS_PATH ?>polyclinic-searchFilter.js"></script>
 
 
 
@@ -521,6 +599,8 @@ if ($labBillDisplay->status) {
                     }
                 });
         }
+
+
 
         const returnFilter = (t) => {
 

@@ -199,16 +199,16 @@
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a>
+                <a class="dropdown-item" href="<?= URL . 'reports.php' ?>">
+                    <i class="fas fa-file-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Reports
+                </a>
                 <?php if ($_SESSION['ADMIN']) : ?>
                     <a class="dropdown-item" href="<?= URL . 'employees.php' ?>">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Employees
                     </a>
                 <?php endif ?>
-                <!-- <a class="dropdown-item" href="<?= URL . 'empRole.php' ?>">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Designations
-                </a> -->
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
