@@ -198,7 +198,7 @@ if ($showLabTypes->status) {
 
                                                                 <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)" style="color: #4e73df;"></i>
 
-                                                                <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a>
+                                                                <!-- <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a> -->
 
                                                             </td>
                                                         </tr>
@@ -250,7 +250,7 @@ if ($showLabTypes->status) {
             </div>
             <!-- /.container-fluid -->
 
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
 
         </div>
         <!-- End of Main Content -->
