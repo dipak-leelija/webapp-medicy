@@ -21,3 +21,12 @@ if (window.ActiveXObject) {
         alert("Error Create request");
     }
 }
+
+// ==============================================================================
+//getView function start
+const getView = (url, paramKey, paramValue, placeElementClass) => {
+    let fullURL = `ajax/${url}?${paramKey}=${paramValue}`;
+    $("."+placeElementClass).html(
+        '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
+        fullURL + '"></iframe>');
+} // end of getView function
