@@ -249,7 +249,7 @@ if(isset($_POST['bill-proceed'])){
 
                                     <div class="form-group col-sm-5 flex-column d-flex mt-0">
                                         <input class="form-control" id="disc" onkeyup="getDisc(this.value);"
-                                            placeholder="Discount %" type="number" disabled>
+                                            placeholder="Discount %" type="number" max="100" disabled>
                                     </div>
                                 </div>
                                 <div class="row justify-content-between text-left">

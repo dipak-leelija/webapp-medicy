@@ -9,6 +9,7 @@ require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
 require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'utility.class.php';
 
 
 
@@ -18,7 +19,7 @@ $Doctors         = new Doctors();
 $Patients        = new Patients();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
-
+$Utility         = new Utility;
 
 if (isset($_POST['bill-generate'])) {
 
@@ -65,7 +66,7 @@ if (isset($_POST['bill-generate'])) {
 
 
         ################ Bill id/ invoice id generation #############
-        $LabBillDisplay = $LabBilling->LabBillDisplay($adminId);
+        /*$LabBillDisplay = $LabBilling->LabBillDisplay($adminId);
         if ($LabBillDisplay == NULL) {
             $billId = 1;
         }else{
@@ -89,7 +90,10 @@ if (isset($_POST['bill-generate'])) {
         }
         if ($billId < 10) {
             $billId = '0'.$billId;
-        }
+        }*/
+
+        $billId = $Utility->randomKeysByNumber(15);
+        
         ############ End Of Bill ID / Invoice Id Generagtion #########
 
 
