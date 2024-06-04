@@ -97,30 +97,6 @@ if (isset($_POST['add-new-subtest']) == true) {
 
 <body>
 
-    <?php
-
-    if ($swalControl == 1) {
-    ?>
-        <script>
-            alert('Data insert successfully');
-            // console.log(<?php echo $swalControl; ?>);
-            Swal.fire("Success", "Data Addition successfull!", "success");
-        </script>
-    <?php
-    }
-
-    if ($swalControl == 0) {
-    ?>
-        <script>
-            alert('Data insertion fail!');
-            Swal.fire("Failed", "Data Addition Failed!", "error");
-        </script>
-    <?php
-
-    }
-
-    ?>
-
     <!-- Page Wrapper -->
     <div>
         <div class="row d-flex justify-content-center">
@@ -200,6 +176,35 @@ if (isset($_POST['add-new-subtest']) == true) {
     </div>
 
     <!--/End Part 1  -->
+
+
+
+    <!-- js -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
+    <?php
+
+    if ($swalControl == 1) {
+    ?>
+        <script>
+            // alert('Data insert successfully');
+            // console.log(<?php echo $swalControl; ?>);
+            Swal.fire("Success", "Data Addition successfull!", "success");
+        </script>
+    <?php
+    }
+
+    if ($swalControl == 0) {
+    ?>
+        <script>
+            // alert('Data insertion fail!');
+            Swal.fire("Failed", "Data Addition Failed!", "error");
+        </script>
+    <?php
+
+    }
+
+    ?>
 
 </body>
 

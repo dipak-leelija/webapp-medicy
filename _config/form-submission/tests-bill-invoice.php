@@ -148,11 +148,11 @@ if (isset($_POST['bill-generate'])) {
 
         $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $employeeId, NOW, $adminId);
 
-        if ($addLabBill) {
-            echo "<script>alert('Bill Generated.');</script>";
-        }else {
-            echo "<script>alert('Bill Addition Failed!');</script>";
-        }
+        // if ($addLabBill) {
+        //     echo "<script>alert('Bill Generated.');</script>";
+        // }else {
+        //     echo "<script>alert('Bill Addition Failed!');</script>";
+        // }
 
         /* ========================= Bill Insertion End ========================= */
 
@@ -170,8 +170,11 @@ if (isset($_POST['bill-generate'])) {
             $priceAfterDiscount     = array_shift($testAmountsBck);
             $testPrice              = array_shift($priceOfTestBck);
 
-
             $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
+
+            print_r(json_decode($addBillDetails));
+            
+            // echo "<script>alert('Data check alert!');</script>";
         }
         /* ========================= Bill Details Insertion End ========================= */
 

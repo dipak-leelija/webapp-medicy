@@ -28,10 +28,12 @@ if ($delLabType->status) {
         $returnData = '1';
     }
 }else{
-    $returnData = '0';
+    $returnData = '1';
 }
 
-if ($delLabType) {
+// echo $returnData;
+
+if ($delLabType->status == 1 && $returnData == '1') {
     echo $returnData;
 } else {
     echo $returnData;

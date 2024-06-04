@@ -104,7 +104,7 @@ class SubTests
     function deleteSubTests($delTestTypeId)
     {
         try {
-            $deletelabType = "DELETE FROM `tests_types` WHERE `parent_test_id` = '$delTestTypeId'";
+            $deletelabType = "DELETE FROM `sub_tests` WHERE `parent_test_id` = '$delTestTypeId'";
 
             $stmt = $this->conn->prepare($deletelabType);
 
