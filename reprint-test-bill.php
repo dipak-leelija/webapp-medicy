@@ -166,7 +166,7 @@ if (isset($_GET['bill_id'])) {
                 </div>
                 <!--/end table heading -->
             </div>
-            <hr class="my-0" style="height:2px;opacity: 1.25;">
+            <hr class="my-0" style="height:2px;border: 1px solid;opacity: 1.25;">
             <!-- <div syle="min-height: 500px;"> -->
 
             <div class="row">

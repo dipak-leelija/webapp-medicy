@@ -100,10 +100,10 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <div class="row">
                     <div class="col-sm-1">
                         <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" -->
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
+                        <img class="float-end" style="height: 55px; width: 58px;position: absolute;" src="<?= $healthCareLogo ?>"
                             alt="Medicy">
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8 ps-4">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePin; ?></small>
