@@ -159,7 +159,6 @@ use DatabaseConnection;
     {
         try {
 
-
             $selectBill = "SELECT * FROM lab_billing 
                             WHERE date(added_on) BETWEEN '$fromDate' AND '$toDate' 
                             AND admin_id = '$adminId'";
@@ -185,6 +184,65 @@ use DatabaseConnection;
             return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
         }
     } //end employeesDisplay function
+
+
+
+
+
+
+    function labBillDataSearchFilter($searchVal = '', $startDate = '', $endDate = '', $docId = '', $empId = '', $adminId = '') {
+        try {
+            $searchSQL = "SELECT * FROM lab_billing WHERE 1=1";
+            
+            $params = array();
+    
+            if (!empty($searchVal)) {
+                $searchSQL .= " AND (bill_id  LIKE '%$searchVal%' OR patient_id LIKE '%$searchVal%')";
+            }
+            
+            if (!empty($startDate) && !empty($endDate)) {
+                $searchSQL .= " AND DATE('added_on') BETWEEN '$startDate' AND '$endDate'";
+            }
+    
+            if (!empty($docId)) {
+                $searchSQL .= " AND refered_doctor = '$docId'";
+            }
+    
+            if (!empty($empId)) {
+                $searchSQL .= " AND added_by = '$empId'";
+            }
+    
+            if (!empty($adminId)) {
+                $searchSQL .= " AND admin_id = '$adminId'";
+            }
+
+            $stmt = $this->conn->prepare($searchSQL);
+
+            if(!$stmt){
+                throw new Exception('statement preaper exception');
+            }
+
+            foreach ($params as $param => &$value) {
+                $stmt->bindParam($param, $value);
+            }
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $appointmentsResult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsResult[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $appointmentsResult]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+
 
 
 

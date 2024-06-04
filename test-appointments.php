@@ -41,91 +41,40 @@ $employeeDetails = $employeeDetails->data;
 
 
 // ================ data filter ===================
-if (isset($_GET['search'])) {
+// ============= APPOINTMENT DATA ================
+$searchVal = '';
+$match = '';
+$startDate = '';
+$endDate = '';
+$docId = '';
+$empId = '';
 
-    if ($_GET['search'] == 'refered_doctor') {
 
-        $col = $_GET['search'];
-        $doctorID = $_GET['searchKey'];
+if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['docIdFilter']) || isset($_GET['staffIdFilter'])) {
 
-        $labBillDisplay = $LabBilling->labBillFilter($adminId, $col, $doctorID);
+    if (isset($_GET['search'])) {
+        $searchVal = $match = $_GET['search'];
     }
 
-    if ($_GET['search'] == 'added_by') {
-        $col = $_GET['search'];
-        $doctorID = $_GET['searchKey'];
-
-        $labBillDisplay = $LabBilling->labBillFilter($adminId, $col, $doctorID);
+    if (isset($_GET['dateFilterStart'])) {
+        $startDate = $_GET['dateFilterStart'];
+        $endDate = $_GET['dateFilterEnd'];
     }
 
-    if ($_GET['search'] == 'appointment-search') {
-        $match = $_GET['searchKey'];
-
-        $labBillDisplay = $LabBilling->labBillFilter($adminId, 'search', $match);
+    if (isset($_GET['docIdFilter'])) {
+        $docId = $_GET['docIdFilter'];
     }
 
-    if ($_GET['search'] == 'added_on') {
-        $value = $_GET['searchKey'];
-
-        if ($value == 'T') {
-            $fromDt = date('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'Y') {
-            $fromDt = new DateTime('yesterday');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = $fromDt;
-        }
-
-        if ($value == 'LW') {
-            $fromDt = new DateTime('-7 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LM') {
-            $fromDt = new DateTime('-30 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'LQ') {
-            $fromDt = new DateTime('-90 days');
-            $fromDt = $fromDt->format('Y-m-d');
-            $toDt = date('Y-m-d');
-        }
-
-        if ($value == 'CFY') {
-            $currentYear = new DateTime();
-            $fiscalYear = $currentYear->format('Y');
-            $fiscalYear = intval($fiscalYear) + 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $currentYear . '-04-01';
-            $toDt = $fiscalYear . '-03-31';
-        }
-
-        if ($value == 'PFY') {
-            $currentYear = new DateTime();
-            $prevFiscalYr = $currentYear->format('Y');
-            $prevFiscalYr = intval($prevFiscalYr) - 1;
-            $currentYear = $currentYear->format('Y');
-
-            $fromDt = $prevFiscalYr . '-04-01';
-            $toDt = $currentYear . '-03-31';
-        }
-
-        if ($value == 'CR') {
-            $fromDt = $_GET['fromDt'];
-            $toDt = $_GET['toDt'];
-        }
-
-        $labBillDisplay = $LabBilling->labBillFilterByDate($adminId, $fromDt, $toDt);
+    if (isset($_GET['staffIdFilter'])) {
+        $empId = $_GET['staffIdFilter'];
     }
+
+    $labBillDisplay = $LabBilling->labBillDataSearchFilter($searchVal, $startDate, $endDate, $docId, $empId, $adminId);
 } else {
     $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 }
+
+// print_r($labBillDisplay);
 
 $labBillDisplay = json_decode($labBillDisplay);
 // print_r($labBillDisplay);
@@ -229,7 +178,7 @@ if ($labBillDisplay->status) {
                         </div>
 
                         <div class="row d-flex">
-                            <!-- <div class="col-12 d-flex"> -->
+                            <div class="col-12 d-flex mt-4">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="d-none" id="control-flag"><?= $flagVal; ?></label>
                                     <label class="d-none" id="parent-url"><?php echo URL; ?></label>
@@ -241,123 +190,70 @@ if ($labBillDisplay->status) {
                                             <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                         </div>
 
-                                        <!-- <div class="d-none input-group-append" > -->
-                                        <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-                                        <!-- </div> -->
+                                        <div class="input-group-append">
+                                            <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue()">
-                                        <option value="" disabled selected>Select Duration</option>
-                                        <option value="T">Today</option>
-                                        <option value="Y">yesterday</option>
-                                        <option value="LW">Last 7 Days</option>
-                                        <option value="LM">Last 30 Days</option>
-                                        <option value="LQ">Last 90 Days</option>
-                                        <option value="CFY">Current Fiscal Year</option>
-                                        <option value="PFY">Previous Fiscal Year</option>
-                                        <option value="CR">Custom Range </option>
-                                    </select>
-                                    <button class="d-none btn btn-sm btn-outline-primary rounded-0 shadow-none" type="button" id="filter-reset-2" onclick="resteUrl(this.id)" style="margin-left: -26px; z-index: 100; background: white;"><i class="fas fa-times"></i></button>
+                                    <div class="input-group">
+
+                                        <select class="col-md-11 cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue()">
+                                            <option value="" disabled selected>Select Duration</option>
+                                            <option value="T">Today</option>
+                                            <option value="Y">yesterday</option>
+                                            <option value="LW">Last 7 Days</option>
+                                            <option value="LM">Last 30 Days</option>
+                                            <option value="LQ">Last 90 Days</option>
+                                            <option value="CFY">Current Fiscal Year</option>
+                                            <option value="PFY">Previous Fiscal Year</option>
+                                            <option value="CR">Custom Range </option>
+                                        </select>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-2" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    </div>
 
                                     <label class="d-none" id="select-start-date"><?php echo $startDate; ?></label>
                                     <label class="d-none" id="select-end-date"><?php echo $endDate; ?></label>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <select class="col-md-11 cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue()">
-                                        <option value="" selected disabled>Find By Doctor</option>
-
-                                        <?php
-                                        foreach ($DoctorList as $doctor) {
-                                            $selected = $doctorID ==  $doctor->doctor_id ? 'selected' : '';
-                                            echo "<option $selected value='$doctor->doctor_id'>$doctor->doctor_name</option>";
-                                        }
-                                        ?>
-
-                                    </select>
-                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-
+                                    <div class="input-group">
+                                        <select class="col-md-11 cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue()">
+                                            <option value="" selected disabled>Find By Doctor</option>
+                                            <?php
+                                            foreach ($DoctorList as $doctor) {
+                                                $selected = $doctorID ==  $doctor->doctor_id ? 'selected' : '';
+                                                echo "<option $selected value='$doctor->doctor_id'>$doctor->doctor_name</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-3" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    </div>
                                     <label class="d-none" id="select-docId"><?php echo $docId; ?></label>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <select class="cl-md-11 cvx-inp1" id="added_by" onchange="filterAppointmentByValue()">
-                                        <option value="" disabled="" selected="">Select Staff</option>
-                                        <?php
-                                        foreach ($employeeDetails as $empData) {
-                                            echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-
+                                    <div class="input-group">
+                                        <select class="col-md-11 cvx-inp1" name="added_by" id="added_by" onchange="filterAppointmentByValue()">
+                                            <option value="" disabled="" selected="">Select Staff</option>
+                                            <?php
+                                            foreach ($employeeDetails as $empData) {
+                                                echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                        <button class="d-none btn btn-sm btn-outline-primary shadow-none rounded-0" type="button" id="filter-reset-4" style="margin-left: -26px; z-index: 100; background: white;" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    </div>
                                     <label class="d-none" id="select-empId"><?php echo $empId; ?></label>
                                 </div>
-                            <!-- </div> -->
+                            </div>
                         </div>
 
-                        <!--
-                            <div class="row mt-2">
-                                <label class="d-none" id="control-flag"><?= $flagVal; ?></label>
-                                <label class="d-none" id="parent-url"><?php echo URL; ?></label>
-
-                                <div class="col-md-2 col-6 pb-2">
-                                    <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" aria-describedby="button-addon2" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
-
-                                        <div class="input-group-append" id="appointment-search-filter-1">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
-                                        </div>
-
-                                        <-- <div class="d-none input-group-append" > --
-                                        <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-                                        <-- </div> --
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
-                                        <option value="" disabled="" selected="">Select Duration</option>
-                                        <option value="T">Today</option>
-                                        <option value="Y">yesterday</option>
-                                        <option value="LW">Last 7 Days</option>
-                                        <option value="LM">Last 30 Days</option>
-                                        <option value="LQ">Last 90 Days</option>
-                                        <option value="CFY">Current Fiscal Year</option>
-                                        <option value="PFY">Previous Fiscal Year</option>
-                                        <option value="CR">Custom Range </option>
-                                    </select>
-                                </div>
-
-
-
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refered_doctor" id="refered_doctor" onchange="returnFilter(this)">
-                                        <option value="" selected="" disabled="">Find By Doctor</option>
-                                        <?php
-                                        foreach ($DoctorList as $doctor) {
-                                            $selected = $doctorID ==  $doctor->doctor_id ? 'selected' : '';
-                                            echo "<option $selected value='$doctor->doctor_id'>$doctor->doctor_name</option>";
-                                        } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
-                                        <option value="" disabled="" selected="">Select Staff
-                                        </option>
-                                        <?php
-                                        foreach ($employeeDetails as $empData) {
-                                            echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>-->
-
-                        <div class="row mt-3" id="dtPickerDiv" style="display: none;">
-                            <div class="col-md-12">
+                        <label class="d-none" id="date-range-control-flag">0</label>
+                        <label class="d-none" id="url-control-flag">0</label>
+                        <div class="dropdown-menu  p-2 row ml-4 mt-2" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class=" col-md-8">
                                 <div class="d-flex">
                                     <div class="dtPicker" style="margin-right: 1rem;">
                                         <label>Strat Date</label>
@@ -368,84 +264,91 @@ if ($labBillDisplay->status) {
                                         <input type="date" id="to-date" name="to-date">
                                     </div>
                                     <div class="dtPicker">
-                                        <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
+                                        <button class="btn btn-sm btn-primary" onclick="filterAppointmentByValue()">Find</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <!-- </div> -->
 
+
+
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Invoice ID</th>
-                                            <th>Test Date</th>
-                                            <th>Test</th>
-                                            <th>Refered By</th>
-                                            <th>Paid Amount</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (is_array($slicedLabBills) && count($slicedLabBills) > 0) {
-                                            foreach ($slicedLabBills as $rowlabBill) {
-                                                $billId        = $rowlabBill->bill_id;
-                                                $patientId     = $rowlabBill->patient_id;
-                                                $referdDoc     = $rowlabBill->refered_doctor;
-                                                $testDate      = $rowlabBill->test_date;
-                                                $paidAmount    = $rowlabBill->paid_amount;
-                                                $status        = $rowlabBill->status;
 
-                                                $test = 0;
-                                                $billDetails = $LabBillDetails->billDetailsById($billId);
-                                                if (is_array($billDetails))
-                                                    $test = count($billDetails);
+                            <?php
+                            if ($totalItem > 0) {
+                            ?>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice ID</th>
+                                                <th>Test Date</th>
+                                                <th>Test</th>
+                                                <th>Refered By</th>
+                                                <th>Paid Amount</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            if (is_array($slicedLabBills) && count($slicedLabBills) > 0) {
+                                                foreach ($slicedLabBills as $rowlabBill) {
+                                                    $billId        = $rowlabBill->bill_id;
+                                                    $patientId     = $rowlabBill->patient_id;
+                                                    $referdDoc     = $rowlabBill->refered_doctor;
+                                                    $testDate      = $rowlabBill->test_date;
+                                                    $paidAmount    = $rowlabBill->paid_amount;
+                                                    $status        = $rowlabBill->status;
 
-                                                // echo print_r($billDetails);exit;
-                                                if ($test == 1) {
-                                                    foreach ($billDetails as $rowBillDetails) {
-                                                        $subTestId = $rowBillDetails['test_id'];
+                                                    $test = 0;
+                                                    $billDetails = $LabBillDetails->billDetailsById($billId);
+                                                    if (is_array($billDetails))
+                                                        $test = count($billDetails);
 
-                                                        $showSubTest = $SubTests->showSubTestsId($subTestId);
-                                                        foreach ($showSubTest as $rowSubTest) {
-                                                            $test = $rowSubTest['sub_test_name'];
-                                                            // echo $test;
+                                                    // echo print_r($billDetails);exit;
+                                                    if ($test == 1) {
+                                                        foreach ($billDetails as $rowBillDetails) {
+                                                            $subTestId = $rowBillDetails['test_id'];
+
+                                                            $showSubTest = $SubTests->showSubTestsId($subTestId);
+                                                            foreach ($showSubTest as $rowSubTest) {
+                                                                $test = $rowSubTest['sub_test_name'];
+                                                                // echo $test;
+                                                            }
                                                         }
                                                     }
-                                                }
 
 
-                                                $docId = $referdDoc;
-                                                if (is_numeric($docId)) {
-                                                    $showDoctor = $Doctors->showDoctorNameById($docId);
-                                                    $showDoctor = json_decode($showDoctor);
-                                                    if ($showDoctor->status == 1) {
-                                                        foreach ($showDoctor->data as $rowDoctor) {
-                                                            $docName = $rowDoctor->doctor_name;
-                                                            // echo $doctorName;
+                                                    $docId = $referdDoc;
+                                                    if (is_numeric($docId)) {
+                                                        $showDoctor = $Doctors->showDoctorNameById($docId);
+                                                        $showDoctor = json_decode($showDoctor);
+                                                        if ($showDoctor->status == 1) {
+                                                            foreach ($showDoctor->data as $rowDoctor) {
+                                                                $docName = $rowDoctor->doctor_name;
+                                                                // echo $doctorName;
+                                                            }
                                                         }
+                                                        // $docName = $showDoctor->data;
+
+                                                    } else {
+                                                        $docName = $referdDoc;
                                                     }
-                                                    // $docName = $showDoctor->data;
+                                                    echo '<tr ';
 
-                                                } else {
-                                                    $docName = $referdDoc;
-                                                }
-                                                echo '<tr ';
-
-                                                if ($status == "Credit") {
-                                                    echo 'style="background-color:#FFCCCB";';
-                                                } elseif ($status == "Partial Due") {
-                                                    echo 'style="background-color: #FFFF99";';
-                                                } elseif ($status == "Cancelled") {
-                                                    echo 'style="background-color: #b51212; color: #FFF;"';
-                                                } else {
-                                                    echo 'style="background-color:white";';
-                                                }
-                                                echo '>
+                                                    if ($status == "Credit") {
+                                                        echo 'style="background-color:#FFCCCB";';
+                                                    } elseif ($status == "Partial Due") {
+                                                        echo 'style="background-color: #FFFF99";';
+                                                    } elseif ($status == "Cancelled") {
+                                                        echo 'style="background-color: #b51212; color: #FFF;"';
+                                                    } else {
+                                                        echo 'style="background-color:white";';
+                                                    }
+                                                    echo '>
                                                         <td>' . $billId . '</td>
                                                         <td>' . $testDate . '</td>
                                                         <td>' . $test . ' Tests</td>
@@ -461,19 +364,29 @@ if ($labBillDisplay->status) {
                                                         <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
-                                                // }
+                                                    // }
+                                                }
                                             }
-                                        }
-                                        // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
-                                        ?>
+                                            // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
+                                            ?>
 
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="d-flex justify-content-center">
-                                <?= $paginationHTML ?>
-                            </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <?php
+                            }else{
+                               echo '<div class="col-md-12  p-2 row p-2 d-flex justify-content-center" id="dtPickerDiv" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                                    <label class="text-danger font-weight-bold">No Data Found</label>
+                               </div>';
+                            }
+                            
+                            if($totalItem > 16){
+                                echo '<div class="d-flex justify-content-center">
+                                ' . $paginationHTML . '
+                                </div>';
+                            }
+                            
+                            ?>
 
                         </div>
                     </div>
@@ -601,7 +514,7 @@ if ($labBillDisplay->status) {
         }
 
 
-
+        /*
         const returnFilter = (t) => {
 
             document.getElementById('dtPickerDiv').style.display = 'none'
@@ -654,7 +567,7 @@ if ($labBillDisplay->status) {
             } else {
                 alert('Please Enter Minimum 3 Character!');
             }
-        }
+        }*/
     </script>
 
     <!-- Core plugin JavaScript-->
