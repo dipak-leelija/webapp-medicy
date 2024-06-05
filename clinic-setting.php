@@ -84,6 +84,7 @@ if ($bills->status) {
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>upload-design.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>helth-care.css" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>img-uv/img-uv.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
