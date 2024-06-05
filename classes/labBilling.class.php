@@ -14,13 +14,14 @@ use DatabaseConnection;
             if ($stmt) {
                 $stmt->bind_param('isssssssssssssss', $billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId);
 
-                $res = $stmt->execute();
-
+                if($stmt->execute()){
+                    return json_encode(['status'=>true, 'insertId'=>$stmt->insert_id]);
+                }else{
+                    throw new Exception("Execution failed: " . $stmt->error);
+                }
                 $stmt->close();
-
-                return $res;
             } else {
-                return false;
+                throw new Exception("Data binding error : " . $stmt->error);
             }
         } catch (Exception $e) {
             return $e->getMessage();
@@ -64,21 +65,36 @@ use DatabaseConnection;
 
 
 
-    function labBillDisplayById($billId)
-    {
-
-        $selectBill = "SELECT * FROM lab_billing WHERE `lab_billing`.`bill_id` = '$billId'";
-        $billQuery = $this->conn->query($selectBill);
-        $rows = $billQuery->num_rows;
-        if ($rows > 0) {
-            while ($result = $billQuery->fetch_array()) {
-                $billData[]    = $result;
+    function labBillDisplayById($billId){
+        try {
+            $billId = intval($billId);
+    
+            $selectBill = "SELECT * FROM lab_billing WHERE bill_id = $billId";
+            $stmt = $this->conn->prepare($selectBill);
+    
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $billData = $row;
+                    }
+                    $returnData = json_encode(['status' => true, 'data' => $billData]);
+                } else {
+                    $returnData = json_encode(['status' => false, 'message' => 'No data found']);
+                }
+                $stmt->close();
+                
+                return $returnData;
+            } else {
+                throw new Exception('Statement prepare exception');
             }
-            return $billData;
-        } else {
-            return 0;
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
+    
 
 
 

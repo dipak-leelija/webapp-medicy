@@ -242,6 +242,7 @@ getDisc = (val) => {
 };
 
 getLessAmount = (payable) => {
+  console.log(payable);
   let totalAmount = parseFloat(document.getElementById("total-test-price").value);
   let lessAmount  = parseFloat(document.getElementById("less-amount").value);
       payable     = parseFloat(payable);
@@ -254,6 +255,7 @@ getLessAmount = (payable) => {
   // }
   if (payable < totalAmount || payable == totalAmount) {
     lessAmount = totalAmount - payable;
+    // alert(lessAmount);
     document.getElementById("less-amount").value = lessAmount;
 
     //update status
