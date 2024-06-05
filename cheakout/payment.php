@@ -33,7 +33,27 @@ if (isset($_POST['payment-btn'])) {
 
     $ORDERID = $IdsGeneration->generateOrderId();
 
-    $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, '', 00, 0);
+    
+    if ($plan_price == 0) {
+            
+    $planResponse   = json_decode($Plan->getPlan($planid));
+    if ($planResponse->status == 1) {
+        $plan = $planResponse->data;
+
+        $planDuration   = $plan->duration;
+    }
+
+    $expDate    = getNextDate(TODAY, $planDuration);
+        $expDate    = getNextDate(TODAY, $planDuration);
+        $created = $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, $expDate, 00, 'Success');
+        if ($created) {
+            header("Location: ".URL);
+            exit;
+        }
+
+    }else {
+        $Subscription->createSubscription($ORDERID, $ADMINID, $planid, NOW, '', 00, 0);
+    }
 }
 
 // API credentials
