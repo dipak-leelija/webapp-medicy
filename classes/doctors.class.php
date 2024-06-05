@@ -49,7 +49,7 @@ class Doctors
                 if ($result->num_rows > 0) {
                     $data = array();
                     while ($row = $result->fetch_object()) {
-                        $data[] = $row;
+                        $data = $row;
                     }
                     return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
                 } else {

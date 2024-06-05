@@ -2,6 +2,7 @@
 $page = "add-new-product";
 
 require_once __DIR__ . '/config/constant.php';
+require_once __DIR__ . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 // require_once ROOT_DIR . '_config/accessPermission.php';
 
@@ -155,7 +156,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                                     <?php
                                                     foreach ($packagingUnits as $eachPackUnit) {
 
-                                                        if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
+                                                        if (in_array(strtolower($eachPackUnit['unit_name']), ALLOWEDPACKEGINGUNITS)) {
                                                             echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
                                                         }
                                                     }

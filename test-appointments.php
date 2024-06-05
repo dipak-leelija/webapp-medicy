@@ -304,7 +304,7 @@ if ($labBillDisplay->status) {
                                                     $status        = $rowlabBill->status;
 
                                                     $test = 0;
-                                                    $billDetails = $LabBillDetails->billDetailsById($billId);
+                                                    $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
                                                     if (is_array($billDetails))
                                                         $test = count($billDetails);
 
@@ -385,7 +385,7 @@ if ($labBillDisplay->status) {
                                 ' . $paginationHTML . '
                                 </div>';
                             }
-                            
+
                             ?>
 
                         </div>

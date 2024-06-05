@@ -3,12 +3,14 @@ require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
 require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'utility.class.php';
 
 
 
@@ -18,7 +20,7 @@ $Doctors         = new Doctors();
 $Patients        = new Patients();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
-
+$Utility         = new Utility;
 
 if (isset($_POST['bill-generate'])) {
 
@@ -43,7 +45,10 @@ if (isset($_POST['bill-generate'])) {
     $docId           = $_POST['prefferedDocId'];
     $referedDocName  = $_POST['refferedDocName'];
 
-
+    // echo "<br>disc percent :"; print_r($testDisc);
+    // echo "<br>discount on total : "; print_r($discountOnTotal);
+    // // echo "<br>disc percent : $testDisc";
+    // exit;
     ###################### Patient Visit Update ######################
     $labVisited = $Patients->labVisists($patientId);
 
@@ -56,42 +61,17 @@ if (isset($_POST['bill-generate'])) {
     $updateVisit = $Patients->updateLabVisiting($patientId, $labVisited);
     if ($updateVisit) {
 
-
         ##################################################################
         ######################### Bill Insertion #########################
         ##################################################################
         $testDiscBck   = $testDisc;
         $testAmountBck = $testAmount;
 
-
         ################ Bill id/ invoice id generation #############
-        $LabBillDisplay = $LabBilling->LabBillDisplay($adminId);
-        if ($LabBillDisplay == NULL) {
-            $billId = 1;
-        }else{
-            $LabBillDisplay = json_decode($LabBillDisplay,true);
-            if(is_array($LabBillDisplay) && isset($LabBillDisplay['data'])){
-                $billData = $LabBillDisplay['data'];
-                // foreach ($LabBillDisplay as $rowLabBill) {
-                //     $billId = $rowLabBill['bill_id'];
-                //     $billId = $billId+1;
-                // }
-                if (!empty($billData)) {
-                    $lastBill = end($billData); 
-                    $billId = $lastBill['bill_id'] + 1;
-                } else {
-                    $billId = 1;
-                }
-            }else{
-                $billId = 1;
-            }
-    
-        }
-        if ($billId < 10) {
-            $billId = '0'.$billId;
-        }
-        ############ End Of Bill ID / Invoice Id Generagtion #########
 
+        $billId = $Utility->randomKeysByNumber(15);
+        
+        ############ End Of Bill ID / Invoice Id Generagtion #########
 
         ################ Doctor Selection ###############
         $referedDoc = '';
@@ -114,10 +94,8 @@ if (isset($_POST['bill-generate'])) {
                         // print_r($doctorName);
                         $doctorReg  = $rowDoctor->doctor_reg_no;
                     }
-                }
-                
+                } 
             }
-        
         }
         
         if ($referedDocName != NULL) {
@@ -129,64 +107,63 @@ if (isset($_POST['bill-generate'])) {
 
 
         ############# CGST & SGST Generation #############
-        // $cgstPercentage = 5;
-        // $cgst = $cgstPercentage/100*$totalBill;
         
-        // $sgstPercentage = 5;
-        // $sgst = $sgstPercentage/100*$totalBill;
-
-        // CGST & SGST Generation
-        // $cgstPercentage = 5;
         $cgst = 0;
         
-        // $sgstPercentage = 5;
         $sgst = 0;
         ########## End of CGST & SGST Generation ##########
 
         $totalAfterDiscount = $payable;
 
-
         $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $employeeId, NOW, $adminId);
 
-        // if ($addLabBill) {
-        //     echo "<script>alert('Bill Generated.');</script>";
-        // }else {
-        //     echo "<script>alert('Bill Addition Failed!');</script>";
-        // }
+        $addLabBill = json_decode($addLabBill);
+        // print_r($addLabBill);
 
-        /* ========================= Bill Insertion End ========================= */
+        if ($addLabBill->status) {
+            ##################################################################
+            ###################### Bill Details Insertion ####################
+            ##################################################################
 
+            $testDiscsBck   = $testDisc;
+            $testAmountsBck = $testAmount;
+            $priceOfTestBck = $priceOfTest;
 
-        ##################################################################
-        ###################### Bill Details Insertion ####################
-        ##################################################################
+            foreach ($testIds as $testId) {
+                $percentageOfDiscount   = array_shift($testDiscsBck);
+                $priceAfterDiscount     = array_shift($testAmountsBck);
+                $testPrice              = array_shift($priceOfTestBck);
 
-        $testDiscsBck   = $testDisc;
-        $testAmountsBck = $testAmount;
-        $priceOfTestBck = $priceOfTest;
+                $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
+            }
 
-        foreach ($testIds as $testId) {
-            $percentageOfDiscount   = array_shift($testDiscsBck);
-            $priceAfterDiscount     = array_shift($testAmountsBck);
-            $testPrice              = array_shift($priceOfTestBck);
-
-            $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
-
-            print_r(json_decode($addBillDetails));
+            $addBillDetails = json_decode($addBillDetails);
             
-            // echo "<script>alert('Data check alert!');</script>";
+            if($addBillDetails->status){
+                header("Location: lab-bill-generation.php?billId=".url_enc($billId));
+                exit;
+            }else{
+                echo "<script>alert('Bill details Not added!!, Something is Wrong!');</script>";
+                header("Location: lab-patient-selection.php?test=true");
+                exit;
+            }
+        }else{
+            echo "<script>alert('Unable to generate lab bill !!, Something is Wrong!');</script>";
+            header("Location: lab-patient-selection.php?test=true");
+            exit;
         }
-        /* ========================= Bill Details Insertion End ========================= */
 
     }else{
         echo "<script>alert('Patient Visiting Not Updated!!, Something is Wrong!');</script>";
-    }
-    
-}else {
-    header("Location: lab-billing.php");
+        header("Location: lab-patient-selection.php?test=true");
+        exit;
+    } 
+}else{
+    header("Location: lab-patient-selection.php?test=true");
     exit;
 }
-/* ============================ End ============================ */
+
+/* ============================ End ============================ 
 
 ?>
 
@@ -408,3 +385,4 @@ if (isset($_POST['bill-generate'])) {
 <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 </html>
+*/
