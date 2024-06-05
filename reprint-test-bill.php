@@ -28,26 +28,27 @@ if (isset($_GET['bill_id'])) {
 
     $billId = $_GET['bill_id'];
 
-    $labBil      = $LabBilling->labBillDisplayById($billId);
-    foreach ($labBil as $rowlabBil) {
-                
-        $billId         = $rowlabBil['bill_id'];
-        $billingDate    = $rowlabBil['bill_date'];
-        $patientId      = $rowlabBil['patient_id'];
-        $docId          = $rowlabBil['refered_doctor'];
-        $testDate       = $rowlabBil['test_date'];
-        $totalAmount    = $rowlabBil['total_amount'];
-        $totalDiscount  = $rowlabBil['discount'];
-        $afterDiscount  = $rowlabBil['total_after_discount'];
-        $cgst           = $rowlabBil['cgst'];
-        $sgst           = $rowlabBil['sgst'];
-        $paidAmount     = $rowlabBil['paid_amount'];
-        $dueAmount      = $rowlabBil['due_amount'];
-        $status         = $rowlabBil['status'];
-        $addedBy        = $rowlabBil['added_by'];
-        $BillOn         = $rowlabBil['added_on'];
+    $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
-    }
+    // foreach ($labBil as $rowlabBil) {
+                
+        $billId         = $labBil->data->bill_id;
+        $billingDate    = $labBil->data->bill_date;
+        $patientId      = $labBil->data->patient_id;
+        $docId          = $labBil->data->refered_doctor;
+        $testDate       = $labBil->data->test_date;
+        $totalAmount    = $labBil->data->total_amount;
+        $totalDiscount  = $labBil->data->discount;
+        $afterDiscount  = $labBil->data->total_after_discount;
+        $cgst           = $labBil->data->cgst;
+        $sgst           = $labBil->data->sgst;
+        $paidAmount     = $labBil->data->paid_amount;
+        $dueAmount      = $labBil->data->due_amount;
+        $status         = $labBil->data->status;
+        $addedBy        = $labBil->data->added_by;
+        $BillOn         = $labBil->data->added_on;
+
+    // }
 
     $patient = json_decode($Patients->patientsDisplayByPId($patientId));
         $patientName    = isset($patient->name) ? $patient->name : 'N/A';
@@ -89,10 +90,10 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $patientId.'-'.$billId ?></title>
+    <!-- <title><?= $patientId.'-'.$billId ?></title> -->
+    <title>Test bill reprint</title>
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/test-bill.css">
-
 </head>
 
 
