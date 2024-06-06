@@ -303,23 +303,23 @@ if ($labBillDisplay->status) {
                                                     $paidAmount    = $rowlabBill->paid_amount;
                                                     $status        = $rowlabBill->status;
 
-                                                    $test = 0;
                                                     $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
-                                                    if (is_array($billDetails))
-                                                        $test = count($billDetails);
-
-                                                    // echo print_r($billDetails);exit;
-                                                    if ($test == 1) {
-                                                        foreach ($billDetails as $rowBillDetails) {
-                                                            $subTestId = $rowBillDetails['test_id'];
-
-                                                            $showSubTest = $SubTests->showSubTestsId($subTestId);
-                                                            foreach ($showSubTest as $rowSubTest) {
-                                                                $test = $rowSubTest['sub_test_name'];
-                                                                // echo $test;
-                                                            }
-                                                        }
+                                                    
+                                                    if($billDetails->status){
+                                                        $billDetails = $billDetails->data;
+                                                    }else{
+                                                        $billDetails = [];
                                                     }
+
+                                                    $test = count($billDetails);
+                                                    
+                                                    // foreach ($billDetails as $rowBillDetails) {
+                                                                                                    
+                                                    //     $subTestId = $rowBillDetails->test_id;
+
+                                                    //     $showSubTest = $SubTests->showSubTestsId($subTestId);
+                                                        
+                                                    // }
 
 
                                                     $docId = $referdDoc;
@@ -329,10 +329,8 @@ if ($labBillDisplay->status) {
                                                         if ($showDoctor->status == 1) {
                                                             foreach ($showDoctor->data as $rowDoctor) {
                                                                 $docName = $rowDoctor->doctor_name;
-                                                                // echo $doctorName;
                                                             }
                                                         }
-                                                        // $docName = $showDoctor->data;
 
                                                     } else {
                                                         $docName = $referdDoc;
@@ -351,7 +349,7 @@ if ($labBillDisplay->status) {
                                                     echo '>
                                                         <td>' . $billId . '</td>
                                                         <td>' . $testDate . '</td>
-                                                        <td>' . $test . ' Tests</td>
+                                                        <td>'.$test.'</td>
                                                         <td>' . $docName . '</td>
                                                         <td>Rs. ' . $paidAmount . '</td>
                                                         <td>' . $status . '</td>
