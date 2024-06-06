@@ -14,9 +14,9 @@ class ApiInfoController {
         echo json_encode($infos);
     }
 
-    public function getInfoById($id) {
+    public function getInfoByName($infoname) {
         $infoModel = new Info();
-        $info = $infoModel->getInfoById($id);
+        $info = $infoModel->getInfoByName($infoname);
         header("Content-Type: application/json; charset=UTF-8");
         echo json_encode($info);
     }

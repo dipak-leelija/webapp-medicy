@@ -15,15 +15,15 @@ class Info {
     }
 
     public function getAllInfos() {
-        $query = "SELECT * FROM info";
+        $query = "SELECT info_name, info_value FROM info";
         $result = $this->conn->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getInfoById($id) {
-        $query = "SELECT * FROM info WHERE id = ?";
+    public function getInfoByName($infoname) {
+        $query = "SELECT * FROM info WHERE info_name = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $infoname);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
