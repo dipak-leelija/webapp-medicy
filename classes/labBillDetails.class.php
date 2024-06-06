@@ -98,20 +98,48 @@ class LabBillDetails
 
     function billDetailsByMultiId($billIds)
     {
+        try{
+            $billIds = implode("','", $billIds); // Convert array to comma-separated string
 
-        $billIds = implode("','", $billIds); // Convert array to comma-separated string
+            $selectBilldetail = "SELECT * FROM lab_billing_details WHERE `lab_billing_details`.`bill_id` IN ('$billIds')";
 
-        $selectBilldetail = "SELECT * FROM lab_billing_details WHERE `lab_billing_details`.`bill_id` IN ('$billIds')";
-        $billdetailsQuery = $this->conn->query($selectBilldetail);
-        $rows = $billdetailsQuery->num_rows;
-        if ($rows > 0) {
-            while ($result = $billdetailsQuery->fetch_array()) {
-                $data[] = $result;
+            $stmt = $this->conn->prepare($selectBilldetail);
+
+            if($stmt){
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $labBillDetails[] = $row;
+                    }
+                    $returnData = json_encode(['status' => true, 'data' => $labBillDetails]);
+                } else {
+                    $returnData = json_encode(['status' => false, 'message' => 'No data found']);
+                }
+                $stmt->close();
+                
+                return $returnData;
+            } else {
+                throw new Exception('Statement prepare exception');
             }
-            return $data;
-        } else {
-            return 0;
+        }catch(Exception $e){
+            return $e->getMessage();
         }
+
+        // $billIds = implode("','", $billIds); // Convert array to comma-separated string
+
+        // $selectBilldetail = "SELECT * FROM lab_billing_details WHERE `lab_billing_details`.`bill_id` IN ('$billIds')";
+        // $billdetailsQuery = $this->conn->query($selectBilldetail);
+        // $rows = $billdetailsQuery->num_rows;
+        // if ($rows > 0) {
+        //     while ($result = $billdetailsQuery->fetch_array()) {
+        //         $data[] = $result;
+        //     }
+        //     return $data;
+        // } else {
+        //     return 0;
+        // }
     }
 
 
