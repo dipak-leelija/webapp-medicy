@@ -1,17 +1,17 @@
 <?php
 
-require_once __DIR__.'/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
-require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 
-require_once CLASS_DIR.'sub-test.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'labBilling.class.php';
-require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'labBilling.class.php';
+require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'patients.class.php';
 
 
 
@@ -30,56 +30,44 @@ if (isset($_GET['bill_id'])) {
 
     $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
-    // foreach ($labBil as $rowlabBil) {
-                
-        $billId         = $labBil->data->bill_id;
-        $billingDate    = $labBil->data->bill_date;
-        $patientId      = $labBil->data->patient_id;
-        $docId          = $labBil->data->refered_doctor;
-        $testDate       = $labBil->data->test_date;
-        $totalAmount    = $labBil->data->total_amount;
-        $totalDiscount  = $labBil->data->discount;
-        $afterDiscount  = $labBil->data->total_after_discount;
-        $cgst           = $labBil->data->cgst;
-        $sgst           = $labBil->data->sgst;
-        $paidAmount     = $labBil->data->paid_amount;
-        $dueAmount      = $labBil->data->due_amount;
-        $status         = $labBil->data->status;
-        $addedBy        = $labBil->data->added_by;
-        $BillOn         = $labBil->data->added_on;
-
-    // }
+    $billId         = $labBil->data->bill_id;
+    $billingDate    = $labBil->data->bill_date;
+    $patientId      = $labBil->data->patient_id;
+    $docId          = $labBil->data->refered_doctor;
+    $testDate       = $labBil->data->test_date;
+    $totalAmount    = $labBil->data->total_amount;
+    $totalDiscount  = $labBil->data->discount;
+    $afterDiscount  = $labBil->data->total_after_discount;
+    $cgst           = $labBil->data->cgst;
+    $sgst           = $labBil->data->sgst;
+    $paidAmount     = $labBil->data->paid_amount;
+    $dueAmount      = $labBil->data->due_amount;
+    $status         = $labBil->data->status;
+    $addedBy        = $labBil->data->added_by;
+    $BillOn         = $labBil->data->added_on;
 
     $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-        $patientName    = isset($patient->name) ? $patient->name : 'N/A';
-        $patientPhno    = isset($patient->phno) ? $patient->phno : 'N/A';
-        $patientAge     = isset($patient->age)  ? $patient->age  : 'N/A';
-        $patientGender  = isset($patient->gender) ? $patient->gender : 'N/A';
+    $patientName    = isset($patient->name) ? $patient->name : 'N/A';
+    $patientPhno    = isset($patient->phno) ? $patient->phno : 'N/A';
+    $patientAge     = isset($patient->age)  ? $patient->age  : 'N/A';
+    $patientGender  = isset($patient->gender) ? $patient->gender : 'N/A';
 
 
     if (is_numeric($docId)) {
         $showDoctor = $Doctors->showDoctorNameById($docId);
         $showDoctor = json_decode($showDoctor);
         // print_r($showDoctor);
-        if($showDoctor-> status == 1){
+        if ($showDoctor->status == 1) {
             foreach ($showDoctor->data as $rowDoctor) {
                 $doctorName = $rowDoctor->doctor_name;
                 $doctorReg = $rowDoctor->doctor_reg_no;
-    
             }
         }
-        // foreach ($showDoctor as $rowDoctor) {
-        //     $doctorName = $rowDoctor['doctor_name'];
-        //     $doctorReg = $rowDoctor['doctor_reg_no'];
-
-        // }
-    }else {
+    } else {
         $doctorName = $docId;
         $doctorReg  = NULL;
     }
-
-    
-}//eof cheaking post method
+} //eof cheaking post method
 
 ?>
 
@@ -90,7 +78,7 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title><?= $patientId.'-'.$billId ?></title> -->
+    <!-- <title><?= $patientId . '-' . $billId ?></title> -->
     <title>Test bill reprint</title>
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/test-bill.css">
@@ -103,19 +91,18 @@ if (isset($_GET['bill_id'])) {
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo?>"
-                            alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8 ps-4">
                         <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2 ?></small>
+                            <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 ?></small>
                         </p>
                         <p class='' style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareCity.', ' .$healthCarePin;?></small>
+                            <small><?php echo $healthCareCity . ', ' . $healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 2px;">
-                            <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
+                            <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
 
                     </div>
@@ -124,7 +111,7 @@ if (isset($_GET['bill_id'])) {
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id: <?php echo $billId; ?></small>
                         </p>
                         <p style="margin-top: -5px; margin-bottom: 0px;width: 68%;"><small>Date:
-                                <?php echo $billingDate;?></small></p>
+                                <?php echo $billingDate; ?></small></p>
                     </div>
                 </div>
             </div>
@@ -132,15 +119,18 @@ if (isset($_GET['bill_id'])) {
             <div class="row my-1">
                 <div class="col-sm-6 my-0">
                     <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
-                            <?php echo $patientName.', <b>Age:</b> '.$patientAge; ?></small></p>
+                            <?php echo $patientName . ', <b>Age:</b> ' . $patientAge; ?></small></p>
                     <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>M:</b>
-                            <?php echo $patientPhno; echo ', <b>Test date:</b> '.$testDate;?></small></p>
+                            <?php echo $patientPhno;
+                            echo ', <b>Test date:</b> ' . $testDate; ?></small></p>
                 </div>
                 <div class="col-sm-6 my-0">
                     <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered Doctor:</b>
                             <?php echo $doctorName; ?></small></p>
                     <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php if($doctorReg != NULL){echo '<b>Reg:</b> '.$doctorReg; } ?></small>
+                        <small><?php if ($doctorReg != NULL) {
+                                    echo '<b>Reg:</b> ' . $doctorReg;
+                                } ?></small>
                     </p>
                 </div>
 
@@ -175,54 +165,50 @@ if (isset($_GET['bill_id'])) {
                 <?php
                 $slno = 1;
                 $subTotal = floatval(00.00);
-                
-                $billDetails = $LabBillDetails->billDetailsById($billId);
-                if(is_array($billDetails))
-                    foreach ($billDetails as $rowDetails) {
-                        $subTestId = $rowDetails['test_id'];
-                        $testAmount = $rowDetails['price_after_discount'];
-                        $testDisc  = $rowDetails['percentage_of_discount_on_test'];
-                        // $testDiscBck = $testDisc;
-                        // $testAmountBck = $testAmount;
+
+                $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
+                $billDetails = $billDetails->data;
+
+                foreach ($billDetails as $rowDetails) {
+                    $subTestId = $rowDetails->test_id;
+                    $testAmount = $rowDetails->price_after_discount;
+                    $testDisc  = $rowDetails->percentage_of_discount_on_test;
+                    
+                    if ($subTestId != '') {
+                        $showSubTest = $SubTests->showSubTestsId($subTestId);
+                        foreach ($showSubTest as $rowTest) {
+                            $testName = $rowTest['sub_test_name'];
+                            $testPrice = $rowTest['price'];
 
 
-                        
+                            // $disc   = array_shift($testDiscBck);
+                            // $amount = array_shift($testAmountBck);
 
-                        if($subTestId != ''){
-                            $showSubTest = $SubTests->showSubTestsId($subTestId);
-                            foreach ($showSubTest as $rowTest) {
-                                $testName = $rowTest['sub_test_name'];
-                                $testPrice = $rowTest['price'];
+                            if ($slno > 1) {
+                                echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
+                            }
 
-                                
-                                // $disc   = array_shift($testDiscBck);
-                                // $amount = array_shift($testAmountBck);
-
-                                if ($slno >1) {
-                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
-                                }
-
-                                echo '
+                            echo '
                                 <div class="col-sm-2 ps-4 my-0">
-                                            <small>'.$slno.'</small>
+                                            <small>' . $slno . '</small>
                                         </div>
                                         <div class="col-sm-4 my-0">
-                                            <small>'.$testName.'</small>
+                                            <small>' . $testName . '</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small>'.$testPrice.'</small>
+                                            <small>' . $testPrice . '</small>
                                         </div>
                                         <div class="col-sm-2">
-                                            <small>'.$testDisc.'</small>
+                                            <small>' . $testDisc . '</small>
                                         </div>
                                         <div class="col-sm-2 text-end my-0">
-                                            <small>'.$testAmount.'</small>
+                                            <small>' . $testAmount . '</small>
                                         </div>';
-                                $slno++;
-                                $subTotal = floatval($subTotal + $testAmount);
-                            }
+                            $slno++;
+                            $subTotal = floatval($subTotal + $testAmount);
                         }
                     }
+                }
                 ?>
 
             </div>
@@ -238,22 +224,24 @@ if (isset($_GET['bill_id'])) {
                     </div>
                     <div class="col-sm-4 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹<?php echo floatval($subTotal); ?></small></b></p>
+                            <small><b>₹<?php echo floatval($subTotal); ?></small></b>
+                        </p>
                     </div>
                     <div class="col-sm-8 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
                     </div>
                     <div class="col-sm-4 mb-3 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹<?php echo floatval($paidAmount); ?></small></b></p>
+                            <small><b>₹<?php echo floatval($paidAmount); ?></small></b>
+                        </p>
                     </div>
                     <!-- <div class="col-sm-8 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
                     </div>
                     <div class="col-sm-2 text-end">
                         <?php
-                            // $cgst = 5;
-                            // echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$cgstPercentage.'%</small></p>';
+                        // $cgst = 5;
+                        // echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$cgstPercentage.'%</small></p>';
                         ?>
                     </div>
                     <div class="col-sm-2 text-end">
@@ -269,8 +257,8 @@ if (isset($_GET['bill_id'])) {
                     </div>
                     <div class="col-sm-2 text-end">
                         <?php
-                            // $sgst = 5;
-                            //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$sgstPercentage.'%</small></p>';
+                        // $sgst = 5;
+                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$sgstPercentage.'%</small></p>';
                         ?>
                     </div>
                     <div class="col-sm-2 text-end">
@@ -284,8 +272,8 @@ if (isset($_GET['bill_id'])) {
                     </div>
                     <div class="col-sm-4 text-end">
                         <?php
-                            // $total = $subTotal + $sgst + $cgst;
-                            //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small><b>₹'.$paidAmount.'</b></small></p>';
+                        // $total = $subTotal + $sgst + $cgst;
+                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small><b>₹'.$paidAmount.'</b></small></p>';
                         ?>
                     </div> -->
                     <!--/end table total calculation -->
@@ -295,15 +283,10 @@ if (isset($_GET['bill_id'])) {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2"  onclick="history.back()">Go Back</a>
+            <a class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</a>
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
     </div>
-    <?php
-
-
-
-    ?>
 </body>
 <script src="<?php echo JS_PATH ?>/bootstrap-js-5/bootstrap.js"></script>
 
