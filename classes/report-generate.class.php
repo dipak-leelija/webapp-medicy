@@ -52,7 +52,6 @@ class LabReport
     /// LabReport data fetch by id///
     function labReportShow($billId)
     {
-
         try {
             $datas = null;
             $sql = "SELECT * FROM `lab_report` where `bill_id`='$billId'";
@@ -66,7 +65,7 @@ class LabReport
             echo $e->getMessage();
         }
     }
-    /// labReport fetch by reportId ///
+    
     function labReportbyReportId($reportId)
     {
         try {

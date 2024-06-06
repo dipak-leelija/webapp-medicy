@@ -14,40 +14,40 @@ $LabReport          = new LabReport();
 $LabBilling         = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
 
-$labBillingData     = $LabBilling->labBillDisplayById($billId); ///
-$labBillingDetails  = $LabBillDetails->billDetailsById($billId); //labBillingDetails
-$showpatient        = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
-$billId             = $labBillingData[0]['bill_id'];
-$patientId          = $labBillingData[0]['patient_id'];
+$labBillingData     = json_decode($LabBilling->labBillDisplayById($billId)); ///
+$labBillingDetails  = json_decode($LabBillDetails->billDetailsById($billId)); //labBillingDetails
+$showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
+$billId             = $labBillingData->data->bill_id;
+$patientId          = $labBillingData->data->patient_id;
 
 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $adminId);
     $reportId       = $addedeReport['insert_id'];
     $reportStatus   = $addedeReport['result'];
 
-    // print_r($reportId);
     if ($reportStatus) {
         $testIds    = $_POST['testId'];
         $testValue  = $_POST['values'];
         $unitValues = $_POST['unitValues'];
-        if(is_array($testValue))
-        foreach ($testValue as $index => $value) {
-            $unitValue = $unitValues[$index];
-            $testId = $testIds[$index];
+        if (is_array($testValue))
+            foreach ($testValue as $index => $value) {
+                $unitValue = $unitValues[$index];
+                $testId = $testIds[$index];
 
-            $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-            if (!$labReportAdd) {
-                $errMsg = "Something is wrong with the value : {$unitValue}";
-                break;
+                $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+                if (!$labReportAdd) {
+                    $errMsg = "Something is wrong with the value : {$unitValue}";
+                    break;
+                }
             }
-        }
     }
 
     if ($labReportAdd) {
-        header('Location: lab-report.php?bill_id='.base64_encode($billId));
+        header('Location: lab-report.php?bill_id=' . base64_encode($billId));
         exit;
     }
 }
@@ -68,9 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
@@ -106,13 +104,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
-                            <?php if (isset($errMsg)) {?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?= $errMsg ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                            <?php if (isset($errMsg)) { ?>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= $errMsg ?>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             <?php } ?>
                             <form method="POST" action="">
                                 <div class="card-body">
@@ -123,10 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         $patientAge  = isset($showpatient->age)    ? $showpatient->age    : 'N/A';
                                         $patientSex  = isset($showpatient->gender) ? $showpatient->gender : 'N/A';
                                     }
-                                    $testDate = $labBillingData[0]['test_date'];
+                                    $testDate = $labBillingData->data->test_date;
                                     ?>
-                                    <div
-                                        style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
+                                    <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
                                         <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
                                         <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
                                         <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
@@ -139,17 +136,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                         <?php
                                         $unitCounts = array();
-                                        if(is_array($labBillingDetails))
-                                        foreach ($labBillingDetails as $index => $test) {
-                                            $testId = $test['test_id'];
+                                        foreach ($labBillingDetails->data as $index => $test) {
+                                            $testId = $test->test_id;
                                             $showTestName = $LabReport->patientTest($testId);
                                             // print_r($showTestName);
                                             $showTestName = json_decode($showTestName);
-                                            
+
                                             $testId = $showTestName->id;
                                             $subTestName = $showTestName->sub_test_name;
                                             $unitNames = $showTestName->unit;
-                                            
+
                                             echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>";
                                             echo "<div>
                                                     <div style='width:40%; margin-left:20px;'>$subTestName</div>";
@@ -182,8 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         ?>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" id="generateReport"
-                                            class="btn btn-primary btn-sm">Generate Report</button>
+                                        <button type="submit" id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
                                     </div>
                             </form>
                         </div>

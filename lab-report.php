@@ -19,13 +19,13 @@ $LabReport     = new LabReport();
 $Patients      = new Patients();
 $LabBilling    = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
-$labBillingData   = $LabBilling->labBillDisplayById($billId); /// geting for test_date
+$labBillingData   = json_decode($LabBilling->labBillDisplayById($billId)); /// geting for test_date
 $labReportShow    = $LabReport->labReportShow($billId);
-$labBillingDetails      = $LabBillDetails->billDetailsById($billId);
-// print_r($labReportDetailbyId);
+$labBillingDetails = json_decode($LabBillDetails->billDetailsById($billId));
 
-///find patient Id //
+
 $labReportShow = json_decode($labReportShow);
+// print_r($labReportShow);
 if ($labReportShow !== null) {
     $patienId = $labReportShow->patient_id;
     $reportId = $labReportShow->id;
@@ -92,10 +92,10 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
             <div>
                 <p class="m-0"><b>Age :</b> <?php echo $patientAge; ?> <b>Sex :</b> <?php echo $patientSex; ?></p>
 
-                <p class="m-0"><b>Collection Date :</b> <?php $testDate = $labBillingData[0]['test_date'];
+                <p class="m-0"><b>Collection Date :</b> <?php $testDate = $labBillingData->data->test_date;
                                                         $date = date_create($testDate);
                                                         echo date_format($date, "d-m-Y"); ?></p>
-                <p class="m-0"><b>Reporting Date :</b> <?php $testDate = $labBillingData[0]['test_date'];
+                <p class="m-0"><b>Reporting Date :</b> <?php $testDate = $labBillingData->data->test_date;
                                                         $date = date_create($testDate);
                                                         echo date_format($date, "d-m-Y"); ?></p>
             </div>
@@ -116,8 +116,8 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
                 $unitCounts = array();
                 $unitNames = array();
 
-                foreach ($labBillingDetails as $index => $test) {
-                    $testId = $test['test_id'];
+                foreach ($labBillingDetails->data as $index => $test) {
+                    $testId = $test->test_id;
                     $showTestName = $LabReport->patientTest($testId);
                     $showTestName = json_decode($showTestName);
                     $testId = $showTestName->id;
