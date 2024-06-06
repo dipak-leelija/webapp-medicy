@@ -5,7 +5,9 @@
 
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+
 require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
@@ -25,7 +27,7 @@ $LabBillDetails  = new LabBillDetails();
 
 
 //Function Initilized
-$showDoctors    = $Doctors->showDoctors($adminId);
+$showDoctors    = json_decode($Doctors->showDoctors($adminId));
 $showSubTests   = $SubTests->showSubTests();
 
 
@@ -34,66 +36,31 @@ $showSubTests   = $SubTests->showSubTests();
 
 
 if (isset($_GET['invoice'])) {
-   $billId =  $_GET['invoice'];
 
+  $billId =  url_dec($_GET['invoice']);
 
-  $labBillDisplay = $LabBilling->labBillDisplayById($billId);
+  $labBillDisplay = json_decode($LabBilling->labBillDisplayById($billId));
   $patientId = 0;
   $refDoc = 0;
   // echo $labBillDisplay;
-  if (is_array($labBillDisplay)) {
-    foreach ($labBillDisplay as $labBill) {
-      $patientId = $labBill['patient_id'];
-      $testDate  = $labBill['test_date'];
-      $refDoc    = $labBill['refered_doctor'];
-      $labBill['total_amount'];
-      $labBill['discount'];
-      $labBill['total_after_discount'];
-      $labBill['paid_amount'];
-      $labBill['due_amount'];
 
-      // echo $labBill['total_amount'].'<br>';
-      // echo $labBill['discount'].'<br>';
-      // echo $labBill['total_after_discount'].'<br>';
-      // echo $labBill['paid_amount'].'<br>';
-      // echo $labBill['due_amount'].'<br>';
-      // exit;
-    }
-  }
+
+  $patientId = $labBillDisplay->data->patient_id;
+  $testDate  = $labBillDisplay->data->test_date;
+  $refDoc    = $labBillDisplay->data->refered_doctor;
+
+  $labBillDisplay->data->total_amount;
+  $labBillDisplay->data->discount;
+  $labBillDisplay->data->total_after_discount;
+  $labBillDisplay->data->paid_amount;
+  $labBillDisplay->data->due_amount;
+
+
+
   $patientsDisplay = null;
   if ($patientId) {
     $patientsDisplay = json_decode($Patients->patientsDisplayByPId($patientId));
   }
-
-  // print_r($patientsDisplay);
-  // echo $patientsDisplay[0]['name'].'<br>';
-  // echo $patientsDisplay[0]['age'].'<br>';
-  // echo $patientsDisplay[0]['gender'].'<br>';
-  // echo $patientsDisplay[0]['phno'].'<br>';
-  // echo $patientsDisplay[0][].'<br>';
-
-  // foreach($patientsDisplay as $patients){
-  //     $patientName  = $patients['name'];
-  //     $patientAge   = $patients['age'];
-  // }
-  // exit;
-
-  // $patientId          = $_POST["patientId"];
-  // $testDate           = $_POST["testDate"];
-  // $patientName        = $_POST["patientName"];
-  // $patientGurdianName = $_POST["patientGurdianName"];
-  // $patientEmail       = $_POST["patientEmail"];
-  // $patientPhoneNumber = $_POST["patientPhoneNumber"];
-  // $patientAge         = $_POST["patientAge"];
-  // $patientWeight      = $_POST["patientWeight"];
-  // $gender             = $_POST["gender"];
-  // $patientAddress1    = $_POST["patientAddress1"];
-  // $patientAddress2    = $_POST["patientAddress2"];
-  // $patientPS          = $_POST["patientPS"];
-  // $patientDist        = $_POST["patientDist"];
-  // $patientPIN         = $_POST["patientPIN"];
-  // $patientState       = $_POST["patientState"];
-
 }
 ############################################################################################
 
@@ -107,9 +74,9 @@ if (is_numeric($refDoc)) {
   if ($docDetails->status == 1) {
     foreach ($docDetails->data as $rowDoctor) {
       $existsDoctorName = $rowDoctor->doctor_name;
-        // echo $doctorName;
+      // echo $doctorName;
     }
-} 
+  }
   // if (is_array($docDetails) && isset($docDetails[0][2])) {
   //   $existsDoctorName = $docDetails[0][2];
   // }
@@ -185,7 +152,7 @@ if (is_numeric($refDoc)) {
                         <p>Patient Name: </p>
                       </div>
                       <div class="col-md-7 mb-0 justify-content-start">
-                        <p class="text-start"><b><?php echo isset($patientsDisplay->name) ? $patientsDisplay->name : 'N/A' ; ?> </b></p>
+                        <p class="text-start"><b><?php echo isset($patientsDisplay->name) ? $patientsDisplay->name : 'N/A'; ?> </b></p>
                       </div>
 
                       <div class="col-md-5 mb-0">
@@ -213,7 +180,6 @@ if (is_numeric($refDoc)) {
                   </div>
                 </div>
 
-
                 <div class="row justify-content-between text-left">
                   <div class="form-group col-sm-12 flex-column d-flex my-0">
                     <label class="form-control-label" for="patientDoctor">Rreffered By</label>
@@ -224,16 +190,16 @@ if (is_numeric($refDoc)) {
                       <option value="Self">By Self</option>
 
                       <?php
-                      $showDoctors = json_decode($showDoctors, true);
-                      print_r($showDoctors);
-                      foreach ($showDoctors as $showDoctorDetails) {
-                        $doctorId = $showDoctorDetails['doctor_id'];
-                        $doctorName = $showDoctorDetails['doctor_name'];
+                      foreach ($showDoctors->data as $showDoctorDetails) {
+                        $doctorId = $showDoctorDetails->doctor_id;
+                        $doctorName = $showDoctorDetails->doctor_name;
                         echo '<option value="' . $doctorId . '">' . $doctorName . '</option>';
                       }
                       ?>
                     </select>
                   </div>
+
+                  
 
                   <div class="justify-content-center text-center">
                     or
@@ -381,8 +347,8 @@ if (is_numeric($refDoc)) {
                       <p class="mb-1">Total: </p>
                     </div>
                     <div class="form-group col-sm-5 flex-column d-flex ">
-                      <input type="number" name="total" id="total-test-price" value="<?php echo floatval($labBill['total_amount']); ?>" hidden>
-                      <p class="mb-1 text-end">₹ <span id="total-view"><?php echo floatval($labBill['total_amount']); ?></span></p>
+                      <input type="number" name="total" id="total-test-price" value="<?php echo floatval($labBillDisplay->data->total_amount); ?>" hidden>
+                      <p class="mb-1 text-end">₹ <span id="total-view"><?php echo floatval($labBillDisplay->data->total_amount); ?></span></p>
                     </div>
                     <div class="form-group col-sm-1 flex-column d-flex">
                       <p class="mb-1 text-end"> </p>
@@ -395,7 +361,7 @@ if (is_numeric($refDoc)) {
                       <p class="mb-1">Payable: </p>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex ">
-                      <input class="myForm text-center" id="payable" name="payable" onkeyup="getLessAmount(this.value)" type="number" value="<?php echo  floatval($labBill['total_after_discount']); ?>" required>
+                      <input class="myForm text-center" id="payable" name="payable" onkeyup="getLessAmount(this.value)" type="number" value="<?php echo  floatval($labBillDisplay->data->total_after_discount); ?>" required>
                     </div>
 
                   </div>
@@ -416,15 +382,15 @@ if (is_numeric($refDoc)) {
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex ">
                       <label class="form-control-label" for="">Due Amount</label>
-                      <input class="myForm text-center" name="due" id="due" type="number" onkeyup="dueAmount(this.value)" required readonly>
+                      <input class="myForm text-center" name="due" id="due" type="number" value="<?php echo floatval($labBillDisplay->data->due_amount); ?>" onkeyup="dueAmount(this.value)" required readonly>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex">
                       <label class="form-control-label" for="less-amount">Less Amount</label>
-                      <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($labBill['discount']); ?>" readonly>
+                      <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($labBillDisplay->data->discount); ?>" readonly>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex">
                       <label class="form-control-label" for="">Paid Amount</label>
-                      <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" onkeyup="paidAmount(this.value)" required readonly>
+                      <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" value="<?php echo floatval($labBillDisplay->data->paid_amount); ?>" onkeyup="paidAmount(this.value)" required readonly>
                     </div>
                   </div>
 
