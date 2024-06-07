@@ -280,7 +280,7 @@ if ($labBillDisplay->status) {
                             if ($totalItem > 0) {
                             ?>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                    <table class="table table-sm table-bordered" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Invoice ID</th>
