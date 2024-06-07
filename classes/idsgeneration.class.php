@@ -270,25 +270,25 @@ class IdsGeneration{
     }
 
 
-    public function generateLabBillId() {
-        $query = "SELECT bill_id FROM lab_billing";
-        $result = $this->conn->query($query);
+    // public function generateLabBillId() {
+    //     $query = "SELECT bill_id FROM lab_billing";
+    //     $result = $this->conn->query($query);
         
-        $existingBillIds = [];
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $existingBillIds[] = $row['bill_id'];
-            }
-        }
+    //     $existingBillIds = [];
+    //     if ($result->num_rows > 0) {
+    //         while ($row = $result->fetch_assoc()) {
+    //             $existingBillIds[] = $row['bill_id'];
+    //         }
+    //     }
         
-        $newBillId = 'ML' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);;
+    //     $newBillId = 'ML' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);;
         
-        if (in_array($newBillId, $existingBillIds)) {
-            $this->generateLabBillId();
-        }else {
-            return $newBillId;
-        }
-    }
+    //     if (in_array($newBillId, $existingBillIds)) {
+    //         $this->generateLabBillId();
+    //     }else {
+    //         return $newBillId;
+    //     }
+    // }
     
 
 }
