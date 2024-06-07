@@ -2,6 +2,7 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
@@ -16,9 +17,8 @@ $SubTests           = new SubTests;
 $Patients           = new Patients;
 $Doctors            = new Doctors;
 
+$labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
-
-$labBil      = $LabBilling->labBillDisplayById($billId);
 ?>
 
 <!DOCTYPE html>
@@ -44,31 +44,29 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 
     <table class="table table-striped">
         <?php
-        if (is_array($labBil) || is_object($labBil)) {
-            foreach ($labBil as $rowlabBil) {
+        if ($labBil->status) {
 
-                $billId         = $rowlabBil['bill_id'];
-                $billDate       = $rowlabBil['bill_date'];
-                $patientId      = $rowlabBil['patient_id'];
-                $docId          = $rowlabBil['refered_doctor'];
-                $testDate       = $rowlabBil['test_date'];
-                $totalAmount    = $rowlabBil['total_amount'];
-                $totalDiscount  = $rowlabBil['discount'];
-                $afterDiscount  = $rowlabBil['total_after_discount'];
-                $cgst           = $rowlabBil['cgst'];
-                $sgst           = $rowlabBil['sgst'];
-                $paidAmount     = $rowlabBil['paid_amount'];
-                $dueAmount      = $rowlabBil['due_amount'];
-                $status         = $rowlabBil['status'];
-                $addedBy        = $rowlabBil['added_by'];
-                $BillOn         = $rowlabBil['added_on'];
-            }
+            $billId         = $labBil->data->bill_id;
+            $billDate       = $labBil->data->bill_date;
+            $patientId      = $labBil->data->patient_id;
+            $docId          = $labBil->data->refered_doctor;
+            $testDate       = $labBil->data->test_date;
+            $totalAmount    = $labBil->data->total_amount;
+            $totalDiscount  = $labBil->data->discount;
+            $afterDiscount  = $labBil->data->total_after_discount;
+            $cgst           = $labBil->data->cgst;
+            $sgst           = $labBil->data->sgst;
+            $paidAmount     = $labBil->data->paid_amount;
+            $dueAmount      = $labBil->data->due_amount;
+            $status         = $labBil->data->status;
+            $addedBy        = $labBil->data->added_by;
+            $BillOn         = $labBil->data->added_on;
         } else {
             echo "Bill Not found";
         }
 
         $patient = $Patients->patientsDisplayByPId($patientId);
-      
+
         if ($patient !== false) {
             $patientData = json_decode($patient, true);
             if ($patientData !== null) {
@@ -82,22 +80,18 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
         }
 
 
-
         if (is_numeric($docId)) {
             $showDoctor = $Doctors->showDoctorNameById($docId);
             $showDoctor = json_decode($showDoctor);
             if ($showDoctor->status == 1) {
                 foreach ($showDoctor->data as $rowDoctor) {
                     $doctorName = $rowDoctor->doctor_name;
-                    // echo $doctorName;
                 }
             }
-            // foreach ($showDoctor as $rowDoctor) {
-            //     $doctorName = $rowDoctor['doctor_name'];
-            // }
         } else {
             $doctorName = $docId;
         }
+
         ?>
         <div class="row mb-4">
             <div class="col-sm-4">
@@ -117,14 +111,11 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                     <?php
                     if ($status != "Cancelled") {
 
-                        echo '<h6><a class="btn btn-sm btn-primary" href="' . LOCAL_DIR . 'edit-lab-billing.php?invoice=' . $billId . '">Edit</a></h6>';
+                        echo '<h6><a class="btn btn-sm btn-primary" href="' . LOCAL_DIR . 'edit-lab-billing.php?invoice=' . url_enc($billId) . '">Edit</a></h6>';
                     } else {
                         echo '<h6 class="border border-danger text-danger p-1"> Bill Cancelled</h6>';
                     }
                     ?>
-                    <!-- <form action="../edit-lab-billing.php">
-                    <button type="submit">Edit</button>
-                </form> -->
 
                 </div>
 
@@ -144,44 +135,35 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
         </thead>
         <tbody>
             <?php
+
             $slno = 0;
-            $billDetails = $LabBillDetails->billDetailsById($billId);
-            if (is_array($billDetails))
-                foreach ($billDetails as $rowbillDetails) {
-                    $slno += 1;
-                    // $rowbillDetails['id'];
-                    $billId     = $rowbillDetails['bill_id'];
-                    // $rowbillDetails['billing_date'];
-                    // $rowbillDetails['test_date'];
-                    $subTestId     = $rowbillDetails['test_id'];
-                    $testPrice  = $rowbillDetails['test_price'];
-                    $discOnTest = $rowbillDetails['percentage_of_discount_on_test'];
-                    $amount     = $rowbillDetails['price_after_discount'];
-                    // $rowbillDetails['added_by'];
-                    // $rowbillDetails['added_on'];
+            $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
 
-                    $subTest = $SubTests->showSubTestsId($subTestId);
-                    foreach ($subTest as $rowsubTest) {
-                        $testName = $rowsubTest['sub_test_name'];
-                    }
+            foreach ($billDetails->data as $rowbillDetails) {
 
+                $slno += 1;
+                $billId     = $rowbillDetails->bill_id;
+                $subTestId     = $rowbillDetails->test_id;
+                $testPrice  = $rowbillDetails->test_price;
+                $discOnTest = $rowbillDetails->percentage_of_discount_on_test;
+                $amount     = $rowbillDetails->price_after_discount;
 
+                $subTest = $SubTests->showSubTestsId($subTestId);
+                foreach ($subTest as $rowsubTest) {
+                    $testName = $rowsubTest['sub_test_name'];
+                }
 
-                    echo '<tr>
+                echo '<tr>
                         <th scope="row">' . $slno . '</th>
                         <td>' . $testName . '</td>
                         <td>' . $testPrice . '</td>
                         <td>' . $discOnTest . '</td>
                         <td>' . $amount . '</td>
                       </tr>';
-                }
+            }
             ?>
         </tbody>
     </table>
-
-
-
-    <!-- <div class="my-6"></div> -->
 
     <table class="table mt-5 mb-0 pb-0">
         <thead class="thead-dark mb-0 pb-0">
@@ -197,8 +179,6 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
             </tr>
         </thead>
     </table>
-
-    <!-- <script src="../../js/iframe-resize/iframeResizer.contentWindow.min.js"></script> -->
 
 </body>
 

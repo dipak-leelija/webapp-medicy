@@ -30,9 +30,11 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
     foreach ($labReportDetailbyId as $report) {
         $testIds[] = $report->test_id;
+        $testData[] = $report->test_value;
         $reportId = $report->report_id;
     }
 }
+
 
 /// find patient id ///
 $findPatienttId = $LabReport->labReportbyReportId($reportId);
@@ -45,12 +47,11 @@ if ($findPatienttId !== null) {
 } //end..//
 
 /// geting for test_date ///
-$labBillingDetails   = $LabBilling->labBillDisplayById($billId); /// geting for test_date
-if ($labBillingDetails !== 0) {
-    foreach ($labBillingDetails as $result) {
-        $testDate = $result['test_date'];
-    }
-} ///end..
+$labBillingDetails   = json_decode($LabBilling->labBillDisplayById($billId)); /// geting for test_date
+$labBillingDetails = $labBillingDetails->data;
+
+$testDate = $labBillingDetails->test_date;
+
 
 //===find patient details ===//
 $patientDatafetch = $LabReport->patientDatafetch($patient_id);
@@ -134,61 +135,70 @@ if ($patientDatafetch !== null) {
                 <?php
                 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
                 $labReportDetailbyId = json_decode($labReportDetailbyId);
+
                 echo "<div class='' style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px; '>";
-                // echo "<div style='display: flex; justify-content:space-around; align-items:center' >";
 
                 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
-
-                    // $sub_test_names = [];
-                    foreach ($testIds as $testId) {
-                        $patientTest = $LabReport->patientTest($testId);
+                    for ($i = 0; $i < count($testIds); $i++) {
+                        $patientTest = $LabReport->patientTest($testIds[$i]);
                         $decodedData = json_decode($patientTest, true);
                         if ($decodedData !== null) {
                             $sub_test_name = $decodedData['sub_test_name'];
-                            echo "<div style='display: flex; justify-content:space-around; align-items:flex-start'>";
-                            echo "<div ><p>$sub_test_name</p></div>";
-                            echo "<div ><p>: $report->test_value</p></div>";
-                            echo "</div>";
+                ?>
+                            <div style='display: flex; justify-content:space-around; align-items:flex-start'>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-8">
+                                    <p><?= $sub_test_name ?></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>: <?= $testData[$i] ?></p>
+                                </div>
+                            </div>
+                <?php
                         }
                     }
+
                     foreach ($labReportDetailbyId as $report) {
                         // echo "<div  style=' width: 40%; '>$report->test_value</div>";
                     }
                 }
-                echo "</div>";
+
                 ?>
+
             </div>
 
-            <div>
-                <p style="margin-left:85px;margin-bottom:0px;">Reference values are obtained from the literature provided with reagent kit.</p>
-                <hr class="mb-0 mt-0" style="color:black;background:black; width:90%; height:5px; margin-left:50px">
-            </div>
-            <div>
-                <div style="display: flex; margin-top:15px; margin-right: 40px; justify-content:flex-end;align-items:center">
-                    <div style="margin-right:13%;"><b>***END OF REPORT***</b></div>
-                    <div>
-                        <p class="m-0">&nbsp;&nbsp;&nbsp;&nbsp;<b>DR. S.BISWAS</b></p>
-                        <p class="m-0"><b>Consultant Pathologist(MD)</b></p>
-                        <p class="m-0"><b>Reg. No: 59304 (WBMC)</b></p>
-                    </div>
-                </div>
-                <div style="display: flex;justify-content:flex-start;align-items:flex-start; color:#183697; margin-left:50px">
-                    <div>
-                        <p class="m-0"><small><i><b>A Health Care Unit for :-</b></i></small></p>
-                        <p class="m-0"><small><b>Advance Assay, USG & ECHO, Colour Doppler,</b></small></p>
-                        <p class="m-0"><small><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></small></p>
-                    </div>
-                    <div style="margin-left:5%;"><small><i><b>Verified by :</b></i></small></div>
-                </div>
-            </div>
         </div>
-        <!-- ////// -->
-        <div class="footer"></div>
 
-        <div class="printButton mb-5">
-            <button class="btn btn-primary" onclick="history.back()">Go Back</button>
-            <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
+        <div>
+            <p style="margin-left:85px;margin-bottom:0px;">Reference values are obtained from the literature provided with reagent kit.</p>
+            <hr class="mb-0 mt-0" style="color:black;background:black; width:90%; height:5px; margin-left:50px">
         </div>
+        <div>
+            <div style="display: flex; margin-top:15px; margin-right: 40px; justify-content:flex-end;align-items:center">
+                <div style="margin-right:13%;"><b>***END OF REPORT***</b></div>
+                <div>
+                    <p class="m-0">&nbsp;&nbsp;&nbsp;&nbsp;<b>DR. S.BISWAS</b></p>
+                    <p class="m-0"><b>Consultant Pathologist(MD)</b></p>
+                    <p class="m-0"><b>Reg. No: 59304 (WBMC)</b></p>
+                </div>
+            </div>
+            <div style="display: flex;justify-content:flex-start;align-items:flex-start; color:#183697; margin-left:50px">
+                <div>
+                    <p class="m-0"><small><i><b>A Health Care Unit for :-</b></i></small></p>
+                    <p class="m-0"><small><b>Advance Assay, USG & ECHO, Colour Doppler,</b></small></p>
+                    <p class="m-0"><small><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></small></p>
+                </div>
+                <div style="margin-left:5%;"><small><i><b>Verified by :</b></i></small></div>
+            </div>
+        </div>
+    </div>
+    <!-- ////// -->
+    <div class="footer"></div>
+
+    <div class="printButton mb-5">
+        <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+        <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
+    </div>
     </div>
 </body>
 
