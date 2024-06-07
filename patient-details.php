@@ -16,7 +16,7 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 
 
-$patientId = url_dec($_GET['patient']);
+
 
 $Patients       = new Patients;
 $LabBilling     = new LabBilling;
@@ -26,9 +26,12 @@ $LabAppointments = new LabAppointments();
 $LabReport      = new LabReport;
 $StockOut       = new StockOut;
 
-$patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
 
-// print_r($patientDetails) . "<br>";
+
+$getPatientId = url_dec($_GET['patient']); // on click get value
+
+// patient details by patient id
+$patientDetails = json_decode($Patients->patientsDisplayByPId($getPatientId));
 
 $Name = $patientDetails->name;
 $Age  = $patientDetails->age;
@@ -38,14 +41,17 @@ $labVisited = $patientDetails->lab_visited;
 $lastVisited = $patientDetails->added_on;
 
 
-/// list of invoice with bill from stokOut table ///
-$stockOutdatas = $StockOut->stockOutByPatientId($patientId);
+/// list of invoice with bill from stokOut table /// stock out data by patient id
+$stockOutdatas = $StockOut->stockOutByPatientId($getPatientId);
 $stockOutdatas = json_decode($stockOutdatas, true);
+// print_r($stockOutdatas);
 $invoiceId = [];
 foreach ($stockOutdatas as $stockData) {
     $invoiceId[] = $stockData['invoice_id'];
 }
 
+
+// stock out details by invoice id // 
 $stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
 
 if ($stockOutDetailsBYinvoiveID !== null) {
@@ -64,18 +70,24 @@ if ($stockOutDetailsBYinvoiveID !== null) {
 }
 //end...
 
-//=====find labreport by Id=====//
-$labreportfetch = $LabReport->labreportfetch();
+// =====find labreport by Id=====// data fetch form lab_report table // by patient id and adminid
+$labreportfetch = $LabReport->patientDatafetchByPatientAndAdmin($getPatientId, $adminId);
 $labReportData = json_decode($labreportfetch, true);
-// if ($labReportData) {
-//     foreach ($labReportData as $entry) {
-//         // $reportId  = $entry['id'] . "<br>";
-//         // $patientId = $entry['patient_id'] . "<br>";
-//     }
+// print_r($labReportData);
+
+if (!empty($labReportData)) {
+    $reportId  = $labReportData['id'];
+    $patientId = $labReportData['patient_id'];
+}
+// else {
+//     echo "no data found";
 // } ////end....
 
-///........ for amount spend and find bill_id for finding test_id....... ///
-$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId($patientId);
+
+
+// lab billing details
+$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId($getPatientId);
+
 $bill_ids = [];
 $billDates = [];
 $spent = 0;
@@ -88,31 +100,39 @@ if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
         $billDates[] = $billDate;
     }
     $maxBillDate = max($billDates);
-} //--end--//
+}
+
+
+
 
 ///..... find test_id from bill_id for finding sub_test....//////
-$test_ids = [];
-$billDetailsByMultiId = $LabBillDetails->billDetailsByMultiId($bill_ids);
-if (is_array($billDetailsByMultiId)) {
-    foreach ($billDetailsByMultiId as $MultiId) {
-        $test_ids[] = $MultiId['test_id'];
-        $billId = $MultiId['bill_id'];
-        $date   = $MultiId['test_date'];
-    }
-} ///---end--///
+if (!empty($labBillingDetails)) {
+    $test_ids = [];
+    $billDetailsByMultiId = json_decode($LabBillDetails->billDetailsByMultiId($bill_ids));
 
-
-///......find multiple subtest name from multiple test_id.....//////
-$subTestNames = [];
-foreach ($test_ids as $test_id) {
-    $subTestDetails = $SubTests->showSubTestsId($test_id);
-    if (is_array($subTestDetails)) {
-        foreach ($subTestDetails as $subTest) {
-            $subTestNames[] = $subTest['sub_test_name'];
-        }
+    foreach ($billDetailsByMultiId->data as $MultiId) {
+        $test_ids[] = $MultiId->test_id;
+        $billId = $MultiId->bill_id;
+        $date   = $MultiId->test_date;
     }
 }
-$occurrences = array_count_values($subTestNames);
+
+///---end--///
+
+
+if (!empty($labBillingDetails)) {
+    ///......find multiple subtest name from multiple test_id.....//////
+    $subTestNames = [];
+    foreach ($test_ids as $test_id) {
+        $subTestDetails = $SubTests->showSubTestsId($test_id);
+        if (is_array($subTestDetails)) {
+            foreach ($subTestDetails as $subTest) {
+                $subTestNames[] = $subTest['sub_test_name'];
+            }
+        }
+    }
+    $occurrences = array_count_values($subTestNames);
+}
 
 
 ?>
@@ -181,7 +201,7 @@ $occurrences = array_count_values($subTestNames);
                                                             <tr>
                                                                 <th>Patient Id</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= $patientId ?></td>
+                                                                <td><?= $getPatientId ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Name</th>
@@ -239,7 +259,7 @@ $occurrences = array_count_values($subTestNames);
                             </div>
 
                             <div class="scondrow d-flex justify-content-around pt-2 ">
-                                <div class=" w- 100 mt-2 p-2 rounded" >
+                                <div class=" w- 100 mt-2 p-2 rounded">
                                     <canvas id="chart2"></canvas>
                                 </div>
                                 <?php
@@ -299,36 +319,44 @@ $occurrences = array_count_values($subTestNames);
 
                                         <tbody>
                                             <?php
+
                                             $labReportData = json_decode($labreportfetch, true);
-                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById($patientId);
+                                            // echo $getPatientId;
+                                            print_r($labReportData);
+                                            if (!empty($labReportData)) {
+                                                $showLabAppointmentsById = json_decode($LabBilling->labBillDisplayById($labReportData['bill_id']));
 
-                                            if ($labReportData && $showLabAppointmentsById) {
-                                                // Create an associative array with patient_id as key and reportId as value
-                                                $reportIdMap = [];
-                                                foreach ($labReportData as $entry) {
-                                                    $reportIdMap[$entry['patient_id']] = $entry['id'];
-                                                }
+                                                $showLabAppointmentsById = $showLabAppointmentsById->data;
 
-                                                if ($showLabAppointmentsById) {
-                                                    $count = 0;
-                                                    foreach ($showLabAppointmentsById as $appointment) {
+                                                if ($labReportData && $showLabAppointmentsById) {
+                                                    // Create an associative array with patient_id as key and reportId as value
+                                                    $reportIdMap = [];
+                                                    foreach ($labReportData as $entry) {
+                                                        $reportIdMap[$entry->patient_id] = $entry->id;
+                                                    }
 
-                                                        $patient_id = $appointment['patient_id'];
-                                                        $bill_id    = $appointment['bill_id'];
-                                                        $test_date  = $appointment['test_date'];
-                                                        $count++;
+                                                    if ($showLabAppointmentsById) {
+                                                        $count = 0;
+                                                        foreach ($showLabAppointmentsById as $appointment) {
 
-                                                        if (isset($reportIdMap[$patient_id])) {
-                                                            $reportId = $reportIdMap[$patient_id];
+                                                            $patient_id = $appointment['patient_id'];
+                                                            $bill_id    = $appointment['bill_id'];
+                                                            $test_date  = $appointment['test_date'];
+                                                            $count++;
+
+                                                            if (isset($reportIdMap[$patient_id])) {
+                                                                $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                            <tr class="appointment-row">
-                                                                <td><?= $bill_id ?></td>
-                                                                <td><?= $test_date ?></td>
-                                                                <td><a class="text-primary text-center" title="show" href="reprint-test-bill.php?bill_id=<?= $billID  ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
-                                                                <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                                <tr class="appointment-row">
+                                                                    <td><?= $bill_id ?></td>
+                                                                    <td><?= $test_date ?></td>
+                                                                    <td><a class="text-primary text-center" title="show" href="reprint-test-bill.php?bill_id=<?= $billID  ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
 
-                                                            </tr>
+                                                                    <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+
+                                                                </tr>
                                             <?php
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -346,7 +374,6 @@ $occurrences = array_count_values($subTestNames);
                             </div>
                         </div>
                     </div>
-
 
                 </div>
                 <!-- /.container-fluid -->

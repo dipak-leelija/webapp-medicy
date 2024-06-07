@@ -34,15 +34,23 @@ if (isset($_GET['billId'])) {
         $patientColumn = 'patient_id';
         $patientData = json_decode($Patients->chekPatientsDataOnColumn($patientColumn, $labBillData->data->patient_id, $adminId));
 
-        $docColumn = 'doctor_id';
-        $docData = json_decode($Doctors->chekDataOnColumn($docColumn, $labBillData->data->refered_doctor, $adminId));
+        if($labBillData->data->refered_doctor != 'Self'){
+            $docColumn = 'doctor_id';
+            $docData = json_decode($Doctors->chekDataOnColumn($docColumn, $labBillData->data->refered_doctor, $adminId));
+
+            $doctorName  = $docData->data->doctor_name;
+            $doctorReg  = $docData->data->doctor_reg_no;
+        }else{
+            $doctorName = 'SELF';
+            $doctorReg = '';
+        }
+        
 
         $patientName = $patientData->data->name;
         $patientPhno = $patientData->data->phno;
         $patientAge = $patientData->data->age;
 
-        $doctorName  = $docData->data->doctor_name;
-        $doctorReg  = $docData->data->doctor_reg_no;
+        
 
         $paidAmount = $labBillData->data->paid_amount;
         $dueAmount = $labBillData->data->due_amount;
@@ -168,9 +176,10 @@ if (isset($_GET['billId'])) {
                         $testIds  = $labBillDetailsData[$i]->test_id;
                                     
                         $showSubTest = $SubTests->showSubTestsId($testIds);
+                        // print_r($showSubTest);
                         
-                        $testName = $showSubTest['sub_test_name'];
-                        $testPrice = $showSubTest['price'];
+                        $testName = $showSubTest[0]['sub_test_name'];
+                        $testPrice = $showSubTest[0]['price'];
 
                         $disc   = $discArray[$i];
                         $amount = $amountAfterDisc[$i];

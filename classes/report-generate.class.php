@@ -20,6 +20,9 @@ class LabReport
         }
     }
 
+
+
+
     function patientTest($testId)
     {
         try {
@@ -82,6 +85,8 @@ class LabReport
         }
     }
 
+
+
     // LabReport fetch //
     function labreportfetch($adminId = "")
     {
@@ -102,6 +107,27 @@ class LabReport
             echo $e->getMessage();
         }
     }
+
+
+
+    function patientDatafetchByPatientAndAdmin($patientId, $adminId)
+    {
+        try {
+            $data = [];
+            $sql = "SELECT * FROM `lab_report` WHERE `patient_id` = '$patientId' AND `admin_id`='$adminId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+
 
     ///insert lab report details ///
     function labReportDetailsAdd($testValue, $unitValue, $testId, $reportId)
