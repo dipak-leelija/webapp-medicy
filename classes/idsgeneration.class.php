@@ -3,6 +3,53 @@ class IdsGeneration{
 
     use DatabaseConnection;
 
+    function generateOrderId() {
+        // Generate random number
+        $randomNumber = mt_rand(1, 99999);
+    
+        // Generate product ID with prefix "MED"
+        $orderId = "MED" . str_pad($randomNumber, 9, "0", STR_PAD_LEFT);
+    
+        // Check if product ID exists in the database
+        $stmt = $this->conn->prepare("SELECT * FROM subscription WHERE order_id = ?");
+        $stmt->bind_param("s", $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        // If product ID exists, generate a new one recursively
+        if ($result->num_rows > 0) {
+            // Generate a new product ID recursively
+            return $this->generateOrderId();
+        } else {
+            // Product ID does not exist, return the generated ID
+            return $orderId;
+        }
+    }
+
+    function generateAdminId()
+    {
+
+        $dateTimeFormatted = date("ymdHis", strtotime(NOW));
+
+        $dateTime = new DateTime();
+        $microsecond =  $dateTime->format("u");
+        $uniquenumber = $dateTimeFormatted . $microsecond;
+        $uniqueID = substr($uniquenumber, 0, 15);
+
+        // Construct the final ADM ID with the current date
+        $newID = "ADM{$uniqueID}";
+
+        return $newID;
+    }
+
+    function generateClinicId($adminId)
+    {
+
+        $newId = filter_var($adminId, FILTER_SANITIZE_NUMBER_INT);
+        return $newId;
+    }
+
+
     function patientidGenerate()
     {
 
@@ -68,33 +115,6 @@ class IdsGeneration{
         return $data;
     }
 
-
-
-    function concatId($half, $lastid)
-    {
-
-        if ($lastid < 10) {
-            $lastid = "00000$lastid";
-        } elseif ($lastid >= 10 && $lastid < 100) {
-            $lastid = "0000$lastid";
-        } elseif ($lastid >= 100 && $lastid < 1000) {
-            $lastid = "000$lastid";
-        } elseif ($lastid >= 1000 && $lastid < 10000) {
-            $lastid = "00$lastid";
-        } elseif ($lastid >= 10000 && $lastid < 100000) {
-            $lastid = "0$lastid";
-        } else {
-            $lastid = $lastid;
-        }
-        $alph = 'A';
-        $tempappointmentid = "$half$alph$lastid";
-        return $tempappointmentid;
-    }
-
-
-
-
-
     function appointmentidGeneration($half)
     {
         // echo $half;
@@ -131,56 +151,40 @@ class IdsGeneration{
     }
 
 
-
-    function generateAdminId()
+    function concatId($half, $lastid)
     {
 
-        /*
-        // geeting the current last admin id
-        $currentID = $this->lastAdminId();
-
-        // first 9 laters (e.g. ADMDATE, ADM091123) are removed
-        $currentID = substr($currentID, 9);
-
-        // Extract the numeric part and increment it (similar to the previous code)
-        if ($currentID !== null) {
-            preg_match('/\d+$/', $currentID, $matches);
-            if (!empty($matches)) {
-                $nextNumber = intval($matches[0]) + 1;
-            } else {
-                $nextNumber = 1;
-            }
+        if ($lastid < 10) {
+            $lastid = "00000$lastid";
+        } elseif ($lastid >= 10 && $lastid < 100) {
+            $lastid = "0000$lastid";
+        } elseif ($lastid >= 100 && $lastid < 1000) {
+            $lastid = "000$lastid";
+        } elseif ($lastid >= 1000 && $lastid < 10000) {
+            $lastid = "00$lastid";
+        } elseif ($lastid >= 10000 && $lastid < 100000) {
+            $lastid = "0$lastid";
         } else {
-            $nextNumber = 1;
+            $lastid = $lastid;
         }
-    
-        // Pad the numeric part with zeros to ensure a minimum length of 5 characters
-        $formattedNumber = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-    
-        // Get the current date in the format 'Ymd' (e.g., 091123 for November 9, 2023)
-        $currentDate = date('dmy');*/
-
-        $dateTimeFormatted = date("ymdHis", strtotime(NOW));
-
-        $dateTime = new DateTime();
-        $microsecond =  $dateTime->format("u");
-        $uniquenumber = $dateTimeFormatted . $microsecond;
-        $uniqueID = substr($uniquenumber, 0, 15);
-
-        // Construct the final ADM ID with the current date
-        $newID = "ADM{$uniqueID}";
-
-        return $newID;
+        $alph = 'A';
+        $tempappointmentid = "$half$alph$lastid";
+        return $tempappointmentid;
     }
 
 
 
-    function generateClinicId($adminId)
-    {
 
-        $newId = filter_var($adminId, FILTER_SANITIZE_NUMBER_INT);
-        return $newId;
-    }
+
+    
+
+
+
+   
+
+
+
+    
 
 
 
@@ -214,83 +218,7 @@ class IdsGeneration{
         }
         return;
     }
-    // function appointmentidGeneration($half){
-
-    //     $idList = $this->getAppointmentIds();
-
-    //     if(in_array('ME310322A000012', $idList )) {
-    //         echo 'exist';
-    //         $lastid +=1;
-    //         $tempappointmentid = $this->concatId($half, $lastid);
-
-    //     }
-    //     echo $tempappointmentid;
-    //         foreach ($idList as $rowdata) {
-    //             $rowdata['appointment_id'];
-    //         }
-    //         $lastid = $rowdata['appointment_id'];
-    //         $lastid = substr($lastid, 9);
-    //         // print_r($lastid); exit;
-    //         $lastid +=1;
-    //         // echo $lastid;exit;
-    //         $tempappointmentid = $this->concatId($half, $lastid);
-
-
-
-    //             $lastid +=1;
-    //         while(array_search($tempappointmentid, $idList)) {
-    //             $tempappointmentid = $this->concatId($half, $lastid);
-
-    //         }
-    //         echo $tempappointmentid;
-    //         exit;
-    //         return $tempappointmentid;
-    //     }
-
-
-
-
-
-
-
-    //function appointmentidGeneration($half){
-
-    //     $select = "SELECT appointment_id FROM appointments";
-    //     $selectQuery = $this->conn->query($select);
-    //     while($result = $selectQuery->fetch_array()){
-    //         $data[]	= $result;
-    //     }
-    //     print_r($data); exit;
-    //     foreach ($data as $rowdata) {
-    //         $rowdata['appointment_id'];
-    //     }
-    //     $lastid = $rowdata['appointment_id'];
-    //     // $lastid = substr($lastid, 9);
-    //     // print_r($lastid); exit;
-    //     $lastid +=1;
-    //     // echo $lastid;exit;
-    //     if ($lastid < 10) {
-    //         $lastid = "00000$lastid";
-    //     }elseif($lastid >=10 && $lastid < 100){
-    //         $lastid = "0000$lastid";
-    //     }elseif($lastid >=100 && $lastid < 1000){
-    //         $lastid = "000$lastid";
-    //     }elseif($lastid >=1000 && $lastid < 10000){
-    //         $lastid = "00$lastid";
-    //     }elseif($lastid >=10000 && $lastid < 100000){
-    //         $lastid = "0$lastid";
-    //     }else {
-    //         $lastid = $lastid;
-    //     }
-    //     $alph = 'A';
-    //     $tempappointmentid = "$half$alph$lastid";
-
-    //     if (array_search($tempappointmentid, $data)) {
-    //         # code...
-    //     }
-    //     return $tempappointmentid;
-    // }
-
+  
 
     function pharmecyInvoiceId()
     {
@@ -342,28 +270,26 @@ class IdsGeneration{
     }
 
 
-    function generateOrderId() {
-        // Generate random number
-        $randomNumber = mt_rand(1, 99999);
-    
-        // Generate product ID with prefix "MED"
-        $orderId = "MED" . str_pad($randomNumber, 9, "0", STR_PAD_LEFT);
-    
-        // Check if product ID exists in the database
-        $stmt = $this->conn->prepare("SELECT * FROM subscription WHERE order_id = ?");
-        $stmt->bind_param("s", $orderId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        // If product ID exists, generate a new one recursively
+    public function generateLabBillId() {
+        $query = "SELECT bill_id FROM lab_billing";
+        $result = $this->conn->query($query);
+        
+        $existingBillIds = [];
         if ($result->num_rows > 0) {
-            // Generate a new product ID recursively
-            return $this->generateOrderId();
-        } else {
-            // Product ID does not exist, return the generated ID
-            return $orderId;
+            while ($row = $result->fetch_assoc()) {
+                $existingBillIds[] = $row['bill_id'];
+            }
+        }
+        
+        $newBillId = 'ML' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);;
+        
+        if (in_array($newBillId, $existingBillIds)) {
+            $this->generateLabBillId();
+        }else {
+            return $newBillId;
         }
     }
+    
 
 }
 
