@@ -3,16 +3,16 @@ class LabBilling
 {
 use DatabaseConnection;
 
-    function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId)
+    function addLabBill($billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId)
     {
 
         try {
-            $insertBill = "INSERT INTO lab_billing (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertBill = "INSERT INTO lab_billing (`bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($insertBill);
 
             if ($stmt) {
-                $stmt->bind_param('isssssssssssssss', $billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId);
+                $stmt->bind_param('sssssssssssssss', $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId);
 
                 if($stmt->execute()){
                     return json_encode(['status'=>true, 'insertId'=>$stmt->insert_id]);
@@ -24,7 +24,10 @@ use DatabaseConnection;
                 throw new Exception("Data binding error : " . $stmt->error);
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            $errorMessage = $e->getMessage() .' on '. $e->getFile() .' line no '.$e->getLine();
+            error_log($errorMessage);
+            return json_encode(['status' => false, 'error' => $errorMessage]);
+            
         }
     }
 

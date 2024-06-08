@@ -18,7 +18,7 @@ if ($uri[$uriPosition] === 'api' && str_contains($uri[$uriContains], 'infos')) {
     switch ($method) {
         case 'GET':
             if (isset($uri[3]) && is_numeric($uri[3])) {
-                $controller->getInfoById($uri[3]);
+                $controller->getInfoByName($uri[3]);
             } else {
                 $controller->getAllInfos();
             }

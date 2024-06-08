@@ -3765,3 +3765,21 @@ function getNextDate($currentDate, $duration)
 	// Format the result as a string and return
 	return $currentDateTime->format('Y-m-d');
 }
+
+
+function formatDateTime($datetimeString, $dateDivider = '-', $showTime = False, $timeDivider = '.')
+{
+	// Create a DateTime object from the input string
+	$datetime = new DateTime($datetimeString);
+
+	// Format the date part as 'd-m-Y'
+	$datestring = $datetime->format("d{$dateDivider}m{$dateDivider}Y");
+
+	if ($showTime === True) {
+		// Format the time part as 'g.iA' (12-hour format with am/pm)
+		$datestring .= $datetime->format(" g{$timeDivider}iA");
+	}
+
+	// Concatenate the formatted date and time
+	return $datestring;
+}
