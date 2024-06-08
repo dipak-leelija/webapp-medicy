@@ -592,16 +592,19 @@ class StockIn
 
 
     /// data filter function 
-    function stockInSearch($searchVal = '', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '') {
+    function stockInSearch($searchVal = '', $distId='', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '') {
         try {
             // Base query
             $searchSQL = "SELECT * FROM stock_in WHERE 1=1";
-            $params = array();
-            $types = '';
     
             // Adding search conditions
             if (!empty($searchVal)) {
                 $searchSQL .= " AND (distributor_bill LIKE '$searchVal' OR distributor_id  IN (SELECT id  FROM distributor WHERE name LIKE '$searchVal') OR amount LIKE '$searchVal' OR bill_date LIKE '$searchVal' OR payment_mode LIKE '$searchVal')";
+            }
+
+             // Adding distributor id condition
+             if (!empty($distId)) {
+                $searchSQL .= " AND distributor_id = '$distId'";
             }
     
             // Adding date range condition
@@ -619,17 +622,15 @@ class StockIn
                 $searchSQL .= " AND admin_id = '$adminId'";
             }
     
+            // print_r($searchSQL);
+
             // Prepare statement
             $stmt = $this->conn->prepare($searchSQL);
             if (!$stmt) {
                 throw new Exception('Statement preparation exception: ' . $this->conn->error);
             }
             
-            // Bind parameters dynamically
-            if (!empty($params)) {
-                $stmt->bind_param($types, ...$params);
-            }
-            
+           
             // Execute statement
             $stmt->execute();
             $result = $stmt->get_result();
