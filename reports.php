@@ -67,9 +67,23 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                             </button>
                                         </a>
 
-                                        <button type="button" id="add-subTest" class="btn btn-light w-100 border rounded text-center py-2">
-                                            Sales Report
-                                        </button>
+                                        <a href="gst-sales-report.php">
+                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
+                                                GST Sales Report
+                                            </button>
+                                        </a>
+
+                                        <a href="sales-summery-report.php">
+                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
+                                                Sales Summery Report
+                                            </button>
+                                        </a>
+
+                                        <a href="">
+                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
+                                                Inventory Report
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="vr mx-2"></div>
