@@ -17,3 +17,43 @@
 .c-dropdown .list:hover {
     background-color: #c3bff1;
 }
+
+
+#date-filter,
+#distributor-filter,
+#p-type,
+#download-file-type{
+    outline: none !important;
+    border: none !important;
+}
+
+
+.reportNavbar{
+    background-color: rgba(4, 76, 157, 0.1);
+    padding: 12px 24px;
+}
+
+#dtPickerDiv{
+    width: 25%;
+    top: 13rem;
+    left: 1rem;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.table thead th {
+    font-size: 15px;
+    font-weight: 600;
+    color: #044c9d;
+}
+.table tbody td{
+    font-size: 14px;
+    /* font-weight: 600; */
+}
+
+@media screen and (max-width:768px) {
+    #dtPickerDiv{
+        width: 75%;
+    }
+}
