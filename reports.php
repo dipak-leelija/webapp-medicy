@@ -21,11 +21,14 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
 
@@ -56,57 +59,119 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="row">
+                    <div class="row mx-1">
                         <div class="col-12">
-                            <div class="shadow d-flex" style="min-height: 70vh;">
-                                <div class="col-3">
-                                    <div class="card-body">
-                                        <a href="purchase-report.php">
-                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
-                                                Purchae Report
-                                            </button>
-                                        </a>
-
-                                        <a href="gst-sales-report.php">
-                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
-                                                GST Sales Report
-                                            </button>
-                                        </a>
-
-                                        <a href="sales-summery-report.php">
-                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
-                                                Sales Summery Report
-                                            </button>
-                                        </a>
-
-                                        <a href="">
-                                            <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3 mt-3">
-                                                Inventory Report
-                                            </button>
-                                        </a>
+                            <div class="d-flex" >
+                                <div class="col-4 bg-white " style="min-height: 75vh;">
+                                    <div class="p-3 pb-1">
+                                        <h3>Reports</h3>
+                                    </div>
+                                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                                    aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    Purchae Report
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingOne"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="sales-summery-report.php">Sales Summery Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingTwo">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                                    aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                    Sales Report
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingTwo"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="sales-summery-report.php">Sales Summery Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="gst-sales-report.php">GST Sales Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingFour">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
+                                                    aria-expanded="false" aria-controls="flush-collapseFour">
+                                                    Inventory Report
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingFour"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="">Inventory Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="vr mx-2"></div>
                                 <div class="col-8">
-                                    <div class="col-md-12 mt-3 d-flex p-3">
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 1
-                                        </div>
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 2
-                                        </div>
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 3
-                                        </div>
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 4
-                                        </div>
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 5
-                                        </div>
-                                        <div class="col-sm-2 p-2 shadow m-1 text-center">
-                                            blcok 6
-                                        </div>
+                                    <div class="col-md-12 mt-3 me-5 d-flex p-3 flex-wrap">
+                                        <a href="purchase-report.php" class="reportCard rounded m-2">
+                                            <span><i class="fas fa-file-invoice-dollar"
+                                                    style="color: #085996;font-size:3rem"></i></span>
+                                            <div class="ms-2">
+                                                <p class="m-0 p-0">Purchase Report</p>
+                                            </div>
+                                        </a>
+                                        <a href="gst-sales-report.php" class="reportCard rounded m-2">
+                                            <span><i class="fas fa-file-alt"
+                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <div class="ms-2">
+                                                <p class="m-0 p-0">GST Sales Report</p>
+                                            </div>
+                                        </a>
+                                        <a href="sales-summery-report.php" class="reportCard rounded m-2">
+                                            <span><i class="fas fa-file-alt"
+                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <div class="ms-2">
+                                                <p class="m-0 p-0">Sales Summary Report</p>
+                                            </div>
+                                        </a>
+                                        <a href="" class="reportCard rounded m-2">
+                                            <span><i class="fas fa-file-alt"
+                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <div class="ms-2">
+                                                <p class="m-0 p-0">Inventory Report</p>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -131,6 +196,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
     <script src="<?php echo PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH; ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo JS_PATH; ?>bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
