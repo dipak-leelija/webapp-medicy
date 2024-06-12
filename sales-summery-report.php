@@ -64,7 +64,9 @@ if (isset($_GET['reportGenerat'])) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
@@ -95,19 +97,22 @@ if (isset($_GET['reportGenerat'])) {
                         <div class="col-md-9 pt-3 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
+                                    <li class="breadcrumb-item"><a href="reports.php"
+                                            class="text-decoration-none">Reports</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Sales Summery</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="col-md-3 d-flex text-center p-2">
                             <div class="col-sm-4">
-                                <button type="button" id="print-report" name="print-report" class="btn btn-primary w-100 border rounded text-center">
+                                <button type="button" id="print-report" name="print-report"
+                                    class="btn btn-primary w-100 border rounded text-center">
                                     Print
                                 </button>
                             </div>
                             <div class="col-sm-8">
-                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
+                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type"
+                                    onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -128,7 +133,8 @@ if (isset($_GET['reportGenerat'])) {
                             </div> -->
                             <!-- filter range -->
                             <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter" onchange="dayFilter(this)">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter"
+                                    onchange="dayFilter(this)">
                                     <option value="DW" selected>Day Wise</option>
                                     <option value="WW">Week Wise</option>
                                     <option value="MW">Month Wise</option>
@@ -138,7 +144,8 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter date range -->
                             <div class="col-md-2 mt-2" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
+                                    onchange="dateRangeFilter(this)">
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -154,15 +161,19 @@ if (isset($_GET['reportGenerat'])) {
 
                             <div class="d-none col-md-2 mt-2" id="inputed-date-range-div">
                                 <div class="input-group h-100">
-                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;"/>
+                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range"
+                                        id="inputed-date-range" style="outline: none;" />
 
-                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -2rem;" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
+                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append"
+                                        id="date-reset" style="margin-left: -2rem;" type="button"
+                                        onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
                                 </div>
                             </div>
 
                             <!-- filter on category -->
                             <div class="col-md-2 mt-2" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter" onchange="categoryFilterSelect(this)">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter"
+                                    onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
                                     <option value="PM">Payment Mode</option>
@@ -188,8 +199,9 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
 
                             <!-- filter payment mode -->
-                            <div class="d-none col-md-2 mt-2" id="payment-mode-div">
+                            <!-- <div class="d-none col-md-2 mt-2" id="payment-mode-div">
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="payment-mode" id="payment-mode">
+                                    <option value="">jb</option>
                                     <option value="APM" disabled selected>All Payment Mode</option>
                                     <option value="CSH">Cash</option>
                                     <option value="CRDT">Credit</option>
@@ -197,6 +209,35 @@ if (isset($_GET['reportGenerat'])) {
                                     <option value="CRD">Card</option>
                                 </select>
                                 <label class="d-none" id="filter-by-payment-mode-val">APM</label>
+                            </div> -->
+
+                            <div class="dropdown d-none" id="payment-mode-div">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="glyphicon glyphicon-cog"></i>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+
+                                    <li>
+                                        <label>
+                                            <input type="checkbox"> Cheese
+                                        </label>
+                                    </li>
+
+                                    <li>
+                                        <label>
+                                            <input type="checkbox"> Pepperoni
+                                        </label>
+                                    </li>
+
+                                    <li>
+                                        <label>
+                                            <input type="checkbox"> Peppers
+                                        </label>
+                                    </li>
+
+                                </ul>
                             </div>
 
                             <!-- filter on staff -->
@@ -207,7 +248,7 @@ if (isset($_GET['reportGenerat'])) {
                                     if (!empty($employeeDetails)) {
                                         foreach ($employeeDetails as $empData) {
                                     ?>
-                                            <option value="<?= $empData->emp_id; ?>"><?= $empData->emp_name; ?></option>
+                                    <option value="<?= $empData->emp_id; ?>"><?= $empData->emp_name; ?></option>
                                     <?php
                                         }
                                     }
@@ -218,7 +259,8 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- additional filter  -->
                             <div class="d-none col-md-2 mt-2" id="report-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on" id="sales-report-on">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on"
+                                    id="sales-report-on">
                                     <option value="TS" selected>Total Sales (&#8377)</option>
                                     <option value="TM">Payment Mode (&#8377)</option>
                                     <option value="AVM">Average Margin (%)</option>
@@ -232,7 +274,9 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- find button on filter -->
                             <div class="col-md-2 mt-2" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="find-report"
+                                    class="btn btn-primary w-50 border rounded text-center mr-4"
+                                    onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -242,16 +286,19 @@ if (isset($_GET['reportGenerat'])) {
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv"
+                                style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date" onchange="selectStartDate(this)">
+                                            <input type="date" id="from-date" name="from-date"
+                                                onchange="selectStartDate(this)">
                                         </div>
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date" onchange="selectEndDate(this)">
+                                            <input type="date" id="to-date" name="to-date"
+                                                onchange="selectEndDate(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -303,19 +350,19 @@ if (isset($_GET['reportGenerat'])) {
                                             $igst = '';
                                             $totalAmount = $purchaseData->amount;
                                 ?>
-                                            <tr>
-                                                <th><?= $sl; ?></th>
-                                                <td><?= $billNo; ?></td>
-                                                <td><?= $entryDate; ?></td>
-                                                <td><?= $billDate; ?></td>
-                                                <th><?= $distName; ?></th>
-                                                <td class="text-end"><?= $taxable; ?></td>
-                                                <td class="text-end"><?= $cess; ?></td>
-                                                <td class="text-end"><?= $cgst; ?></td>
-                                                <th class="text-end"><?= $sgst; ?></th>
-                                                <td class="text-end"><?= $igst; ?></td>
-                                                <td class="text-end"><?= $totalAmount; ?></td>
-                                            </tr>
+                                <tr>
+                                    <th><?= $sl; ?></th>
+                                    <td><?= $billNo; ?></td>
+                                    <td><?= $entryDate; ?></td>
+                                    <td><?= $billDate; ?></td>
+                                    <th><?= $distName; ?></th>
+                                    <td class="text-end"><?= $taxable; ?></td>
+                                    <td class="text-end"><?= $cess; ?></td>
+                                    <td class="text-end"><?= $cgst; ?></td>
+                                    <th class="text-end"><?= $sgst; ?></th>
+                                    <td class="text-end"><?= $igst; ?></td>
+                                    <td class="text-end"><?= $totalAmount; ?></td>
+                                </tr>
                                 <?php
                                         }
                                     } else {
