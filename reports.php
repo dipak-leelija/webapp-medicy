@@ -61,7 +61,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                     <!-- Page Heading -->
                     <div class="row mx-1">
                         <div class="col-12">
-                            <div class="d-flex" >
+                            <div class="d-flex">
                                 <div class="col-4 bg-white " style="min-height: 75vh;">
                                     <div class="p-3 pb-1">
                                         <h3>Reports</h3>
@@ -72,9 +72,11 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                                                     aria-expanded="false" aria-controls="flush-collapseOne">
-                                                    Purchae Report
+                                                    <i class="fas fa-file-invoice-dollar"
+                                                    style="color: #085996;margin-right:8px"></i> Purchae Report
                                                 </button>
                                             </h2>
+                                            
                                             <div id="flush-collapseOne" class="accordion-collapse collapse"
                                                 aria-labelledby="flush-headingOne"
                                                 data-bs-parent="#accordionFlushExample">
