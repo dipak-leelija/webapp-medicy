@@ -94,7 +94,7 @@ if (isset($_GET['reportGenerat'])) {
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-md-9 pt-3 pl-4">
+                        <div class="col-md-9 pt-2 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php"
@@ -103,15 +103,15 @@ if (isset($_GET['reportGenerat'])) {
                                 </ol>
                             </nav>
                         </div>
-                        <div class="col-md-3 d-flex text-center p-2">
+                        <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
                                 <button type="button" id="print-report" name="print-report"
-                                    class="btn btn-primary w-100 border rounded text-center">
+                                    class="btn btn-sm btn-primary border-0 w-100 text-center">
                                     Print
                                 </button>
                             </div>
-                            <div class="col-sm-8">
-                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type"
+                            <div class="col-sm-8 bg-info bg-opacity-10">
+                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type"
                                     onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
@@ -132,8 +132,8 @@ if (isset($_GET['reportGenerat'])) {
                                 </div>
                             </div> -->
                             <!-- filter range -->
-                            <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter"
+                            <div class="col-md-2 bg-white me-3">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="day-filter" id="day-filter"
                                     onchange="dayFilter(this)">
                                     <option value="DW" selected>Day Wise</option>
                                     <option value="WW">Week Wise</option>
@@ -143,8 +143,8 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
 
                             <!-- filter date range -->
-                            <div class="col-md-2 mt-2" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
+                            <div class="col-md-2 bg-white me-3" id="date-range-select-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter"
                                     onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
@@ -171,8 +171,8 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
 
                             <!-- filter on category -->
-                            <div class="col-md-2 mt-2" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter"
+                            <div class="col-md-2 bg-white me-3" id="category-filter-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter"
                                     onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
@@ -197,7 +197,7 @@ if (isset($_GET['reportGenerat'])) {
                                 </select>
                                 <label class="d-none" id="filter-by-prod-categoty-val"></label>
                             </div> -->
-                            <div class="dropdown d-none col-md-2 mt-2" id="prod-category-select-div">
+                            <div class="dropdown d-none col-md-2" id="prod-category-select-div">
                                 <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     All Category
@@ -231,7 +231,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="filter-by-payment-mode-val">APM</label>
                             </div> -->
 
-                            <div class="dropdown d-none col-md-2 mt-2 bg-white" id="payment-mode-div">
+                            <div class="dropdown d-none col-md-2 bg-white" id="payment-mode-div">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret">All Payment Mode</span>
@@ -281,7 +281,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="filter-by-staff-val"></label>
                             </div> -->
                             
-                            <div class="dropdown d-none col-md-2 mt-2" id="staff-filter-div">
+                            <div class="dropdown d-none col-md-2" id="staff-filter-div">
                                 <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     All Staff
@@ -318,21 +318,21 @@ if (isset($_GET['reportGenerat'])) {
 
 
                             <!-- find button on filter -->
-                            <div class="col-md-2 mt-2" id="search-btn-div">
+                            <div class="col-md-2" id="search-btn-div">
                                 <button type="button" id="search-filter" name="find-report"
-                                    class="btn btn-primary w-50 border rounded text-center mr-4"
+                                    class="btn btn-primary btn-sm text-center"
                                     onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="row d-flex bg-primary bg-opacity-10 py-2">
+                        <div class="row d-flex">
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
                             <div class="dropdown-menu  p-2 row" id="dtPickerDiv"
-                                style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                                style="display:none;">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
