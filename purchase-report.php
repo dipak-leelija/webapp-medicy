@@ -86,7 +86,7 @@ if (isset($_GET['reportGenerat'])) {
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-md-9 pt-3 pl-4">
+                        <div class="col-md-9 pt-2 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
@@ -94,14 +94,14 @@ if (isset($_GET['reportGenerat'])) {
                                 </ol>
                             </nav>
                         </div>
-                        <div class="col-md-3 d-flex text-center p-2">
+                        <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
-                                <button type="button" id="print-report" name="print-report" class="btn btn-primary w-100 border rounded text-center">
+                                <button type="button" id="print-report" name="print-report" class="btn btn-sm btn-primary border-0 w-100 text-center">
                                     Print
                                 </button>
                             </div>
-                            <div class="col-sm-8">
-                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
+                            <div class="col-sm-8 bg-info bg-opacity-10">
+                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -110,8 +110,8 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 shadow-lg" style="min-height: 70vh;">
-                        <div class="row d-flex bg-primary bg-opacity-10 py-3">
+                    <div class=" shadow rounded" style="min-height: 70vh;">
+                        <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
                             <!-- optional search filter by item name or composition -->
                             <!-- <div class="col-md-3 mt-2">
                                 <div class="input-group h-100">
@@ -121,8 +121,8 @@ if (isset($_GET['reportGenerat'])) {
                                 </div>
                             </div> -->
                             <!-- filter date -->
-                            <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-filter" id="date-filter" /*onchange="filterAppointmentByValue()" * / onchange="filterDate(this)">
+                            <div class="col-md-2">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-filter" id="date-filter" /*onchange="filterAppointmentByValue()" * / onchange="filterDate(this)">
                                     <option value="A">Select All Date</option>
                                     <option value="T">Today</option>
                                     <option value="Y">yesterday</option>
@@ -139,8 +139,8 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="select-end-date"></label>
                             </div>
                             <!-- filter distributor -->
-                            <div class="col-md-3 mt-2">
-                                <div class="input-group h-100 w-10">
+                            <div class="col-md-2">
+                                <!-- <div class="input-group "> -->
                                     <!-- <input type="text" name="distributor-id" id="distributor-id" class="c-inp w-100 p-1" disable hidden> -->
 
                                     <!-- <input type="text" name="distributor" id="distributor" class="c-inp w-75 border-0 p-1"> -->
@@ -172,7 +172,7 @@ if (isset($_GET['reportGenerat'])) {
 
                                     </div> -->
 
-                                    <select class="cvx-inp1 border-0 w-75 h-100" name="distributor-filter" id="distributor-filter" /*onchange="filterAppointmentByValue()" * / onchange="filterDistributor(this)">
+                                    <select class="cvx-inp1 border-0 p-1 w-100" name="distributor-filter" id="distributor-filter" /*onchange="filterAppointmentByValue()" * / onchange="filterDistributor(this)">
                                         <option value="AD">All Distributor</option>
                                         <?php
                                         if ($distributorList->status) {
@@ -184,12 +184,12 @@ if (isset($_GET['reportGenerat'])) {
                                         }
                                         ?>
                                     </select>
-                                </div>
+                                <!-- </div> -->
                                 <label class="d-none" id="selected-dist-id">AD</label>
                             </div>
                             <!-- filter purchase type -->
-                            <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
+                            <div class="col-md-2 ">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
                                     <option value="APD">All Purchase</option>
                                     <option value="WG">With GST</option>
                                     <option value="NG">Without GST</option>
@@ -199,18 +199,18 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="selected-purchse-type">APD</label>
                             </div>
                             <!-- find button on filter -->
-                            <div class="col-md-2 mt-2">
-                                <button type="button" id="search-filter" name="search-filter" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="filterSearch()">
+                            <div class="col-md-2">
+                                <button type="button" id="search-filter" name="search-filter" class="btn btn-primary text-center btn-sm" onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="row d-flex bg-primary bg-opacity-10 py-2">
+                        <div class="row d-flex">
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class="row dropdown-menu border-0" id="dtPickerDiv" style="display:none;">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
@@ -228,21 +228,22 @@ if (isset($_GET['reportGenerat'])) {
                                 </div>
                             </div>
                         </div>
-
-                        <table class="table">
-                            <thead>
+                        
+                        <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead class="text-primary">
                                 <tr>
-                                    <th>Sl No.</th>
-                                    <th>Bill No.</th>
-                                    <th>Entry Date</th>
-                                    <th>Bill Date</th>
-                                    <th>Distributor</th>
-                                    <th class="text-end">Taxable</th>
-                                    <th class="text-end">CESS</th>
-                                    <th class="text-end">SGST</th>
-                                    <th class="text-end">CGST</th>
-                                    <th class="text-end">IGST</th>
-                                    <th class="text-end">Total</th>
+                                    <th scope="col" class="ps-4 pb-4 pt-3">Sl No.</th>
+                                    <th scope="col" class="pb-4">Bill No.</th>
+                                    <th scope="col" class="pb-4">Entry Date</th>
+                                    <th scope="col" class="pb-4">Bill Date</th>
+                                    <th scope="col" class="pb-4 w-25">Distributor</th>
+                                    <th scope="col" class="text-end ps-3 pb-4">Taxable</th>
+                                    <th scope="col" class="text-end ps-0 pb-4">CESS</th>
+                                    <th scope="col" class="text-end ps-0 pb-4">SGST</th>
+                                    <th scope="col" class="text-end ps-0 pb-4">CGST</th>
+                                    <th scope="col" class="text-end ps-0 pb-4">IGST</th>
+                                    <th scope="col" class="text-end ps-0 pe-4 pb-4">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -273,28 +274,28 @@ if (isset($_GET['reportGenerat'])) {
                                             $totalAmount = $purchaseData->amount;
                                 ?>
                                             <tr>
-                                                <th><?= $sl; ?></th>
+                                                <td class="ps-4"><?= $sl; ?></td>
                                                 <td><?= $billNo; ?></td>
                                                 <td><?= $entryDate; ?></td>
                                                 <td><?= $billDate; ?></td>
-                                                <th><?= $distName; ?></th>
+                                                <td><?= $distName; ?></td>
                                                 <td class="text-end"><?= $taxable; ?></td>
                                                 <td class="text-end"><?= $cess; ?></td>
                                                 <td class="text-end"><?= $cgst; ?></td>
-                                                <th class="text-end"><?= $sgst; ?></th>
+                                                <td class="text-end"><?= $sgst; ?></td>
                                                 <td class="text-end"><?= $igst; ?></td>
-                                                <td class="text-end"><?= $totalAmount; ?></td>
+                                                <td class="text-end pe-4"><?= $totalAmount; ?></td>
                                             </tr>
                                 <?php
                                         }
                                     } else{
-                                        echo "no data found";
+                                        echo "<td colspan='12' class='text-center border-0 pt-4'>No data found</td>";
                                     }
                                 }
                                 ?>
                             </tbody>
-
                         </table>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
