@@ -121,8 +121,8 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 shadow-lg" style="min-height: 70vh;">
-                        <div class="row d-flex bg-primary bg-opacity-10 py-3">
+                    <div class="shadow rounded" style="min-height: 70vh;">
+                        <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
                             <!-- optional search filter by item name or composition -->
                             <!-- <div class="col-md-3 mt-2">
                                 <div class="input-group h-100">
@@ -145,8 +145,6 @@ if (isset($_GET['reportGenerat'])) {
                             <!-- filter date range -->
                             <div class="col-md-2 mt-2" id="date-range-select-div">
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
-                                    onchange="dateRangeFilter(this)">
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -212,11 +210,10 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="filter-by-payment-mode-val">APM</label>
                             </div> -->
 
-                            <div class="dropdown d-none" id="payment-mode-div">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                            <div class="dropdown d-none col-md-2 mt-2" id="payment-mode-div">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                    <span class="caret"></span>
+                                    <span class="caret">All Payment Mode</span>
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
 
