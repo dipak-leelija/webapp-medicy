@@ -144,6 +144,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter date range -->
                             <div class="col-md-2 mt-2" id="date-range-select-div">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
                                     onchange="dateRangeFilter(this)">
                                     <option value="" disabled selected>Select Date Range</option>
@@ -156,7 +157,7 @@ if (isset($_GET['reportGenerat'])) {
                                     <option value="PFY">Previous Fiscal Year</option>
                                     <option value="SDR">Select Date Range</option>
                                 </select>
-                                <label class="d-none" id="dt-rng-val">T</label>
+                                <label class="d-none" id="dt-rng-val"></label>
                             </div>
 
                             <div class="d-none col-md-2 mt-2" id="inputed-date-range-div">
@@ -274,9 +275,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- find button on filter -->
                             <div class="col-md-2 mt-2" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report"
-                                    class="btn btn-primary w-50 border rounded text-center mr-4"
-                                    onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
