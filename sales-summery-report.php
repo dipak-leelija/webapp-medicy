@@ -144,7 +144,8 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter date range -->
                             <div class="col-md-2 mt-2" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
+                                    onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -183,7 +184,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- control list filter -->
                             <!-- filter purchase type -->
-                            <div class="d-none col-md-2 mt-2" id="prod-category-select-div">
+                            <!-- <div class="d-none col-md-2 mt-2" id="prod-category-select-div">
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="prod-category" id="prod-category">
                                     <option value="AC" disabled selected>All Category</option>
                                     <?php
@@ -195,12 +196,32 @@ if (isset($_GET['reportGenerat'])) {
                                     ?>
                                 </select>
                                 <label class="d-none" id="filter-by-prod-categoty-val"></label>
+                            </div> -->
+                            <div class="dropdown d-none col-md-2 mt-2" id="prod-category-select-div">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    All Category
+                                </button>
+                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="AC" onclick="toggleCheckboxes(this)" checked>All Category</label>
+                                    </li>
+                                    <?php
+                                    if (!empty($prodCategoryData)) {
+                                        foreach ($prodCategoryData as $categoryData) {
+                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" checked> '.$categoryData->name.' </label></li>' ;
+                                        }
+                                    }
+                                    ?>
+                                    <label class="d-none" id="filter-by-prod-categoty-val"></label>
+                                </ul>
                             </div>
+
+
 
                             <!-- filter payment mode -->
                             <!-- <div class="d-none col-md-2 mt-2" id="payment-mode-div">
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="payment-mode" id="payment-mode">
-                                    <option value="">jb</option>
                                     <option value="APM" disabled selected>All Payment Mode</option>
                                     <option value="CSH">Cash</option>
                                     <option value="CRDT">Credit</option>
@@ -210,36 +231,41 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="filter-by-payment-mode-val">APM</label>
                             </div> -->
 
-                            <div class="dropdown d-none col-md-2 mt-2" id="payment-mode-div">
+                            <div class="dropdown d-none col-md-2 mt-2 bg-white" id="payment-mode-div">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret">All Payment Mode</span>
                                 </button>
-                                <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="APM" onclick="toggleCheckboxes(this)" checked>All Payment Mode</label>
+                                    </li>
 
                                     <li>
-                                        <label>
-                                            <input type="checkbox"> Cheese
-                                        </label>
+                                        <label><input type="checkbox" value="CSH">Cash</label>
                                     </li>
 
                                     <li>
                                         <label>
-                                            <input type="checkbox"> Pepperoni
+                                            <input type="checkbox" value="CRDT">Credit
                                         </label>
                                     </li>
-
                                     <li>
                                         <label>
-                                            <input type="checkbox"> Peppers
+                                            <input type="checkbox" value="UPI">UPI
                                         </label>
                                     </li>
-
+                                    <li>
+                                        <label>
+                                            <input type="checkbox" value="CRD">Card
+                                        </label>
+                                    </li>
+                                    <label class="d-none" id="filter-by-payment-mode-val">APM</label>
                                 </ul>
                             </div>
 
                             <!-- filter on staff -->
-                            <div class="d-none col-md-2 mt-2" id="staff-filter-div">
+                            <!-- <div class="d-none col-md-2 mt-2" id="staff-filter-div">
                                 <select class="cvx-inp1 border-0 w-75 h-100" name="staff-filter" id="staff-filter">
                                     <option value="AS" disabled selected>All Staff</option>
                                     <?php
@@ -253,7 +279,28 @@ if (isset($_GET['reportGenerat'])) {
                                     ?>
                                 </select>
                                 <label class="d-none" id="filter-by-staff-val"></label>
+                            </div> -->
+                            
+                            <div class="dropdown d-none col-md-2 mt-2" id="staff-filter-div">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    All Staff
+                                </button>
+                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="AS" onclick="toggleCheckboxes(this)" checked>All Staff</label>
+                                    </li>
+                                    <?php
+                                    if (!empty($employeeDetails)) {
+                                        foreach ($employeeDetails as $empData) {
+                                            echo '<li><label><input type="checkbox" value="' . $empData->emp_id . '" checked> '.$empData->emp_name.' </label></li>' ;
+                                        }
+                                    }
+                                    ?>
+                                    <label class="d-none" id="filter-by-staff-val"></label>
+                                </ul>
                             </div>
+
 
                             <!-- additional filter  -->
                             <div class="d-none col-md-2 mt-2" id="report-filter-div">
@@ -272,7 +319,9 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- find button on filter -->
                             <div class="col-md-2 mt-2" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="find-report"
+                                    class="btn btn-primary w-50 border rounded text-center mr-4"
+                                    onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -400,6 +449,19 @@ if (isset($_GET['reportGenerat'])) {
 
     <!-- custom script for report filter -->
     <script src="<?php echo JS_PATH; ?>sales-report-control.js"></script>
+
+    <!-- checkbox checked or unchecked  -->
+    <script>
+        function toggleCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('.checkbox-menu input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.disabled) {
+                    checkbox.checked = source.checked;
+                }
+            });
+        }
+
+    </script>
 </body>
 
 </html>
