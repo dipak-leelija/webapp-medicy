@@ -125,14 +125,6 @@ if ($stockOutDataReport->status) {
                     </div>
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
-                            <!-- optional search filter by item name or composition -->
-                            <!-- <div class="col-md-3 mt-2">
-                                <div class="input-group h-100">
-                                    <input class="cvx-inp border-0 w-75" type="text" placeholder="Search By Item Name/Composition" name="appointment-search" id="search-by-item-name" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" />
-
-                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append h-100" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div> -->
                             <!-- filter range -->
                             <div class="col-md-2 bg-white me-3">
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="day-filter" id="day-filter"
@@ -318,7 +310,7 @@ if ($stockOutDataReport->status) {
                             <div class="col-md-2" id="search-btn-div">
                                 <button type="button" id="search-filter" name="find-report"
                                     class="btn btn-primary btn-sm text-center"
-                                    onclick="filterSearch()">
+                                    onclick="salesSummerySearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>

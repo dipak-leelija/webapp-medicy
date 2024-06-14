@@ -4,23 +4,22 @@ const xmlhttp = new XMLHttpRequest();
 // TABLE CONSTANT
 const dataTable = document.getElementById('report-table');
 
-
 // DIV CONSTANT
-const reportTypeFilter = document.getElementById('day-filter');  
-const dateRangeSelect = document.getElementById('date-range');
-const categoryFilter = document.getElementById('category-filter');
+const reportTypeFilter = document.getElementById('day-filter');  // primary filter select class
+const dateRangeSelect = document.getElementById('date-range'); // date range select class
+const categoryFilter = document.getElementById('category-filter'); // primary filter category select
 
-const productCategorySelectDiv = document.getElementById('prod-category-select-div');
-const productCategoryList = document.getElementById('prod-category');
+const productCategorySelectDiv = document.getElementById('prod-category-select-div'); // item category select div secondary filter
+const productCategoryList = document.getElementById('prod-category'); // item category select class
 
-const paymentModeDiv = document.getElementById('payment-mode-div');
-const paymentMode = document.getElementById('payment-mode');
+const paymentModeDiv = document.getElementById('payment-mode-div'); // payment mode select div secondary filter
+const paymentMode = document.getElementById('payment-mode'); // payment mode select class
 
-const staffFilterDiv = document.getElementById('staff-filter-div');
-const staffFilter = document.getElementById('staff-filter');
+const staffFilterDiv = document.getElementById('staff-filter-div'); // staff select div secondary filter
+const staffFilter = document.getElementById('staff-filter'); // staff select class
 
-const reportFilterDiv = document.getElementById('report-filter-div');
-const salesReportOn = document.getElementById('sales-report-on');
+const reportFilterDiv = document.getElementById('report-filter-div'); // report generation on primary filter div
+const salesReportOn = document.getElementById('sales-report-on'); // report generation on primary filter select
 
 const dateRangeSelectDiv = document.getElementById('date-range-select-div');
 const datePickerDiv = document.getElementById('dtPickerDiv');
@@ -85,19 +84,14 @@ function calculateDate(days) {
 
 // date format convertion
 function convertDateFormat(dateStr) {
-    // split string
     const dateParts = dateStr.split('/');
-    // convert in new string
     const newDateStr = dateParts.join('-');
-    
     return newDateStr;
 }
 
 function convertDatePickerDateFormat(dateStr) {
     const dateParts = dateStr.split('-');
-    
     const newDateFormat = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-    
     return newDateFormat;
 }
 
@@ -295,7 +289,7 @@ function salesDataSearchFunction(array){
     let report = xmlhttp.responseText;
 
     report = JSON.parse(report);
-    
+    console.log(report);
     if(report.status){
         reportShow(report.data);
     }
