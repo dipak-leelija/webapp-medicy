@@ -296,25 +296,8 @@ function salesDataSearchFunction(array){
 }
 
 
-// reset table function
-function resetTableById(table) {
-    
-    if (table) {
-        const thead = table.querySelector('thead');
-        const tbody = table.querySelector('tbody');
-
-        if (thead) {
-            thead.innerHTML = '';
-        }
-
-        if (tbody) {
-            tbody.innerHTML = '';
-        }
-    }
-}
-
 function reportShow(parsedData){
-    resetTableById(dataTable);
+    dataTable.innerHTML = ''; // reset table data
     var dateArray = [];
     if(filterByVal.innerHTML == 'PM'){
         // Create the <thead> element
