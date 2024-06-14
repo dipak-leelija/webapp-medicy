@@ -1,4 +1,12 @@
-const reportTypeFilter = document.getElementById('day-filter');
+
+const xmlhttp = new XMLHttpRequest();
+
+// TABLE CONSTANT
+const dataTable = document.getElementById('report-table');
+
+
+// DIV CONSTANT
+const reportTypeFilter = document.getElementById('day-filter');  
 const dateRangeSelect = document.getElementById('date-range');
 const categoryFilter = document.getElementById('category-filter');
 
@@ -51,6 +59,14 @@ function formatDate(dateString) {
     month = month.padStart(2, '0');
 
     return `${day}-${month}-${year}`;
+}
+
+function convertDateFormatToBig(dateStr) {
+    let parts = dateStr.split('-');
+    let day = parts[0];
+    let month = parts[1];
+    let year = parts[2];
+    return `${year}-${month}-${day}`;
 }
 
 // minus date calculation
@@ -208,6 +224,7 @@ function dateRangeReset(){
 
 // category select filter
 function categoryFilterSelect(t){
+    filterByVal.innerHTML = t.value;
     if(t.value == 'ICAT'){
         productCategorySelectDiv.classList.remove('d-none');
         reportFilterDiv.classList.remove('d-none');
@@ -232,3 +249,271 @@ function categoryFilterSelect(t){
         paymentModeDiv.classList.add('d-none');
     }
 }
+
+
+
+// sales data search call (funning ajax query)
+
+function salesSummerySearch() {
+
+    if(dateRangeVal.innerHTML == ''){
+        alert('select date range');
+        return;
+    }
+    // else{
+    //     console.log(selectedStartDate.innerHTML);
+    //     console.log(selectedEndDate.innerHTML);
+    // }
+
+    if(filterByVal.innerHTML == ''){
+        alert('select filter val');
+        return;
+    }
+    // else{
+    //     console.log(filterByVal.innerHTML);
+    // }
+
+    let startDate = convertDateFormatToBig(selectedStartDate.innerHTML);
+    let endDate = convertDateFormatToBig(selectedEndDate.innerHTML);
+
+    let dataArray = {
+        startDt: startDate,
+        endDt: endDate,
+        filterBy: filterByVal.innerHTML,
+    };
+
+    salesDataSearchFunction(dataArray);
+}
+
+
+function salesDataSearchFunction(array){
+    let arryString = JSON.stringify(array);
+    let salesDataReport = `ajax/salesSummeryReport.ajax.php?dataArray=${arryString}`;
+    xmlhttp.open("GET", salesDataReport, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(null);
+    let report = xmlhttp.responseText;
+
+    report = JSON.parse(report);
+    
+    if(report.status){
+        reportShow(report.data);
+    }
+}
+
+
+// reset table function
+function resetTableById(table) {
+    
+    if (table) {
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+
+        if (thead) {
+            thead.innerHTML = '';
+        }
+
+        if (tbody) {
+            tbody.innerHTML = '';
+        }
+    }
+}
+
+function reportShow(parsedData){
+    resetTableById(dataTable);
+    var dateArray = [];
+    if(filterByVal.innerHTML == 'PM'){
+        // Create the <thead> element
+        const thead = document.createElement('thead');
+
+        // Create a <tr> element
+        const tr = document.createElement('tr');
+
+        // Define the headers
+        const headers = ['Date','Cash','Credit','UPI','Card','Total Sales'];
+
+        // Iterate over the headers array and create a <th> element for each header
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            tr.appendChild(th);
+        });
+
+        // Append the <tr> to the <thead>
+        thead.appendChild(tr);
+
+        // Append the <thead> to the table
+        dataTable.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+
+        parsedData.forEach(item=>{
+            dateArray.push(item.added_on); 
+        });
+
+        var  uniqueDateArray = [...new Set(dateArray)];
+
+        var parsedDataArray = Object.values(parsedData);
+
+        for(let i=0; i<uniqueDateArray.length; i++){
+            
+            const tr = document.createElement('tr');
+            const tdDate = document.createElement('td');
+            const tdCashAmount = document.createElement('td');
+            const tdCreditAmount = document.createElement('td');
+            const tdUPIAmount = document.createElement('td');
+            const tdCardAmount = document.createElement('td');
+            const tdTotalAmount = document.createElement('td');
+            
+            let uniqueDate = '';
+            let cashAmount = 0;
+            let creditAmount = 0;
+            let upiAmount = 0;
+            let cardAmount = 0;
+            let totalSellAmount = 0;
+
+            for(let j=0; j<parsedDataArray.length; j++){
+
+                if(uniqueDateArray[i] == parsedDataArray[j].added_on){
+                    
+                    uniqueDate = uniqueDateArray[i];
+
+                    if (parsedDataArray[j].payment_mode == 'Cash') {
+                        cashAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'Credit') {
+                        creditAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'UPI') {
+                        upiAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'Card') {
+                        cardAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    totalSellAmount = parseFloat(cashAmount)+ parseFloat(creditAmount)+ parseFloat(upiAmount)+ parseFloat(cardAmount);
+                }
+            }
+
+            tdDate.textContent = formatDate(uniqueDate);
+            tdCashAmount.textContent = cashAmount.toFixed(2);
+            tdCreditAmount.textContent = creditAmount.toFixed(2);
+            tdUPIAmount.textContent = upiAmount.toFixed(2);
+            tdCardAmount.textContent = cardAmount.toFixed(2);
+            tdTotalAmount.textContent = totalSellAmount.toFixed(2);
+              
+            tr.appendChild(tdDate);
+            tr.appendChild(tdCashAmount);
+            tr.appendChild(tdCreditAmount);
+            tr.appendChild(tdUPIAmount);
+            tr.appendChild(tdCardAmount);
+            tr.appendChild(tdTotalAmount);
+
+            tbody.appendChild(tr);
+        }
+
+        dataTable.appendChild(tbody);
+    }
+
+
+    if(filterByVal.innerHTML == 'ICAT'){
+        // Create the <thead> element
+        const thead = document.createElement('thead');
+
+        // Create a <tr> element
+        const tr = document.createElement('tr');
+
+        // Define the headers
+        const headers = ['Date', 'Ayurvedic', 'Cosmetic', 'Drug', 'Generic', 'Nutraceuticals', 'OTC', 'Surgical', 'Total Sales'];
+
+        // Iterate over the headers array and create a <th> element for each header
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            tr.appendChild(th);
+        });
+
+        // Append the <tr> to the <thead>
+        thead.appendChild(tr);
+
+        // Append the <thead> to the table
+        dataTable.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+
+        parsedData.forEach(item=>{
+            dateArray.push(item.added_on); 
+        });
+
+        var  uniqueDateArray = [...new Set(dateArray)];
+
+        var parsedDataArray = Object.values(parsedData);
+
+        for(let i=0; i<uniqueDateArray.length; i++){
+            
+            const tr = document.createElement('tr');
+            const tdDate = document.createElement('td');
+            const tdCashAmount = document.createElement('td');
+            const tdCreditAmount = document.createElement('td');
+            const tdUPIAmount = document.createElement('td');
+            const tdCardAmount = document.createElement('td');
+            const tdTotalAmount = document.createElement('td');
+            
+            let uniqueDate = '';
+            let cashAmount = 0;
+            let creditAmount = 0;
+            let upiAmount = 0;
+            let cardAmount = 0;
+            let totalSellAmount = 0;
+
+            for(let j=0; j<parsedDataArray.length; j++){
+
+                if(uniqueDateArray[i] == parsedDataArray[j].added_on){
+                    
+                    uniqueDate = uniqueDateArray[i];
+
+                    if (parsedDataArray[j].payment_mode == 'Cash') {
+                        cashAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'Credit') {
+                        creditAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'UPI') {
+                        upiAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    if (parsedDataArray[j].payment_mode == 'Card') {
+                        cardAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
+                    }
+
+                    totalSellAmount = parseFloat(cashAmount)+ parseFloat(creditAmount)+ parseFloat(upiAmount)+ parseFloat(cardAmount);
+                }
+            }
+
+            tdDate.textContent = formatDate(uniqueDate);
+            tdCashAmount.textContent = cashAmount.toFixed(2);
+            tdCreditAmount.textContent = creditAmount.toFixed(2);
+            tdUPIAmount.textContent = upiAmount.toFixed(2);
+            tdCardAmount.textContent = cardAmount.toFixed(2);
+            tdTotalAmount.textContent = totalSellAmount.toFixed(2);
+              
+            tr.appendChild(tdDate);
+            tr.appendChild(tdCashAmount);
+            tr.appendChild(tdCreditAmount);
+            tr.appendChild(tdUPIAmount);
+            tr.appendChild(tdCardAmount);
+            tr.appendChild(tdTotalAmount);
+
+            tbody.appendChild(tr);
+        }
+
+        dataTable.appendChild(tbody);
+    }
+
+}
+

@@ -71,48 +71,49 @@ class StockOut
 
 
 
-    function stockOutSearch($searchVal = '', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '') {
+    function stockOutSearch($searchVal = '', $startDate = '', $endDate = '', $paymentMode = '', $adminId = '')
+    {
         try {
             // Base query
             $searchSQL = "SELECT * FROM stock_out WHERE 1=1";
             $params = array();
             $types = '';
-    
+
             // Adding search conditions
             if (!empty($searchVal)) {
                 $searchSQL .= " AND (invoice_id LIKE '$searchVal' OR customer_id IN (SELECT patient_id FROM patient_details WHERE name LIKE '$searchVal') OR amount LIKE '$searchVal' OR bill_date LIKE '$searchVal' OR customer_id IN (SELECT patient_id FROM patient_details WHERE phno LIKE '$searchVal'))";
             }
-    
+
             // Adding date range condition
             if (!empty($startDate) && !empty($endDate)) {
                 $searchSQL .= " AND DATE(added_on) BETWEEN STR_TO_DATE('$startDate', '%d-%m-%Y') AND STR_TO_DATE('$endDate', '%d-%m-%Y')";
             }
-    
+
             // Adding payment mode condition
             if (!empty($paymentMode)) {
                 $searchSQL .= " AND payment_mode = '$paymentMode'";
             }
-    
+
             // Adding admin ID condition
             if (!empty($adminId)) {
                 $searchSQL .= " AND admin_id = '$adminId'";
             }
-    
+
             // Prepare statement
             $stmt = $this->conn->prepare($searchSQL);
             if (!$stmt) {
                 throw new Exception('Statement preparation exception: ' . $this->conn->error);
             }
-            
+
             // Bind parameters dynamically
             if (!empty($params)) {
                 $stmt->bind_param($types, ...$params);
             }
-            
+
             // Execute statement
             $stmt->execute();
             $result = $stmt->get_result();
-            
+
             // Fetch data
             if ($result->num_rows > 0) {
                 $salseData = array();
@@ -127,10 +128,10 @@ class StockOut
             return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
         }
     }
-    
-    
-    
-    
+
+
+
+
 
 
 
@@ -1177,7 +1178,7 @@ class StockOut
                                 AND `admin_id` = ? GROUP BY DATE(added_on)";
 
             $stmt = $this->conn->prepare($selectSalesData);
-            
+
             if (!$stmt) {
                 throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
             }
@@ -1187,7 +1188,7 @@ class StockOut
             $stmt->execute();
 
             $result = $stmt->get_result();
-            
+
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {
@@ -1195,12 +1196,12 @@ class StockOut
                 }
                 $stmt->close();
                 return $data;
-            }else{
+            } else {
                 $stmt->close();
                 return null;
             }
         } catch (Exception $e) {
-            echo "error". $e->getMessage();
+            echo "error" . $e->getMessage();
         }
     }
 
@@ -1218,6 +1219,115 @@ class StockOut
         return $cancelBillQuery;
     } //end cancelLabBill function
 
+
+
+
+
+
+    function stockOutReportOnPaymentMode($startDate, $endDate, $adminId)
+    {
+        try {
+            $fetchStockOutData = "SELECT 
+                                  date(added_on) as added_on,
+                                  payment_mode,
+                                  SUM(amount) AS total_amount
+                                FROM 
+                                  stock_out
+                                WHERE 
+                                  date(added_on) BETWEEN '$startDate' AND '$endDate'
+                                  AND payment_mode IN ('Cash', 'UPI', 'Card', 'Credit') 
+                                  AND admin_id = '$adminId'
+                                GROUP BY 
+                                  date(added_on), 
+                                  payment_mode
+                                ORDER BY 
+                                  date(added_on), 
+                                  payment_mode";
+
+
+            $stmt = $this->conn->prepare($fetchStockOutData);
+
+            if (!$stmt) {
+                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            // print_r($result);
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnResult = ['status' => true, 'data' => $data];
+            } else {
+                $returnResult = ['status' => false];
+            }
+            return json_encode($returnResult);
+            $stmt->close;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+    
+
+
+    function stockOutReportOnItemCategory($startDate, $endDate, $adminId)
+    {
+        try {
+
+            $fetchStockOutData = "SELECT 
+                                c.name AS category_name,  
+                                DATE(so.added_on) AS added_on,  
+                                SUM(sod.amount) AS total_stock_out_amount
+                              FROM 
+                                stock_out so
+                              JOIN 
+                                stock_out_details sod ON so.invoice_id = sod.invoice_id
+                              JOIN 
+                                products p ON sod.product_id = p.product_id
+                              JOIN 
+                                product_type c ON p.type = c.id
+                              WHERE 
+                                so.admin_id = '$adminId' AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
+                              GROUP BY 
+                                c.name,  
+                                DATE(so.added_on)
+                              ORDER BY 
+                                DATE(so.added_on),  
+                                c.name";
+
+            $stmt = $this->conn->prepare($fetchStockOutData);
+
+            if (!$stmt) {
+                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnResult = ['status' => true, 'data' => $data];
+            } else {
+                $returnResult = ['status' => false];
+            }
+
+            $stmt->close();
+
+            return json_encode($returnResult);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
 
 
@@ -1465,9 +1575,9 @@ class StockOut
                     while ($row = $result->fetch_object()) {
                         $data[] = $row;
                     }
-                    return json_encode(['status'=>'1', 'data'=>$data]);
+                    return json_encode(['status' => '1', 'data' => $data]);
                 } else {
-                    return json_encode(['status'=>'0']);
+                    return json_encode(['status' => '0']);
                 }
 
                 $stmt->close();
@@ -1507,9 +1617,9 @@ class StockOut
                     while ($row = $result->fetch_object()) {
                         $data[] = $row;
                     }
-                    return json_encode(['status'=>'1', 'data'=>$data]);
+                    return json_encode(['status' => '1', 'data' => $data]);
                 } else {
-                    return json_encode(['status'=>'0']);
+                    return json_encode(['status' => '0']);
                 }
 
                 $stmt->close();
@@ -1554,9 +1664,9 @@ class StockOut
                     while ($row = $result->fetch_object()) {
                         $data[] = $row;
                     }
-                    return json_encode(['status'=>'1', 'data'=>$data]);
+                    return json_encode(['status' => '1', 'data' => $data]);
                 } else {
-                    return json_encode(['status'=>'0']);
+                    return json_encode(['status' => '0']);
                 }
 
                 $stmt->close();

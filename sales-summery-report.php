@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'employee.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 
 
@@ -18,6 +19,8 @@ $StockInDetails = new StockInDetails;
 $Distributor = new Distributor;
 $Products = new Products;
 $Employees   = new Employees;
+$Utility     = new Utility;
+
 
 
 // product category list
@@ -41,12 +44,14 @@ if ($employeeDetails->status) {
 }
 
 
-
-
-if (isset($_GET['reportGenerat'])) {
-    echo 'generating report....';
+$stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
+if ($stockOutDataReport->status) {
+    $stockOutDataReport = $stockOutDataReport->data;
+} else {
+    $stockOutDataReport = [];
 }
 
+// print_r($stockOutDataReport);
 ?>
 
 <!DOCTYPE html>
@@ -64,9 +69,7 @@ if (isset($_GET['reportGenerat'])) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
@@ -97,22 +100,19 @@ if (isset($_GET['reportGenerat'])) {
                         <div class="col-md-9 pt-3 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="reports.php"
-                                            class="text-decoration-none">Reports</a></li>
+                                    <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Sales Summery</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="col-md-3 d-flex text-center p-2">
                             <div class="col-sm-4">
-                                <button type="button" id="print-report" name="print-report"
-                                    class="btn btn-primary w-100 border rounded text-center">
+                                <button type="button" id="print-report" name="print-report" class="btn btn-primary w-100 border rounded text-center">
                                     Print
                                 </button>
                             </div>
                             <div class="col-sm-8">
-                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type"
-                                    onchange="selectDownloadType(this)">
+                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -123,18 +123,8 @@ if (isset($_GET['reportGenerat'])) {
                     </div>
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
-                            <!-- optional search filter by item name or composition -->
-                            <!-- <div class="col-md-3 mt-2">
-                                <div class="input-group h-100">
-                                    <input class="cvx-inp border-0 w-75" type="text" placeholder="Search By Item Name/Composition" name="appointment-search" id="search-by-item-name" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" />
-
-                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append h-100" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div> -->
-                            <!-- filter range -->
                             <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter"
-                                    onchange="dayFilter(this)">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter" onchange="dayFilter(this)">
                                     <option value="DW" selected>Day Wise</option>
                                     <option value="WW">Week Wise</option>
                                     <option value="MW">Month Wise</option>
@@ -144,8 +134,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter date range -->
                             <div class="col-md-2 mt-2" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter"
-                                    onchange="dateRangeFilter(this)" required>
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -161,19 +150,15 @@ if (isset($_GET['reportGenerat'])) {
 
                             <div class="d-none col-md-2 mt-2" id="inputed-date-range-div">
                                 <div class="input-group h-100">
-                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range"
-                                        id="inputed-date-range" style="outline: none;" />
+                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;" />
 
-                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append"
-                                        id="date-reset" style="margin-left: -2rem;" type="button"
-                                        onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
+                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -31px;" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
                                 </div>
                             </div>
 
                             <!-- filter on category -->
                             <div class="col-md-2 mt-2" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter"
-                                    onchange="categoryFilterSelect(this)">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter" onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
                                     <option value="PM">Payment Mode</option>
@@ -184,32 +169,18 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- control list filter -->
                             <!-- filter purchase type -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="prod-category-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="prod-category" id="prod-category">
-                                    <option value="AC" disabled selected>All Category</option>
-                                    <?php
-                                    if (!empty($prodCategoryData)) {
-                                        foreach ($prodCategoryData as $categoryData) {
-                                            echo '<option value="' . $categoryData->id . '">' . $categoryData->name . '</option>';
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                                <label class="d-none" id="filter-by-prod-categoty-val"></label>
-                            </div> -->
                             <div class="dropdown d-none col-md-2 mt-2" id="prod-category-select-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    All Category
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Select Category
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="AC" onclick="toggleCheckboxes(this)" checked>All Category</label>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="AC" onclick="toggleCheckboxes(this)">All Category</label>
                                     </li>
                                     <?php
                                     if (!empty($prodCategoryData)) {
                                         foreach ($prodCategoryData as $categoryData) {
-                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" checked> '.$categoryData->name.' </label></li>' ;
+                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '"> ' . $categoryData->name . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -218,36 +189,23 @@ if (isset($_GET['reportGenerat'])) {
                             </div>
 
 
-
                             <!-- filter payment mode -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="payment-mode-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="payment-mode" id="payment-mode">
-                                    <option value="APM" disabled selected>All Payment Mode</option>
-                                    <option value="CSH">Cash</option>
-                                    <option value="CRDT">Credit</option>
-                                    <option value="UPI">UPI</option>
-                                    <option value="CRD">Card</option>
-                                </select>
-                                <label class="d-none" id="filter-by-payment-mode-val">APM</label>
-                            </div> -->
-
                             <div class="dropdown d-none col-md-2 mt-2 bg-white" id="payment-mode-div">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span class="caret">All Payment Mode</span>
+                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="caret">Select Payment Mode</span>
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="APM" onclick="toggleCheckboxes(this)" checked>All Payment Mode</label>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="APM" onclick="toggleCheckboxes(this)">All Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label><input type="checkbox" value="CSH">Cash</label>
+                                        <label><input type="checkbox" value="Cash">Cash</label>
                                     </li>
 
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="CRDT">Credit
+                                            <input type="checkbox" value="Credit">Credit
                                         </label>
                                     </li>
                                     <li>
@@ -257,43 +215,26 @@ if (isset($_GET['reportGenerat'])) {
                                     </li>
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="CRD">Card
+                                            <input type="checkbox" value="Card">Card
                                         </label>
                                     </li>
-                                    <label class="d-none" id="filter-by-payment-mode-val">APM</label>
+                                    <label class="d-none" id="filter-by-payment-mode-val"></label>
                                 </ul>
                             </div>
 
                             <!-- filter on staff -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="staff-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="staff-filter" id="staff-filter">
-                                    <option value="AS" disabled selected>All Staff</option>
-                                    <?php
-                                    if (!empty($employeeDetails)) {
-                                        foreach ($employeeDetails as $empData) {
-                                    ?>
-                                    <option value="<?= $empData->emp_id; ?>"><?= $empData->emp_name; ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                                <label class="d-none" id="filter-by-staff-val"></label>
-                            </div> -->
-                            
                             <div class="dropdown d-none col-md-2 mt-2" id="staff-filter-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    All Staff
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Select Staff
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="AS" onclick="toggleCheckboxes(this)" checked>All Staff</label>
+                                        <label><input class="activeCheckedBox" type="checkbox" value="AS" onclick="toggleCheckboxes(this)">All Staff</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
                                         foreach ($employeeDetails as $empData) {
-                                            echo '<li><label><input type="checkbox" value="' . $empData->emp_id . '" checked> '.$empData->emp_name.' </label></li>' ;
+                                            echo '<li><label><input type="checkbox" value="' . $empData->emp_id . '"> ' . $empData->emp_name . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -304,8 +245,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- additional filter  -->
                             <div class="d-none col-md-2 mt-2" id="report-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on"
-                                    id="sales-report-on">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on" id="sales-report-on">
                                     <option value="TS" selected>Total Sales (&#8377)</option>
                                     <option value="TM">Payment Mode (&#8377)</option>
                                     <option value="AVM">Average Margin (%)</option>
@@ -319,9 +259,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- find button on filter -->
                             <div class="col-md-2 mt-2" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report"
-                                    class="btn btn-primary w-50 border rounded text-center mr-4"
-                                    onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="salesSummerySearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -331,19 +269,16 @@ if (isset($_GET['reportGenerat'])) {
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv"
-                                style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date"
-                                                onchange="selectStartDate(this)">
+                                            <input type="date" id="from-date" name="from-date" onchange="selectStartDate(this)">
                                         </div>
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date"
-                                                onchange="selectEndDate(this)">
+                                            <input type="date" id="to-date" name="to-date" onchange="selectEndDate(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -351,74 +286,102 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="selected-end-date"></label>
                             </div>
                         </div>
+                       
 
-                        <table class="table">
-                            <thead>
-                                <tr>
+                    <!-- dynamic tables gose hear -->
+                     
+                        <table class="table" id="report-table">
+                            
+                                <!-- <tr> 
                                     <th>Sl No.</th>
-                                    <th>Bill No.</th>
-                                    <th>Entry Date</th>
-                                    <th>Bill Date</th>
-                                    <th>Distributor</th>
-                                    <th class="text-end">Taxable</th>
-                                    <th class="text-end">CESS</th>
-                                    <th class="text-end">SGST</th>
-                                    <th class="text-end">CGST</th>
-                                    <th class="text-end">IGST</th>
-                                    <th class="text-end">Total</th>
+                                    <th>Date</th>
+                                    <th>Allopathy</th>
+                                    <th>Ayurvedic</th>
+                                    <th>Cosmetic</th>
+                                    <th>Drug</th>
+                                    <th>Generic</th>
+                                    <th>Nutraceuticals</th>
+                                    <th>OTC</th>
+                                    <th>Surgical</th>
+                                    <th>Total Sales (&#8377)</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            </thead> -->
+                            <?php
+                            /*
+                            if (!empty($stockOutDataReport)) {
+                            ?>
+                                <!-- <thead id="payment-mode-head" class="">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Cash</th>
+                                        <th>Credit</th>
+                                        <th>UPI</th>
+                                        <th>Card</th>
+                                        <th>Total Sales (&#8377)</th>
+                                    </tr>
+                                </thead> -->
                                 <?php
-                                if (!empty($purchaseReport)) {
-                                    if ($purchaseReport->status) {
-                                        $purchaseReportData = $purchaseReport->data;
-                                        $sl = 0;
-                                        foreach ($purchaseReportData as $purchaseData) {
-                                            // print_r($purchaseData);
-                                            // echo "<br><br>";
-                                            $sl++;
-                                            $billNo = $purchaseData->distributor_bill;
-                                            $entryDate = $purchaseData->added_on;
-                                            $billDate = $purchaseData->bill_date;
-                                            $distData = json_decode($Distributor->showDistributorById($purchaseData->distributor_id));
-                                            if ($distData->status) {
-                                                $distName = $distData->data->name;
-                                            } else {
-                                                $distName = '';
-                                            }
-                                            $taxable = floatval($purchaseData->amount) - floatval($purchaseData->gst);
-                                            $totalGst = $purchaseData->gst;
-                                            $cess = '';
-                                            $cgst = floatval($totalGst) / 2;
-                                            $cgst = $sgst = number_format($cgst, 2);
-                                            $igst = '';
-                                            $totalAmount = $purchaseData->amount;
-                                ?>
-                                <tr>
-                                    <th><?= $sl; ?></th>
-                                    <td><?= $billNo; ?></td>
-                                    <td><?= $entryDate; ?></td>
-                                    <td><?= $billDate; ?></td>
-                                    <th><?= $distName; ?></th>
-                                    <td class="text-end"><?= $taxable; ?></td>
-                                    <td class="text-end"><?= $cess; ?></td>
-                                    <td class="text-end"><?= $cgst; ?></td>
-                                    <th class="text-end"><?= $sgst; ?></th>
-                                    <td class="text-end"><?= $igst; ?></td>
-                                    <td class="text-end"><?= $totalAmount; ?></td>
-                                </tr>
-                                <?php
-                                        }
-                                    } else {
-                                        echo "no data found";
-                                    }
-                                }
-                                ?>
-                            </tbody>
+                                $totalCashSellOnDate = 0;
+                                $totalCreditSellOnDate = 0;
+                                $totalUPISellOnDate = 0;
+                                $totalCardSellOnDate = 0;
+                                $dateArray = [];
 
+
+                                for ($i = 0; $i < count($stockOutDataReport); $i++) {
+                                    array_push($dateArray, $stockOutDataReport[$i]->added_on);
+                                }
+
+                                // Optionally, remove duplicates
+                                $uniqueDateArray = array_unique($dateArray);
+                                $uniqueDateArray = array_values($uniqueDateArray);
+
+
+                                $count = 0;
+                                for ($i = 0; $i < count($uniqueDateArray); $i++) {
+                                    $totalCashSellOnDate = 0;
+                                    $totalCreditSellOnDate = 0;
+                                    $totalUPISellOnDate = 0;
+                                    $totalCardSellOnDate = 0;
+                                    for ($j = 0; $j < count($stockOutDataReport); $j++) {
+                                        if ($uniqueDateArray[$i] == $stockOutDataReport[$j]->added_on) {
+                                            $addedOnDate = $stockOutDataReport[$j]->added_on;
+                                            $date = new DateTime($addedOnDate);
+                                            $convertedDate = $date->format('d-m-Y');
+                                            if ($stockOutDataReport[$j]->payment_mode == 'Cash') {
+                                                $totalCashSellOnDate += $stockOutDataReport[$j]->total_amount;
+                                            }
+
+                                            if ($stockOutDataReport[$j]->payment_mode == 'Credit') {
+                                                $totalCreditSellOnDate += $stockOutDataReport[$j]->total_amount;
+                                            }
+
+                                            if ($stockOutDataReport[$j]->payment_mode == 'UPI') {
+                                                $totalUPISellOnDate += $stockOutDataReport[$j]->total_amount;
+                                            }
+
+                                            if ($stockOutDataReport[$j]->payment_mode == 'Card') {
+                                                $totalCardSellOnDate += $stockOutDataReport[$j]->total_amount;
+                                            }
+                                        }
+                                        $totalSell = $totalCashSellOnDate + $totalCreditSellOnDate + $totalUPISellOnDate + $totalCardSellOnDate;
+                                    }
+                                ?>
+                                    <tbody id="payment-mode-body" class="">
+                                        <td><?= $convertedDate; ?></td>
+                                        <td><label>&#8377</label><?= $totalCashSellOnDate; ?></td>
+                                        <td><label>&#8377</label><?= $totalCreditSellOnDate; ?></td>
+                                        <td><label>&#8377</label><?= $totalUPISellOnDate; ?></td>
+                                        <td><label>&#8377</label><?= $totalCardSellOnDate; ?></td>
+                                        <td><label>&#8377</label><?= $totalSell; ?></td>
+                                    </tbody>
+                            <?php
+                                }
+                            }*/
+                            ?>
                         </table>
                     </div>
+                    <!-- end of dynamic table creation -->
                 </div>
                 <!-- /.container-fluid -->
 
@@ -459,8 +422,19 @@ if (isset($_GET['reportGenerat'])) {
                     checkbox.checked = source.checked;
                 }
             });
-        }
 
+            if (source.value == 'AC') {
+                document.getElementById('prod-category').innerHTML = 'All Category';
+            }
+
+            // if (source.value == 'APM') {
+
+            // }
+
+            // if (source.value == 'AS') {
+
+            // }
+        }
     </script>
 </body>
 

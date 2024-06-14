@@ -3714,6 +3714,23 @@ class Utility
 		}
 		return $dateTime->format('d-m-Y');
 	}
+
+
+
+	/// date range array create function
+	function createDateRangeArray($startDate, $endDate)
+	{
+		$dateRange = array();
+		$currentDate = strtotime($startDate);
+		$endDate = strtotime($endDate);
+
+		while ($currentDate <= $endDate) {
+			$dateRange[] = date("d-m-Y", $currentDate);
+			$currentDate = strtotime("+1 day", $currentDate);
+		}
+
+		return $dateRange;
+	}
 } //eoc
 
 
