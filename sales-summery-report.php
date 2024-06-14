@@ -97,7 +97,7 @@ if ($stockOutDataReport->status) {
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-md-9 pt-3 pl-4">
+                        <div class="col-md-9 pt-2 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
@@ -105,14 +105,16 @@ if ($stockOutDataReport->status) {
                                 </ol>
                             </nav>
                         </div>
-                        <div class="col-md-3 d-flex text-center p-2">
+                        <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
-                                <button type="button" id="print-report" name="print-report" class="btn btn-primary w-100 border rounded text-center">
+                                <button type="button" id="print-report" name="print-report"
+                                    class="btn btn-sm btn-primary border-0 w-100 text-center">
                                     Print
                                 </button>
                             </div>
-                            <div class="col-sm-8">
-                                <select class="c-inp p-1 w-100" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
+                            <div class="col-sm-8 bg-info bg-opacity-10">
+                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type"
+                                    onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -123,8 +125,18 @@ if ($stockOutDataReport->status) {
                     </div>
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
-                            <div class="col-md-2 mt-2">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="day-filter" id="day-filter" onchange="dayFilter(this)">
+                            <!-- optional search filter by item name or composition -->
+                            <!-- <div class="col-md-3 mt-2">
+                                <div class="input-group h-100">
+                                    <input class="cvx-inp border-0 w-75" type="text" placeholder="Search By Item Name/Composition" name="appointment-search" id="search-by-item-name" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" />
+
+                                    <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append h-100" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div> -->
+                            <!-- filter range -->
+                            <div class="col-md-2 bg-white me-3">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="day-filter" id="day-filter"
+                                    onchange="dayFilter(this)">
                                     <option value="DW" selected>Day Wise</option>
                                     <option value="WW">Week Wise</option>
                                     <option value="MW">Month Wise</option>
@@ -133,8 +145,9 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter date range -->
-                            <div class="col-md-2 mt-2" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
+                            <div class="col-md-2 bg-white me-3" id="date-range-select-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter"
+                                    onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -157,8 +170,9 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter on category -->
-                            <div class="col-md-2 mt-2" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="category-filter" id="category-filter" onchange="categoryFilterSelect(this)">
+                            <div class="col-md-2 bg-white me-3" id="category-filter-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter"
+                                    onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
                                     <option value="PM">Payment Mode</option>
@@ -169,9 +183,23 @@ if ($stockOutDataReport->status) {
 
                             <!-- control list filter -->
                             <!-- filter purchase type -->
-                            <div class="dropdown d-none col-md-2 mt-2" id="prod-category-select-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Select Category
+                            <!-- <div class="d-none col-md-2 mt-2" id="prod-category-select-div">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="prod-category" id="prod-category">
+                                    <option value="AC" disabled selected>All Category</option>
+                                    <?php
+                                    if (!empty($prodCategoryData)) {
+                                        foreach ($prodCategoryData as $categoryData) {
+                                            echo '<option value="' . $categoryData->id . '">' . $categoryData->name . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <label class="d-none" id="filter-by-prod-categoty-val"></label>
+                            </div> -->
+                            <div class="dropdown d-none col-md-2" id="prod-category-select-div">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    All Category
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -190,9 +218,21 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- filter payment mode -->
-                            <div class="dropdown d-none col-md-2 mt-2 bg-white" id="payment-mode-div">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span class="caret">Select Payment Mode</span>
+                            <!-- <div class="d-none col-md-2 mt-2" id="payment-mode-div">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="payment-mode" id="payment-mode">
+                                    <option value="APM" disabled selected>All Payment Mode</option>
+                                    <option value="CSH">Cash</option>
+                                    <option value="CRDT">Credit</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="CRD">Card</option>
+                                </select>
+                                <label class="d-none" id="filter-by-payment-mode-val">APM</label>
+                            </div> -->
+
+                            <div class="dropdown d-none col-md-2 bg-white" id="payment-mode-div">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="caret">All Payment Mode</span>
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -223,9 +263,26 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter on staff -->
-                            <div class="dropdown d-none col-md-2 mt-2" id="staff-filter-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Select Staff
+                            <!-- <div class="d-none col-md-2 mt-2" id="staff-filter-div">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="staff-filter" id="staff-filter">
+                                    <option value="AS" disabled selected>All Staff</option>
+                                    <?php
+                                    if (!empty($employeeDetails)) {
+                                        foreach ($employeeDetails as $empData) {
+                                    ?>
+                                    <option value="<?= $empData->emp_id; ?>"><?= $empData->emp_name; ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <label class="d-none" id="filter-by-staff-val"></label>
+                            </div> -->
+                            
+                            <div class="dropdown d-none col-md-2" id="staff-filter-div">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    All Staff
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -258,18 +315,21 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- find button on filter -->
-                            <div class="col-md-2 mt-2" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary w-50 border rounded text-center mr-4" onclick="salesSummerySearch()">
+                            <div class="col-md-2" id="search-btn-div">
+                                <button type="button" id="search-filter" name="find-report"
+                                    class="btn btn-primary btn-sm text-center"
+                                    onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="row d-flex bg-primary bg-opacity-10 py-2">
+                        <div class="row d-flex">
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv"
+                                style="display:none;">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
