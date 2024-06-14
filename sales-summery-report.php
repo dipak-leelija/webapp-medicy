@@ -307,7 +307,7 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- find button on filter -->
-                            <div class="col-md-2" id="search-btn-div">
+                            <div class="col-md-1" id="search-btn-div">
                                 <button type="button" id="search-filter" name="find-report"
                                     class="btn btn-primary btn-sm text-center"
                                     onclick="salesSummerySearch()">
