@@ -81,7 +81,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                 aria-labelledby="flush-headingOne"
                                                 data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
-                                                    <a href="sales-summery-report.php">Sales Summery Report</a>
+                                                    <a href="purchase-report.php">Purchae Report</a>
                                                 </div>
                                             </div>
                                         </div>

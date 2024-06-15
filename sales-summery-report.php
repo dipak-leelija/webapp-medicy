@@ -108,7 +108,7 @@ if ($stockOutDataReport->status) {
                         <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
                                 <button type="button" id="print-report" name="print-report"
-                                    class="btn btn-sm btn-primary border-0 w-100 text-center">
+                                    class="btn btn-sm btn-primary border-0 text-center">
                                     Print
                                 </button>
                             </div>
@@ -126,8 +126,8 @@ if ($stockOutDataReport->status) {
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
                             <!-- filter range -->
-                            <div class="col-md-2 bg-white me-3">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="day-filter" id="day-filter"
+                            <div class="col-md-2 bg-white me-3 selectDiv">
+                                <select class="cvx-inp1 border-0 rounded p-1 w-100" name="day-filter" id="day-filter"
                                     onchange="dayFilter(this)">
                                     <option value="DW" selected>Day Wise</option>
                                     <option value="WW">Week Wise</option>
@@ -137,7 +137,7 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter date range -->
-                            <div class="col-md-2 bg-white me-3" id="date-range-select-div">
+                            <div class="col-md-2 bg-white me-3 selectDiv" id="date-range-select-div">
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter"
                                     onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
@@ -153,8 +153,8 @@ if ($stockOutDataReport->status) {
                                 <label class="d-none" id="dt-rng-val"></label>
                             </div>
 
-                            <div class="d-none col-md-2 mt-2" id="inputed-date-range-div">
-                                <div class="input-group h-100">
+                            <div class="d-none col-md-2 bg-white me-3 selectDiv" id="inputed-date-range-div">
+                                <div class="input-group w-100">
                                     <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;" />
 
                                     <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -31px;" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
@@ -162,7 +162,7 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter on category -->
-                            <div class="col-md-2 bg-white me-3" id="category-filter-div">
+                            <div class="col-md-2 bg-white me-3 selectDiv" id="category-filter-div">
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter"
                                     onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
@@ -188,8 +188,8 @@ if ($stockOutDataReport->status) {
                                 </select>
                                 <label class="d-none" id="filter-by-prod-categoty-val"></label>
                             </div> -->
-                            <div class="dropdown d-none col-md-2" id="prod-category-select-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="prod-category" name="prod-category"
+                            <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
+                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     All Category
                                 </button>
@@ -221,8 +221,8 @@ if ($stockOutDataReport->status) {
                                 <label class="d-none" id="filter-by-payment-mode-val">APM</label>
                             </div> -->
 
-                            <div class="dropdown d-none col-md-2 bg-white" id="payment-mode-div">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="payment-mode"
+                            <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
+                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret">All Payment Mode</span>
                                 </button>
@@ -271,8 +271,8 @@ if ($stockOutDataReport->status) {
                                 <label class="d-none" id="filter-by-staff-val"></label>
                             </div> -->
                             
-                            <div class="dropdown d-none col-md-2" id="staff-filter-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
+                            <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="staff-filter-div">
+                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1" type="button" id="staff-filter" name="staff-filter"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     All Staff
                                 </button>
@@ -293,8 +293,8 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- additional filter  -->
-                            <div class="d-none col-md-2 mt-2" id="report-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on" id="sales-report-on">
+                            <div class="d-none col-md-2 bg-white me-3 selectDiv" id="report-filter-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="sales-report-on" id="sales-report-on">
                                     <option value="TS" selected>Total Sales (&#8377)</option>
                                     <option value="TM">Payment Mode (&#8377)</option>
                                     <option value="AVM">Average Margin (%)</option>
@@ -307,7 +307,7 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- find button on filter -->
-                            <div class="col-md-1" id="search-btn-div">
+                            <div class="col-md-1 searchFilterDiv" id="search-btn-div">
                                 <button type="button" id="search-filter" name="find-report"
                                     class="btn btn-primary btn-sm text-center"
                                     onclick="salesSummerySearch()">
