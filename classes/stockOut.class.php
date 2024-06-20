@@ -1228,23 +1228,29 @@ class StockOut
     {
         try {
             $fetchStockOutData = "SELECT 
-                                  date(added_on) as added_on,
-                                  payment_mode,
-                                  SUM(amount) AS total_amount
+                                    date(so.added_on) as added_on,
+                                    so.payment_mode,
+                                    SUM(so.amount) AS total_amount,
+                                    SUM(sod.sales_margin) AS total_sales_margin,
+                                    COUNT(sod.mrp) as item_count,
+                                    AVG(sod.mrp) AS avg_mrp,
+                                    AVG(sod.discount) AS avg_disc_percent
                                 FROM 
-                                  stock_out
+                                    stock_out as so
+                                JOIN 
+                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
                                 WHERE 
-                                  date(added_on) BETWEEN '$startDate' AND '$endDate'
-                                  AND payment_mode IN ('Cash', 'UPI', 'Card', 'Credit') 
-                                  AND admin_id = '$adminId'
+                                    date(so.added_on) BETWEEN '$startDate' AND '$endDate'
+                                    AND so.payment_mode IN ('Cash', 'UPI', 'Card', 'Credit') 
+                                    AND so.admin_id = '$adminId'
                                 GROUP BY 
-                                  date(added_on), 
-                                  payment_mode
+                                    date(so.added_on), 
+                                    so.payment_mode
                                 ORDER BY 
-                                  date(added_on), 
-                                  payment_mode";
+                                    date(so.added_on), 
+                                    so.payment_mode";
 
-
+            // print_r($fetchStockOutData);
             $stmt = $this->conn->prepare($fetchStockOutData);
 
             if (!$stmt) {
