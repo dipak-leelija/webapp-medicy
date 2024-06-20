@@ -18,16 +18,16 @@
     background-color: #c3bff1;
 }
 
-
-#date-filter,
-#distributor-filter,
-#p-type,
-#download-file-type{
+.c-inp,
+.cvx-inp1{
     outline: none !important;
     border: none !important;
 }
 
 
+#print-report{
+    padding-bottom: 6px;
+}
 .reportNavbar{
     background-color: rgba(4, 76, 157, 0.1);
     padding: 12px 24px;
@@ -55,6 +55,19 @@
 @media screen and (max-width:768px) {
     #dtPickerDiv{
         width: 75%;
+    }
+    .reportNavbar{
+        padding: 12px 12px;
+    }
+    .selectDiv{
+        margin-bottom: 6px;
+    }
+    .searchFilterDiv{
+        width: 100%;
+        padding: 0px;
+    }
+    .searchFilterDiv button{
+        width: 100%;
     }
 }
 /* ..........................  */

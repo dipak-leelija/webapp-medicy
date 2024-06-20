@@ -121,7 +121,7 @@ if (isset($_GET['reportGenerat'])) {
                                 </div>
                             </div> -->
                             <!-- filter date -->
-                            <div class="col-md-2 bg-white me-3">
+                            <div class="col-md-2 bg-white me-3 selectDiv">
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="date-filter" id="date-filter" /*onchange="filterAppointmentByValue()" * / onchange="filterDate(this)">
                                     <option value="A">Select All Date</option>
                                     <option value="T">Today</option>
@@ -139,7 +139,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="select-end-date"></label>
                             </div>
                             <!-- filter distributor -->
-                            <div class="col-md-2 bg-white me-3">
+                            <div class="col-md-2 bg-white me-3 selectDiv">
                                 <!-- <div class="input-group "> -->
                                     <!-- <input type="text" name="distributor-id" id="distributor-id" class="c-inp w-100 p-1" disable hidden> -->
 
@@ -188,7 +188,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="selected-dist-id">AD</label>
                             </div>
                             <!-- filter purchase type -->
-                            <div class="col-md-2 bg-white me-3">
+                            <div class="col-md-2 bg-white me-3 selectDiv">
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
                                     <option value="APD">All Purchase</option>
                                     <option value="WG">With GST</option>
@@ -199,7 +199,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <label class="d-none" id="selected-purchse-type">APD</label>
                             </div>
                             <!-- find button on filter -->
-                            <div class="col-md-2">
+                            <div class="col-md-2 searchFilterDiv">
                                 <button type="button" id="search-filter" name="search-filter" class="btn btn-primary text-center btn-sm" onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
