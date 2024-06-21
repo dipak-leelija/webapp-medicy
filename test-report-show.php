@@ -12,11 +12,12 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
 
 $reportId = $_GET['id'];
 
 // $patientId = $_GET['patient_id'];
-
+$SubTests           = new SubTests;
 $LabReport     = new LabReport();
 $Patients      = new Patients();
 $LabBilling    = new LabBilling();
@@ -140,7 +141,7 @@ if ($patientDatafetch !== null) {
 
                 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
                     for ($i = 0; $i < count($testIds); $i++) {
-                        $patientTest = $LabReport->patientTest($testIds[$i]);
+                        $patientTest = $SubTests->subTestById($testIds[$i]);
                         $decodedData = json_decode($patientTest, true);
                         if ($decodedData !== null) {
                             $sub_test_name = $decodedData['sub_test_name'];

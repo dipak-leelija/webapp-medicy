@@ -49,17 +49,33 @@ class SubTests
     }
 
 
-
-    function showSubTestsId($subTestId)
+    function subTestById($testId)
     {
-        $data = [];
-        $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
-        $subTestQuery = $this->conn->query($selectTestById);
-        while ($result = $subTestQuery->fetch_array()) {
-            $data[] = $result;
+        try {
+            $data = null;
+            $sql = "SELECT * FROM `sub_tests` where `id` = '$testId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
-        return $data;
-    } // end showLabTypesById function
+    }
+
+
+    // function showSubTestsId($subTestId)
+    // {
+    //     $data = [];
+    //     $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
+    //     $subTestQuery = $this->conn->query($selectTestById);
+    //     while ($result = $subTestQuery->fetch_array()) {
+    //         $data[] = $result;
+    //     }
+    //     return $data;
+    // } // end showLabTypesById function
 
 
 
