@@ -44,15 +44,16 @@ if ($employeeDetails->status) {
 }
 
 
-$stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
-if ($stockOutDataReport->status) {
-    $stockOutDataReport = $stockOutDataReport->data;
-} else {
-    $stockOutDataReport = [];
-}
+// $stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
+// if ($stockOutDataReport->status) {
+//     $stockOutDataReport = $stockOutDataReport->data;
+// } else {
+//     $stockOutDataReport = [];
+// }
 
 // print_r($stockOutDataReport);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -191,7 +192,7 @@ if ($stockOutDataReport->status) {
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
                                 <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    All Category
+                                    Select Item Category
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -226,28 +227,28 @@ if ($stockOutDataReport->status) {
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret" id="payment-mode-select-span">Select Payment Mode</span>
                                 </button>
-                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="APM" onclick="toggleCheckboxes1(this)">All Payment Mode</label>
+                                        <label><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes1(this)">All Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label><input type="checkbox" value="Cash">Cash</label>
+                                        <label><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes1(this)">Cash</label>
                                     </li>
 
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="Credit">Credit
+                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes1(this)">Credit
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="UPI">UPI
+                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes1(this)">UPI
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="Card">Card
+                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes1(this)">Card
                                         </label>
                                     </li>
                                     <label class="d-none" id="filter-by-payment-mode-val"></label>
@@ -461,14 +462,6 @@ if ($stockOutDataReport->status) {
             if (source.value == 'AC') {
                 document.getElementById('prod-category').innerHTML = 'All Category';
             }
-
-            if (source.value == 'APM') {
-                document.getElementById('payment-mode-select-span').innerHTML = 'All Payment Mode';
-            }
-
-            // if (source.value == 'AS') {
-
-            // }
         }
     </script>
 </body>
