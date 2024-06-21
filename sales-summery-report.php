@@ -44,15 +44,16 @@ if ($employeeDetails->status) {
 }
 
 
-$stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
-if ($stockOutDataReport->status) {
-    $stockOutDataReport = $stockOutDataReport->data;
-} else {
-    $stockOutDataReport = [];
-}
+// $stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
+// if ($stockOutDataReport->status) {
+//     $stockOutDataReport = $stockOutDataReport->data;
+// } else {
+//     $stockOutDataReport = [];
+// }
 
 // print_r($stockOutDataReport);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -191,7 +192,7 @@ if ($stockOutDataReport->status) {
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
                                 <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    All Category
+                                    Select Item Category
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -224,30 +225,30 @@ if ($stockOutDataReport->status) {
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
                                 <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span class="caret">All Payment Mode</span>
+                                    <span class="caret" id="payment-mode-select-span">Select Payment Mode</span>
                                 </button>
-                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="APM" onclick="toggleCheckboxes(this)">All Payment Mode</label>
+                                        <label><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes1(this)">All Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label><input type="checkbox" value="Cash">Cash</label>
+                                        <label><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes1(this)">Cash</label>
                                     </li>
 
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="Credit">Credit
+                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes1(this)">Credit
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="UPI">UPI
+                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes1(this)">UPI
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input type="checkbox" value="Card">Card
+                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes1(this)">Card
                                         </label>
                                     </li>
                                     <label class="d-none" id="filter-by-payment-mode-val"></label>
@@ -255,26 +256,10 @@ if ($stockOutDataReport->status) {
                             </div>
 
                             <!-- filter on staff -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="staff-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="staff-filter" id="staff-filter">
-                                    <option value="AS" disabled selected>All Staff</option>
-                                    <?php
-                                    if (!empty($employeeDetails)) {
-                                        foreach ($employeeDetails as $empData) {
-                                    ?>
-                                    <option value="<?= $empData->emp_id; ?>"><?= $empData->emp_name; ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                                <label class="d-none" id="filter-by-staff-val"></label>
-                            </div> -->
-                            
-                            <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="staff-filter-div">
-                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1" type="button" id="staff-filter" name="staff-filter"
+                            <div class="dropdown d-none col-md-2" id="staff-filter-div">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    All Staff
+                                    Select Staff
                                 </button>
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
@@ -293,13 +278,12 @@ if ($stockOutDataReport->status) {
 
 
                             <!-- additional filter  -->
-                            <div class="d-none col-md-2 bg-white me-3 selectDiv" id="report-filter-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="sales-report-on" id="sales-report-on">
-                                    <option value="TS" selected>Total Sales (&#8377)</option>
-                                    <option value="TM">Payment Mode (&#8377)</option>
-                                    <option value="AVM">Average Margin (%)</option>
+                            <div class="d-none col-md-2 mt-2" id="report-filter-div">
+                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on" id="sales-report-on" onchange="filterReportOn(this)">
+                                    <option value="" selected>Select Report Filter</option>
+                                    <option value="TS">Total Sales (&#8377)</option>
+                                    <option value="TM">Total Margin (&#8377)</option>
                                     <option value="TD">Total Discount (&#8377)</option>
-                                    <option value="AD">Average Discount (%)</option>
                                 </select>
                                 <label class="d-none" id="report-filter-val"></label>
                             </div>
@@ -478,14 +462,6 @@ if ($stockOutDataReport->status) {
             if (source.value == 'AC') {
                 document.getElementById('prod-category').innerHTML = 'All Category';
             }
-
-            // if (source.value == 'APM') {
-
-            // }
-
-            // if (source.value == 'AS') {
-
-            // }
         }
     </script>
 </body>

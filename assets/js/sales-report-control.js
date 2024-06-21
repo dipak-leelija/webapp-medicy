@@ -42,6 +42,10 @@ const selectedEndDate = document.getElementById('selected-end-date');
 const inputedDateRange = document.getElementById('inputed-date-range');
 
 
+/// dropdown inner html constant
+const paymentModeConst = document.getElementById('payment-mode-select-span');
+
+
 //// temp data holder
 let tempStartDate = '';
 let tempEndDate = '';
@@ -219,6 +223,7 @@ function dateRangeReset(){
 // category select filter
 function categoryFilterSelect(t){
     filterByVal.innerHTML = t.value;
+
     if(t.value == 'ICAT'){
         productCategorySelectDiv.classList.remove('d-none');
         reportFilterDiv.classList.remove('d-none');
@@ -245,32 +250,172 @@ function categoryFilterSelect(t){
 }
 
 
+// payment mode selection function
+function toggleCheckboxes1(source) {
+
+    if(source.id == 'apm-chkBx'){
+        const checkboxes = document.querySelectorAll('.payment-mode-checkbox-menu input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+        if (!checkbox.disabled) {
+                checkbox.checked = source.checked;
+            }
+        });
+
+        if(source.checked == true){
+            paymentModeConst.innerHTML = 'All Payment Mode';
+            filterByPaymentModeVal.innerHTML = 'Card,Cash,Credit,UPI';
+        }else{
+            paymentModeConst.innerHTML = 'Select Payment Mode';
+            filterByPaymentModeVal.innerHTML = '';
+        }
+    }
+
+    if(source.id == 'csh-chkBx'){
+        if(source.checked == true){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                filterByPaymentModeVal.innerHTML = 'Cash';
+            }else{
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let updatedString = mainStirng + ',Cash';
+                filterByPaymentModeVal.innerHTML = updatedString;
+            }
+        }else{
+            if(filterByPaymentModeVal.innerHTML != ''){
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let modifiedString = mainStirng.replace('Cash,', "").replace('Cash', '');
+                filterByPaymentModeVal.innerHTML = modifiedString;
+                document.getElementById('apm-chkBx').checked = false;
+            }
+        }
+    }
+
+    if(source.id == 'crdt-chkBx'){
+        if(source.checked == true){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                filterByPaymentModeVal.innerHTML = 'Credit';
+            }else{
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let updatedString = mainStirng + ',Credit';
+                filterByPaymentModeVal.innerHTML = updatedString;
+            }
+        }else{
+            if(filterByPaymentModeVal.innerHTML != ''){
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let modifiedString = mainStirng.replace('Credit,', "").replace('Credit', '');
+                filterByPaymentModeVal.innerHTML = modifiedString;
+                document.getElementById('apm-chkBx').checked = false;
+            }
+        }
+    }
+
+    if(source.id == 'crd-chkBx'){
+        if(source.checked == true){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                filterByPaymentModeVal.innerHTML = 'Card';
+            }else{
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let updatedString = mainStirng + ',Card';
+                filterByPaymentModeVal.innerHTML = updatedString;
+            }
+        }else{
+            if(filterByPaymentModeVal.innerHTML != ''){
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let modifiedString = mainStirng.replace('Card,', "").replace('Card', '');
+                filterByPaymentModeVal.innerHTML = modifiedString;
+                document.getElementById('apm-chkBx').checked = false;
+            }
+        }
+    }
+
+    if(source.id == 'upi-chkBx'){
+        if(source.checked == true){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                filterByPaymentModeVal.innerHTML = 'UPI';
+            }else{
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let updatedString = mainStirng + ',UPI';
+                filterByPaymentModeVal.innerHTML = updatedString;
+            }
+        }else if(source.checked == false){
+            if(filterByPaymentModeVal.innerHTML != ''){
+                let mainStirng = filterByPaymentModeVal.innerHTML;
+                let modifiedString = mainStirng.replace('UPI,', '').replace('UPI', '');
+                filterByPaymentModeVal.innerHTML = modifiedString;
+                document.getElementById('apm-chkBx').checked = false;
+            }
+        }
+    }
+    
+    // console.log(filterByPaymentModeVal.innerHTML);
+}
+
+// filter report on function
+function filterReportOn(t){
+    if(t.value == 'TS'){
+        reportFilterVal.innerHTML = 'Total Sell';
+    }
+
+    if(t.value == 'TM'){
+        reportFilterVal.innerHTML = 'Total Margin';
+    }
+
+    if(t.value == 'TD'){
+        reportFilterVal.innerHTML = 'Total Discount';
+    }
+}
+
+
 
 // sales data search call (funning ajax query)
-
 function salesSummerySearch() {
+    let searchString = '';
 
+    // date range input check
     if(dateRangeVal.innerHTML == ''){
         alert('select date range');
         return;
     }
-    // else{
-    //     console.log(selectedStartDate.innerHTML);
-    //     console.log(selectedEndDate.innerHTML);
-    // }
-
+    
+    // primary filter check
     if(filterByVal.innerHTML == ''){
         alert('select filter val');
         return;
+    }else{
+        // secondory filter chek based on primary filter
+        if(filterByVal.innerHTML == 'ICAT'){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                alert('select item category val');
+                return;
+            }
+        }else{
+            searchString = '';
+        }
+        
+
+        if(filterByVal.innerHTML == 'PM'){
+            if(filterByPaymentModeVal.innerHTML == ''){
+                alert('select payment mode');
+                return;
+            }else{
+                searchString = filterByPaymentModeVal.innerHTML;
+            }
+        }
     }
-    // else{
-    //     console.log(filterByVal.innerHTML);
-    // }
+    
+    
+    
+
+    // primary report generator filter based on select
+    if(reportFilterVal.innerHTML == ''){
+        alert('select filter');
+        return;
+    }
 
     let startDate = convertDateFormatToBig(selectedStartDate.innerHTML);
     let endDate = convertDateFormatToBig(selectedEndDate.innerHTML);
 
     let dataArray = {
+        searchOn: searchString,
         startDt: startDate,
         endDt: endDate,
         filterBy: filterByVal.innerHTML,
@@ -279,7 +424,15 @@ function salesSummerySearch() {
     salesDataSearchFunction(dataArray);
 }
 
+// string slice function based on ','.....
+function slicedString(string){
+    let strToArr = [];
+    strToArr = string.split(',');
+    return strToArr;
+}
 
+
+// salse data search function (ajax call)
 function salesDataSearchFunction(array){
     let arryString = JSON.stringify(array);
     let salesDataReport = `ajax/salesSummeryReport.ajax.php?dataArray=${arryString}`;
@@ -288,209 +441,133 @@ function salesDataSearchFunction(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
+    // console.log(report);
     report = JSON.parse(report);
-    console.log(report);
     if(report.status){
         reportShow(report.data);
     }
 }
 
-
-function reportShow(parsedData){
+// creating report and show it
+function reportShow(parsedData) {
+    console.log(parsedData);
     dataTable.innerHTML = ''; // reset table data
     var dateArray = [];
-    if(filterByVal.innerHTML == 'PM'){
-        // Create the <thead> element
-        const thead = document.createElement('thead');
+    var headerStart = ['Date'];
+    var headerMid = [];
+    var headerEnd1 = ['Total Sell'];
+    var headerEnd2 = ['Total Margin'];
+    var headerEnd3 = ['Total Discount'];
+    var headerEnd = [];
 
-        // Create a <tr> element
-        const tr = document.createElement('tr');
-
-        // Define the headers
-        const headers = ['Date','Cash','Credit','UPI','Card','Total Sales'];
-
-        // Iterate over the headers array and create a <th> element for each header
-        headers.forEach(headerText => {
-            const th = document.createElement('th');
-            th.textContent = headerText;
-            tr.appendChild(th);
-        });
-
-        // Append the <tr> to the <thead>
-        thead.appendChild(tr);
-
-        // Append the <thead> to the table
-        dataTable.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
-
-        parsedData.forEach(item=>{
-            dateArray.push(item.added_on); 
-        });
-
-        var  uniqueDateArray = [...new Set(dateArray)];
-
-        var parsedDataArray = Object.values(parsedData);
-
-        for(let i=0; i<uniqueDateArray.length; i++){
-            
-            const tr = document.createElement('tr');
-            const tdDate = document.createElement('td');
-            const tdCashAmount = document.createElement('td');
-            const tdCreditAmount = document.createElement('td');
-            const tdUPIAmount = document.createElement('td');
-            const tdCardAmount = document.createElement('td');
-            const tdTotalAmount = document.createElement('td');
-            
-            let uniqueDate = '';
-            let cashAmount = 0;
-            let creditAmount = 0;
-            let upiAmount = 0;
-            let cardAmount = 0;
-            let totalSellAmount = 0;
-
-            for(let j=0; j<parsedDataArray.length; j++){
-
-                if(uniqueDateArray[i] == parsedDataArray[j].added_on){
-                    
-                    uniqueDate = uniqueDateArray[i];
-
-                    if (parsedDataArray[j].payment_mode == 'Cash') {
-                        cashAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'Credit') {
-                        creditAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'UPI') {
-                        upiAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'Card') {
-                        cardAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    totalSellAmount = parseFloat(cashAmount)+ parseFloat(creditAmount)+ parseFloat(upiAmount)+ parseFloat(cardAmount);
-                }
-            }
-
-            tdDate.textContent = formatDate(uniqueDate);
-            tdCashAmount.textContent = cashAmount.toFixed(2);
-            tdCreditAmount.textContent = creditAmount.toFixed(2);
-            tdUPIAmount.textContent = upiAmount.toFixed(2);
-            tdCardAmount.textContent = cardAmount.toFixed(2);
-            tdTotalAmount.textContent = totalSellAmount.toFixed(2);
-              
-            tr.appendChild(tdDate);
-            tr.appendChild(tdCashAmount);
-            tr.appendChild(tdCreditAmount);
-            tr.appendChild(tdUPIAmount);
-            tr.appendChild(tdCardAmount);
-            tr.appendChild(tdTotalAmount);
-
-            tbody.appendChild(tr);
-        }
-
-        dataTable.appendChild(tbody);
+    if (filterByVal.innerHTML == 'ICAT') {
+        console.log('coming soon... 1');
+    } else if (filterByVal.innerHTML == 'PM') {
+        headerMid = slicedString(filterByPaymentModeVal.innerHTML);
     }
 
-
-    if(filterByVal.innerHTML == 'ICAT'){
-        // Create the <thead> element
-        const thead = document.createElement('thead');
-
-        // Create a <tr> element
-        const tr = document.createElement('tr');
-
-        // Define the headers
-        const headers = ['Date', 'Ayurvedic', 'Cosmetic', 'Drug', 'Generic', 'Nutraceuticals', 'OTC', 'Surgical', 'Total Sales'];
-
-        // Iterate over the headers array and create a <th> element for each header
-        headers.forEach(headerText => {
-            const th = document.createElement('th');
-            th.textContent = headerText;
-            tr.appendChild(th);
-        });
-
-        // Append the <tr> to the <thead>
-        thead.appendChild(tr);
-
-        // Append the <thead> to the table
-        dataTable.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
-
-        parsedData.forEach(item=>{
-            dateArray.push(item.added_on); 
-        });
-
-        var  uniqueDateArray = [...new Set(dateArray)];
-
-        var parsedDataArray = Object.values(parsedData);
-
-        for(let i=0; i<uniqueDateArray.length; i++){
-            
-            const tr = document.createElement('tr');
-            const tdDate = document.createElement('td');
-            const tdCashAmount = document.createElement('td');
-            const tdCreditAmount = document.createElement('td');
-            const tdUPIAmount = document.createElement('td');
-            const tdCardAmount = document.createElement('td');
-            const tdTotalAmount = document.createElement('td');
-            
-            let uniqueDate = '';
-            let cashAmount = 0;
-            let creditAmount = 0;
-            let upiAmount = 0;
-            let cardAmount = 0;
-            let totalSellAmount = 0;
-
-            for(let j=0; j<parsedDataArray.length; j++){
-
-                if(uniqueDateArray[i] == parsedDataArray[j].added_on){
-                    
-                    uniqueDate = uniqueDateArray[i];
-
-                    if (parsedDataArray[j].payment_mode == 'Cash') {
-                        cashAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'Credit') {
-                        creditAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'UPI') {
-                        upiAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    if (parsedDataArray[j].payment_mode == 'Card') {
-                        cardAmount = parseFloat(cashAmount) + parseFloat(parsedDataArray[j].total_amount);
-                    }
-
-                    totalSellAmount = parseFloat(cashAmount)+ parseFloat(creditAmount)+ parseFloat(upiAmount)+ parseFloat(cardAmount);
-                }
-            }
-
-            tdDate.textContent = formatDate(uniqueDate);
-            tdCashAmount.textContent = cashAmount.toFixed(2);
-            tdCreditAmount.textContent = creditAmount.toFixed(2);
-            tdUPIAmount.textContent = upiAmount.toFixed(2);
-            tdCardAmount.textContent = cardAmount.toFixed(2);
-            tdTotalAmount.textContent = totalSellAmount.toFixed(2);
-              
-            tr.appendChild(tdDate);
-            tr.appendChild(tdCashAmount);
-            tr.appendChild(tdCreditAmount);
-            tr.appendChild(tdUPIAmount);
-            tr.appendChild(tdCardAmount);
-            tr.appendChild(tdTotalAmount);
-
-            tbody.appendChild(tr);
-        }
-
-        dataTable.appendChild(tbody);
+    if (reportFilterVal.innerHTML == 'Total Sell') {
+        headerEnd = headerEnd1;
+    } else if (reportFilterVal.innerHTML == 'Total Margin') {
+        headerEnd = headerEnd2;
+    } else if (reportFilterVal.innerHTML == 'Total Discount') {
+        headerEnd = headerEnd3;
     }
 
+    headerMid = [...new Set(headerMid)].sort();
+    const headers = headerStart.concat(headerMid).concat(headerEnd);
+
+    const thead = document.createElement('thead');
+    const tr = document.createElement('tr');
+    headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+    dataTable.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    parsedData.forEach(item => {
+        dateArray.push(item.added_on);
+    });
+
+    var uniqueDateArray = [...new Set(dateArray)];
+    var parsedDataArray = Object.values(parsedData);
+
+    uniqueDateArray.forEach(uniqueDate => {
+        const tr = document.createElement('tr');
+        let rowData = {
+            Date: formatDate(uniqueDate)
+        };
+
+        let cashAmount = 0, creditAmount = 0, upiAmount = 0, cardAmount = 0;
+        let allopathyAmount = 0, ayurvedicAmount = 0, cosmeticAmount = 0, drugAmount = 0, genericAmount = 0, nutraceuticalsAmount = 0, otcAmount = 0, surgicalAmount = 0;
+        let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
+
+        parsedDataArray.forEach(data => {
+            if (data.added_on === uniqueDate) {
+                if (filterByVal.innerHTML == 'PM') {
+                    if (data.payment_mode == 'Cash') cashAmount += parseFloat(data.total_amount);
+                    if (data.payment_mode == 'Credit') creditAmount += parseFloat(data.total_amount);
+                    if (data.payment_mode == 'UPI') upiAmount += parseFloat(data.total_amount);
+                    if (data.payment_mode == 'Card') cardAmount += parseFloat(data.total_amount);
+                    totalMargin += parseFloat(data.total_sales_margin);
+
+                    totalSellAmount = cashAmount + creditAmount + upiAmount + cardAmount;
+                }
+
+                if (filterByVal.innerHTML == 'ICAT') {
+                    if (data.category_name == 'Allopathy') allopathyAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Ayurvedic') ayurvedicAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Cosmetic') cosmeticAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Drug') drugAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Generic') genericAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Nutraceuticals') nutraceuticalsAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'OTC') otcAmount += parseFloat(data.total_stock_out_amount);
+                    if (data.category_name == 'Surgical') surgicalAmount += parseFloat(data.total_stock_out_amount);
+
+                    totalSellAmount = allopathyAmount + ayurvedicAmount + cosmeticAmount + drugAmount + genericAmount + nutraceuticalsAmount + otcAmount + surgicalAmount;
+                }
+                
+            }
+        });
+
+        if (filterByVal.innerHTML == 'PM') {
+            rowData['Cash'] = cashAmount.toFixed(2);
+            rowData['Credit'] = creditAmount.toFixed(2);
+            rowData['UPI'] = upiAmount.toFixed(2);
+            rowData['Card'] = cardAmount.toFixed(2);
+        }
+
+        if (filterByVal.innerHTML == 'ICAT') {
+            rowData['Allopathy'] = allopathyAmount.toFixed(2);
+            rowData['Ayurvedic'] = ayurvedicAmount.toFixed(2);
+            rowData['Cosmetic'] = cosmeticAmount.toFixed(2);
+            rowData['Drug'] = drugAmount.toFixed(2);
+            rowData['Generic'] = genericAmount.toFixed(2);
+            rowData['Nutraceuticals'] = nutraceuticalsAmount.toFixed(2);
+            rowData['OTC'] = otcAmount.toFixed(2);
+            rowData['Surgical'] = surgicalAmount.toFixed(2);
+        }
+
+        if (reportFilterVal.innerHTML == 'Total Sell') {
+            rowData['Total Sell'] = totalSellAmount.toFixed(2);
+        } else if (reportFilterVal.innerHTML == 'Total Margin') {
+            rowData['Total Margin'] = totalMargin.toFixed(2);
+        } else if (reportFilterVal.innerHTML == 'Total Discount') {
+            rowData['Total Discount'] = totalDiscount.toFixed(2);
+        }
+
+        headers.forEach(header => {
+            const td = document.createElement('td');
+            td.className = header;
+            td.textContent = rowData[header] || '';
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+
+    dataTable.appendChild(tbody);
 }
-
