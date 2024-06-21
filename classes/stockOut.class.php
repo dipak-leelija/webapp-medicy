@@ -1224,7 +1224,7 @@ class StockOut
 
 
 
-    function stockOutReportOnPaymentMode($startDate, $endDate, $adminId)
+    function stockOutReportOnPaymentMode($searchOnData, $startDate, $endDate, $adminId)
     {
         try {
             $fetchStockOutData = "SELECT 
@@ -1241,7 +1241,7 @@ class StockOut
                                     stock_out_details sod ON so.invoice_id = sod.invoice_id
                                 WHERE 
                                     date(so.added_on) BETWEEN '$startDate' AND '$endDate'
-                                    AND so.payment_mode IN ('Cash', 'UPI', 'Card', 'Credit') 
+                                    AND so.payment_mode IN ($searchOnData) 
                                     AND so.admin_id = '$adminId'
                                 GROUP BY 
                                     date(so.added_on), 
@@ -1250,7 +1250,6 @@ class StockOut
                                     date(so.added_on), 
                                     so.payment_mode";
 
-            // print_r($fetchStockOutData);
             $stmt = $this->conn->prepare($fetchStockOutData);
 
             if (!$stmt) {
