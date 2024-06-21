@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'utility.class.php';
+
 
 
 
@@ -78,10 +80,9 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title><?= $patientId . '-' . $billId ?></title> -->
-    <title>Test bill reprint</title>
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/test-bill.css">
+    <title><?= $healthCareName ?> - #<?=$billId?></title>
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/receipts.css">
 </head>
 
 
@@ -106,16 +107,14 @@ if (isset($_GET['bill_id'])) {
                         </p>
 
                     </div>
-                    <div class="col-sm-3 border-start border-secondary">
+                    <div class="col-sm-3 invoice-info">
                         <p class="my-0">Invoice</p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id: <?php echo $billId; ?></small>
-                        </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;width: 68%;"><small>Date:
-                                <?php echo $billingDate; ?></small></p>
+                        <p>#<?php echo $billId; ?></p>
+                        <p><?= formatDateTime($billingDate) ?></p>
                     </div>
                 </div>
             </div>
-            <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
+            <hr class="mb-0 mt-1" style="opacity: .4;">
             <div class="row my-1">
                 <div class="col-sm-6 my-0">
                     <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
@@ -135,11 +134,8 @@ if (isset($_GET['bill_id'])) {
                 </div>
 
             </div>
-            <hr class="my-0" style="height:1px;opacity: 1.25;">
-            <!-- <div class="row"> -->
-            <!-- <hr> -->
+            <hr class="my-0" style="opacity: .4;">
             <div class="row py-1">
-                <!-- table heading -->
                 <div class="col-sm-2 ps-4">
                     <small><b>SL. NO.</b></small>
                 </div>
@@ -155,13 +151,10 @@ if (isset($_GET['bill_id'])) {
                 <div class="col-sm-2 text-end">
                     <small><b>Amount (₹)</b></small>
                 </div>
-                <!--/end table heading -->
             </div>
-            <hr class="my-0" style="height:2px;border: 1px solid;opacity: 1.25;">
-            <!-- <div syle="min-height: 500px;"> -->
+            <hr class="my-0" style="opacity:0.4">
 
             <div class="row">
-                <!--style="min-height: 290px;"-->
                 <?php
                 $slno = 1;
                 $subTotal = floatval(00.00);
@@ -179,10 +172,6 @@ if (isset($_GET['bill_id'])) {
                         foreach ($showSubTest as $rowTest) {
                             $testName = $rowTest['sub_test_name'];
                             $testPrice = $rowTest['price'];
-
-
-                            // $disc   = array_shift($testDiscBck);
-                            // $amount = array_shift($testAmountBck);
 
                             if ($slno > 1) {
                                 echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
@@ -212,11 +201,9 @@ if (isset($_GET['bill_id'])) {
                 ?>
 
             </div>
-            <!-- </div> -->
 
-            <!-- </div> -->
             <div class="footer">
-                <hr calss="my-0" style="height: 1px;opacity: 1.25;">
+                <hr calss="my-0" style="opacity: 0.3;">
                 <div class="row">
                     <!-- table total calculation -->
                     <div class="col-sm-8 mb-3 text-end">
@@ -278,7 +265,7 @@ if (isset($_GET['bill_id'])) {
                     </div> -->
                     <!--/end table total calculation -->
                 </div>
-                <hr style="height: 1px; margin-top: 2px;opacity: 1.25;">
+                <hr class="mt-0" style="opacity: 0.3;">
             </div>
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
