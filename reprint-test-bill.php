@@ -80,7 +80,7 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $healthCareName ?> - #<?=$billId?></title>
+    <title><?= $healthCareName ?> - #<?= $billId ?></title>
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/receipts.css">
 </head>
@@ -166,18 +166,17 @@ if (isset($_GET['bill_id'])) {
                     $subTestId = $rowDetails->test_id;
                     $testAmount = $rowDetails->price_after_discount;
                     $testDisc  = $rowDetails->percentage_of_discount_on_test;
-                    
+
                     if ($subTestId != '') {
-                        $showSubTest = $SubTests->showSubTestsId($subTestId);
-                        foreach ($showSubTest as $rowTest) {
-                            $testName = $rowTest['sub_test_name'];
-                            $testPrice = $rowTest['price'];
+                        $showSubTest = json_decode($SubTests->subTestById($subTestId));
+                        $testName = $showSubTest->sub_test_name;
+                        $testPrice = $showSubTest->price;
 
-                            if ($slno > 1) {
-                                echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
-                            }
+                        if ($slno > 1) {
+                            echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
+                        }
 
-                            echo '
+                        echo '
                                 <div class="col-sm-2 ps-4 my-0">
                                             <small>' . $slno . '</small>
                                         </div>
@@ -193,9 +192,8 @@ if (isset($_GET['bill_id'])) {
                                         <div class="col-sm-2 text-end my-0">
                                             <small>' . $testAmount . '</small>
                                         </div>';
-                            $slno++;
-                            $subTotal = floatval($subTotal + $testAmount);
-                        }
+                        $slno++;
+                        $subTotal = floatval($subTotal + $testAmount);
                     }
                 }
                 ?>

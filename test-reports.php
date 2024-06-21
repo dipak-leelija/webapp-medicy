@@ -99,19 +99,17 @@ $LabReport  = new LabReport;
                                         $labreportfetch = json_decode($labreportfetch, true);
                                         if ($labreportfetch) {
                                             foreach ($labreportfetch as $entry) {
-                                                $reportId  = $entry['id'];
                                                 $billId    = $entry['bill_id'];
                                                 $patientId    = $entry['patient_id'];
                                                 $adminId = $entry['admin_id'];
                                                 $date = $entry['added_on'];
                                         ?>
                                                 <tr class="appointment-row">
-                                                    <td><?= $reportId ?></td>
-                                                    <!-- <td><?= $billId  ?></td> -->
+                                                    <td><?= $billId ?></td>
                                                     <td><?= $patientId ?></td>
                                                     <td><?= $adminId ?></td>
                                                     <td><?= $date ?></td>
-                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $billId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                 </tr>
                                         <?php
 

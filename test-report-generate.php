@@ -8,49 +8,93 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
 
-$billId  = $_GET['bill-id'];
+require_once CLASS_DIR . 'utility.class.php';
+
+
+if (isset($_GET['bill-id'])) {
+    $billId  = $_GET['bill-id'];
+} else {
+    header('Location: ' . URL);
+    exit;
+}
+
+$SubTests           = new SubTests;
 $LabReport          = new LabReport();
 $LabBilling         = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
 
-$labBillingData     = json_decode($LabBilling->labBillDisplayById($billId)); ///
-$labBillingDetails  = json_decode($LabBillDetails->billDetailsById($billId)); //labBillingDetails
-$showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
-$billId             = $labBillingData->data->bill_id;
-$patientId          = $labBillingData->data->patient_id;
+$labBillingData     = json_decode($LabBilling->labBillDisplayById($billId));
+if (!$labBillingData->status) {
+    $resErrMsg = $labBillingData->message;
+} else {
+
+
+    $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($billId)); //labBillingDetails
+    $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
+    $billId             = $labBillingData->data->bill_id;
+    $patientId          = $labBillingData->data->patient_id;
 
 
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $adminId);
-    $reportId       = $addedeReport['insert_id'];
-    $reportStatus   = $addedeReport['result'];
+        $exists = $LabReport->checkBill($billId);
+        if ($exists) {
 
-    if ($reportStatus) {
-        $testIds    = $_POST['testId'];
-        $testValue  = $_POST['values'];
-        $unitValues = $_POST['unitValues'];
-        if (is_array($testValue))
-            foreach ($testValue as $index => $value) {
-                $unitValue = $unitValues[$index];
-                $testId = $testIds[$index];
+            $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
+            if($cheackUpdate['status']){    
+                $testIds    = $_POST['testId'];
+                $testValue  = $_POST['values'];
+                $unitValues = $_POST['unitValues'];
 
-                $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-                if (!$labReportAdd) {
-                    $errMsg = "Something is wrong with the value : {$unitValue}";
-                    break;
+                if (is_array($testValue)){
+                    foreach ($testValue as $index => $value) {
+                        $unitValue = $unitValues[$index];
+                        $testId = $testIds[$index];
+
+                        // $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+                        // if (!$labReportAdd) {
+                        //     $errMsg = "Something is wrong with the value : {$unitValue}";
+                        //     break;
+                        // }
+                    }
                 }
             }
-    }
 
-    if ($labReportAdd) {
-        header('Location: lab-report.php?bill_id=' . base64_encode($billId));
-        exit;
+
+        } else {
+            $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $ADMINID);
+            $reportId       = $addedeReport['insert_id'];
+            $reportStatus   = $addedeReport['result'];
+
+            if ($reportStatus) {
+                $testIds    = $_POST['testId'];
+                $testValue  = $_POST['values'];
+                $unitValues = $_POST['unitValues'];
+                if (is_array($testValue))
+                    foreach ($testValue as $index => $value) {
+                        $unitValue = $unitValues[$index];
+                        $testId = $testIds[$index];
+
+                        $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+                        if (!$labReportAdd) {
+                            $errMsg = "Something is wrong with the value : {$unitValue}";
+                            break;
+                        }
+                    }
+            }
+
+            if ($labReportAdd) {
+                header('Location: lab-report.php?bill_id=' . base64_encode($billId));
+                exit;
+            }
+        }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -72,8 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
-
-    <link href="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/lab-section.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
     <script src="<?php echo JS_PATH ?>/sweetAlert.min.js"></script>
@@ -104,6 +146,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
+
+                            <?php
+                            if (isset($resErrMsg)) {
+                                echo $resErrMsg;
+                                exit;
+                            }
+                            ?>
                             <?php if (isset($errMsg)) { ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <?= $errMsg ?>
@@ -127,55 +176,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
                                         <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
                                         <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
-                                        <h6><b>Test Date:</b> <?php echo $testDate; ?></h6>
+                                        <h6><b>Test Date:</b> <?= formatDateTime($testDate, '/') ?></h6>
                                     </div>
 
                                     <hr class="sidebar-divider">
 
                                     <div>
-
                                         <?php
                                         $unitCounts = array();
                                         foreach ($labBillingDetails->data as $index => $test) {
                                             $testId = $test->test_id;
-                                            $showTestName = $LabReport->patientTest($testId);
-                                            // print_r($showTestName);
-                                            $showTestName = json_decode($showTestName);
+                                            $showTestName = json_decode($SubTests->subTestById($testId));
 
-                                            $testId = $showTestName->id;
-                                            $subTestName = $showTestName->sub_test_name;
-                                            $unitNames = $showTestName->unit;
+                                            $testId         = $showTestName->id;
+                                            $subTestName    = $showTestName->sub_test_name;
+                                            $unitNames      = $showTestName->unit;
 
-                                            echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>";
-                                            echo "<div>
-                                                    <div style='width:40%; margin-left:20px;'>$subTestName</div>";
+                                            echo "<div class='shadow-sm mb-4 py-2'>";
+                                            echo "<div class='d-flex justify-content-between px-3'>";
+                                            echo "<div>$subTestName</div>";
+                                            echo "<div>";
+
                                             if (!empty($unitNames)) {
-
-                                                $unitValues = explode(',', $unitNames);    // Split the unitNames by comma and store them in an array
+                                                $unitValues = explode(',', $unitNames); // Split the unitNames by comma and store them in an array
+                                                $unitValues = array_map('trim', $unitValues); // Trim to remove any leading or trailing whitespace
 
                                                 foreach ($unitValues as $unitValue) {
-                                                    $unitValue = trim($unitValue);          // Trim to remove any leading or trailing whitespace
-                                                    // echo $unitValue;
-                                                    if (isset($unitCounts[$unitValue])) {   // Count the occurrences of each unit value
-                                                        $unitCounts[$unitValue]++;
-                                                    } else {
-                                                        $unitCounts[$unitValue] = 1;
+                                                    if (!isset($unitCounts[$unitValue])) {
+                                                        $unitCounts[$unitValue] = 0;
                                                     }
+                                                    $unitCounts[$unitValue]++;
 
                                                     // Generate input boxes based on the count of unit values
                                                     for ($i = 0; $i < $unitCounts[$unitValue]; $i++) {
-                                                        echo "<div class='d-flex justify-content-end' style='margin-left: 50%;'>";
-                                                        echo "<input type='text' name='values[]' placeholder='$unitValue' required style='width:200px; margin-right:20px; border: none; border-bottom: 1px solid #000; padding: 5px; box-sizing: border-box; outline: none; background-color: transparent;' onfocus='this.style.borderBottom=\"2px solid #000\";' onblur='this.style.borderBottom=\"1px solid #000\";'>";
+                                                        echo "<div class='d-flex justify-content-start align-items-baseline'>";
+                                                        echo "<input type='text' class='lab-val-inp' name='values[]' required >";
+                                                        echo "<label>$unitValue</label>";
                                                         echo "<input type='hidden' name='unitValues[]' value='$unitValue'>";
-                                                        echo "<input type='hidden' name=' testId[]' value=' $testId'>";
+                                                        echo "<input type='hidden' name='testId[]' value='$testId'>";
                                                         echo "</div>";
                                                     }
                                                 }
                                             }
+
+                                            echo "</div>";
                                             echo "</div>";
                                             echo "</div>";
                                         }
                                         ?>
+
                                     </div>
                                     <div class="d-flex justify-content-end">
                                         <button type="submit" id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
@@ -191,40 +240,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <!-- End of Main Content -->
 
-        <!-- Footer -->
-        <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-        <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
-
-
-
-
-
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>/jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-
-
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>/demo/datatables-demo.js"></script>
 
 </body>
 
