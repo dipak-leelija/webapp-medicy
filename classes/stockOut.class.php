@@ -1281,30 +1281,35 @@ class StockOut
     
 
 
-    function stockOutReportOnItemCategory($startDate, $endDate, $adminId)
+    function stockOutReportOnItemCategory($searchOnData, $startDate, $endDate, $adminId)
     {
         try {
 
             $fetchStockOutData = "SELECT 
-                                c.name AS category_name,  
-                                DATE(so.added_on) AS added_on,  
-                                SUM(sod.amount) AS total_stock_out_amount
-                              FROM 
-                                stock_out so
-                              JOIN 
-                                stock_out_details sod ON so.invoice_id = sod.invoice_id
-                              JOIN 
-                                products p ON sod.product_id = p.product_id
-                              JOIN 
-                                product_type c ON p.type = c.id
-                              WHERE 
-                                so.admin_id = '$adminId' AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
-                              GROUP BY 
-                                c.name,  
-                                DATE(so.added_on)
-                              ORDER BY 
-                                DATE(so.added_on),  
-                                c.name";
+                                    c.name AS category_name,  
+                                    DATE(so.added_on) AS added_on,  
+                                    SUM(sod.amount) AS total_stock_out_amount,
+                                    SUM(sod.sales_margin) AS total_sales_margin
+                                FROM 
+                                    stock_out so
+                                JOIN 
+                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
+                                JOIN 
+                                    products p ON sod.product_id = p.product_id
+                                JOIN 
+                                    product_type c ON p.type = c.id
+                                WHERE 
+                                    so.admin_id = '$adminId'
+                                    AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
+                                    AND c.name IN ($searchOnData) 
+                                GROUP BY 
+                                    c.name,  
+                                    DATE(so.added_on)
+                                ORDER BY 
+                                    DATE(so.added_on),  
+                                    c.name";
+
+            // print_r($fetchStockOutData);
 
             $stmt = $this->conn->prepare($fetchStockOutData);
 
@@ -1336,11 +1341,11 @@ class StockOut
 
 
 
-    ###########################################################################################################
-    #                                                                                                         #
-    #                                            STOCK OUT DETAILS                                            #
-    #                                                                                                         #
-    ###########################################################################################################
+    #######################################################################################################
+    #                                                                                                     #
+    #                                        STOCK OUT DETAILS                                            #
+    #                                                                                                     #
+    #######################################################################################################
 
 
     function addStockOutDetails($invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $sMargin, $margin, $taxable, $amount)

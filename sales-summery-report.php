@@ -174,53 +174,30 @@ if ($employeeDetails->status) {
                                 <label class="d-none" id="filter-by-val"></label>
                             </div>
 
-                            <!-- control list filter -->
-                            <!-- filter purchase type -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="prod-category-select-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="prod-category" id="prod-category">
-                                    <option value="AC" disabled selected>All Category</option>
-                                    <?php
-                                    if (!empty($prodCategoryData)) {
-                                        foreach ($prodCategoryData as $categoryData) {
-                                            echo '<option value="' . $categoryData->id . '">' . $categoryData->name . '</option>';
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                                <label class="d-none" id="filter-by-prod-categoty-val"></label>
-                            </div> -->
+                            <!-- product category list -->
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
                                 <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Item Category
                                 </button>
-                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="AC" onclick="toggleCheckboxes(this)">All Category</label>
+                                        <label><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)">All Category</label>
                                     </li>
                                     <?php
                                     if (!empty($prodCategoryData)) {
                                         foreach ($prodCategoryData as $categoryData) {
-                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '"> ' . $categoryData->name . ' </label></li>';
+                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" id="'.$categoryData->name.'" onclick="toggleCheckboxes1(this)"> ' . $categoryData->name . ' </label></li>';
                                         }
                                     }
                                     ?>
-                                    <label class="d-none" id="filter-by-prod-categoty-val"></label>
                                 </ul>
+                                <label class="d-none" id="filter-by-prod-categoty-id-val"></label>
+                                <label class="d-none" id="filter-by-prod-categoty-name"></label>
                             </div>
 
 
                             <!-- filter payment mode -->
-                            <!-- <div class="d-none col-md-2 mt-2" id="payment-mode-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="payment-mode" id="payment-mode">
-                                    <option value="APM" disabled selected>All Payment Mode</option>
-                                    <option value="CSH">Cash</option>
-                                    <option value="CRDT">Credit</option>
-                                    <option value="UPI">UPI</option>
-                                    <option value="CRD">Card</option>
-                                </select>
-                                <label class="d-none" id="filter-by-payment-mode-val">APM</label>
-                            </div> -->
 
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
                                 <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode"
@@ -229,31 +206,32 @@ if ($employeeDetails->status) {
                                 </button>
                                 <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes1(this)">All Payment Mode</label>
+                                        <label><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes2(this)">All Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes1(this)">Cash</label>
+                                        <label><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes2(this)">Cash</label>
                                     </li>
 
                                     <li>
                                         <label>
-                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes1(this)">Credit
+                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes2(this)">Credit
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes1(this)">UPI
+                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes2(this)">UPI
                                         </label>
                                     </li>
                                     <li>
                                         <label>
-                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes1(this)">Card
+                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes2(this)">Card
                                         </label>
                                     </li>
                                     <label class="d-none" id="filter-by-payment-mode-val"></label>
                                 </ul>
                             </div>
+
 
                             <!-- filter on staff -->
                             <div class="dropdown d-none col-md-2" id="staff-filter-div">
@@ -264,6 +242,9 @@ if ($employeeDetails->status) {
                                 <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
                                         <label><input class="activeCheckedBox" type="checkbox" value="AS" onclick="toggleCheckboxes(this)">All Staff</label>
+                                    </li>
+                                    <li>
+                                        <label><input type="checkbox" value="Admin" onclick="toggleCheckboxes(this)">Admin</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {

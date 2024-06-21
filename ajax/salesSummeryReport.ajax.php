@@ -35,25 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
     $convertedStarDt =new DateTime($startDt);
     $endDt = $dataArray->endDt;
     $convertedEndDt =new DateTime($endDt);
-    $filterBy = $dataArray->filterBy;;
+    $filterBy = $dataArray->filterBy;
 
-    if($filterBy == 'ICAT'){
-        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($startDt, $endDt, $adminId);
+    
+    $searchArray = explode(',', $searchOnString);
+    $searchString = '';
+    $count = 0;
+
+    for ($i = 0; $i < count($searchArray); $i++) {
+        $searchString = $searchString . "'" . $searchArray[$i] . "'";
+        $count++;
+        if ($count != count($searchArray)) {
+            $searchString = $searchString . ", ";
+        }
+    }
+
+    if ($filterBy == 'ICAT') {
+        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($searchString, $startDt, $endDt, $adminId);
     }
 
     if($filterBy == 'PM'){
-        $searchArray = explode(',', $searchOnString);
-        $searchString = '';
-        $count = 0;
-
-        for($i=0; $i<count($searchArray); $i++){
-            $searchString = $searchString."'".$searchArray[$i]."'";
-            $count++;
-            if($count != count($searchArray)){
-                $searchString = $searchString.", ";
-            }
-        }
-
         $stockOutDataReport = $StockOut->stockOutReportOnPaymentMode($searchString, $startDt, $endDt, $adminId);
     }
 

@@ -10,7 +10,8 @@ const dateRangeSelect = document.getElementById('date-range'); // date range sel
 const categoryFilter = document.getElementById('category-filter'); // primary filter category select
 
 const productCategorySelectDiv = document.getElementById('prod-category-select-div'); // item category select div secondary filter
-const productCategoryList = document.getElementById('prod-category'); // item category select class
+
+const productCategoryBtn = document.getElementById('prod-category'); // item category select button
 
 const paymentModeDiv = document.getElementById('payment-mode-div'); // payment mode select div secondary filter
 const paymentMode = document.getElementById('payment-mode'); // payment mode select class
@@ -31,7 +32,9 @@ const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
 
-const filterByProdCategoryVal = document.getElementById('filter-by-prod-categoty-val');
+const filterByProdCategoryIdVal = document.getElementById('filter-by-prod-categoty-id-val');
+const filterByProdCategoryNameVal = document.getElementById('filter-by-prod-categoty-name');
+
 const filterByPaymentModeVal = document.getElementById('filter-by-payment-mode-val');
 const filterByStaffVal = document.getElementById('filter-by-staff-val');
 const reportFilterVal = document.getElementById('report-filter-val');
@@ -250,8 +253,82 @@ function categoryFilterSelect(t){
 }
 
 
-// payment mode selection function
+// item category selection function 
 function toggleCheckboxes1(source) {
+    if(source.id == 'ac-chkBx'){
+        const checkboxes = document.querySelectorAll('.item-category-select-checkbox-menu input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+        if (!checkbox.disabled) {
+                checkbox.checked = source.checked;
+            }
+        });
+
+        if(source.checked == true){
+            console.log("check 1");
+            productCategoryBtn.innerHTML = 'All Category';
+            filterByProdCategoryIdVal.innerHTML = '1,2,3,4,5,6,7,8';
+            filterByProdCategoryNameVal.innerHTML = 'Allopathy,Ayurvedic,Cosmetic,Drug,Generic,Nutraceuticals,OTC,Surgical';
+        }else{
+            productCategoryBtn.innerHTML = 'Select Item Category';
+            filterByProdCategoryIdVal.innerHTML = '';
+            filterByProdCategoryNameVal.innerHTML = '';
+        }
+    }
+
+    
+    if(source.id != 'ac-chkBx'){
+        if(source.checked == true){
+            if(filterByProdCategoryIdVal.innerHTML == '' && filterByProdCategoryNameVal.innerHTML == ''){
+                console.log("check 2");
+                productCategoryBtn.innerHTML = source.id;
+                filterByProdCategoryIdVal.innerHTML = source.value;
+                filterByProdCategoryNameVal.innerHTML = source.id;
+            }else{
+                console.log("check 3");
+                let selectedCategoryIdString = filterByProdCategoryIdVal.innerHTML;
+                let selectedCategoryNameString = filterByProdCategoryNameVal.innerHTML;
+                let updatedCategoryId = selectedCategoryIdString + ',' + source.value;
+                let updatedCategoryName = selectedCategoryNameString + ',' + source.id;
+                filterByProdCategoryIdVal.innerHTML = updatedCategoryId;
+                filterByProdCategoryNameVal.innerHTML = updatedCategoryName;
+            }
+        }else{
+            if(filterByProdCategoryIdVal.innerHTML != '' && filterByProdCategoryNameVal.innerHTML != ''){
+                console.log("check 4");
+                let selectedCategoryIdString = filterByProdCategoryIdVal.innerHTML;
+                let selectedCategoryNameString = filterByProdCategoryNameVal.innerHTML;
+                let replacedId = source.value + ',';
+                let updatedCategoryId = selectedCategoryIdString.replace(replacedId, "").replace(source.value, "");
+                updatedCategoryId = updatedCategoryId.replace(/,(\s*)$/, '$1');
+                let replacedName = source.id + ',';
+                let updatedCategoryName = selectedCategoryNameString.replace(replacedName,"").replace(source.id, "");
+                updatedCategoryName = updatedCategoryName.replace(/,(\s*)$/, '$1');
+                filterByProdCategoryIdVal.innerHTML = updatedCategoryId;
+                filterByProdCategoryNameVal.innerHTML = updatedCategoryName;
+                document.getElementById(source.id).checked = false;
+            }
+        }
+        document.getElementById('ac-chkBx').checked = false;
+    }
+
+    let crntItemCategory = filterByProdCategoryNameVal.innerHTML;
+    if(crntItemCategory.includes('Allopathy') &&  crntItemCategory.includes('Ayurvedic') && crntItemCategory.includes('Cosmetic') && crntItemCategory.includes('Drug') && crntItemCategory.includes('Generic') &&  crntItemCategory.includes('Nutraceuticals') && crntItemCategory.includes('OTC') && crntItemCategory.includes('Surgical')){
+        productCategoryBtn.innerHTML = 'All Category'
+    }else if(filterByProdCategoryNameVal.innerHTML == ''){
+        productCategoryBtn.innerHTML = 'Select Category';
+    }else{
+         productCategoryBtn.innerHTML = filterByProdCategoryNameVal.innerHTML;
+    }
+
+    console.log(filterByProdCategoryIdVal.innerHTML);
+    console.log(filterByProdCategoryNameVal.innerHTML);
+
+}
+
+
+
+// payment mode selection function 
+function toggleCheckboxes2(source) {
 
     if(source.id == 'apm-chkBx'){
         const checkboxes = document.querySelectorAll('.payment-mode-checkbox-menu input[type="checkbox"]');
@@ -283,6 +360,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Cash,', "").replace('Cash', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -302,6 +380,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Credit,', "").replace('Credit', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -321,6 +400,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Card,', "").replace('Card', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -340,13 +420,23 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('UPI,', '').replace('UPI', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
         }
     }
     
-    // console.log(filterByPaymentModeVal.innerHTML);
+    let crntPaymentMod = filterByPaymentModeVal.innerHTML;
+    if(crntPaymentMod.includes('Cash') &&  crntPaymentMod.includes('Card') &&crntPaymentMod.includes('UPI') &&crntPaymentMod.includes('Credit')){
+        paymentModeConst.innerHTML = 'All Payment Mode'
+    }else if(filterByPaymentModeVal.innerHTML == ''){
+        paymentModeConst.innerHTML = 'Select Payment Mode';
+    }else{
+        paymentModeConst.innerHTML = filterByPaymentModeVal.innerHTML;
+    }
+
+    console.log(filterByPaymentModeVal.innerHTML);
 }
 
 // filter report on function
@@ -383,12 +473,12 @@ function salesSummerySearch() {
     }else{
         // secondory filter chek based on primary filter
         if(filterByVal.innerHTML == 'ICAT'){
-            if(filterByPaymentModeVal.innerHTML == ''){
+            if(filterByProdCategoryIdVal.innerHTML == '' && filterByProdCategoryNameVal.innerHTML == ''){
                 alert('select item category val');
                 return;
+            }else{
+                searchString = filterByProdCategoryNameVal.innerHTML;
             }
-        }else{
-            searchString = '';
         }
         
 
@@ -401,9 +491,6 @@ function salesSummerySearch() {
             }
         }
     }
-    
-    
-    
 
     // primary report generator filter based on select
     if(reportFilterVal.innerHTML == ''){
@@ -423,6 +510,7 @@ function salesSummerySearch() {
 
     salesDataSearchFunction(dataArray);
 }
+
 
 // string slice function based on ','.....
 function slicedString(string){
@@ -448,6 +536,7 @@ function salesDataSearchFunction(array){
     }
 }
 
+
 // creating report and show it
 function reportShow(parsedData) {
     console.log(parsedData);
@@ -461,7 +550,7 @@ function reportShow(parsedData) {
     var headerEnd = [];
 
     if (filterByVal.innerHTML == 'ICAT') {
-        console.log('coming soon... 1');
+        headerMid = slicedString(filterByProdCategoryNameVal.innerHTML);
     } else if (filterByVal.innerHTML == 'PM') {
         headerMid = slicedString(filterByPaymentModeVal.innerHTML);
     }
@@ -512,6 +601,7 @@ function reportShow(parsedData) {
                     if (data.payment_mode == 'Credit') creditAmount += parseFloat(data.total_amount);
                     if (data.payment_mode == 'UPI') upiAmount += parseFloat(data.total_amount);
                     if (data.payment_mode == 'Card') cardAmount += parseFloat(data.total_amount);
+
                     totalMargin += parseFloat(data.total_sales_margin);
 
                     totalSellAmount = cashAmount + creditAmount + upiAmount + cardAmount;
@@ -526,6 +616,8 @@ function reportShow(parsedData) {
                     if (data.category_name == 'Nutraceuticals') nutraceuticalsAmount += parseFloat(data.total_stock_out_amount);
                     if (data.category_name == 'OTC') otcAmount += parseFloat(data.total_stock_out_amount);
                     if (data.category_name == 'Surgical') surgicalAmount += parseFloat(data.total_stock_out_amount);
+
+                    totalMargin += parseFloat(data.total_sales_margin);
 
                     totalSellAmount = allopathyAmount + ayurvedicAmount + cosmeticAmount + drugAmount + genericAmount + nutraceuticalsAmount + otcAmount + surgicalAmount;
                 }
