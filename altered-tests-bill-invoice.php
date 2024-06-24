@@ -138,11 +138,11 @@ if (isset($_POST['bill-generate'])) {
     
     }
     
-    if ($referedDocName != NULL) {
-        $referedDoc = $referedDocName;
-        $doctorName = $referedDocName;
-        $doctorReg  = NULL;
-    }
+    // if ($referedDocName != NULL) {
+    //     $referedDoc = $docId;
+    //     $doctorName = $referedDocName;
+    //     $doctorReg  = NULL;
+    // }
     ############# End of Doctor Selection ############
 
 
