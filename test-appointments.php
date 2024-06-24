@@ -359,7 +359,7 @@ if ($labBillDisplay->status) {
                                                         <a class="text-primary text-center" title="Print" href="test-invoice.php?bill_id=' .url_enc($billId) . '"><i class="fas fa-print"></i></a>
 
                                                         <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
+                                                        <a class="text-primary text-center" title="Report" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
                                                     // }
