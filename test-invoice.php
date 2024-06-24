@@ -61,11 +61,12 @@ if (isset($_GET['bill_id'])) {
     if (is_numeric($docId)) {
         $showDoctor = $Doctors->showDoctorNameById($docId);
         $showDoctor = json_decode($showDoctor);
-        // print_r($showDoctor);
+        print_r($showDoctor);
         if ($showDoctor->status == 1) {
             foreach ($showDoctor->data as $rowDoctor) {
                 $doctorName = $rowDoctor->doctor_name;
                 $doctorReg = $rowDoctor->doctor_reg_no;
+                print_r($doctorName);
             }
         }
     } else {
@@ -273,8 +274,8 @@ if (isset($_GET['bill_id'])) {
                         </p>
                     </div>
                     <?php
-                    if(isset($_GET['billId'])){
-                    echo $dicountAmount ?
+                    // if(isset($_GET['billId'])){
+                    echo isset($_GET['billId']) ?
                     '
                     <div class="col-sm-8 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
@@ -295,7 +296,7 @@ if (isset($_GET['bill_id'])) {
                             <small><b>₹ ' . $dueAmount . '</b></small>
                         </p>
                     </div>' : '';
-                    }
+                    // }
                     ?>
                     <div class="col-sm-8 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
