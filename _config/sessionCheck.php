@@ -11,6 +11,7 @@ if($_SESSION['ADMIN']){
   $adminContact = $_SESSION['ADMIN_CONTACT_NO'];
   $userType     = $_SESSION['USER_TYPE'];
   $userRole     = $_SESSION['USER_ROLE'];
+  $adminName    = $_SESSION['ADMIN_FNAME'];
   $userFname    = $_SESSION['ADMIN_FNAME'];
   $adminLname   = $_SESSION['ADMIN_LNAME'];
   $userImg      = $_SESSION['ADMIN_IMG'] ;
