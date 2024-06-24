@@ -58,6 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
         $stockOutDataReport = $StockOut->stockOutReportOnPaymentMode($searchString, $startDt, $endDt, $adminId);
     }
 
+    if($filterBy == 'STF'){
+        $stockOutDataReport = $StockOut->stockOutReportOnAddedBy($searchString, $startDt, $endDt, $adminId);
+    }
+
     print_r($stockOutDataReport);
 
 } else {

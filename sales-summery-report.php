@@ -36,22 +36,32 @@ if ($prodCategory) {
 $col = 'admin_id';
 $employeeDetails = json_decode($Employees->selectEmpByCol($col, $adminId));
 
+// print_r($employeeDetails);
+$empIdString = '';
+$empNameString = '';
 if ($employeeDetails->status) {
     $employeeDetails = $employeeDetails->data;
-    // print_r($employeeDetails);
+    foreach($employeeDetails as $empDetails){
+        if($empIdString == ''){
+            $empIdString = $empIdString.$empDetails->emp_id;
+        }else{
+            $empIdString = $empIdString.','.$empDetails->emp_id;
+        }
+
+        if($empNameString == ''){
+            $empNameString = $empNameString.$empDetails->emp_username;
+        }else{
+            $empNameString = $empNameString.','.$empDetails->emp_username;
+        }
+    }
 } else {
     $employeeDetails = array();
 }
 
-
-// $stockOutDataReport = json_decode($StockOut->stockOutReportOnPaymentMode('2024-01-01', '2024-12-31', $adminId));
-// if ($stockOutDataReport->status) {
-//     $stockOutDataReport = $stockOutDataReport->data;
-// } else {
-//     $stockOutDataReport = [];
-// }
-
-// print_r($stockOutDataReport);
+$allEmpIdString = $adminId.','.$empIdString;
+$allEmpNameString = $adminName.','.$empNameString;
+$idStringLength = strlen($allEmpIdString);
+// echo $idStringLength;
 ?>
 
 
@@ -239,21 +249,25 @@ if ($employeeDetails->status) {
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Staff
                                 </button>
-                                <ul class="dropdown-menu checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu staff-list-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" value="AS" onclick="toggleCheckboxes(this)">All Staff</label>
+                                        <label><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)">All Staff</label>
                                     </li>
                                     <li>
-                                        <label><input type="checkbox" value="Admin" onclick="toggleCheckboxes(this)">Admin</label>
+                                        <label><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)">Admin</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
                                         foreach ($employeeDetails as $empData) {
-                                            echo '<li><label><input type="checkbox" value="' . $empData->emp_id . '"> ' . $empData->emp_name . ' </label></li>';
+                                            echo '<li><label><input type="checkbox" onclick="toggleCheckboxes3(this)" id="'.$empData->emp_username.'" value="' . $empData->emp_id . '"> ' . $empData->emp_username . ' </label></li>';
                                         }
                                     }
                                     ?>
-                                    <label class="d-none" id="filter-by-staff-val"></label>
+                                    <label class="d-none" id="all-stuff-name-data"><?php echo $allEmpNameString; ?></label>
+                                    <label class="d-none" id="all-stuff-id-data"><?php echo $allEmpIdString; ?></label>
+
+                                    <label class="d-none" id="filter-by-staff-name"></label>
+                                    <label class="d-none" id="filter-by-staff-id"></label>
                                 </ul>
                             </div>
 
@@ -305,98 +319,11 @@ if ($employeeDetails->status) {
                         </div>
                        
 
-                    <!-- dynamic tables gose hear -->
-                     
+                        <!-- report table start -->
                         <table class="table" id="report-table">
-                            
-                                <!-- <tr> 
-                                    <th>Sl No.</th>
-                                    <th>Date</th>
-                                    <th>Allopathy</th>
-                                    <th>Ayurvedic</th>
-                                    <th>Cosmetic</th>
-                                    <th>Drug</th>
-                                    <th>Generic</th>
-                                    <th>Nutraceuticals</th>
-                                    <th>OTC</th>
-                                    <th>Surgical</th>
-                                    <th>Total Sales (&#8377)</th>
-                                </tr>
-                            </thead> -->
-                            <?php
-                            /*
-                            if (!empty($stockOutDataReport)) {
-                            ?>
-                                <!-- <thead id="payment-mode-head" class="">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Cash</th>
-                                        <th>Credit</th>
-                                        <th>UPI</th>
-                                        <th>Card</th>
-                                        <th>Total Sales (&#8377)</th>
-                                    </tr>
-                                </thead> -->
-                                <?php
-                                $totalCashSellOnDate = 0;
-                                $totalCreditSellOnDate = 0;
-                                $totalUPISellOnDate = 0;
-                                $totalCardSellOnDate = 0;
-                                $dateArray = [];
-
-
-                                for ($i = 0; $i < count($stockOutDataReport); $i++) {
-                                    array_push($dateArray, $stockOutDataReport[$i]->added_on);
-                                }
-
-                                // Optionally, remove duplicates
-                                $uniqueDateArray = array_unique($dateArray);
-                                $uniqueDateArray = array_values($uniqueDateArray);
-
-
-                                $count = 0;
-                                for ($i = 0; $i < count($uniqueDateArray); $i++) {
-                                    $totalCashSellOnDate = 0;
-                                    $totalCreditSellOnDate = 0;
-                                    $totalUPISellOnDate = 0;
-                                    $totalCardSellOnDate = 0;
-                                    for ($j = 0; $j < count($stockOutDataReport); $j++) {
-                                        if ($uniqueDateArray[$i] == $stockOutDataReport[$j]->added_on) {
-                                            $addedOnDate = $stockOutDataReport[$j]->added_on;
-                                            $date = new DateTime($addedOnDate);
-                                            $convertedDate = $date->format('d-m-Y');
-                                            if ($stockOutDataReport[$j]->payment_mode == 'Cash') {
-                                                $totalCashSellOnDate += $stockOutDataReport[$j]->total_amount;
-                                            }
-
-                                            if ($stockOutDataReport[$j]->payment_mode == 'Credit') {
-                                                $totalCreditSellOnDate += $stockOutDataReport[$j]->total_amount;
-                                            }
-
-                                            if ($stockOutDataReport[$j]->payment_mode == 'UPI') {
-                                                $totalUPISellOnDate += $stockOutDataReport[$j]->total_amount;
-                                            }
-
-                                            if ($stockOutDataReport[$j]->payment_mode == 'Card') {
-                                                $totalCardSellOnDate += $stockOutDataReport[$j]->total_amount;
-                                            }
-                                        }
-                                        $totalSell = $totalCashSellOnDate + $totalCreditSellOnDate + $totalUPISellOnDate + $totalCardSellOnDate;
-                                    }
-                                ?>
-                                    <tbody id="payment-mode-body" class="">
-                                        <td><?= $convertedDate; ?></td>
-                                        <td><label>&#8377</label><?= $totalCashSellOnDate; ?></td>
-                                        <td><label>&#8377</label><?= $totalCreditSellOnDate; ?></td>
-                                        <td><label>&#8377</label><?= $totalUPISellOnDate; ?></td>
-                                        <td><label>&#8377</label><?= $totalCardSellOnDate; ?></td>
-                                        <td><label>&#8377</label><?= $totalSell; ?></td>
-                                    </tbody>
-                            <?php
-                                }
-                            }*/
-                            ?>
+                            <!-- dynamic table gose hear -->
                         </table>
+
                     </div>
                     <!-- end of dynamic table creation -->
                 </div>

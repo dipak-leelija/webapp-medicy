@@ -1232,9 +1232,7 @@ class StockOut
                                     so.payment_mode,
                                     SUM(so.amount) AS total_amount,
                                     SUM(sod.sales_margin) AS total_sales_margin,
-                                    COUNT(sod.mrp) as item_count,
-                                    AVG(sod.mrp) AS avg_mrp,
-                                    AVG(sod.discount) AS avg_disc_percent
+                                    SUM(so.disc) as total_discount
                                 FROM 
                                     stock_out as so
                                 JOIN 
@@ -1289,7 +1287,8 @@ class StockOut
                                     c.name AS category_name,  
                                     DATE(so.added_on) AS added_on,  
                                     SUM(sod.amount) AS total_stock_out_amount,
-                                    SUM(sod.sales_margin) AS total_sales_margin
+                                    SUM(sod.sales_margin) AS total_sales_margin,
+                                    SUM(so.disc) as total_discount
                                 FROM 
                                     stock_out so
                                 JOIN 
@@ -1339,6 +1338,72 @@ class StockOut
         }
     }
 
+
+
+
+
+    
+    
+    function stockOutReportOnAddedBy($searchOnData, $startDate, $endDate, $adminId)
+    {
+        try {
+            $fetchStockOutData = "SELECT 
+                                    COALESCE(adm.fname, emp.emp_name) AS added_by_name,  
+                                    DATE(so.added_on) AS added_on,  
+                                    SUM(sod.amount) AS total_stock_out_amount,
+                                    SUM(sod.sales_margin) AS total_sales_margin,
+                                    SUM(so.disc) as total_discount
+                                FROM 
+                                    stock_out so
+                                JOIN 
+                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
+                                LEFT JOIN 
+                                    admin adm ON so.added_by = adm.admin_id
+                                LEFT JOIN 
+                                    employees emp ON so.added_by = emp.emp_id
+                                WHERE 
+                                    so.admin_id = '$adminId'
+                                    AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
+                                    AND so.added_by IN ($searchOnData)
+                                GROUP BY 
+                                    added_by_name,  
+                                    DATE(so.added_on)
+                                ORDER BY 
+                                    DATE(so.added_on),  
+                                    added_by_name;
+                                ";
+
+            // print_r($fetchStockOutData);
+
+            $stmt = $this->conn->prepare($fetchStockOutData);
+
+            if (!$stmt) {
+                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnResult = ['status' => true, 'data' => $data];
+            } else {
+                $returnResult = ['status' => false];
+            }
+
+            $stmt->close();
+
+            return json_encode($returnResult);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    
 
 
     #######################################################################################################
