@@ -74,7 +74,6 @@ if (is_numeric($refDoc)) {
   if ($docDetails->status == 1) {
     foreach ($docDetails->data as $rowDoctor) {
       $existsDoctorName = $rowDoctor->doctor_name;
-      echo $existsDoctorName;
     }
   }
   // if (is_array($docDetails) && isset($docDetails[0][2])) {

@@ -61,12 +61,12 @@ if (isset($_GET['bill_id'])) {
     if (is_numeric($docId)) {
         $showDoctor = $Doctors->showDoctorNameById($docId);
         $showDoctor = json_decode($showDoctor);
-        print_r($showDoctor);
+        // print_r($showDoctor);
         if ($showDoctor->status == 1) {
             foreach ($showDoctor->data as $rowDoctor) {
                 $doctorName = $rowDoctor->doctor_name;
                 $doctorReg = $rowDoctor->doctor_reg_no;
-                print_r($doctorName);
+                // print_r($doctorName);
             }
         }
     } else {
