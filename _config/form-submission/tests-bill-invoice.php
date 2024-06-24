@@ -46,6 +46,7 @@ if (isset($_POST['bill-generate'])) {
     // echo "<br>disc percent :"; print_r($testDisc);
     // echo "<br>discount on total : "; print_r($discountOnTotal);
     // // echo "<br>disc percent : $testDisc";
+    // echo "response";
     // exit;
     ###################### Patient Visit Update ######################
     $labVisited = $Patients->labVisists($patientId);
@@ -137,9 +138,10 @@ if (isset($_POST['bill-generate'])) {
             }
 
             $addBillDetails = json_decode($addBillDetails);
-            
             if($addBillDetails->status){
-                header("Location: lab-bill-generation.php?billId=".url_enc($billId));
+                $redirectUrl = URL."test-invoice.php?billId=" . url_enc($billId);
+                header("Location: " . $redirectUrl);
+                // header("Location: reprint-test-bill.php?billId=".url_enc($billId));
                 exit;
             }else{
                 echo "<script>alert('Bill details Not added!!, Something is Wrong!');</script>";

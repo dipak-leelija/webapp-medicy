@@ -13,6 +13,7 @@ require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 
 
 
@@ -24,11 +25,13 @@ $LabBillDetails  = new LabBillDetails();
 $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
+$Utility         = new Utility;
 // $LabAppointments = new LabAppointments();
 
 if (isset($_GET['bill_id'])) {
 
     $billId = $_GET['bill_id'];
+    $billId = url_dec($billId);
 
     $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
@@ -69,8 +72,56 @@ if (isset($_GET['bill_id'])) {
         $doctorName = $docId;
         $doctorReg  = NULL;
     }
-} //eof cheaking post method
+} elseif(isset($_GET['billId'])) {
+    $billId = $_GET['billId'];
+    $billId = url_dec($billId);
 
+    $labBillData = json_decode($LabBilling->labBillDisplayById($billId)); // lab bill data
+
+    $testDate = $Utility->convertDateFormat($labBillData->data->test_date); // test date
+
+    if ($labBillData->status) {
+        $patientColumn = 'patient_id';
+        $patientData = json_decode($Patients->chekPatientsDataOnColumn($patientColumn, $labBillData->data->patient_id, $adminId));
+
+        if ($labBillData->data->refered_doctor != 'Self') {
+            $docColumn = 'doctor_id';
+            $docData = json_decode($Doctors->chekDataOnColumn($docColumn, $labBillData->data->refered_doctor, $adminId));
+
+            $doctorName  = $docData->data->doctor_name;
+            $doctorReg  = $docData->data->doctor_reg_no;
+        } else {
+            $doctorName = 'SELF';
+            $doctorReg = '';
+        }
+
+        $payable     = $labBillData->data->total_after_discount;
+        $patientName = $patientData->data->name;
+        $patientPhno = $patientData->data->phno;
+        $patientAge  = $patientData->data->age;
+
+        $paidAmount     = $labBillData->data->paid_amount;
+        $dueAmount      = $labBillData->data->due_amount;
+        $dicountAmount  = $labBillData->data->discount;
+        $billDate       = $labBillData->data->bill_date;
+
+        $labBillDetailsData = json_decode($LabBillDetails->billDetailsById($billId));
+
+        if ($labBillDetailsData->status) {
+            $labBillDetailsData = $labBillDetailsData->data;
+
+            $discArray = [];
+            $amountArray = [];
+            $amountAfterDisc = [];
+
+            foreach ($labBillDetailsData as $detailsData) {
+                array_push($discArray, $detailsData->percentage_of_discount_on_test);
+                array_push($amountArray, $detailsData->test_price);
+                array_push($amountAfterDisc, $detailsData->price_after_discount);
+            }
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +139,7 @@ if (isset($_GET['bill_id'])) {
 
 <body>
     <div class="custom-container">
-        <div class="custom-body">
+    <div class="custom-body <?= $payable == $paidAmount ? "paid-bg" : ''; ?>">
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
@@ -110,7 +161,16 @@ if (isset($_GET['bill_id'])) {
                     <div class="col-sm-3 invoice-info">
                         <p class="my-0">Invoice</p>
                         <p>#<?php echo $billId; ?></p>
-                        <p><?= formatDateTime($billingDate) ?></p>
+                        <!-- <p><?= formatDateTime($billingDate) ?></p> -->
+                        <p>
+                            <?php
+                            if (isset($billingDate) && !empty($billingDate)) {
+                                echo formatDateTime($billingDate);
+                            } else {
+                                echo formatDateTime($billDate);
+                            }
+                            ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -204,20 +264,45 @@ if (isset($_GET['bill_id'])) {
                 <hr calss="my-0" style="opacity: 0.3;">
                 <div class="row">
                     <!-- table total calculation -->
-                    <div class="col-sm-8 mb-3 text-end">
+                    <div class="col-sm-8 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Total Amount:</b></small></p>
                     </div>
-                    <div class="col-sm-4 mb-3 text-end">
+                    <div class="col-sm-4 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹<?php echo floatval($subTotal); ?></small></b>
+                            <small><b>₹ <?php echo floatval($subTotal); ?></small></b>
                         </p>
                     </div>
-                    <div class="col-sm-8 mb-3 text-end">
+                    <?php
+                    if(isset($_GET['billId'])){
+                    echo $dicountAmount ?
+                    '
+                    <div class="col-sm-8 mb-1 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
+                    </div>
+                    <div class="col-sm-4 mb-1 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;">
+                            <small><b>₹ ' . $dicountAmount . '</b></small>
+                        </p>
+                    </div>' : '';
+
+                    echo ($dueAmount != NULL && $dueAmount > 0) ?
+                    '
+                    <div class="col-sm-8 mb-1 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Due Amount:</b></small></p>
+                    </div>
+                    <div class="col-sm-4 mb-1 text-end">
+                        <p style="margin-top: -5px; margin-bottom: 0px;">
+                            <small><b>₹ ' . $dueAmount . '</b></small>
+                        </p>
+                    </div>' : '';
+                    }
+                    ?>
+                    <div class="col-sm-8 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
                     </div>
-                    <div class="col-sm-4 mb-3 text-end">
+                    <div class="col-sm-4 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹<?php echo floatval($paidAmount); ?></small></b>
+                            <small><b>₹ <?php echo floatval($paidAmount); ?></small></b>
                         </p>
                     </div>
                     <!-- <div class="col-sm-8 text-end">
@@ -268,7 +353,7 @@ if (isset($_GET['bill_id'])) {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</a>
+            <a class="btn btn-primary shadow mx-2" href="test-appointments.php">Go Back</a>  <!--onclick="history.back()"-->
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
     </div>
