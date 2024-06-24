@@ -13,6 +13,7 @@ require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 
 
 
@@ -57,8 +58,8 @@ if (isset($_POST['bill-generate'])) {
     $docId           = $_POST['prefferedDocId'];
     $referedDocName  = $_POST['refferedDocName'];
 
-    // echo "ID :".$docId;
-    // echo "Name :".$referedDocName;
+    echo "ID :".$docId;
+    echo "Name :".$referedDocName;
 
     // echo $payable.'<br>';
     // echo $paidAmount.'<br>';
@@ -117,13 +118,23 @@ if (isset($_POST['bill-generate'])) {
     }else{
         if ($docId != NULL) {
             //function calling
-            $showDoctorById = $Doctors->showDoctorById($docId);
-            foreach($showDoctorById as $rowDoctor){
+            // $showDoctorById = $Doctors->showDoctorById($docId);
+            // foreach($showDoctorById as $rowDoctor){
+            //     $referedDoc = $docId;
+            //     $doctorName = $rowDoctor['doctor_name'];
+            //     $doctorReg  = $rowDoctor['doctor_reg_no'];
+            // }
+            $showDoctorById = $Doctors->showDoctorNameById($docId);
+            $showDoctorById = json_decode($showDoctorById);
+             if ($showDoctorById->status == 1) {
+            foreach ($showDoctorById->data as $rowDoctor) {
                 $referedDoc = $docId;
-                $doctorName = $rowDoctor['doctor_name'];
-                $doctorReg  = $rowDoctor['doctor_reg_no'];
+                $doctorName = $rowDoctor->doctor_name;
+                // print_r($doctorName);
+                $doctorReg = $rowDoctor->doctor_reg_no;
             }
         }
+    }
     
     }
     
@@ -204,6 +215,8 @@ if (isset($_POST['bill-generate'])) {
     /* ================ Bill Details Insertion End ================= */
     if ($addBillDetails) {
         echo "<script>alert('Bill Updated.');</script>";
+        $redirectUrl = URL."test-invoice.php?billId=" . url_enc($billId);
+        header("Location: " . $redirectUrl);
     }else{
         echo "<script>alert('Bill Details Uptaion Failed.');</script>";
     }
@@ -251,6 +264,7 @@ if (isset($_POST['bill-generate'])) {
 //     $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
 
 // }
+exit;
 ?>
 
 <!DOCTYPE html>

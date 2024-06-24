@@ -48,7 +48,7 @@ if (isset($_GET['invoice'])) {
   $patientId = $labBillDisplay->data->patient_id;
   $testDate  = $labBillDisplay->data->test_date;
   $refDoc    = $labBillDisplay->data->refered_doctor;
-
+  // print($refDoc);
   $labBillDisplay->data->total_amount;
   $labBillDisplay->data->discount;
   $labBillDisplay->data->total_after_discount;
@@ -74,19 +74,19 @@ if (is_numeric($refDoc)) {
   if ($docDetails->status == 1) {
     foreach ($docDetails->data as $rowDoctor) {
       $existsDoctorName = $rowDoctor->doctor_name;
-      // echo $doctorName;
+      echo $existsDoctorName;
     }
   }
   // if (is_array($docDetails) && isset($docDetails[0][2])) {
   //   $existsDoctorName = $docDetails[0][2];
   // }
   // $existsDoctorName = $docDetails[0][2];
-} else {
+} 
+else {
   $existsDoctorName = $refDoc;
-  $existsDocName    = $refDoc;
+  // $existsDocName    = $refDoc;
+  // print_r($existsDoctorName);
 }
-
-
 ?>
 
 <!doctype html>
@@ -263,7 +263,7 @@ if (is_numeric($refDoc)) {
                   <input type="hidden" name="patientPhnNo" value="<?php echo $patientsDisplay->phno; ?>">
                   <input type="hidden" name="patientTestDate" value="<?php echo $testDate; ?>">
                   <input type="hidden" name="prefferedDocId" id="prefferedDocId" value="<?php echo $existsDoctorId; ?>">
-                  <input type="hidden" name="refferedDocName" id="refferedDocName" value="<?php echo $existsDocName; ?>">
+                  <input type="hidden" name="refferedDocName" id="refferedDocName" value="<?php echo $existsDoctorName; ?>">
 
 
                   <!-- Header Row -->
