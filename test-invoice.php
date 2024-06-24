@@ -141,6 +141,7 @@ if (isset($_GET['bill_id'])) {
 <body>
     <div class="custom-container">
     <div class="custom-body <?= $payable == $paidAmount ? "paid-bg" : ''; ?>">
+    <!-- <div class="custom-body paid-bg"> -->
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
