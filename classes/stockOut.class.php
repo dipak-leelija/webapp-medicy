@@ -1233,11 +1233,10 @@ class StockOut
     $sqlPart2a = "DATE(so.added_on) AS added_on, 
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
-    $sqlPart2b = "YEARWEEK(so.added_on) AS year_week, 
-                  MIN(DATE(so.added_on)) AS start_date,
-                  MAX(DATE(so.added_on)) AS end_date,";
+    $sqlPart2b = "DATE(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY)) AS start_date, 
+                  DATE(DATE_ADD(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY), INTERVAL 6 DAY)) AS end_date,";
     $sqlPart2c = "YEAR(so.added_on) AS year, 
-                  FLOOR((DAYOFYEAR(so.added_on) - 1) / 30) + 1 AS month_period,
+                  MONTH(so.added_on) AS month,
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
@@ -1261,12 +1260,12 @@ class StockOut
 
     $sqlPart4a = "DATE(so.added_on) 
                   ORDER BY DATE(so.added_on), c.name";
-    $sqlPart4b = "YEARWEEK(so.added_on) 
-                  ORDER BY YEARWEEK(so.added_on), c.name";
+    $sqlPart4b = "start_date 
+                  ORDER BY start_date, c.name";
     $sqlPart4c = "YEAR(so.added_on), 
-                  FLOOR((DAYOFYEAR(so.added_on) - 1) / 30) + 1
+                  MONTH(so.added_on)
                   ORDER BY 
-                  YEAR(so.added_on), month_period, c.name";
+                  YEAR(so.added_on), MONTH(so.added_on), c.name";
 
     if ($groupFilter == 0) {
         $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
@@ -1277,8 +1276,6 @@ class StockOut
     } else {
         throw new Exception("Invalid group filter parameter");
     }
-
-    // print_r($sqlQuery);
 
     try {
         // Prepare and execute the query
@@ -1317,119 +1314,177 @@ class StockOut
 
 
 
+
+
+
     // sales report on payment mode
-    function stockOutReportOnPaymentMode($searchOnData, $startDate, $endDate, $adminId)
-    {
-        try {
-            $fetchStockOutData = "SELECT 
-                                    date(so.added_on) as added_on,
-                                    so.payment_mode,
-                                    SUM(so.amount) AS total_amount,
-                                    SUM(sod.sales_margin) AS total_sales_margin,
-                                    SUM(so.disc) as total_discount
-                                FROM 
-                                    stock_out as so
-                                JOIN 
-                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
-                                WHERE 
-                                    date(so.added_on) BETWEEN '$startDate' AND '$endDate'
-                                    AND so.payment_mode IN ($searchOnData) 
-                                    AND so.admin_id = '$adminId'
-                                GROUP BY 
-                                    date(so.added_on), 
-                                    so.payment_mode
-                                ORDER BY 
-                                    date(so.added_on), 
-                                    so.payment_mode";
+    function stockOutReportOnPaymentMode($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
+{
+    $sqlPart1 = "SELECT so.payment_mode,";
 
-            $stmt = $this->conn->prepare($fetchStockOutData);
+    $sqlPart2a = "DATE(so.added_on) AS added_on, 
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
+    $sqlPart2b = "DATE(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY)) AS start_date, 
+                  DATE(DATE_ADD(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY), INTERVAL 6 DAY)) AS end_date,";
+    $sqlPart2c = "YEAR(so.added_on) AS year, 
+                  MONTH(so.added_on) AS month,
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
 
-            if (!$stmt) {
-                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
-            }
+    $sqlPart3 = "SUM(so.amount) AS total_amount,
+                 SUM(sod.sales_margin) AS total_sales_margin,
+                 SUM(so.disc) as total_discount
+                 FROM 
+                    stock_out so
+                 JOIN 
+                    stock_out_details sod ON so.invoice_id = sod.invoice_id
+                 WHERE 
+                    so.admin_id = ?
+                    AND DATE(so.added_on) BETWEEN ? AND ?
+                    AND so.payment_mode IN ($searchOnData)
+                 GROUP BY 
+                    so.payment_mode,";
 
-            $stmt->execute();
+    $sqlPart4a = "DATE(so.added_on) 
+                  ORDER BY DATE(so.added_on), so.payment_mode";
+    $sqlPart4b = "start_date 
+                  ORDER BY start_date, so.payment_mode";
+    $sqlPart4c = "YEAR(so.added_on), 
+                  MONTH(so.added_on)
+                  ORDER BY 
+                  YEAR(so.added_on), MONTH(so.added_on), so.payment_mode";
 
-            $result = $stmt->get_result();
-            // print_r($result);
-            if ($result->num_rows > 0) {
-                $data = array();
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
-                }
-                $returnResult = ['status' => true, 'data' => $data];
-            } else {
-                $returnResult = ['status' => false];
-            }
-            return json_encode($returnResult);
-            $stmt->close;
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+    if ($groupFilter == 0) {
+        $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+    } elseif ($groupFilter == 1) {
+        $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+    } elseif ($groupFilter == 2) {
+        $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+    } else {
+        throw new Exception("Invalid group filter parameter");
     }
+
+    try {
+        // Prepare and execute the query
+        $stmt = $this->conn->prepare($sqlQuery);
+        if (!$stmt) {
+            throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+        }
+
+        // Bind the parameters
+        $stmt->bind_param('sss', $adminId, $startDate, $endDate);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $data = array();
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            $returnResult = ['status' => true, 'data' => $data];
+        } else {
+            $returnResult = ['status' => false];
+        }
+
+        $stmt->close();
+
+        return json_encode($returnResult);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+}
+
 
 
 
     
     // sales report function on addedBy
-    function stockOutReportOnAddedBy($searchOnData, $startDate, $endDate, $adminId)
-    {
-        try {
-            $fetchStockOutData = "SELECT 
-                                    COALESCE(adm.username, emp.emp_username) AS added_by_name,  
-                                    DATE(so.added_on) AS added_on,  
-                                    SUM(sod.amount) AS total_stock_out_amount,
-                                    SUM(sod.sales_margin) AS total_sales_margin,
-                                    SUM(so.disc) as total_discount
-                                FROM 
-                                    stock_out so
-                                JOIN 
-                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
-                                LEFT JOIN 
-                                    admin adm ON so.added_by = adm.admin_id
-                                LEFT JOIN 
-                                    employees emp ON so.added_by = emp.emp_id
-                                WHERE 
-                                    so.admin_id = '$adminId'
-                                    AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
-                                    AND so.added_by IN ($searchOnData)
-                                GROUP BY 
-                                    added_by_name,  
-                                    DATE(so.added_on)
-                                ORDER BY 
-                                    DATE(so.added_on),  
-                                    added_by_name;
-                                ";
+    function stockOutReportOnAddedBy($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
+{
+    $sqlPart1 = "SELECT COALESCE(adm.username, emp.emp_username) AS added_by_name,";
 
-            // print_r($fetchStockOutData);
+    $sqlPart2a = "DATE(so.added_on) AS added_on, 
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
+    $sqlPart2b = "DATE(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY)) AS start_date, 
+                  DATE(DATE_ADD(DATE_SUB(so.added_on, INTERVAL WEEKDAY(so.added_on) DAY), INTERVAL 6 DAY)) AS end_date,";
+    $sqlPart2c = "YEAR(so.added_on) AS year, 
+                  MONTH(so.added_on) AS month,
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
 
-            $stmt = $this->conn->prepare($fetchStockOutData);
+    $sqlPart3 = "SUM(sod.amount) AS total_stock_out_amount,
+                 SUM(sod.sales_margin) AS total_sales_margin,
+                 SUM(so.disc) as total_discount
+                 FROM 
+                    stock_out so
+                 JOIN 
+                    stock_out_details sod ON so.invoice_id = sod.invoice_id
+                 LEFT JOIN 
+                    admin adm ON so.added_by = adm.admin_id
+                 LEFT JOIN 
+                    employees emp ON so.added_by = emp.emp_id
+                 WHERE 
+                    so.admin_id = ?
+                    AND DATE(so.added_on) BETWEEN ? AND ?
+                    AND so.added_by IN ($searchOnData)
+                 GROUP BY 
+                    added_by_name,";
 
-            if (!$stmt) {
-                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
-            }
+    $sqlPart4a = "DATE(so.added_on) 
+                  ORDER BY DATE(so.added_on), added_by_name";
+    $sqlPart4b = "start_date 
+                  ORDER BY start_date, added_by_name";
+    $sqlPart4c = "YEAR(so.added_on), 
+                  MONTH(so.added_on)
+                  ORDER BY 
+                  YEAR(so.added_on), MONTH(so.added_on), added_by_name";
 
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $data = array();
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
-                }
-                $returnResult = ['status' => true, 'data' => $data];
-            } else {
-                $returnResult = ['status' => false];
-            }
-
-            $stmt->close();
-
-            return json_encode($returnResult);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+    if ($groupFilter == 0) {
+        $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+    } elseif ($groupFilter == 1) {
+        $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+    } elseif ($groupFilter == 2) {
+        $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+    } else {
+        throw new Exception("Invalid group filter parameter");
     }
+
+    try {
+        // Prepare and execute the query
+        $stmt = $this->conn->prepare($sqlQuery);
+        if (!$stmt) {
+            throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+        }
+
+        // Bind the parameters
+        $stmt->bind_param('sss', $adminId, $startDate, $endDate);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $data = array();
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            $returnResult = ['status' => true, 'data' => $data];
+        } else {
+            $returnResult = ['status' => false];
+        }
+
+        $stmt->close();
+
+        return json_encode($returnResult);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+}
+
 
     
 
@@ -1445,11 +1500,12 @@ class StockOut
     {
         try {
             $addStockOutDetails = $this->conn->prepare("INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `item_name`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `gst_amount`, `sales_margin`, `profit_margin`, `taxable`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            print_r($addStockOutDetails);
 
             if (!$addStockOutDetails) {
                 return false; // Return false on query failure
             }
-
             $addStockOutDetails->bind_param("iissssssssddssddddd", $invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $sMargin, $margin, $taxable, $amount);
 
             if ($addStockOutDetails->execute()) {
@@ -1460,6 +1516,8 @@ class StockOut
                 return false; // Return false on execution failure
             }
         } catch (Exception $e) {
+            error_log($e->getMessage());
+            echo  $e->getMessage();
             return false;
         }
     }

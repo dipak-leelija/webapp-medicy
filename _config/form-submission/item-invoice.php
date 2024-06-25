@@ -89,7 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, NOW, $adminId);
 
         if ($stockOut['success']) {
-
             for ($i = 0; $i < count($prductId); $i++) {
                 // echo "<br>qantity types : $qtyTypes[$i]";
                 $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);
@@ -128,25 +127,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $itemLooseQty   = $itemData['loosely_count'];
                 }
 
-
+                
                 $stockOutDetails = $StockOut->addStockOutDetails(intval($invoiceId), intval($itemId[$i]), $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, floatval($mrp[$i]), floatval($ptr[$i]), $discountPercent[$i], $gstparcent[$i], floatval($gstAmountPerItem[$i]), floatval($salesMargin[$i]), floatval($marginPerItem[$i]), floatval($taxable[$i]), floatval($amount[$i]));
 
-                // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
-
-                if (in_array(strtolower($ItemUnit), LOOSEUNITS)){
-                    $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
-                    $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
-                } else {
-                    $UpdatedNewQuantity = intval($itemQty) - intval($itemSellQty);
-                    $updatedLooseCount = 0;
+                if ($stockOutDetails) {
+                    // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
+                    
+                    if (in_array(strtolower($ItemUnit), LOOSEUNITS)){
+                        $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
+                        $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
+                    } else {
+                        $UpdatedNewQuantity = intval($itemQty) - intval($itemSellQty);
+                        $updatedLooseCount = 0;
+                    }
+                    
+                    $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
+                    header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
+                    exit;
                 }
-
-                $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
             }
         }
 
-        header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
-        exit;
 
     }
 }
