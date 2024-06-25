@@ -110,7 +110,7 @@ if (is_numeric($refDoc)) {
 
 
         <div class="container-fluid px-1  mx-auto">
-          <div class="row d-flex justify-content-center">
+          <div class="row d-flex justify-content-center align-items-stretch">
             <div class="col-xl-5 col-lg-5 col-md-5">
               <div class="card shadow p-4 mt-0">
                 <div class="row justify-content-between text-left">
@@ -211,156 +211,159 @@ if (is_numeric($refDoc)) {
 
 
             <div class="col-xl-7 col-lg-7 col-md-7 text-center">
-              <div class="card shadow p-4 mt-0">
-                <form class="form-card" action="altered-tests-bill-invoice.php" method="post">
-                  <input type="hidden" name="patientId" value="<?php echo $patientId; ?>">
-                  <input type="hidden" name="billId" value="<?php echo $billId; ?>">
+              <div class="card shadow h-100 p-4 mt-0">
+                <form class="form-card d-flex flex-column justify-content-between h-100" action="altered-tests-bill-invoice.php" method="post">
+                  <div>
+                    <input type="hidden" name="patientId" value="<?php echo $patientId; ?>">
+                    <input type="hidden" name="billId" value="<?php echo $billId; ?>">
+                    <input type="hidden" name="patientName" value="<?php echo $patientsDisplay->name; ?>">
+                    <input type="hidden" name="patientAge" value="<?php echo $patientsDisplay->age; ?>">
+                    <input type="hidden" name="patientGender" value="<?php echo $patientsDisplay->gender; ?>">
+                    <input type="hidden" name="patientPhnNo" value="<?php echo $patientsDisplay->phno; ?>">
+                    <input type="hidden" name="patientTestDate" value="<?php echo $testDate; ?>">
+                    <input type="hidden" name="prefferedDocId" id="prefferedDocId" value="<?php echo $existsDoctorId; ?>">
+                    <input type="hidden" name="refferedDocName" id="refferedDocName" value="<?php echo $existsDoctorName; ?>">
 
-                  <input type="hidden" name="patientName" value="<?php echo $patientsDisplay->name; ?>">
 
-                  <input type="hidden" name="patientAge" value="<?php echo $patientsDisplay->age; ?>">
-                  <input type="hidden" name="patientGender" value="<?php echo $patientsDisplay->gender; ?>">
-                  <input type="hidden" name="patientPhnNo" value="<?php echo $patientsDisplay->phno; ?>">
-                  <input type="hidden" name="patientTestDate" value="<?php echo $testDate; ?>">
-                  <input type="hidden" name="prefferedDocId" id="prefferedDocId" value="<?php echo $existsDoctorId; ?>">
-                  <input type="hidden" name="refferedDocName" id="refferedDocName" value="<?php echo $existsDoctorName; ?>">
-
-
-                  <!-- Header Row -->
-                  <div class="row justify-content-between text-left my-0 py-0">
-                    <div class="form-group col-sm-2 flex-column my-0 py-0 d-flex">
-                      <p class="my-0 py-0">SL. No. </p>
+                    <!-- Header Row -->
+                    <div class="row justify-content-between text-left my-0 py-0">
+                      <div class="form-group col-sm-1 flex-column my-0 py-0 d-flex">
+                        <p class="my-0 py-0">SL</p>
+                      </div>
+                      <div class="form-group col-sm-4 flex-column mb-0 mt-0 d-flex">
+                        <p class="my-0 py-0 ">Description</p>
+                      </div>
+                      <div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex">
+                        <p class="my-0 py-0 ">Price ₹</p>
+                      </div>
+                      <div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex">
+                        <p class="my-0 py-0 ">Disc %</p>
+                      </div>
+                      <div class="form-group col-sm-2 flex-column my-0 py-0 d-flex">
+                        <p class="my-0 py-0 text-end">Amount</p>
+                      </div>
+                      <div class="form-group col-sm-1 flex-column my-0 py-0 d-flex">
+                        <p class="my-0 py-0 text-end"></p>
+                      </div>
                     </div>
-                    <div class="form-group col-sm-3 flex-column mb-0 mt-0 d-flex">
-                      <p class="my-0 py-0 ">Description</p>
-                    </div>
-                    <div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex">
-                      <p class="my-0 py-0 ">Price ₹</p>
-                    </div>
-                    <div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex">
-                      <p class="my-0 py-0 ">Disc %</p>
-                    </div>
-                    <div class="form-group col-sm-2 flex-column my-0 py-0 d-flex">
-                      <p class="my-0 py-0 text-end">Amount</p>
-                    </div>
-                    <div class="form-group col-sm-1 flex-column my-0 py-0 d-flex">
-                      <p class="my-0 py-0 text-end"></p>
-                    </div>
-                  </div>
-                  <!--/END Header Row -->
-                  <hr>
-                  <!-- Test List Row -->
-                  <div id="lists">
-                    <?php $count = 0; ?>
-                    <?php
-                    $subTests = $LabBillDetails->testsNum($billId);
-                    foreach ($subTests as $rowsubTests) {
+                    <!--/END Header Row -->
+                    <hr>
+                    <!-- Test List Row -->
+                    <div id="lists">
+                      <?php $count = 0; ?>
+                      <?php
+                      $subTests = $LabBillDetails->testsNum($billId);
+                      foreach ($subTests as $rowsubTests) {
 
-                      $subTestId = $rowsubTests['test_id'];
-                      $subTest = $SubTests->showSubTestsId($rowsubTests['test_id']);
-                      // print_r($subTestName);
+                        $subTestId = $rowsubTests['test_id'];
+                        $subTest = $SubTests->showSubTestsId($rowsubTests['test_id']);
+                        // print_r($subTestName);
 
-                      $subTestPrice = $rowsubTests['test_price'];
-                      $disc         = $rowsubTests['percentage_of_discount_on_test'];
-                      $afterDisc    = $rowsubTests['price_after_discount'];
+                        $subTestPrice = $rowsubTests['test_price'];
+                        $disc         = $rowsubTests['percentage_of_discount_on_test'];
+                        $afterDisc    = $rowsubTests['price_after_discount'];
 
-                      $count++;
-                      echo "
-                                        <div id='box-id-" . $count . "' class='row justify-content-between text-left my-0 py-0'>
-                                            <div class='form-group col-sm-2 flex-column my-0 py-0 d-flex'>
+                        $count++;
+                        echo "
+                                      <div id='box-id-" . $count . "' class='row justify-content-between text-left my-0 py-0'>
+                                        <div class='form-group col-sm-1 mb-2 py-0 '>
                                             <p class='my-0 py-0'>" . $count . "</p>
                                         </div>
-                                        <div class='form-group col-sm-3 flex-column mb-0 mt-0 d-flex'>
+                                        <div class='form-group col-sm-4 mb-2 mt-0'>
                                             <p class='my-0 py-0 '>" . $subTest[0][1] . "</p>
                                             <input type='text' name='testId[]' value='" . $subTestId . "' hidden>
                                         </div>
-                                        <div class='form-group col-sm-2 flex-column my-0 py-0 d-flex'>
+                                        <div class='form-group col-sm-2 mb-2 py-0'>
                                             <p class='my-0 py-0 '>" . $subTestPrice . "</p>
                                             <input type='text' name='priceOfTest[]' value='" . $subTestPrice . "' hidden>
                                         </div>
-                                        <div class='form-group col-sm-2 flex-column mb-0 mt-0 d-flex'>
+                                        <div class='form-group col-sm-2 mb-2 mt-0'>
                                             <p class='my-0 py-0 '>" . $disc . "</p>
                                             <input type='text' name='disc[]' value='" . $disc . "' hidden>
                                         </div>
-                                        <div class='form-group col-sm-2 flex-column mb-0 mt-0 d-flex'>
+                                        <div class='form-group col-sm-2 mb-2 mt-0'>
                                             <p class='my-0 py-0 text-end'>" . $afterDisc . " </p>
                                             <input type='text' name='amountOfTest[]' value='" . $afterDisc . "' hidden>
                                         </div>
-                                        <div class='form-group col-sm-1 flex-column my-0 py-0 d-flex'>
+                                        <div class='form-group col-sm-1 mb-2 py-0'>
                                             <a class='my-0 py-0 text-end' onClick='removeField(" . $count . "," . $afterDisc . ")'>
                                                 <i class='far fa-trash-alt'></i>
                                             </a>
                                         </div>
-                                        </div>
-                                        ";
-                    }
-                    ?>
-                    <input type="text" id="dynamic-id" value="<?php echo (int)$count; ?>" hidden>
+                                      </div>";
+                      }
+                      ?>
+                      <input type="text" id="dynamic-id" value="<?php echo (int)$count; ?>" hidden>
 
-                    <!-- Items are shown here by jquery -->
+                      <!-- Items are shown here by jquery -->
+                    </div>
+                    <!--/END Test List Row -->
                   </div>
-                  <!--/END Test List Row -->
 
-                  <hr>
-                  <div class="row justify-content-between text-left">
-                    <div class="form-group col-sm-9 flex-column d-flex">
-                      <p class="mb-1">Total: </p>
-                    </div>
-                    <div class="form-group col-sm-3 flex-column d-flex ">
-                      <input type="number" step="any" name="total" id="total-test-price" value="<?php echo floatval($totalAmount); ?>" hidden>
-                      <p class="mb-1 text-center">₹ <span id="total-view"><?php echo floatval($totalAmount); ?></span></p>
-                    </div>
-                    <!-- <div class="form-group col-sm-1 flex-column d-flex">
+                  <div>
+                    <hr>
+                    <div class="row justify-content-between text-left">
+                      <div class="form-group col-sm-9 flex-column d-flex">
+                        <p class="mb-1">Total: </p>
+                      </div>
+                      <div class="form-group col-sm-3 flex-column d-flex ">
+                        <input type="number" step="any" name="total" id="total-test-price" value="<?php echo floatval($totalAmount); ?>" hidden>
+                        <p class="mb-1 text-center">₹ <span id="total-view"><?php echo floatval($totalAmount); ?></span></p>
+                      </div>
+                      <!-- <div class="form-group col-sm-1 flex-column d-flex">
                       <p class="mb-1 text-end"> </p>
                     </div> -->
+                    </div>
+
+                    <!-- ################################################## -->
+                    <div class="row justify-content-between text-left calculation">
+                      <div class="form-group col-sm-9 flex-column d-flex">
+                        <p class="mb-1">Payable: </p>
+                      </div>
+                      <div class="form-group col-sm-3 flex-column d-flex ">
+                        <input class="myForm text-center" id="payable" type="number" step="any" name="payable" onkeyup="getLessAmount(this.value)" value="<?php echo  floatval($payable); ?>" required>
+                      </div>
+                    </div>
+                    <!-- ################################################## -->
+
+                    <div onload="disabledField();" class="row justify-content-between text-left">
+                      <div class="form-group col-sm-3 flex-column d-flex">
+                        <label class="form-control-label" for="">Update</label>
+                        <select class="form-control" onchange="updateBill(this.value)" name="status" id="update" required>
+                          <option value="" disabled selected>Select Update</option>
+                          <option value="Completed" <?= $payStatus == 'Completed' ? 'selected' : ''; ?>>Completed</option>
+                          <option value="Partial Due" <?= $payStatus == 'Partial Due' ? 'selected' : ''; ?>>Partial Due</option>
+                          <option value="Credit" <?= $payStatus == 'Credit' ? 'selected' : ''; ?>>Credit</option>
+                        </select>
+
+                        <!-- <span style="color:red;">*Update Status </span> -->
+
+                      </div>
+                      <div class="form-group col-sm-3 flex-column d-flex ">
+                        <label class="form-control-label" for="">Due Amount</label>
+                        <input class="myForm text-center" name="due" id="due" type="number" step="any" value="<?php echo floatval($dueAmount); ?>" onkeyup="dueAmount(this.value)" required readonly>
+                      </div>
+                      <div class="form-group col-sm-3 flex-column d-flex">
+                        <label class="form-control-label" for="less-amount">Less Amount</label>
+                        <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($lessAmount); ?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-3 flex-column d-flex">
+                        <label class="form-control-label" for="">Paid Amount</label>
+                        <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" step="any" value="<?php echo floatval($paidAmount); ?>" onkeyup="paidAmount(this.value)" required readonly>
+                      </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                      <button class="btn btn-primary w-25" type="submit" id="bill-generate" name="bill-generate" disabled>Update Bill</button>
+                    </div>
                   </div>
 
-                  <!-- ################################################## -->
-                  <div class="row justify-content-between text-left calculation">
-                    <div class="form-group col-sm-9 flex-column d-flex">
-                      <p class="mb-1">Payable: </p>
-                    </div>
-                    <div class="form-group col-sm-3 flex-column d-flex ">
-                      <input class="myForm text-center" id="payable" type="number" step="any" name="payable" onkeyup="getLessAmount(this.value)"  value="<?php echo  floatval($payable); ?>" required>
-                    </div>
-                  </div>
-                  <!-- ################################################## -->
-
-                  <div onload="disabledField();" class="row justify-content-between text-left">
-                    <div class="form-group col-sm-3 flex-column d-flex">
-                      <label class="form-control-label" for="">Update</label>
-                      <select class="form-control" onchange="updateBill(this.value)" name="status" id="update" required>
-                        <option value="" disabled selected>Select Update</option>
-                        <option value="Completed" <?= $payStatus == 'Completed' ? 'selected' : ''; ?>>Completed</option>
-                        <option value="Partial Due" <?= $payStatus == 'Partial Due' ? 'selected' : ''; ?>>Partial Due</option>
-                        <option value="Credit" <?= $payStatus == 'Credit' ? 'selected' : ''; ?>>Credit</option>
-                      </select>
-
-                      <!-- <span style="color:red;">*Update Status </span> -->
-
-                    </div>
-                    <div class="form-group col-sm-3 flex-column d-flex ">
-                      <label class="form-control-label" for="">Due Amount</label>
-                      <input class="myForm text-center" name="due" id="due" type="number" step="any" value="<?php echo floatval($dueAmount); ?>" onkeyup="dueAmount(this.value)" required readonly>
-                    </div>
-                    <div class="form-group col-sm-3 flex-column d-flex">
-                      <label class="form-control-label" for="less-amount">Less Amount</label>
-                      <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($lessAmount); ?>" readonly>
-                    </div>
-                    <div class="form-group col-sm-3 flex-column d-flex">
-                      <label class="form-control-label" for="">Paid Amount</label>
-                      <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" step="any" value="<?php echo floatval($paidAmount); ?>" onkeyup="paidAmount(this.value)" required readonly>
-                    </div>
-                  </div>
-
-                  <div class="row justify-content-end">
-                    <button class="btn btn-primary w-25" type="submit" id="bill-generate" name="bill-generate" disabled>Update Bill</button>
-                  </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
+
 
         <!--/End Part 1  -->
 
