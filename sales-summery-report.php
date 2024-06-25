@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
@@ -18,6 +19,7 @@ $StockOut = new StockOut;
 $StockInDetails = new StockInDetails;
 $Distributor = new Distributor;
 $Products = new Products;
+$Admin = new Admin;
 $Employees   = new Employees;
 $Utility     = new Utility;
 
@@ -36,7 +38,7 @@ if ($prodCategory) {
 $col = 'admin_id';
 $employeeDetails = json_decode($Employees->selectEmpByCol($col, $adminId));
 
-// print_r($employeeDetails);
+
 $empIdString = '';
 $empNameString = '';
 if ($employeeDetails->status) {
@@ -58,10 +60,18 @@ if ($employeeDetails->status) {
     $employeeDetails = array();
 }
 
-$allEmpIdString = $adminId.','.$empIdString;
-$allEmpNameString = $adminName.','.$empNameString;
-$idStringLength = strlen($allEmpIdString);
-// echo $idStringLength;
+// user id string generation 
+$allUserIdString = $adminId.','.$empIdString;;
+
+// user name string generation depend on session
+if($_SESSION['ADMIN']){
+    $allEmpNameString = $username.','.$empNameString;
+}else{
+    $adminData = json_decode($Admin->adminDetails($adminId));
+    $adminData = $adminData->data;
+    $allEmpNameString = $adminData[0]->username.','.$empNameString;
+}
+
 ?>
 
 
@@ -140,11 +150,11 @@ $idStringLength = strlen($allEmpIdString);
                             <div class="col-md-2 bg-white me-3 selectDiv">
                                 <select class="cvx-inp1 border-0 rounded p-1 w-100" name="day-filter" id="day-filter"
                                     onchange="dayFilter(this)">
-                                    <option value="DW" selected>Day Wise</option>
-                                    <option value="WW">Week Wise</option>
-                                    <option value="MW">Month Wise</option>
+                                    <option value="0" selected>Day Wise</option>
+                                    <option value="1">Week Wise</option>
+                                    <option value="2">Month Wise</option>
                                 </select>
-                                <label class="d-none" id="day-filter-val">DW</label>
+                                <label class="d-none" id="day-filter-val">0</label>
                             </div>
 
                             <!-- filter date range -->
@@ -264,7 +274,7 @@ $idStringLength = strlen($allEmpIdString);
                                     }
                                     ?>
                                     <label class="d-none" id="all-stuff-name-data"><?php echo $allEmpNameString; ?></label>
-                                    <label class="d-none" id="all-stuff-id-data"><?php echo $allEmpIdString; ?></label>
+                                    <label class="d-none" id="all-stuff-id-data"><?php echo $allUserIdString; ?></label>
 
                                     <label class="d-none" id="filter-by-staff-name"></label>
                                     <label class="d-none" id="filter-by-staff-id"></label>

@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
     $dataArray = json_decode($dataArray);
 
 
+    $dateGroupFilter = $dataArray->datefilter;
 
     $searchOnString = $dataArray->searchOn;
 
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
     }
 
     if ($filterBy == 'ICAT') {
-        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($searchString, $startDt, $endDt, $adminId);
+        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
     }
 
     if($filterBy == 'PM'){
