@@ -632,39 +632,37 @@ function salesDataSearchFunction(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    console.log(report);
-    // report = JSON.parse(report);
-    // if(report.status){
-    //     reportShow(report.data);
-    // }else{
-    //     alert('no data found');
-    // }
+    // console.log(report);
+    report = JSON.parse(report);
+    if(report.status){
+        reportShow(report.data);
+    }else{
+        alert('no data found');
+    }
 }
 
 
 // dynamic table generation on data
 function reportShow(parsedData) {
     console.log(parsedData);
-    console.log(dayFilterVal.innerHTML);
+    // console.log(dayFilterVal.innerHTML);
     // Reset table data
     dataTable.innerHTML = '';
 
     // Define headers based on filter values
-    
-    
     const headerStart1 = ['Date'];
     const headerStart2 = ['Start Date', 'End Date'];
     const headerEnd1 = ['Total Sell'];
     const headerEnd2 = ['Total Margin'];
     const headerEnd3 = ['Total Discount'];
-    
+
     let headerStart = [];
     let headerMid = [];
     let headerEnd = [];
 
-    if(dayFilterVal.innerHTML == 0){
+    if (dayFilterVal.innerHTML == 0) {
         headerStart = headerStart1;
-    }else{
+    } else {
         headerStart = headerStart2;
     }
 
@@ -703,15 +701,45 @@ function reportShow(parsedData) {
 
     const tbody = document.createElement('tbody');
 
-    // Get unique dates
-    const uniqueDateArray = [...new Set(parsedData.map(item => item.added_on))];
+    // Function to group data by key
+    const groupDataByKey = (data, keyFn) => {
+        return data.reduce((acc, item) => {
+            const key = keyFn(item);
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item);
+            return acc;
+        }, {});
+    };
 
-    // Create rows for each unique date
-    uniqueDateArray.forEach(uniqueDate => {
+    let groupedData;
+
+    if (dayFilterVal.innerHTML == 0) { // Day-wise
+        groupedData = groupDataByKey(parsedData, item => item.added_on);
+    } else if (dayFilterVal.innerHTML == 1) { // Week-wise
+        groupedData = groupDataByKey(parsedData, item => item.start_date + ' to ' + item.end_date);
+    } else if (dayFilterVal.innerHTML == 2) { // Month-wise
+        groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
+    }
+
+    // Create rows for each group
+    Object.keys(groupedData).forEach(groupKey => {
+        const groupData = groupedData[groupKey];
         const tr = document.createElement('tr');
-        let rowData = {
-            Date: formatDate(uniqueDate)
-        };
+        let rowData = {};
+
+        if (dayFilterVal.innerHTML == 0) {
+            rowData['Date'] = formatDate(groupKey);
+        } else if (dayFilterVal.innerHTML == 1) {
+            const [startDate, endDate] = groupKey.split(' to ');
+            rowData['Start Date'] = formatDate(startDate);
+            rowData['End Date'] = formatDate(endDate);
+        } else if (dayFilterVal.innerHTML == 2) {
+            const [year, month] = groupKey.split('-');
+            rowData['Start Date'] = formatDate(groupData[0].start_date);
+            rowData['End Date'] = formatDate(groupData[0].end_date);
+        }
 
         let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
 
@@ -720,35 +748,30 @@ function reportShow(parsedData) {
             rowData[header] = 0.00;
         });
 
-        // Process data for each unique date
-        parsedData.forEach(data => {
-            if (data.added_on === uniqueDate) {
-                // On Product category
-                if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+        // Process data for each group
+        groupData.forEach(data => {
+            // On Product category
+            if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+                rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
+                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            }
 
-                    rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
-                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
+            // On Payment mode
+            if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
+                rowData[data.payment_mode] += parseFloat(data.total_amount);
+                totalSellAmount += parseFloat(data.total_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            }
 
-                // On Payment mode
-                if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-
-                    rowData[data.payment_mode] += parseFloat(data.total_amount);
-                    totalSellAmount += parseFloat(data.total_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
-
-                // On Staff name
-                if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-
-                    rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
-                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
+            // On Staff name
+            if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+                rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
+                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
         });
 
@@ -773,4 +796,16 @@ function reportShow(parsedData) {
     });
 
     dataTable.appendChild(tbody);
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
+function slicedString(input) {
+    return input.split(',').map(str => str.trim());
 }

@@ -69,6 +69,7 @@ if($_SESSION['ADMIN']){
 }else{
     $adminData = json_decode($Admin->adminDetails($adminId));
     $adminData = $adminData->data;
+    $adminName = $adminData[0]->fname;
     $allEmpNameString = $adminData[0]->username.','.$empNameString;
 }
 
@@ -264,7 +265,7 @@ if($_SESSION['ADMIN']){
                                         <label><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)">All Staff</label>
                                     </li>
                                     <li>
-                                        <label><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)">Admin</label>
+                                        <label><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?= $adminName; ?> (admin)</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
