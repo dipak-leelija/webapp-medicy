@@ -1,8 +1,4 @@
 <?php
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
-
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
@@ -30,32 +26,22 @@ $LabBillDetails  = new LabBillDetails();
 $showDoctors    = json_decode($Doctors->showDoctors($adminId));
 $showSubTests   = $SubTests->showSubTests();
 
-
-//Creating Object of Appointments Class
-// $appointments = new Appointments();
-
-
 if (isset($_GET['invoice'])) {
 
-  $billId =  url_dec($_GET['invoice']);
+  $billId     = url_dec($_GET['invoice']);
+  $patientId  = 0;
+  $refDoc     = 0;
 
   $labBillDisplay = json_decode($LabBilling->labBillDisplayById($billId));
-  $patientId = 0;
-  $refDoc = 0;
-  // echo $labBillDisplay;
-
-
-  $patientId = $labBillDisplay->data->patient_id;
-  $testDate  = $labBillDisplay->data->test_date;
-  $refDoc    = $labBillDisplay->data->refered_doctor;
-  // print($refDoc);
-  $labBillDisplay->data->total_amount;
-  $labBillDisplay->data->discount;
-  $labBillDisplay->data->total_after_discount;
-  $labBillDisplay->data->paid_amount;
-  $labBillDisplay->data->due_amount;
-
-
+  $patientId    = $labBillDisplay->data->patient_id;
+  $testDate     = $labBillDisplay->data->test_date;
+  $refDoc       = $labBillDisplay->data->refered_doctor;
+  $totalAmount  = $labBillDisplay->data->total_amount;
+  $lessAmount   = $labBillDisplay->data->discount;
+  $payable      = $labBillDisplay->data->total_after_discount;
+  $paidAmount   = $labBillDisplay->data->paid_amount;
+  $dueAmount    = $labBillDisplay->data->due_amount;
+  $payStatus    = $labBillDisplay->data->status;
 
   $patientsDisplay = null;
   if ($patientId) {
@@ -76,15 +62,8 @@ if (is_numeric($refDoc)) {
       $existsDoctorName = $rowDoctor->doctor_name;
     }
   }
-  // if (is_array($docDetails) && isset($docDetails[0][2])) {
-  //   $existsDoctorName = $docDetails[0][2];
-  // }
-  // $existsDoctorName = $docDetails[0][2];
-} 
-else {
+} else {
   $existsDoctorName = $refDoc;
-  // $existsDocName    = $refDoc;
-  // print_r($existsDoctorName);
 }
 ?>
 
@@ -96,27 +75,17 @@ else {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-  <!-- <link rel="stylesheet" href="../css/patient-style.css"> -->
+  <title>Test Bill Edit - #<?= $billId ?></title>
   <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/custom-form-style.css">
-
-
   <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
-  <title>Lab Test Bill Generate - Medicy Health Care</title>
-
-
   <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-
-
 </head>
 
 <body>
@@ -142,7 +111,7 @@ else {
 
         <div class="container-fluid px-1  mx-auto">
           <div class="row d-flex justify-content-center">
-            <div class="col-xl-5 col-lg-5 col-md-5 text-center">
+            <div class="col-xl-5 col-lg-5 col-md-5">
               <div class="card shadow p-4 mt-0">
                 <div class="row justify-content-between text-left">
                   <div class="form-group col-sm-12 flex-column d-flex">
@@ -179,31 +148,23 @@ else {
                   </div>
                 </div>
 
-                <div class="row justify-content-between text-left">
-                  <div class="form-group col-sm-12 flex-column d-flex my-0">
+                <div class="row justify-content-between">
+                  <div class="form-group col-sm-12 my-0">
                     <label class="form-control-label" for="patientDoctor">Rreffered By</label>
                     <select id="docList" class="form-control" name="patientDoctor" onChange="getDoc()" required>
-
-                      <?php echo '<option value="' . $refDoc . '">' . $existsDoctorName . '</option>' ?>
                       <option value="">New Doctor</option>
                       <option value="Self">By Self</option>
-
                       <?php
                       foreach ($showDoctors->data as $showDoctorDetails) {
                         $doctorId = $showDoctorDetails->doctor_id;
                         $doctorName = $showDoctorDetails->doctor_name;
-                        echo '<option value="' . $doctorId . '">' . $doctorName . '</option>';
+                        $selected = ($existsDoctorName == $doctorName) ?  'selected' : "";
+                        echo "<option value='$doctorId' $selected>$doctorName</option>";
                       }
                       ?>
                     </select>
                   </div>
-
-                  
-
-                  <div class="justify-content-center text-center">
-                    or
-                  </div>
-
+                  <p class="text-center w-100 my-1">OR</p>
                   <div class="form-group col-sm-12 flex-column d-flex mt-0">
                     <input type="text" id="docName" class="form-control" placeholder="Enter Doctor Name" onkeyup="newDoctor(this.value);">
                   </div>
@@ -228,16 +189,16 @@ else {
 
                 <div class="row justify-content-between text-left">
                   <div class="form-group col-sm-5 flex-column d-flex mt-0">
-                    <p class="form-control">Price ₹<span id="price">0</span>/Test</p>
+                    <p class="form-control">Price ₹<span id="price">0</span></p>
                   </div>
 
                   <div class="form-group col-sm-5 flex-column d-flex mt-0">
-                    <input class="form-control" id="disc" onkeyup="getDisc(this.value);" placeholder="Discount %" type="number" disabled>
+                    <input class="form-control" id="disc" type="number" step="any" onkeyup="getDisc(this.value);" placeholder="Discount %" disabled>
                   </div>
                 </div>
                 <div class="row justify-content-between text-left">
                   <div class="form-group col-sm-6 flex-column d-flex mt-0">
-                    <p class="form-control">Total ₹ <span id="total"></span></p>
+                    <p class="form-control">Total ₹<span id="total">0</span></p>
                   </div>
                   <div class="form-group col-sm-5 flex-column d-flex mt-0">
                     <button class="btn btn-primary" id="add-bill-btn" type="button" onClick="getBill()" disabled>Add to Bill <i class="fa fa-arrow-right"></i></button>
@@ -342,16 +303,16 @@ else {
 
                   <hr>
                   <div class="row justify-content-between text-left">
-                    <div class="form-group col-sm-6 flex-column d-flex">
+                    <div class="form-group col-sm-9 flex-column d-flex">
                       <p class="mb-1">Total: </p>
                     </div>
-                    <div class="form-group col-sm-5 flex-column d-flex ">
-                      <input type="number" name="total" id="total-test-price" value="<?php echo floatval($labBillDisplay->data->total_amount); ?>" hidden>
-                      <p class="mb-1 text-end">₹ <span id="total-view"><?php echo floatval($labBillDisplay->data->total_amount); ?></span></p>
+                    <div class="form-group col-sm-3 flex-column d-flex ">
+                      <input type="number" step="any" name="total" id="total-test-price" value="<?php echo floatval($totalAmount); ?>" hidden>
+                      <p class="mb-1 text-center">₹ <span id="total-view"><?php echo floatval($totalAmount); ?></span></p>
                     </div>
-                    <div class="form-group col-sm-1 flex-column d-flex">
+                    <!-- <div class="form-group col-sm-1 flex-column d-flex">
                       <p class="mb-1 text-end"> </p>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- ################################################## -->
@@ -360,9 +321,8 @@ else {
                       <p class="mb-1">Payable: </p>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex ">
-                      <input class="myForm text-center" id="payable" name="payable" onkeyup="getLessAmount(this.value)" type="number" value="<?php echo  floatval($labBillDisplay->data->total_after_discount); ?>" required>
+                      <input class="myForm text-center" id="payable" type="number" step="any" name="payable" onkeyup="getLessAmount(this.value)"  value="<?php echo  floatval($payable); ?>" required>
                     </div>
-
                   </div>
                   <!-- ################################################## -->
 
@@ -371,9 +331,9 @@ else {
                       <label class="form-control-label" for="">Update</label>
                       <select class="form-control" onchange="updateBill(this.value)" name="status" id="update" required>
                         <option value="" disabled selected>Select Update</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Partial Due">Partial Due</option>
-                        <option value="Credit">Credit</option>
+                        <option value="Completed" <?= $payStatus == 'Completed' ? 'selected' : ''; ?>>Completed</option>
+                        <option value="Partial Due" <?= $payStatus == 'Partial Due' ? 'selected' : ''; ?>>Partial Due</option>
+                        <option value="Credit" <?= $payStatus == 'Credit' ? 'selected' : ''; ?>>Credit</option>
                       </select>
 
                       <!-- <span style="color:red;">*Update Status </span> -->
@@ -381,15 +341,15 @@ else {
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex ">
                       <label class="form-control-label" for="">Due Amount</label>
-                      <input class="myForm text-center" name="due" id="due" type="number" value="<?php echo floatval($labBillDisplay->data->due_amount); ?>" onkeyup="dueAmount(this.value)" required readonly>
+                      <input class="myForm text-center" name="due" id="due" type="number" step="any" value="<?php echo floatval($dueAmount); ?>" onkeyup="dueAmount(this.value)" required readonly>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex">
                       <label class="form-control-label" for="less-amount">Less Amount</label>
-                      <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($labBillDisplay->data->discount); ?>" readonly>
+                      <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="<?php echo floatval($lessAmount); ?>" readonly>
                     </div>
                     <div class="form-group col-sm-3 flex-column d-flex">
                       <label class="form-control-label" for="">Paid Amount</label>
-                      <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" value="<?php echo floatval($labBillDisplay->data->paid_amount); ?>" onkeyup="paidAmount(this.value)" required readonly>
+                      <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" step="any" value="<?php echo floatval($paidAmount); ?>" onkeyup="paidAmount(this.value)" required readonly>
                     </div>
                   </div>
 
@@ -404,378 +364,15 @@ else {
 
         <!--/End Part 1  -->
 
-
-        </script>
-        <!-- Footer -->
-        <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-        <!-- End of Footer -->
-
         <!-- Bootstrap core JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
         <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <script src="<?php echo CSS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-
-
         <!-- Core plugin JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="<?php echo CSS_PATH ?>sb-admin-2.min.js"></script>
-        <!-- <script src="../js/custom/lab-billing.js"></script> -->
-        <script>
-          /* ##############################################
-This Javascript Page is only For Lab Billing Page
-###############################################*/
-
-          //fetching doctor name  using ajax
-          function getDoc() {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "ajax/billingDoc.ajax.php?doctor_id=" + document.getElementById("docList").value, false);
-
-            xmlhttp.send(null);
-            document.getElementById("preferedDoc").innerHTML = xmlhttp.responseText;
-            var doc = document.getElementById("docList").value;
-
-
-            let testDropDown = document.getElementById("test");
-            let addBillBtn = document.getElementById("add-bill-btn");
-
-
-            if (doc == "Self") {
-              document.getElementById("preferedDoc").innerHTML = doc;
-            }
-
-            if (doc == "") {
-              document.getElementById("prefferedDocId").value = "";
-              document.getElementById("docName").removeAttribute("disabled", true);
-              testDropDown.disabled = true;
-              // alert(doc);
-              if (testDropDown.value == 'Select Test' || doc == '') {
-                addBillBtn.disabled = true;
-              } else {
-                addBillBtn.disabled = false;
-              }
-
-            } else {
-              document.getElementById("prefferedDocId").value = doc;
-              document.getElementById("docName").setAttribute("disabled", true);
-              testDropDown.disabled = false;
-              // alert(doc);
-              if (testDropDown.value == 'Select Test' || doc == '') {
-                addBillBtn.disabled = true;
-              } else {
-                addBillBtn.disabled = false;
-              }
-
-            }
-            document.getElementById("bill-generate").disabled = false;
-
-          }
-
-          // action for entering new doctor name
-          function newDoctor(value) {
-            let testDropDown = document.getElementById("test");
-            if (value == "") {
-              // alert("Null");
-              document.getElementById("refferedDocName").value = "";
-              document.getElementById("preferedDoc").innerHTML = "";
-
-              document.getElementById("docList").removeAttribute("disabled", true);
-              testDropDown.disabled = true;
-              document.getElementById("add-bill-btn").disabled = true;
-
-            } else {
-              // alert("Not Null");
-              document.getElementById("preferedDoc").innerHTML = "Dr. " + value;
-              document.getElementById("refferedDocName").value = "Dr. " + value;
-              document.getElementById("docList").setAttribute("disabled", true);
-              testDropDown.disabled = false;
-
-              document.getElementById("add-bill-btn").disabled = false;
-
-
-              // alert(value);
-            }
-          }
-
-          //fetching test price price using ajax
-          function getPrice() {
-            //Geeting Price of the selected test
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open(
-              "GET",
-              "ajax/billingTestPrice.ajax.php?subtest_id=" +
-              document.getElementById("test").value,
-              false
-            );
-            xmlhttp.send(null);
-            document.getElementById("price").innerHTML = xmlhttp.responseText;
-
-            let price = parseFloat(xmlhttp.responseText);
-            let disc = document.getElementById("disc").value;
-            let total = price - (disc / 100) * price;
-
-            document.getElementById("total").innerHTML = total;
-
-            //Geeting Name of the selected test into a input field
-            var xmlhttpName = new XMLHttpRequest();
-            xmlhttpName.open(
-              "GET",
-              "ajax/billingTestName.ajax.php?subtest_id=" +
-              document.getElementById("test").value,
-              false
-            );
-            xmlhttpName.send(null);
-            document.getElementById("test-name").value = xmlhttpName.responseText;
-
-            //Removing disabled attribute from quantity and add bil button after selecting a test name
-            // document.getElementById("qty").removeAttribute("disabled");
-            document.getElementById("disc").removeAttribute("disabled");
-
-            var btn = document.getElementById("add-bill-btn");
-            btn.removeAttribute("disabled");
-
-            //Geeting id of the selected test into a input field
-            var test_id = document.getElementById("test").value;
-            document.getElementById("test-id").value = test_id;
-          }
-
-          //geeting bills by clicking on add button
-          function getBill() {
-            var testName = document.getElementById("test-name").value;
-            var testId = document.getElementById("test-id").value;
-            var testPrice = document.getElementById("price").innerHTML;
-            var disc = document.getElementById("disc").value;
-            if (disc == "") {
-              disc = '00';
-            }
-            var total = parseFloat(document.getElementById("total").innerHTML);
-
-            //dynamic id generation
-            var count = document.getElementById("dynamic-id").value;
-            count++;
-            document.getElementById("dynamic-id").value = count;
-            // alert(count);
-
-            jQuery("#lists").append(
-              '<div id="box-id-' +
-              count +
-              '" class="row justify-content-between text-left my-0 py-0"><div class="form-group col-sm-2 flex-column my-0 py-0 d-flex"><p class="my-0 py-0">' +
-              count +
-              '</p></div><div class="form-group col-sm-3 flex-column mb-0 mt-0 d-flex"><p class="my-0 py-0 ">' +
-              testName +
-              '</p><input type="text" name="testId[]" value="' +
-              testId +
-              '" hidden></div><div class="form-group col-sm-2 flex-column my-0 py-0 d-flex"><p class="my-0 py-0 ">' +
-              testPrice +
-              '</p><input type="text" name="priceOfTest[]" value="' +
-              testPrice +
-              '" hidden></div><div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex"><p class="my-0 py-0 ">' +
-              disc +
-              '</p><input type="text" name="disc[]" value="' +
-              disc +
-              '" hidden></div><div class="form-group col-sm-2 flex-column mb-0 mt-0 d-flex"><p class="my-0 py-0 text-end">' +
-              total +
-              '</p><input type="text" name="amountOfTest[]" value="' +
-              total +
-              '" hidden></div><div class="form-group col-sm-1 flex-column my-0 py-0 d-flex"><a class="my-0 py-0 text-end" onClick="removeField(' +
-              count +
-              "," +
-              total +
-              ')"><i class="far fa-trash-alt"></i></a></div></div>'
-            );
-
-            //calculating total tests price
-            var payable = parseFloat(document.getElementById("payable").value);
-            var totalPValue = parseFloat(document.getElementById("total-test-price").value);
-            // alert(totalPValue);
-
-            payable = payable + total;
-            document.getElementById("payable").value = payable;
-
-            totalPValue = totalPValue + total;
-            let totalView = (document.getElementById("total-test-price").value =
-              totalPValue);
-            document.getElementById("total-view").innerHTML = totalView;
-
-            //update status
-            let update = document.getElementById("update").value;
-            if (update == "Completed") {
-              let payable = document.getElementById("payable").value;
-              document.getElementById("paid-amount").value = payable;
-              document.getElementById("due").value = 0;
-            }
-
-            if (update == "Credit") {
-              let payable = document.getElementById("payable").value;
-              document.getElementById("due").value = payable;
-              document.getElementById("paid-amount").value = '00';
-            }
-            document.getElementById("bill-generate").disabled = false;
-          }
-
-          function removeField(count, total) {
-            jQuery("#box-id-" + count).remove();
-            count--;
-            document.getElementById("dynamic-id").value = count;
-
-            let totalP = document.getElementById("total-test-price").value - total;
-            let payable = document.getElementById("payable").value - total;
-
-            let totalView = document.getElementById("total-test-price").value = totalP;
-            document.getElementById("total-view").innerHTML = totalView;
-
-            let getPayable = document.getElementById("payable").value = payable;
-
-            //update status
-            let update = document.getElementById("update").value;
-            if (update == "Completed") {
-              document.getElementById("paid-amount").value = getPayable;
-              document.getElementById("due").value = '00';
-            } else if (update == "Credit") {
-              document.getElementById("due").value = getPayable;
-              document.getElementById("paid-amount").value = '00';
-
-            } else {
-              document.getElementById("paid-amount").value = '';
-              document.getElementById("due").value = '';
-            }
-
-            //update field if no test avilable
-            if (totalP == "" || totalP <= 0) {
-              document.getElementById("payable").value = '';
-              document.getElementById("due").value = '';
-              document.getElementById("paid-amount").value = '';
-              document.getElementById("less-amount").value = '';
-              document.getElementById("bill-generate").disabled = true;
-            }
-            document.getElementById("bill-generate").disabled = false;
-
-          }
-
-          //changes after changing on discount
-          getDisc = (value) => {
-            let disc = value;
-            let price = document.getElementById("price").innerHTML;
-            // let qty = document.getElementById("qty").value;
-            // let total = price*qty;
-            let total = price - (disc / 100) * price;
-            document.getElementById("total").innerHTML = total;
-          };
-
-          getLessAmount = (payable) => {
-            let totalAmount = parseFloat(document.getElementById("total-test-price").value);
-            let lessAmount = parseFloat(document.getElementById("less-amount").value);
-            payable = parseFloat(payable);
-            // alert(totalAmount);
-            // alert(payable);
-            // if (payable <= totalAmount){
-            //   alert('payable is less or equal');
-            // }else{
-            //   alert('payable is grater or not equal');
-            // }
-            if (payable < totalAmount || payable == totalAmount) {
-              lessAmount = totalAmount - payable;
-              document.getElementById("less-amount").value = lessAmount;
-
-              //update status
-              let update = document.getElementById("update").value;
-              if (update == "Completed") {
-                let payable = document.getElementById("payable").value;
-                document.getElementById("paid-amount").value = payable;
-              } else if (update == "Partial Due") {
-                document.getElementById("due").value = '';
-                document.getElementById("paid-amount").value = '';
-              } else {
-                document.getElementById("due").value = '';
-                document.getElementById("paid-amount").value = '';
-              }
-
-            } else if (payable > totalAmount) {
-              alert("Entered Value is Greterthan Total.");
-              document.getElementById("payable").value = totalAmount;
-              document.getElementById("less-amount").value = "";
-            } else {
-              document.getElementById("less-amount").value = "";
-            }
-          };
-
-          updateBill = (value) => {
-            // alert(update);
-            if (value == "Completed") {
-              let payable = parseFloat(document.getElementById("payable").value);
-              document.getElementById("paid-amount").value = payable;
-              document.getElementById("paid-amount").setAttribute("readonly", true);
-
-              document.getElementById("due").value = "00";
-              // document.getElementById("less-amount").value = "00";
-              document.getElementById("due").setAttribute("readonly", true);
-            }
-
-            if (value == "Credit") {
-              let payable = document.getElementById("payable").value;
-              document.getElementById("due").value = payable;
-              document.getElementById("due").setAttribute("readonly", true);;
-
-              document.getElementById("paid-amount").value = "00";
-              document.getElementById("paid-amount").setAttribute("readonly", true);;
-            }
-
-            if (value == "Partial Due") {
-              // let payable = document.getElementById("payable").value;
-              document.getElementById("due").value = "00";
-              document.getElementById("due").removeAttribute("readonly", true);
-
-              let paidField = document.getElementById("paid-amount");
-              paidField.value = "";
-              // paidField.readonly = false;
-              paidField.removeAttribute("readonly", true);
-              paidField.focus();
-            }
-            document.getElementById("bill-generate").disabled = false;
-
-          };
-
-          const dueAmount = (dueAmount) => {
-            let payable = parseFloat(document.getElementById("payable").value);
-            let paidAmount = parseFloat(document.getElementById("paid-amount").value = 0);
-            dueAmount = parseFloat(dueAmount);
-
-            if (dueAmount < payable || dueAmount == payable) {
-              document.getElementById("paid-amount").value = payable - dueAmount;
-            } else if (dueAmount > payable) {
-              alert("Due Amount can not be more than Payable Amount");
-              paidAmount.value = '';
-              document.getElementById("due").value = "";
-
-            } else {
-              alert("Can not be blank");
-              paidAmount.value = '';
-              document.getElementById("due").value = "";
-            }
-
-          }
-
-          const paidAmount = (paidAmount) => {
-            let payable = parseFloat(document.getElementById("payable").value);
-            let due = document.getElementById("due");
-            paidAmount = parseFloat(paidAmount);
-
-            if (paidAmount <= payable) {
-              // let dueAmount = payable - paidAmount;
-
-              due.value = payable - paidAmount;
-            } else if (paidAmount > payable) {
-              alert("Paid Amount can not be more than Payable Amount");
-              document.getElementById("paid-amount").value = '';
-              due.value = '';
-            } else {
-              document.getElementById("paid-amount").value = '';
-              due.value = '';
-            }
-          };
-        </script>
-
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>lab-bill-edit.js"></script>
 </body>
 
 </html>
