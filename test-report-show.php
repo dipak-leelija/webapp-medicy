@@ -84,7 +84,6 @@ if ($patientDatafetch !== null) {
 
 
         <div>
-
             <div>
                 <img src="./assets/images/top-wave.svg" alt="">
             </div>
@@ -128,107 +127,116 @@ if ($patientDatafetch !== null) {
                         if ($decodedData !== null) {
                             $sub_test_name = $decodedData['sub_test_name'];
                 ?>
-                            <tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr><tr>
-                                <td>
-                                    <?= $sub_test_name ?>
-                                    <br>
-                                    <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                                    <br>
-                                    <small>Lorem ipsum dolor 12h - 76gh </small>
-                                </td>
-                                <td><?= $testData[$i] ?></td>
-                            </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $sub_test_name ?>
+                        <br>
+                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
+                        <br>
+                        <small>Lorem ipsum dolor 12h - 76gh </small>
+                    </td>
+                    <td><?= $testData[$i] ?></td>
+                </tr>
                 <?php
                         }
                     }
@@ -238,11 +246,14 @@ if ($patientDatafetch !== null) {
 
             </table>
         </div>
-        <div>
+    </section>
+        <div class="footer">
+
             <div>
                 <p>Reference values are obtained from the literature provided with reagent kit.</p>
                 <hr>
             </div>
+
             <p><b>***END OF REPORT***</b></p>
             <div>
                 <div>
@@ -261,10 +272,7 @@ if ($patientDatafetch !== null) {
             <div>
                 <img src="./assets/images/bottom-wave.svg" alt="">
             </div>
-
         </div>
-    </section>
-
 
     <div class="printButton mb-5">
         <button onclick="history.back()">Go Back</button>

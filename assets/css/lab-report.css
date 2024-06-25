@@ -33,7 +33,7 @@ body {
   width: 347px;
   color: #fff;
   text-align: end;
-} */
+} 
 /*
 .lab-address {
   color: #183697;
@@ -108,9 +108,13 @@ body {
 }
 
 /* ======================================================== */
+/* footer {
+  position: relative;
+  bottom: 0;
+} */
 @media print {
   @page {
-    margin: 0;
+    margin: 20;
   }
 
   html,
@@ -122,4 +126,6 @@ body {
   .printButton {
     display: none;
   }
-}
+} 
+
+
