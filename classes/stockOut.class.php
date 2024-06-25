@@ -1224,6 +1224,100 @@ class StockOut
 
 
 
+
+    // sales report on item category
+    function stockOutReportOnItemCategory($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
+{
+    $sqlPart1 = "SELECT c.name AS category_name,";
+
+    $sqlPart2a = "DATE(so.added_on) AS added_on, 
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
+    $sqlPart2b = "YEARWEEK(so.added_on) AS year_week, 
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
+    $sqlPart2c = "YEAR(so.added_on) AS year, 
+                  FLOOR((DAYOFYEAR(so.added_on) - 1) / 30) + 1 AS month_period,
+                  MIN(DATE(so.added_on)) AS start_date,
+                  MAX(DATE(so.added_on)) AS end_date,";
+
+    $sqlPart3 = "SUM(sod.amount) AS total_stock_out_amount,
+                 SUM(sod.sales_margin) AS total_sales_margin,
+                 SUM(so.disc) as total_discount
+                 FROM 
+                    stock_out so
+                 JOIN 
+                    stock_out_details sod ON so.invoice_id = sod.invoice_id
+                 JOIN 
+                    products p ON sod.product_id = p.product_id
+                 JOIN 
+                    product_type c ON p.type = c.id
+                 WHERE 
+                    so.admin_id = ?
+                    AND DATE(so.added_on) BETWEEN ? AND ?
+                    AND c.name IN ($searchOnData)
+                 GROUP BY 
+                    c.name,";
+
+    $sqlPart4a = "DATE(so.added_on) 
+                  ORDER BY DATE(so.added_on), c.name";
+    $sqlPart4b = "YEARWEEK(so.added_on) 
+                  ORDER BY YEARWEEK(so.added_on), c.name";
+    $sqlPart4c = "YEAR(so.added_on), 
+                  FLOOR((DAYOFYEAR(so.added_on) - 1) / 30) + 1
+                  ORDER BY 
+                  YEAR(so.added_on), month_period, c.name";
+
+    if ($groupFilter == 0) {
+        $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+    } elseif ($groupFilter == 1) {
+        $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+    } elseif ($groupFilter == 2) {
+        $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+    } else {
+        throw new Exception("Invalid group filter parameter");
+    }
+
+    // print_r($sqlQuery);
+
+    try {
+        // Prepare and execute the query
+        $stmt = $this->conn->prepare($sqlQuery);
+        if (!$stmt) {
+            throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+        }
+
+        // Bind the parameters
+        $stmt->bind_param('sss', $adminId, $startDate, $endDate);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $data = array();
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            $returnResult = ['status' => true, 'data' => $data];
+        } else {
+            $returnResult = ['status' => false];
+        }
+
+        $stmt->close();
+
+        return json_encode($returnResult);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+}
+
+
+
+
+
+
+    // sales report on payment mode
     function stockOutReportOnPaymentMode($searchOnData, $startDate, $endDate, $adminId)
     {
         try {
@@ -1277,78 +1371,12 @@ class StockOut
 
 
     
-
-
-    function stockOutReportOnItemCategory($searchOnData, $startDate, $endDate, $adminId)
-    {
-        try {
-
-            $fetchStockOutData = "SELECT 
-                                    c.name AS category_name,  
-                                    DATE(so.added_on) AS added_on,  
-                                    SUM(sod.amount) AS total_stock_out_amount,
-                                    SUM(sod.sales_margin) AS total_sales_margin,
-                                    SUM(so.disc) as total_discount
-                                FROM 
-                                    stock_out so
-                                JOIN 
-                                    stock_out_details sod ON so.invoice_id = sod.invoice_id
-                                JOIN 
-                                    products p ON sod.product_id = p.product_id
-                                JOIN 
-                                    product_type c ON p.type = c.id
-                                WHERE 
-                                    so.admin_id = '$adminId'
-                                    AND DATE(so.added_on) BETWEEN '$startDate' AND '$endDate'
-                                    AND c.name IN ($searchOnData) 
-                                GROUP BY 
-                                    c.name,  
-                                    DATE(so.added_on)
-                                ORDER BY 
-                                    DATE(so.added_on),  
-                                    c.name";
-
-            // print_r($fetchStockOutData);
-
-            $stmt = $this->conn->prepare($fetchStockOutData);
-
-            if (!$stmt) {
-                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
-            }
-
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $data = array();
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
-                }
-                $returnResult = ['status' => true, 'data' => $data];
-            } else {
-                $returnResult = ['status' => false];
-            }
-
-            $stmt->close();
-
-            return json_encode($returnResult);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-
-
-
-
-    
-    
+    // sales report function on addedBy
     function stockOutReportOnAddedBy($searchOnData, $startDate, $endDate, $adminId)
     {
         try {
             $fetchStockOutData = "SELECT 
-                                    COALESCE(adm.fname, emp.emp_name) AS added_by_name,  
+                                    COALESCE(adm.username, emp.emp_username) AS added_by_name,  
                                     DATE(so.added_on) AS added_on,  
                                     SUM(sod.amount) AS total_stock_out_amount,
                                     SUM(sod.sales_margin) AS total_sales_margin,

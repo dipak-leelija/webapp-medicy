@@ -323,9 +323,8 @@ function toggleCheckboxes1(source) {
          productCategoryBtn.innerHTML = filterByProdCategoryNameVal.innerHTML;
     }
 
-    console.log(filterByProdCategoryIdVal.innerHTML);
-    console.log(filterByProdCategoryNameVal.innerHTML);
-
+    // console.log(filterByProdCategoryIdVal.innerHTML);
+    // console.log(filterByProdCategoryNameVal.innerHTML);
 }
 
 
@@ -552,6 +551,8 @@ function filterReportOn(t){
 function salesSummerySearch() {
     let searchString = '';
 
+    let dtFilter = dayFilterVal.innerHTML;
+
     // date range input check
     if(dateRangeVal.innerHTML == ''){
         alert('select date range');
@@ -603,6 +604,7 @@ function salesSummerySearch() {
     let endDate = convertDateFormatToBig(selectedEndDate.innerHTML);
 
     let dataArray = {
+        datefilter: dtFilter,
         searchOn: searchString,
         startDt: startDate,
         endDt: endDate,
@@ -630,26 +632,41 @@ function salesDataSearchFunction(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    // console.log(report);
-    report = JSON.parse(report);
-    if(report.status){
-        reportShow(report.data);
-    }
+    console.log(report);
+    // report = JSON.parse(report);
+    // if(report.status){
+    //     reportShow(report.data);
+    // }else{
+    //     alert('no data found');
+    // }
 }
 
 
 // dynamic table generation on data
 function reportShow(parsedData) {
+    console.log(parsedData);
+    console.log(dayFilterVal.innerHTML);
     // Reset table data
     dataTable.innerHTML = '';
 
     // Define headers based on filter values
-    let headerMid = [];
-    const headerStart = ['Date'];
+    
+    
+    const headerStart1 = ['Date'];
+    const headerStart2 = ['Start Date', 'End Date'];
     const headerEnd1 = ['Total Sell'];
     const headerEnd2 = ['Total Margin'];
     const headerEnd3 = ['Total Discount'];
+    
+    let headerStart = [];
+    let headerMid = [];
     let headerEnd = [];
+
+    if(dayFilterVal.innerHTML == 0){
+        headerStart = headerStart1;
+    }else{
+        headerStart = headerStart2;
+    }
 
     // Determine middle headers based on filterByVal
     if (filterByVal.innerHTML === 'ICAT') {
