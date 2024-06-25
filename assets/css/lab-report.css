@@ -16,6 +16,7 @@ body {
   color: #183697;
   text-align: end;
 }
+
 .lab-tag {
   display: flex;
   justify-content: right;
@@ -24,16 +25,15 @@ body {
 
 .lab-tag span {
   margin-right: 2rem;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(24, 54, 151, 1) 28%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(24, 54, 151, 1) 28%);
   padding: 8px 4px;
   width: 347px;
   color: #fff;
   text-align: end;
-} 
+}
+
 /*
 .lab-address {
   color: #183697;
@@ -108,10 +108,37 @@ body {
 }
 
 /* ======================================================== */
-/* footer {
-  position: relative;
-  bottom: 0;
-} */
+.print-page {
+  flex: 1;
+  page-break-after: always;
+  /* Ensure each section starts a new page */
+}
+
+.print-page:last-of-type {
+  page-break-after: auto;
+  /* Ensure the last section doesn't cause a blank page */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border: none;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: none;
+}
+
 @media print {
   @page {
     margin: 20;
@@ -123,9 +150,35 @@ body {
     width: 100%;
     margin: auto;
   }
+
+  footer,
+  .footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    page-break-after: always;
+  }
+
+  .footer::after {
+    content: '';
+    display: block;
+    page-break-before: always;
+    /* Ensure the footer only appears on the last page */
+  }
+
+  .print-page {
+    height: 4px;
+  }
+
+  .print-page:last-of-type .footer {
+    page-break-after: auto;
+  }
+
+  .footer {
+    display: block;
+  }
+
   .printButton {
     display: none;
   }
-} 
-
-
+}

@@ -80,7 +80,7 @@ if ($patientDatafetch !== null) {
 </head>
 
 <body>
-    <section>
+    <section class="print-page">
 
 
         <div>
@@ -246,7 +246,7 @@ if ($patientDatafetch !== null) {
 
             </table>
         </div>
-    </section>
+
         <div class="footer">
 
             <div>
@@ -273,6 +273,33 @@ if ($patientDatafetch !== null) {
                 <img src="./assets/images/bottom-wave.svg" alt="">
             </div>
         </div>
+    </section>
+        <!-- <div class="footer">
+
+            <div>
+                <p>Reference values are obtained from the literature provided with reagent kit.</p>
+                <hr>
+            </div>
+
+            <p><b>***END OF REPORT***</b></p>
+            <div>
+                <div>
+                    <p><small><i><b>A Health Care Unit for :-</b></i></small></p>
+                    <p><small><b>Advance Assay, USG & ECHO, Colour Doppler,</b></small></p>
+                    <p><small><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></small></p>
+                </div>
+                <div><small><i><b>Verified by :</b></i></small></div>
+                <div>
+                    <p><b>DR. S.BISWAS</b></p>
+                    <p><b>Consultant Pathologist(MD)</b></p>
+                    <p><b>Reg. No: 59304 (WBMC)</b></p>
+
+                </div>
+            </div>
+            <div>
+                <img src="./assets/images/bottom-wave.svg" alt="">
+            </div>
+        </div> -->
 
     <div class="printButton mb-5">
         <button onclick="history.back()">Go Back</button>
