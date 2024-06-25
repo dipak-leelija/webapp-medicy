@@ -1500,11 +1500,12 @@ class StockOut
     {
         try {
             $addStockOutDetails = $this->conn->prepare("INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `item_name`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `gst_amount`, `sales_margin`, `profit_margin`, `taxable`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            print_r($addStockOutDetails);
 
             if (!$addStockOutDetails) {
                 return false; // Return false on query failure
             }
-
             $addStockOutDetails->bind_param("iissssssssddssddddd", $invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $sMargin, $margin, $taxable, $amount);
 
             if ($addStockOutDetails->execute()) {
@@ -1515,6 +1516,8 @@ class StockOut
                 return false; // Return false on execution failure
             }
         } catch (Exception $e) {
+            error_log($e->getMessage());
+            echo  $e->getMessage();
             return false;
         }
     }
