@@ -84,7 +84,7 @@ class Employees
 
     function selectEmpByCol($col='', $data=''){
         try {
-            if (!empty($adminId)) {
+            if (!empty($data)) {
             $selectEmp = "SELECT * FROM employees WHERE `$col` = ?";
             $stmt = $this->conn->prepare($selectEmp);
             $stmt->bind_param("s", $data);

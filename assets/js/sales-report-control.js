@@ -10,13 +10,14 @@ const dateRangeSelect = document.getElementById('date-range'); // date range sel
 const categoryFilter = document.getElementById('category-filter'); // primary filter category select
 
 const productCategorySelectDiv = document.getElementById('prod-category-select-div'); // item category select div secondary filter
-const productCategoryList = document.getElementById('prod-category'); // item category select class
+
+const productCategoryBtn = document.getElementById('prod-category'); // item category select button
 
 const paymentModeDiv = document.getElementById('payment-mode-div'); // payment mode select div secondary filter
 const paymentMode = document.getElementById('payment-mode'); // payment mode select class
 
 const staffFilterDiv = document.getElementById('staff-filter-div'); // staff select div secondary filter
-const staffFilter = document.getElementById('staff-filter'); // staff select class
+const staffFilter = document.getElementById('staff-filter'); // staff select dropdown button
 
 const reportFilterDiv = document.getElementById('report-filter-div'); // report generation on primary filter div
 const salesReportOn = document.getElementById('sales-report-on'); // report generation on primary filter select
@@ -31,9 +32,14 @@ const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
 
-const filterByProdCategoryVal = document.getElementById('filter-by-prod-categoty-val');
+const filterByProdCategoryIdVal = document.getElementById('filter-by-prod-categoty-id-val');
+const filterByProdCategoryNameVal = document.getElementById('filter-by-prod-categoty-name');
+
 const filterByPaymentModeVal = document.getElementById('filter-by-payment-mode-val');
-const filterByStaffVal = document.getElementById('filter-by-staff-val');
+
+const filterByStaffName = document.getElementById('filter-by-staff-name');
+const filterByStaffId = document.getElementById('filter-by-staff-id');
+
 const reportFilterVal = document.getElementById('report-filter-val');
 
 const selectedStartDate = document.getElementById('selected-start-date');
@@ -45,6 +51,10 @@ const inputedDateRange = document.getElementById('inputed-date-range');
 /// dropdown inner html constant
 const paymentModeConst = document.getElementById('payment-mode-select-span');
 
+
+/// all staff data on admin 
+const allCurrentStaffNameOnAdmin = document.getElementById('all-stuff-name-data');
+const allCurrentStaffIdOnAdmin = document.getElementById('all-stuff-id-data');
 
 //// temp data holder
 let tempStartDate = '';
@@ -250,8 +260,78 @@ function categoryFilterSelect(t){
 }
 
 
-// payment mode selection function
+// item category selection function 
 function toggleCheckboxes1(source) {
+    if(source.id == 'ac-chkBx'){
+        const checkboxes = document.querySelectorAll('.item-category-select-checkbox-menu input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+        if (!checkbox.disabled) {
+                checkbox.checked = source.checked;
+            }
+        });
+
+        if(source.checked == true){
+            productCategoryBtn.innerHTML = 'All Category';
+            filterByProdCategoryIdVal.innerHTML = '1,2,3,4,5,6,7,8';
+            filterByProdCategoryNameVal.innerHTML = 'Allopathy,Ayurvedic,Cosmetic,Drug,Generic,Nutraceuticals,OTC,Surgical';
+        }else{
+            productCategoryBtn.innerHTML = 'Select Item Category';
+            filterByProdCategoryIdVal.innerHTML = '';
+            filterByProdCategoryNameVal.innerHTML = '';
+        }
+    }
+
+    
+    if(source.id != 'ac-chkBx'){
+        if(source.checked == true){
+            if(filterByProdCategoryIdVal.innerHTML == '' && filterByProdCategoryNameVal.innerHTML == ''){
+                productCategoryBtn.innerHTML = source.id;
+                filterByProdCategoryIdVal.innerHTML = source.value;
+                filterByProdCategoryNameVal.innerHTML = source.id;
+            }else{
+                let selectedCategoryIdString = filterByProdCategoryIdVal.innerHTML;
+                let selectedCategoryNameString = filterByProdCategoryNameVal.innerHTML;
+                let updatedCategoryId = selectedCategoryIdString + ',' + source.value;
+                let updatedCategoryName = selectedCategoryNameString + ',' + source.id;
+                filterByProdCategoryIdVal.innerHTML = updatedCategoryId;
+                filterByProdCategoryNameVal.innerHTML = updatedCategoryName;
+            }
+        }else{
+            if(filterByProdCategoryIdVal.innerHTML != '' && filterByProdCategoryNameVal.innerHTML != ''){
+                let selectedCategoryIdString = filterByProdCategoryIdVal.innerHTML;
+                let selectedCategoryNameString = filterByProdCategoryNameVal.innerHTML;
+                let replacedId = source.value + ',';
+                let updatedCategoryId = selectedCategoryIdString.replace(replacedId, "").replace(source.value, "");
+                updatedCategoryId = updatedCategoryId.replace(/,(\s*)$/, '$1');
+                let replacedName = source.id + ',';
+                let updatedCategoryName = selectedCategoryNameString.replace(replacedName,"").replace(source.id, "");
+                updatedCategoryName = updatedCategoryName.replace(/,(\s*)$/, '$1');
+                filterByProdCategoryIdVal.innerHTML = updatedCategoryId;
+                filterByProdCategoryNameVal.innerHTML = updatedCategoryName;
+                document.getElementById(source.id).checked = false;
+            }
+        }
+        document.getElementById('ac-chkBx').checked = false;
+    }
+
+    let crntItemCategory = filterByProdCategoryNameVal.innerHTML;
+    if(crntItemCategory.includes('Allopathy') &&  crntItemCategory.includes('Ayurvedic') && crntItemCategory.includes('Cosmetic') && crntItemCategory.includes('Drug') && crntItemCategory.includes('Generic') &&  crntItemCategory.includes('Nutraceuticals') && crntItemCategory.includes('OTC') && crntItemCategory.includes('Surgical')){
+        productCategoryBtn.innerHTML = 'All Category'
+    }else if(filterByProdCategoryNameVal.innerHTML == ''){
+        productCategoryBtn.innerHTML = 'Select Category';
+    }else{
+         productCategoryBtn.innerHTML = filterByProdCategoryNameVal.innerHTML;
+    }
+
+    console.log(filterByProdCategoryIdVal.innerHTML);
+    console.log(filterByProdCategoryNameVal.innerHTML);
+
+}
+
+
+
+// payment mode selection function 
+function toggleCheckboxes2(source) {
 
     if(source.id == 'apm-chkBx'){
         const checkboxes = document.querySelectorAll('.payment-mode-checkbox-menu input[type="checkbox"]');
@@ -283,6 +363,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Cash,', "").replace('Cash', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -302,6 +383,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Credit,', "").replace('Credit', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -321,6 +403,7 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('Card,', "").replace('Card', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
@@ -340,13 +423,112 @@ function toggleCheckboxes1(source) {
             if(filterByPaymentModeVal.innerHTML != ''){
                 let mainStirng = filterByPaymentModeVal.innerHTML;
                 let modifiedString = mainStirng.replace('UPI,', '').replace('UPI', '');
+                modifiedString = modifiedString.replace(/,(\s*)$/, '$1');
                 filterByPaymentModeVal.innerHTML = modifiedString;
                 document.getElementById('apm-chkBx').checked = false;
             }
         }
     }
     
+    let crntPaymentMod = filterByPaymentModeVal.innerHTML;
+    if(crntPaymentMod.includes('Cash') &&  crntPaymentMod.includes('Card') &&crntPaymentMod.includes('UPI') &&crntPaymentMod.includes('Credit')){
+        paymentModeConst.innerHTML = 'All Payment Mode'
+    }else if(filterByPaymentModeVal.innerHTML == ''){
+        paymentModeConst.innerHTML = 'Select Payment Mode';
+    }else{
+        paymentModeConst.innerHTML = filterByPaymentModeVal.innerHTML;
+    }
+
     // console.log(filterByPaymentModeVal.innerHTML);
+}
+
+
+// staff selection function
+function toggleCheckboxes3(source){
+    // console.log(source);
+    if(source.id == 'stf-chkBx'){
+        const checkboxes = document.querySelectorAll('.staff-list-checkbox-menu input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+        if (!checkbox.disabled) {
+                checkbox.checked = source.checked;
+            }
+        });
+    }
+
+    if(source.value == 'AS'){
+        if(source.checked == true){
+            filterByStaffName.innerHTML = allCurrentStaffNameOnAdmin.innerHTML;
+            filterByStaffId.innerHTML = allCurrentStaffIdOnAdmin.innerHTML;
+            staffFilter.innerHTML = 'All Staff';
+        }else{
+            staffFilter.innerHTML = 'Select Staff';
+            filterByStaffId.innerHTML = '';
+            filterByStaffName.innerHTML = '';
+        }
+    }
+
+    if(source.id == 'adm-chkBx'){
+        if(source.checked == true){
+            if(filterByStaffName.innerHTML == '' && filterByStaffId.innerHTML == ''){
+                filterByStaffName.innerHTML = source.name;
+                filterByStaffId.innerHTML = source.value;
+                staffFilter.innerHTML = 'ADMIN';
+            }else{
+                filterByStaffName.innerHTML = filterByStaffName.innerHTML +','+ source.name;
+                filterByStaffId.innerHTML = filterByStaffId.innerHTML +','+ source.value;
+                staffFilter.innerHTML = staffFilter.innerHTML +','+ 'ADMIN';
+            }
+        }else{
+            let mainNameStirng = filterByStaffName.innerHTML;
+            let modifiedNameString = mainNameStirng.replace(source.name+',',"").replace(source.name, '');
+            modifiedNameString = modifiedNameString.replace(/,(\s*)$/, '$1');
+            filterByStaffName.innerHTML = modifiedNameString;
+
+            let mainIdStirng = filterByStaffId.innerHTML;
+            let modifiedIdString = mainIdStirng.replace(source.value+',',"").replace(source.value, '');
+            modifiedIdString = modifiedIdString.replace(/,(\s*)$/, '$1');
+            filterByStaffId.innerHTML = modifiedIdString;
+            if(modifiedNameString != ''){
+                staffFilter.innerHTML = modifiedNameString;
+            }else{
+                staffFilter.innerHTML = 'Select Staff';
+            }
+        }
+    }
+
+    if(source.id != 'adm-chkBx' && source.id != 'stf-chkBx'){
+        if(source.checked == true){
+            if(filterByStaffName.innerHTML == '' && filterByStaffId.innerHTML == ''){
+                filterByStaffName.innerHTML = source.id;
+                filterByStaffId.innerHTML = source.value;
+                staffFilter.innerHTML = filterByStaffName.innerHTML;
+            }else{
+                filterByStaffName.innerHTML = filterByStaffName.innerHTML +','+ source.id;
+                filterByStaffId.innerHTML = filterByStaffId.innerHTML +','+ source.value;
+                staffFilter.innerHTML = staffFilter.innerHTML +','+ filterByStaffName.innerHTML;
+            }
+        }else{
+            let mainNameStirng = filterByStaffName.innerHTML;
+            let modifiedNameString = mainNameStirng.replace(source.id+',',"").replace(source.id, '');
+            modifiedNameString = modifiedNameString.replace(/,(\s*)$/, '$1');
+            filterByStaffName.innerHTML = modifiedNameString;
+
+            let mainIdStirng = filterByStaffId.innerHTML;
+            let modifiedIdString = mainIdStirng.replace(source.value+',',"").replace(source.value, '');
+            modifiedIdString = modifiedIdString.replace(/,(\s*)$/, '$1');
+            filterByStaffId.innerHTML = modifiedIdString;
+
+            if(modifiedNameString != ''){
+                staffFilter.innerHTML = modifiedNameString;
+            }else{
+                staffFilter.innerHTML = 'Select Staff';
+            }
+        }
+    }
+
+    // console.log(filterByStaffId.innerHTML.length);
+    // console.log('selected staff id list : '+filterByStaffId.innerHTML);
+    // console.log('selected staff name list : '+filterByStaffName.innerHTML);
 }
 
 // filter report on function
@@ -383,12 +565,12 @@ function salesSummerySearch() {
     }else{
         // secondory filter chek based on primary filter
         if(filterByVal.innerHTML == 'ICAT'){
-            if(filterByPaymentModeVal.innerHTML == ''){
+            if(filterByProdCategoryIdVal.innerHTML == '' && filterByProdCategoryNameVal.innerHTML == ''){
                 alert('select item category val');
                 return;
+            }else{
+                searchString = filterByProdCategoryNameVal.innerHTML;
             }
-        }else{
-            searchString = '';
         }
         
 
@@ -400,10 +582,16 @@ function salesSummerySearch() {
                 searchString = filterByPaymentModeVal.innerHTML;
             }
         }
+
+        if(filterByVal.innerHTML == 'STF'){
+            if(filterByStaffId.innerHTML == ''){
+                alert('select staff');
+                return;
+            }else{
+                searchString = filterByStaffId.innerHTML;
+            }
+        }
     }
-    
-    
-    
 
     // primary report generator filter based on select
     if(reportFilterVal.innerHTML == ''){
@@ -423,6 +611,7 @@ function salesSummerySearch() {
 
     salesDataSearchFunction(dataArray);
 }
+
 
 // string slice function based on ','.....
 function slicedString(string){
@@ -448,35 +637,43 @@ function salesDataSearchFunction(array){
     }
 }
 
-// creating report and show it
-function reportShow(parsedData) {
-    console.log(parsedData);
-    dataTable.innerHTML = ''; // reset table data
-    var dateArray = [];
-    var headerStart = ['Date'];
-    var headerMid = [];
-    var headerEnd1 = ['Total Sell'];
-    var headerEnd2 = ['Total Margin'];
-    var headerEnd3 = ['Total Discount'];
-    var headerEnd = [];
 
-    if (filterByVal.innerHTML == 'ICAT') {
-        console.log('coming soon... 1');
-    } else if (filterByVal.innerHTML == 'PM') {
+// dynamic table generation on data
+function reportShow(parsedData) {
+    // Reset table data
+    dataTable.innerHTML = '';
+
+    // Define headers based on filter values
+    let headerMid = [];
+    const headerStart = ['Date'];
+    const headerEnd1 = ['Total Sell'];
+    const headerEnd2 = ['Total Margin'];
+    const headerEnd3 = ['Total Discount'];
+    let headerEnd = [];
+
+    // Determine middle headers based on filterByVal
+    if (filterByVal.innerHTML === 'ICAT') {
+        headerMid = slicedString(filterByProdCategoryNameVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'PM') {
         headerMid = slicedString(filterByPaymentModeVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'STF') {
+        headerMid = slicedString(filterByStaffName.innerHTML);
     }
 
-    if (reportFilterVal.innerHTML == 'Total Sell') {
+    // header end on filter val
+    if (reportFilterVal.innerHTML === 'Total Sell') {
         headerEnd = headerEnd1;
-    } else if (reportFilterVal.innerHTML == 'Total Margin') {
+    } else if (reportFilterVal.innerHTML === 'Total Margin') {
         headerEnd = headerEnd2;
-    } else if (reportFilterVal.innerHTML == 'Total Discount') {
+    } else if (reportFilterVal.innerHTML === 'Total Discount') {
         headerEnd = headerEnd3;
     }
 
+    // Remove duplicate headers and sort middle headers
     headerMid = [...new Set(headerMid)].sort();
     const headers = headerStart.concat(headerMid).concat(headerEnd);
 
+    // Create table headers
     const thead = document.createElement('thead');
     const tr = document.createElement('tr');
     headers.forEach(headerText => {
@@ -488,81 +685,70 @@ function reportShow(parsedData) {
     dataTable.appendChild(thead);
 
     const tbody = document.createElement('tbody');
-    parsedData.forEach(item => {
-        dateArray.push(item.added_on);
-    });
 
-    var uniqueDateArray = [...new Set(dateArray)];
-    var parsedDataArray = Object.values(parsedData);
+    // Get unique dates
+    const uniqueDateArray = [...new Set(parsedData.map(item => item.added_on))];
 
+    // Create rows for each unique date
     uniqueDateArray.forEach(uniqueDate => {
         const tr = document.createElement('tr');
         let rowData = {
             Date: formatDate(uniqueDate)
         };
 
-        let cashAmount = 0, creditAmount = 0, upiAmount = 0, cardAmount = 0;
-        let allopathyAmount = 0, ayurvedicAmount = 0, cosmeticAmount = 0, drugAmount = 0, genericAmount = 0, nutraceuticalsAmount = 0, otcAmount = 0, surgicalAmount = 0;
         let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
 
-        parsedDataArray.forEach(data => {
+        // set middle headers to 0 on initialization
+        headerMid.forEach(header => {
+            rowData[header] = 0.00;
+        });
+
+        // Process data for each unique date
+        parsedData.forEach(data => {
             if (data.added_on === uniqueDate) {
-                if (filterByVal.innerHTML == 'PM') {
-                    if (data.payment_mode == 'Cash') cashAmount += parseFloat(data.total_amount);
-                    if (data.payment_mode == 'Credit') creditAmount += parseFloat(data.total_amount);
-                    if (data.payment_mode == 'UPI') upiAmount += parseFloat(data.total_amount);
-                    if (data.payment_mode == 'Card') cardAmount += parseFloat(data.total_amount);
-                    totalMargin += parseFloat(data.total_sales_margin);
+                // On Product category
+                if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
 
-                    totalSellAmount = cashAmount + creditAmount + upiAmount + cardAmount;
+                    rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
+                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                    totalMargin += parseFloat(data.total_sales_margin || 0);
+                    totalDiscount += parseFloat(data.total_discount || 0);
                 }
 
-                if (filterByVal.innerHTML == 'ICAT') {
-                    if (data.category_name == 'Allopathy') allopathyAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Ayurvedic') ayurvedicAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Cosmetic') cosmeticAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Drug') drugAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Generic') genericAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Nutraceuticals') nutraceuticalsAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'OTC') otcAmount += parseFloat(data.total_stock_out_amount);
-                    if (data.category_name == 'Surgical') surgicalAmount += parseFloat(data.total_stock_out_amount);
+                // On Payment mode
+                if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
 
-                    totalSellAmount = allopathyAmount + ayurvedicAmount + cosmeticAmount + drugAmount + genericAmount + nutraceuticalsAmount + otcAmount + surgicalAmount;
+                    rowData[data.payment_mode] += parseFloat(data.total_amount);
+                    totalSellAmount += parseFloat(data.total_amount || 0);
+                    totalMargin += parseFloat(data.total_sales_margin || 0);
+                    totalDiscount += parseFloat(data.total_discount || 0);
                 }
-                
+
+                // On Staff name
+                if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+
+                    rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
+                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                    totalMargin += parseFloat(data.total_sales_margin || 0);
+                    totalDiscount += parseFloat(data.total_discount || 0);
+                }
             }
         });
 
-        if (filterByVal.innerHTML == 'PM') {
-            rowData['Cash'] = cashAmount.toFixed(2);
-            rowData['Credit'] = creditAmount.toFixed(2);
-            rowData['UPI'] = upiAmount.toFixed(2);
-            rowData['Card'] = cardAmount.toFixed(2);
-        }
-
-        if (filterByVal.innerHTML == 'ICAT') {
-            rowData['Allopathy'] = allopathyAmount.toFixed(2);
-            rowData['Ayurvedic'] = ayurvedicAmount.toFixed(2);
-            rowData['Cosmetic'] = cosmeticAmount.toFixed(2);
-            rowData['Drug'] = drugAmount.toFixed(2);
-            rowData['Generic'] = genericAmount.toFixed(2);
-            rowData['Nutraceuticals'] = nutraceuticalsAmount.toFixed(2);
-            rowData['OTC'] = otcAmount.toFixed(2);
-            rowData['Surgical'] = surgicalAmount.toFixed(2);
-        }
-
-        if (reportFilterVal.innerHTML == 'Total Sell') {
+        // Assign total values based on reportFilterVal
+        if (reportFilterVal.innerHTML === 'Total Sell') {
             rowData['Total Sell'] = totalSellAmount.toFixed(2);
-        } else if (reportFilterVal.innerHTML == 'Total Margin') {
+        } else if (reportFilterVal.innerHTML === 'Total Margin') {
             rowData['Total Margin'] = totalMargin.toFixed(2);
-        } else if (reportFilterVal.innerHTML == 'Total Discount') {
+        } else if (reportFilterVal.innerHTML === 'Total Discount') {
             rowData['Total Discount'] = totalDiscount.toFixed(2);
         }
 
+        // Create table cells for each header
         headers.forEach(header => {
             const td = document.createElement('td');
             td.className = header;
-            td.textContent = rowData[header] || '';
+            td.textContent = rowData[header] !== undefined ? rowData[header] : '';
             tr.appendChild(td);
         });
 
