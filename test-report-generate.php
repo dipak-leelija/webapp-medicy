@@ -45,26 +45,28 @@ if (!$labBillingData->status) {
         if ($exists) {
 
             $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
-            if($cheackUpdate['status']){    
+            if ($cheackUpdate['status']) {
                 $testIds    = $_POST['testId'];
                 $testValue  = $_POST['values'];
                 $unitValues = $_POST['unitValues'];
 
-                if (is_array($testValue)){
-                    foreach ($testValue as $index => $value) {
-                        $unitValue = $unitValues[$index];
-                        $testId = $testIds[$index];
+                if (is_array($testValue)) {
+                    $deleted = $LabReport->deleteLabReportDetails($billId);
+                    if ($deleted) {
+                        foreach ($testValue as $index => $value) {
+                            $unitValue = $unitValues[$index];
+                            $testId = $testIds[$index];
 
-                        // $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-                        // if (!$labReportAdd) {
-                        //     $errMsg = "Something is wrong with the value : {$unitValue}";
-                        //     break;
-                        // }
+                            $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
+                            if($addresponse == false){
+                                echo 'Something is wrong!'; exit;
+                            }
+                        }
+                        header('Location: lab-report.php?bill_id=' . base64_encode($billId));
+                        exit;
                     }
                 }
             }
-
-
         } else {
             $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $ADMINID);
             $reportId       = $addedeReport['insert_id'];
