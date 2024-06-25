@@ -66,16 +66,16 @@ class SubTests
     }
 
 
-    // function showSubTestsId($subTestId)
-    // {
-    //     $data = [];
-    //     $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
-    //     $subTestQuery = $this->conn->query($selectTestById);
-    //     while ($result = $subTestQuery->fetch_array()) {
-    //         $data[] = $result;
-    //     }
-    //     return $data;
-    // } // end showLabTypesById function
+    function showSubTestsId($subTestId)
+    {
+        $data = [];
+        $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
+        $subTestQuery = $this->conn->query($selectTestById);
+        while ($result = $subTestQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    } // end showLabTypesById function
 
 
 

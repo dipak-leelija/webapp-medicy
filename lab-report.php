@@ -12,13 +12,17 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
 
 $billId = base64_decode($_GET['bill_id']);
 
-$LabReport     = new LabReport();
-$Patients      = new Patients();
-$LabBilling    = new LabBilling();
+
+$SubTests           = new SubTests;
+$LabReport          = new LabReport();
+$Patients           = new Patients();
+$LabBilling         = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
+
 $labBillingData   = json_decode($LabBilling->labBillDisplayById($billId)); /// geting for test_date
 $labReportShow    = $LabReport->labReportShow($billId);
 $labBillingDetails = json_decode($LabBillDetails->billDetailsById($billId));
@@ -28,7 +32,7 @@ $labReportShow = json_decode($labReportShow);
 // print_r($labReportShow);
 if ($labReportShow !== null) {
     $patienId = $labReportShow->patient_id;
-    $reportId = $labReportShow->id;
+    $reportId = $labReportShow->bill_id;
     // print_r($reportId);
 }
 /// find patient details
@@ -118,7 +122,7 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
 
                 foreach ($labBillingDetails->data as $index => $test) {
                     $testId = $test->test_id;
-                    $showTestName = $LabReport->patientTest($testId);
+                    $showTestName = $SubTests->subTestById($testId);
                     $showTestName = json_decode($showTestName);
                     $testId = $showTestName->id;
                     $subTestName = $showTestName->sub_test_name;
@@ -128,10 +132,10 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
                     echo "<div style='display: flex; justify-content:space-around; align-items:center'>";
 
                     if ($unitNames) {
-                        echo "<div style='width:40%; margin-left:20px;' >$subTestName</div>";
+                        echo "<p style='width:40%; margin-left:20px;' >$subTestName</p>";
                         foreach ($labReportDetailbyId as $result) {
                             if($result->test_id == $testId){         // Check if the test_id matches
-                                echo ": ".$result->test_value . "\n";
+                                echo $result->test_value;
                             }
                         }
                     }

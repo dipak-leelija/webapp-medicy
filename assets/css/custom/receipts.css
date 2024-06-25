@@ -14,7 +14,8 @@
 }
 
 .paid-bg {
-    background-image: url(../../images/paid-seal.png);
+    /* background-image: url(../../images/paid-seal.png); */
+    background-image: url(../../../images/paid-seal.png);
     background-repeat: no-repeat;
     background-size: 300px 180px;
     background-position-x: center;

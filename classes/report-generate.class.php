@@ -21,23 +21,47 @@ class LabReport
     }
 
 
-
-
-    function patientTest($testId)
+    function checkBill($billId)
     {
-        try {
-            $data = null;
-            $sql = "SELECT * FROM `sub_tests` where `id` = '$testId'";
-            $query = $this->conn->query($sql);
-            while ($result = $query->fetch_object()) {
-                $data = $result;
-            }
-            $dataset = json_encode($data);
-            return $dataset;
-        } catch (Exception $e) {
-            echo $e->getMessage();
+        $checkSql = "SELECT COUNT(*) FROM lab_report WHERE bill_id = ?";
+        $stmt = $this->conn->prepare($checkSql);
+        $stmt->bind_param("s", $billId);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+        if ($count > 0) {
+            return True;
+        } else {
+            return False;
         }
     }
+
+
+    function labReportUpdate($billId, $patientId, $dateTime, $adminId)
+    {
+        try {
+            // Prepare SQL statement to update the existing record
+            $updateSql = "UPDATE `lab_report` SET `patient_id` = ?, `updated_on` = ?, `admin_id` = ? WHERE `bill_id` = ?";
+            $stmt = $this->conn->prepare($updateSql);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("ssss", $patientId, $dateTime, $adminId, $billId);
+            $stmt->execute();
+
+            if ($stmt->affected_rows === 0) {
+                throw new Exception("No rows updated. Check if the bill ID exists.");
+            }
+
+            $stmt->close();
+            return ["status" => true, "message" => "Lab Report Updated!"];
+        } catch (Exception $e) {
+            return ["result" => false, "error" => $e->getMessage()];
+        }
+    }
+
 
 
     function labReportAdd($billId, $patientId, $dateTime, $adminId)
@@ -52,6 +76,8 @@ class LabReport
             echo $e->getMessage();
         }
     }
+
+
     /// LabReport data fetch by id///
     function labReportShow($billId)
     {
@@ -68,12 +94,12 @@ class LabReport
             echo $e->getMessage();
         }
     }
-    
+
     function labReportbyReportId($reportId)
     {
         try {
             $datas = null;
-            $sql = "SELECT * FROM `lab_report` where `id`='$reportId'";
+            $sql = "SELECT * FROM `lab_report` where `bill_id`='$reportId'";
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
                 $datas = $result;
@@ -127,8 +153,6 @@ class LabReport
     }
 
 
-
-
     ///insert lab report details ///
     function labReportDetailsAdd($testValue, $unitValue, $testId, $reportId)
     {
@@ -152,6 +176,14 @@ class LabReport
             echo $e->getMessage();
             return false; // Indicates failed insertion
         }
+    }
+
+
+    ///insert lab report details ///
+    function labReportDetailsUpdate($testValue, $unitValue, $testId, $reportId)
+    {
+        $response = $this->labReportDetailsAdd($testValue, $unitValue, $testId, $reportId);
+        return $response;
     }
 
     ///lab report data fetch by Id ///
@@ -185,6 +217,29 @@ class LabReport
             return $dataset;
         } catch (Exception $e) {
             echo $e->getMessage();
+        }
+    }
+
+    function deleteLabReportDetails($billId)
+    {
+        try {
+            // Delete all rows where report_id matches
+            $deleteSql = "DELETE FROM `lab_report_detail` WHERE `report_id` = ?";
+            $stmt = $this->conn->prepare($deleteSql);
+            if (!$stmt) {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("i", $billId);
+            if (!$stmt->execute()) {
+                throw new Exception("Error executing delete statement: " . $stmt->error);
+            }
+            $stmt->close();
+
+            return true;
+        } catch (Exception $e) {
+            error_log("error: " . $e->getMessage());
+            return false;
         }
     }
 }
