@@ -43,17 +43,17 @@ $empIdString = '';
 $empNameString = '';
 if ($employeeDetails->status) {
     $employeeDetails = $employeeDetails->data;
-    foreach($employeeDetails as $empDetails){
-        if($empIdString == ''){
-            $empIdString = $empIdString.$empDetails->emp_id;
-        }else{
-            $empIdString = $empIdString.','.$empDetails->emp_id;
+    foreach ($employeeDetails as $empDetails) {
+        if ($empIdString == '') {
+            $empIdString = $empIdString . $empDetails->emp_id;
+        } else {
+            $empIdString = $empIdString . ',' . $empDetails->emp_id;
         }
 
-        if($empNameString == ''){
-            $empNameString = $empNameString.$empDetails->emp_username;
-        }else{
-            $empNameString = $empNameString.','.$empDetails->emp_username;
+        if ($empNameString == '') {
+            $empNameString = $empNameString . $empDetails->emp_username;
+        } else {
+            $empNameString = $empNameString . ',' . $empDetails->emp_username;
         }
     }
 } else {
@@ -61,16 +61,16 @@ if ($employeeDetails->status) {
 }
 
 // user id string generation 
-$allUserIdString = $adminId.','.$empIdString;;
+$allUserIdString = $adminId . ',' . $empIdString;;
 
 // user name string generation depend on session
-if($_SESSION['ADMIN']){
-    $allEmpNameString = $username.','.$empNameString;
-}else{
+if ($_SESSION['ADMIN']) {
+    $allEmpNameString = $username . ',' . $empNameString;
+} else {
     $adminData = json_decode($Admin->adminDetails($adminId));
     $adminData = $adminData->data;
     $adminName = $adminData[0]->fname;
-    $allEmpNameString = $adminData[0]->username.','.$empNameString;
+    $allEmpNameString = $adminData[0]->username . ',' . $empNameString;
 }
 
 ?>
@@ -129,14 +129,13 @@ if($_SESSION['ADMIN']){
                         </div>
                         <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
-                                <button type="button" id="print-report" name="print-report"
+                                <!-- <button type="button" id="print-report" name="print-report"
                                     class="btn btn-sm btn-primary border-0 text-center">
                                     Print
-                                </button>
+                                </button> -->
                             </div>
                             <div class="col-sm-8 bg-info bg-opacity-10">
-                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type"
-                                    onchange="selectDownloadType(this)">
+                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -149,8 +148,7 @@ if($_SESSION['ADMIN']){
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
                             <!-- filter range -->
                             <div class="col-md-2 bg-white me-3 selectDiv">
-                                <select class="cvx-inp1 border-0 rounded p-1 w-100" name="day-filter" id="day-filter"
-                                    onchange="dayFilter(this)">
+                                <select class="cvx-inp1 border-0 rounded p-1 w-100" name="day-filter" id="day-filter" onchange="dayFilter(this)">
                                     <option value="0" selected>Day Wise</option>
                                     <option value="1">Week Wise</option>
                                     <option value="2">Month Wise</option>
@@ -160,8 +158,7 @@ if($_SESSION['ADMIN']){
 
                             <!-- filter date range -->
                             <div class="col-md-2 bg-white me-3 selectDiv" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter"
-                                    onchange="dateRangeFilter(this)" required>
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -185,8 +182,7 @@ if($_SESSION['ADMIN']){
 
                             <!-- filter on category -->
                             <div class="col-md-2 bg-white me-3 selectDiv" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter"
-                                    onchange="categoryFilterSelect(this)">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter" onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
                                     <option value="PM">Payment Mode</option>
@@ -197,8 +193,7 @@ if($_SESSION['ADMIN']){
 
                             <!-- product category list -->
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
-                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Item Category
                                 </button>
                                 <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
@@ -208,7 +203,7 @@ if($_SESSION['ADMIN']){
                                     <?php
                                     if (!empty($prodCategoryData)) {
                                         foreach ($prodCategoryData as $categoryData) {
-                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" id="'.$categoryData->name.'" onclick="toggleCheckboxes1(this)"> ' . $categoryData->name . ' </label></li>';
+                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" id="' . $categoryData->name . '" onclick="toggleCheckboxes1(this)"> ' . $categoryData->name . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -221,8 +216,7 @@ if($_SESSION['ADMIN']){
                             <!-- filter payment mode -->
 
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
-                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret" id="payment-mode-select-span">Select Payment Mode</span>
                                 </button>
                                 <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
@@ -256,8 +250,7 @@ if($_SESSION['ADMIN']){
 
                             <!-- filter on staff -->
                             <div class="dropdown d-none col-md-2" id="staff-filter-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Staff
                                 </button>
                                 <ul class="dropdown-menu staff-list-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
@@ -270,7 +263,7 @@ if($_SESSION['ADMIN']){
                                     <?php
                                     if (!empty($employeeDetails)) {
                                         foreach ($employeeDetails as $empData) {
-                                            echo '<li><label><input type="checkbox" onclick="toggleCheckboxes3(this)" id="'.$empData->emp_username.'" value="' . $empData->emp_id . '"> ' . $empData->emp_username . ' </label></li>';
+                                            echo '<li><label><input type="checkbox" onclick="toggleCheckboxes3(this)" id="' . $empData->emp_username . '" value="' . $empData->emp_id . '"> ' . $empData->emp_username . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -298,9 +291,7 @@ if($_SESSION['ADMIN']){
 
                             <!-- find button on filter -->
                             <div class="col-md-1 searchFilterDiv" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report"
-                                    class="btn btn-primary btn-sm text-center"
-                                    onclick="salesSummerySearch()">
+                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="salesSummerySearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -310,8 +301,7 @@ if($_SESSION['ADMIN']){
                             <!-- date picker dive -->
                             <label class="d-none" id="date-range-control-flag">0</label>
                             <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv"
-                                style="display:none;">
+                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none;">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
@@ -328,12 +318,16 @@ if($_SESSION['ADMIN']){
                                 <label class="d-none" id="selected-end-date"></label>
                             </div>
                         </div>
-                       
+
 
                         <!-- report table start -->
                         <table class="table" id="report-table">
                             <!-- dynamic table gose hear -->
+
                         </table>
+                        <div class="col-md-12 text-center">
+                            <div id="pagination"></div>
+                        </div>
 
                     </div>
                     <!-- end of dynamic table creation -->
@@ -364,6 +358,11 @@ if($_SESSION['ADMIN']){
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH; ?>sb-admin-2.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
+
+    <!-- plugin script for excel and pdf download -->
+    <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/xlsx.full.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.umd.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
     <script src="<?php echo JS_PATH; ?>sales-report-control.js"></script>

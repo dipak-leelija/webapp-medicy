@@ -28,6 +28,7 @@ const datePickerDiv = document.getElementById('dtPickerDiv');
 const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
 
 /// constand default data holders .........
+const downloadType = document.getElementById('download-file-type');
 const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
@@ -114,6 +115,20 @@ function dayFilter(t){
     dayFilterVal.innerHTML = t.value;
 }
 
+
+//// page all function dafination area
+// download file format selection function
+function selectDownloadType(ts){
+    if(ts.value == 'exl'){
+        exportToExcel();
+    }
+    if(ts.value == 'csv'){
+        exportToCSV();
+    }
+    if(ts.value == 'pdf'){
+        exportToPDF();
+    }
+}
 // date range select function
 function dateRangeFilter(t){
     dateRangeVal.innerHTML = t.value;
@@ -643,9 +658,11 @@ function salesDataSearchFunction(array){
 
 
 // dynamic table generation on data
+let currentPage = 1;
+const rowsPerPage = 10; // Define the number of rows per page
+
 function reportShow(parsedData) {
     console.log(parsedData);
-    // console.log(dayFilterVal.innerHTML);
     // Reset table data
     dataTable.innerHTML = '';
 
@@ -723,9 +740,8 @@ function reportShow(parsedData) {
         groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
     }
 
-    // Create rows for each group
-    Object.keys(groupedData).forEach(groupKey => {
-        const groupData = groupedData[groupKey];
+    // Function to create rows for each group
+    const createRows = (groupData, groupKey, headers) => {
         const tr = document.createElement('tr');
         let rowData = {};
 
@@ -775,7 +791,7 @@ function reportShow(parsedData) {
             }
         });
 
-        // Assign total values based on reportFilterVal
+        // values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
             rowData['Total Sell'] = totalSellAmount.toFixed(2);
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
@@ -792,20 +808,142 @@ function reportShow(parsedData) {
             tr.appendChild(td);
         });
 
-        tbody.appendChild(tr);
+        return tr;
+    };
+
+    // Function to display data for the current page
+    const displayPage = (data) => {
+        tbody.innerHTML = ''; // Clear existing rows
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const currentPageData = data.slice(startIndex, endIndex);
+
+        currentPageData.forEach(groupKey => {
+            const groupData = groupedData[groupKey];
+            const tr = createRows(groupData, groupKey, headers);
+            tbody.appendChild(tr);
+        });
+
+        dataTable.appendChild(tbody);
+    };
+
+    // Function to create pagination buttons
+    const createPagination = (data) => {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = ''; // Clear existing pagination buttons
+
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = '&larr;';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(prevButton);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            });
+            paginationDiv.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = '&rarr;';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(nextButton);
+    };
+
+    // Display the first page and create pagination
+    displayPage(Object.keys(groupedData));
+    createPagination(Object.keys(groupedData));
+}
+
+
+
+// Function for export the table data to CSV
+function exportToExcel() {
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
-    dataTable.appendChild(tbody);
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Report');
+    XLSX.writeFile(wb, 'report.xlsx');
 }
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+
+
+// Function for export the table data to CSV
+function exportToCSV() {
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get handelers
+
+    // get row from the table
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+    // combine to single array
+    const csvData = [headers, ...rows];
+
+    // Convert array to CSV string
+    const csvString = csvData.map(row => row.join(',')).join('\n');
+
+    // blob creation for csv string
+    const blob = new Blob([csvString], { type: 'text/csv' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'report.csv';
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
 }
 
-function slicedString(input) {
-    return input.split(',').map(str => str.trim());
+
+// function for exporting table data to pdf
+async function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+
+    doc.autoTable({
+        head: [headers],
+        body: rows,
+    });
+
+    doc.save('report.pdf');
 }
+
+
