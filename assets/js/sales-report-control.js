@@ -48,10 +48,12 @@ const selectedEndDate = document.getElementById('selected-end-date');
 
 const inputedDateRange = document.getElementById('inputed-date-range');
 
-
+const healthCareName = document.getElementById('healthcare-name');
+const healthCareGstin = document.getElementById('healthcare-gstin');
+const healthCareAddress = document.getElementById('healthcare-address');
+const reportGenerationTime = document.getElementById('report-generation-date-time-holder');
 /// dropdown inner html constant
 const paymentModeConst = document.getElementById('payment-mode-select-span');
-
 
 /// all staff data on admin 
 const allCurrentStaffNameOnAdmin = document.getElementById('all-stuff-name-data');
@@ -561,6 +563,21 @@ function filterReportOn(t){
 }
 
 
+// current date time generation function
+function getCurrentDateTime() {
+    const currentDate = new Date();
+
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const year = currentDate.getFullYear();
+
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
 
 // sales data search call (funning ajax query)
 function salesSummerySearch() {
@@ -656,16 +673,18 @@ function salesDataSearchFunction(array){
     }
 }
 
-
 // dynamic table generation on data
 let currentPage = 1;
-const rowsPerPage = 10; // Define the number of rows per page
+const rowsPerPage = 30; // Define the number of rows per page
 
 function reportShow(parsedData) {
     console.log(parsedData);
     // Reset table data
     dataTable.innerHTML = '';
 
+    let currentDateTime = getCurrentDateTime();
+    reportGenerationTime.innerHTML = currentDateTime;
+    
     // Define headers based on filter values
     const headerStart1 = ['Date'];
     const headerStart2 = ['Start Date', 'End Date'];
@@ -884,19 +903,53 @@ function reportShow(parsedData) {
 
 
 
+
 // Function for export the table data to CSV
 function exportToExcel() {
-    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const headerData = [
+        [healthCareName.innerHTML],
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
+        []
+    ];
+
+    const headers = [Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent)];
     const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
+    // Calculate grand totals for each column (excluding the first column which is the date column)
+    const grandTotals = rows[0].map((_, colIndex) => {
+        if (colIndex === 0) return "Grand Total"; // Label for the first column
+        return rows.reduce((sum, row) => {
+            return sum + (parseFloat(row[colIndex]) || 0);
+        }, 0).toFixed(2); // Sum and format as needed
+    });
+
+    // Append grand totals row to the rows array
+    rows.push(grandTotals);
+
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+    const ws = XLSX.utils.aoa_to_sheet([...headerData, ...headers, ...rows]);
+
+    // Style the header cells with a yellow background
+    headers[0].forEach((header, index) => {
+        const cellAddress = XLSX.utils.encode_cell({ r: headerData.length, c: index });
+        if (!ws[cellAddress]) ws[cellAddress] = {};
+        ws[cellAddress].s = {
+            fill: {
+                fgColor: { rgb: "FFFF00" } // Yellow background color
+            }
+        };
+    });
 
     XLSX.utils.book_append_sheet(wb, ws, 'Report');
     XLSX.writeFile(wb, 'report.xlsx');
 }
+
+
 
 
 
@@ -928,22 +981,44 @@ function exportToCSV() {
 }
 
 
+
+
+/*
 // function for exporting table data to pdf
 async function exportToPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    // Header data
+    const headerData = [
+        "Medicy Health Care",
+        "Daulatabad Thanar More, Daulatabad",
+        "GSTIN: ",
+        "Sales Summary Report 01/06/2024 To 30/06/2024",
+        "Report generated at: 26-06-24 01:10 PM"
+    ];
+
+    // Adding header data to PDF
+    headerData.forEach((text, index) => {
+        doc.text(text, 10, 10 + (index * 10)); // Adjust the Y coordinate as needed
+    });
+
+    // Retrieve headers and rows from the table
     const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
     const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
+    // Moving the table down to avoid overlapping with the header
     doc.autoTable({
+        startY: 60, // Adjust the start position for the table
         head: [headers],
         body: rows,
     });
 
     doc.save('report.pdf');
 }
+*/
+
 
 
