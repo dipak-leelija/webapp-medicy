@@ -904,18 +904,20 @@ function reportShow(parsedData) {
 
 
 
+
+/// exporting function gose down there
 // Function for export the table data to CSV
 function exportToExcel() {
     const headerData = [
         [healthCareName.innerHTML],
         [healthCareAddress.innerHTML],
         ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
         ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
         ["Report generated at : " + reportGenerationTime.innerHTML],
-        []
     ];
 
-    const headers = [Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent)];
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
     const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
@@ -931,23 +933,76 @@ function exportToExcel() {
     // Append grand totals row to the rows array
     rows.push(grandTotals);
 
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet([...headerData, ...headers, ...rows]);
+    // Create a new Excel workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Report');
 
-    // Style the header cells with a yellow background
-    headers[0].forEach((header, index) => {
-        const cellAddress = XLSX.utils.encode_cell({ r: headerData.length, c: index });
-        if (!ws[cellAddress]) ws[cellAddress] = {};
-        ws[cellAddress].s = {
-            fill: {
-                fgColor: { rgb: "FFFF00" } // Yellow background color
-            }
+    // Add header data to the worksheet with merged cells and center alignment
+    let currentRow = 1; // Start at row 1
+
+    headerData.forEach(rowData => {
+        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
+        const mergedCell = worksheet.getCell(`A${currentRow}`);
+        mergedCell.value = rowData[0];
+        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
+        currentRow++;
+    });
+
+    // Add an empty row for spacing
+    worksheet.addRow([]);
+
+    // Add headers row to the worksheet and apply bold font
+    const headersRow = worksheet.addRow(headers);
+    headersRow.eachCell((cell, colNumber) => {
+        cell.font = { bold: true };
+        // Style the header cells with a yellow background
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF00' } // Yellow background color
         };
     });
 
-    XLSX.utils.book_append_sheet(wb, ws, 'Report');
-    XLSX.writeFile(wb, 'report.xlsx');
+    // Add rows to the worksheet
+    rows.forEach(row => {
+        const excelRow = worksheet.addRow(row);
+        excelRow.eachCell((cell, colNumber) => {
+            // Skip styling for the first cell (date column)
+            if (colNumber > 1) {
+                // Check if cell value is numeric
+                const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
+                if (isNumeric) {
+                    // Left align numeric cells
+                    cell.alignment = { horizontal: 'left' };
+                }
+            }
+        });
+    });
+
+    // Add the grand totals row and style its cells with green background and bold font
+    const grandTotalRow = worksheet.addRow(grandTotals);
+    grandTotalRow.eachCell((cell, colNumber) => {
+        // Apply bold font to all cells in the grand totals row
+        cell.font = { bold: true };
+        // Skip styling for the first cell (Grand Total label)
+        if (colNumber > 0) {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '00FF00' } // Green background color
+            };
+        }
+    });
+
+    // Generate Excel file
+    workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'report.xlsx');
+    });
 }
+
+
 
 
 
@@ -955,30 +1010,51 @@ function exportToExcel() {
 
 // Function for export the table data to CSV
 function exportToCSV() {
-    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get handelers
+    const headerData = [
+        [healthCareName.innerHTML],
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
+        []
+    ];
 
-    // get row from the table
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get headers
+
+    // get rows from the table
     const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
-    // combine to single array
-    const csvData = [headers, ...rows];
+
+    // Calculate grand totals for each column (excluding the first column which is typically non-numeric)
+    const grandTotals = rows[0].map((_, colIndex) => {
+        if (colIndex === 0) return "Grand Total"; // Label for the first column
+        return rows.reduce((sum, row) => {
+            return sum + (parseFloat(row[colIndex]) || 0);
+        }, 0).toFixed(2); // Sum and format as needed
+    });
+
+    // Add grand totals row to the end of the rows array
+    const csvData = [...headerData, headers, ...rows, grandTotals];
 
     // Convert array to CSV string
     const csvString = csvData.map(row => row.join(',')).join('\n');
 
-    // blob creation for csv string
+    // Create blob for CSV string
     const blob = new Blob([csvString], { type: 'text/csv' });
 
+    // Create download link
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'report.csv';
 
+    // Append link to DOM, simulate click, and remove link
     document.body.appendChild(link);
     link.click();
-
     document.body.removeChild(link);
 }
+
 
 
 
