@@ -28,6 +28,7 @@ const datePickerDiv = document.getElementById('dtPickerDiv');
 const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
 
 /// constand default data holders .........
+const downloadType = document.getElementById('download-file-type');
 const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
@@ -114,6 +115,20 @@ function dayFilter(t){
     dayFilterVal.innerHTML = t.value;
 }
 
+
+//// page all function dafination area
+// download file format selection function
+function selectDownloadType(ts){
+    if(ts.value == 'exl'){
+        exportToExcel();
+    }
+    if(ts.value == 'csv'){
+        exportToCSV();
+    }
+    if(ts.value == 'pdf'){
+        exportToPDF();
+    }
+}
 // date range select function
 function dateRangeFilter(t){
     dateRangeVal.innerHTML = t.value;
@@ -632,39 +647,39 @@ function salesDataSearchFunction(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    console.log(report);
-    // report = JSON.parse(report);
-    // if(report.status){
-    //     reportShow(report.data);
-    // }else{
-    //     alert('no data found');
-    // }
+    // console.log(report);
+    report = JSON.parse(report);
+    if(report.status){
+        reportShow(report.data);
+    }else{
+        alert('no data found');
+    }
 }
 
 
 // dynamic table generation on data
+let currentPage = 1;
+const rowsPerPage = 10; // Define the number of rows per page
+
 function reportShow(parsedData) {
     console.log(parsedData);
-    console.log(dayFilterVal.innerHTML);
     // Reset table data
     dataTable.innerHTML = '';
 
     // Define headers based on filter values
-    
-    
     const headerStart1 = ['Date'];
     const headerStart2 = ['Start Date', 'End Date'];
     const headerEnd1 = ['Total Sell'];
     const headerEnd2 = ['Total Margin'];
     const headerEnd3 = ['Total Discount'];
-    
+
     let headerStart = [];
     let headerMid = [];
     let headerEnd = [];
 
-    if(dayFilterVal.innerHTML == 0){
+    if (dayFilterVal.innerHTML == 0) {
         headerStart = headerStart1;
-    }else{
+    } else {
         headerStart = headerStart2;
     }
 
@@ -703,15 +718,44 @@ function reportShow(parsedData) {
 
     const tbody = document.createElement('tbody');
 
-    // Get unique dates
-    const uniqueDateArray = [...new Set(parsedData.map(item => item.added_on))];
+    // Function to group data by key
+    const groupDataByKey = (data, keyFn) => {
+        return data.reduce((acc, item) => {
+            const key = keyFn(item);
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item);
+            return acc;
+        }, {});
+    };
 
-    // Create rows for each unique date
-    uniqueDateArray.forEach(uniqueDate => {
+    let groupedData;
+
+    if (dayFilterVal.innerHTML == 0) { // Day-wise
+        groupedData = groupDataByKey(parsedData, item => item.added_on);
+    } else if (dayFilterVal.innerHTML == 1) { // Week-wise
+        groupedData = groupDataByKey(parsedData, item => item.start_date + ' to ' + item.end_date);
+    } else if (dayFilterVal.innerHTML == 2) { // Month-wise
+        groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
+    }
+
+    // Function to create rows for each group
+    const createRows = (groupData, groupKey, headers) => {
         const tr = document.createElement('tr');
-        let rowData = {
-            Date: formatDate(uniqueDate)
-        };
+        let rowData = {};
+
+        if (dayFilterVal.innerHTML == 0) {
+            rowData['Date'] = formatDate(groupKey);
+        } else if (dayFilterVal.innerHTML == 1) {
+            const [startDate, endDate] = groupKey.split(' to ');
+            rowData['Start Date'] = formatDate(startDate);
+            rowData['End Date'] = formatDate(endDate);
+        } else if (dayFilterVal.innerHTML == 2) {
+            const [year, month] = groupKey.split('-');
+            rowData['Start Date'] = formatDate(groupData[0].start_date);
+            rowData['End Date'] = formatDate(groupData[0].end_date);
+        }
 
         let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
 
@@ -720,39 +764,34 @@ function reportShow(parsedData) {
             rowData[header] = 0.00;
         });
 
-        // Process data for each unique date
-        parsedData.forEach(data => {
-            if (data.added_on === uniqueDate) {
-                // On Product category
-                if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+        // Process data for each group
+        groupData.forEach(data => {
+            // On Product category
+            if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+                rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
+                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            }
 
-                    rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
-                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
+            // On Payment mode
+            if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
+                rowData[data.payment_mode] += parseFloat(data.total_amount);
+                totalSellAmount += parseFloat(data.total_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            }
 
-                // On Payment mode
-                if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-
-                    rowData[data.payment_mode] += parseFloat(data.total_amount);
-                    totalSellAmount += parseFloat(data.total_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
-
-                // On Staff name
-                if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-
-                    rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
-                    totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                    totalMargin += parseFloat(data.total_sales_margin || 0);
-                    totalDiscount += parseFloat(data.total_discount || 0);
-                }
+            // On Staff name
+            if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+                rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
+                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
         });
 
-        // Assign total values based on reportFilterVal
+        // values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
             rowData['Total Sell'] = totalSellAmount.toFixed(2);
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
@@ -769,8 +808,142 @@ function reportShow(parsedData) {
             tr.appendChild(td);
         });
 
-        tbody.appendChild(tr);
+        return tr;
+    };
+
+    // Function to display data for the current page
+    const displayPage = (data) => {
+        tbody.innerHTML = ''; // Clear existing rows
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const currentPageData = data.slice(startIndex, endIndex);
+
+        currentPageData.forEach(groupKey => {
+            const groupData = groupedData[groupKey];
+            const tr = createRows(groupData, groupKey, headers);
+            tbody.appendChild(tr);
+        });
+
+        dataTable.appendChild(tbody);
+    };
+
+    // Function to create pagination buttons
+    const createPagination = (data) => {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = ''; // Clear existing pagination buttons
+
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = '&larr;';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(prevButton);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            });
+            paginationDiv.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = '&rarr;';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(nextButton);
+    };
+
+    // Display the first page and create pagination
+    displayPage(Object.keys(groupedData));
+    createPagination(Object.keys(groupedData));
+}
+
+
+
+// Function for export the table data to CSV
+function exportToExcel() {
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
-    dataTable.appendChild(tbody);
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Report');
+    XLSX.writeFile(wb, 'report.xlsx');
 }
+
+
+
+// Function for export the table data to CSV
+function exportToCSV() {
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get handelers
+
+    // get row from the table
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+    // combine to single array
+    const csvData = [headers, ...rows];
+
+    // Convert array to CSV string
+    const csvString = csvData.map(row => row.join(',')).join('\n');
+
+    // blob creation for csv string
+    const blob = new Blob([csvString], { type: 'text/csv' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'report.csv';
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+}
+
+
+// function for exporting table data to pdf
+async function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+
+    doc.autoTable({
+        head: [headers],
+        body: rows,
+    });
+
+    doc.save('report.pdf');
+}
+
+
