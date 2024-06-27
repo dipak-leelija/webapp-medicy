@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
     $visited = 1;
 
     // Inserting Into Patients Database
-    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, NOW, $adminId);
+    $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
 
     if ($addPatients) {
 
@@ -132,23 +132,14 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
     <title>Enter Patient Details</title>
-
-
-
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-
-
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"> -->
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
-
-
 </head>
 
 <body>
@@ -180,9 +171,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="card p-0">
                         <div class="card-header">
-                            <h5><b>
-                                    <p class="text-primary">Select Patient</p>
-                                </b></h5>
+                            <h5 class="text-primary font-weight-bolder">Select Patient</h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
                             <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post" id="form-submit">
@@ -301,11 +290,8 @@ if (isset($_POST['submit'])) {
                     console.error('Error fetching content:', error);
                 });
         }
-
     </script>
 
 </body>
 
 </html>
-
-

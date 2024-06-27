@@ -1,6 +1,7 @@
+:root{
+    --divider-border-color: solid rgba(0, 0, 0, .3);
+}
 .custom-container {
-    /* padding-left: 15rem;
-    padding-right: 15rem; */
     width: 20cm;
     min-width: 20cm;
     max-width: 20cm;
@@ -34,6 +35,21 @@
     margin-bottom: 0;
     margin-top: -2px;
 }
+
+.hr-divider{
+    opacity: .5;
+    height:1px;
+    margin: 4px auto 0px auto; 
+}
+table{
+    min-height: 400px;
+}
+.table-header-divider{
+border-bottom: 1px var(--divider-border-color);
+}
+.bill-summary{
+    border-left: 1px var(--divider-border-color);
+}
 @media print {
     @page {
         margin: 5px 5px 5px;
@@ -46,6 +62,7 @@
         overflow: hidden;
     }
     .custom-container {
+        width: 100%;
         padding-left: 4px;
         padding-right: 4px;
     }
@@ -76,11 +93,11 @@
     .border-thick {
         border-width: thick;
     }
-    .footer {
+    /* .footer {
         position: fixed;
         top: 430px;
         width: 93.5%;
-    }
+    } */
     .print-sec {
         visibility: hidden;
     }
