@@ -28,6 +28,7 @@ const datePickerDiv = document.getElementById('dtPickerDiv');
 const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
 
 /// constand default data holders .........
+const downloadType = document.getElementById('download-file-type');
 const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
@@ -47,10 +48,12 @@ const selectedEndDate = document.getElementById('selected-end-date');
 
 const inputedDateRange = document.getElementById('inputed-date-range');
 
-
+const healthCareName = document.getElementById('healthcare-name');
+const healthCareGstin = document.getElementById('healthcare-gstin');
+const healthCareAddress = document.getElementById('healthcare-address');
+const reportGenerationTime = document.getElementById('report-generation-date-time-holder');
 /// dropdown inner html constant
 const paymentModeConst = document.getElementById('payment-mode-select-span');
-
 
 /// all staff data on admin 
 const allCurrentStaffNameOnAdmin = document.getElementById('all-stuff-name-data');
@@ -114,6 +117,20 @@ function dayFilter(t){
     dayFilterVal.innerHTML = t.value;
 }
 
+
+//// page all function dafination area
+// download file format selection function
+function selectDownloadType(ts){
+    if(ts.value == 'exl'){
+        exportToExcel();
+    }
+    if(ts.value == 'csv'){
+        exportToCSV();
+    }
+    if(ts.value == 'pdf'){
+        exportToPDF();
+    }
+}
 // date range select function
 function dateRangeFilter(t){
     dateRangeVal.innerHTML = t.value;
@@ -546,6 +563,21 @@ function filterReportOn(t){
 }
 
 
+// current date time generation function
+function getCurrentDateTime() {
+    const currentDate = new Date();
+
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const year = currentDate.getFullYear();
+
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
 
 // sales data search call (funning ajax query)
 function salesSummerySearch() {
@@ -641,14 +673,18 @@ function salesDataSearchFunction(array){
     }
 }
 
-
 // dynamic table generation on data
+let currentPage = 1;
+const rowsPerPage = 30; // Define the number of rows per page
+
 function reportShow(parsedData) {
     console.log(parsedData);
-    // console.log(dayFilterVal.innerHTML);
     // Reset table data
     dataTable.innerHTML = '';
 
+    let currentDateTime = getCurrentDateTime();
+    reportGenerationTime.innerHTML = currentDateTime;
+    
     // Define headers based on filter values
     const headerStart1 = ['Date'];
     const headerStart2 = ['Start Date', 'End Date'];
@@ -723,9 +759,8 @@ function reportShow(parsedData) {
         groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
     }
 
-    // Create rows for each group
-    Object.keys(groupedData).forEach(groupKey => {
-        const groupData = groupedData[groupKey];
+    // Function to create rows for each group
+    const createRows = (groupData, groupKey, headers) => {
         const tr = document.createElement('tr');
         let rowData = {};
 
@@ -775,7 +810,7 @@ function reportShow(parsedData) {
             }
         });
 
-        // Assign total values based on reportFilterVal
+        // values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
             rowData['Total Sell'] = totalSellAmount.toFixed(2);
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
@@ -792,20 +827,274 @@ function reportShow(parsedData) {
             tr.appendChild(td);
         });
 
-        tbody.appendChild(tr);
+        return tr;
+    };
+
+    // Function to display data for the current page
+    const displayPage = (data) => {
+        tbody.innerHTML = ''; // Clear existing rows
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const currentPageData = data.slice(startIndex, endIndex);
+
+        currentPageData.forEach(groupKey => {
+            const groupData = groupedData[groupKey];
+            const tr = createRows(groupData, groupKey, headers);
+            tbody.appendChild(tr);
+        });
+
+        dataTable.appendChild(tbody);
+    };
+
+    // Function to create pagination buttons
+    const createPagination = (data) => {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = ''; // Clear existing pagination buttons
+
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = '&larr;';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(prevButton);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            });
+            paginationDiv.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = '&rarr;';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayPage(Object.keys(groupedData));
+                createPagination(Object.keys(groupedData));
+            }
+        });
+        paginationDiv.appendChild(nextButton);
+    };
+
+    // Display the first page and create pagination
+    displayPage(Object.keys(groupedData));
+    createPagination(Object.keys(groupedData));
+}
+
+
+
+
+
+/// exporting function gose down there
+// Function for export the table data to CSV
+function exportToExcel() {
+    const headerData = [
+        [healthCareName.innerHTML],
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
+    ];
+
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
-    dataTable.appendChild(tbody);
+    // Calculate grand totals for each column (excluding the first column which is the date column)
+    const grandTotals = rows[0].map((_, colIndex) => {
+        if (colIndex === 0) return "Grand Total"; // Label for the first column
+        return rows.reduce((sum, row) => {
+            return sum + (parseFloat(row[colIndex]) || 0);
+        }, 0).toFixed(2); // Sum and format as needed
+    });
+
+    // Append grand totals row to the rows array
+    rows.push(grandTotals);
+
+    // Create a new Excel workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Report');
+
+    // Add header data to the worksheet with merged cells and center alignment
+    let currentRow = 1; // Start at row 1
+
+    headerData.forEach(rowData => {
+        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
+        const mergedCell = worksheet.getCell(`A${currentRow}`);
+        mergedCell.value = rowData[0];
+        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
+        currentRow++;
+    });
+
+    // Add an empty row for spacing
+    worksheet.addRow([]);
+
+    // Add headers row to the worksheet and apply bold font
+    const headersRow = worksheet.addRow(headers);
+    headersRow.eachCell((cell, colNumber) => {
+        cell.font = { bold: true };
+        // Style the header cells with a yellow background
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF00' } // Yellow background color
+        };
+    });
+
+    // Add rows to the worksheet
+    rows.forEach(row => {
+        const excelRow = worksheet.addRow(row);
+        excelRow.eachCell((cell, colNumber) => {
+            // Skip styling for the first cell (date column)
+            if (colNumber > 1) {
+                // Check if cell value is numeric
+                const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
+                if (isNumeric) {
+                    // Left align numeric cells
+                    cell.alignment = { horizontal: 'left' };
+                }
+            }
+        });
+    });
+
+    // Add the grand totals row and style its cells with green background and bold font
+    const grandTotalRow = worksheet.addRow(grandTotals);
+    grandTotalRow.eachCell((cell, colNumber) => {
+        // Apply bold font to all cells in the grand totals row
+        cell.font = { bold: true };
+        // Skip styling for the first cell (Grand Total label)
+        if (colNumber > 0) {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '00FF00' } // Green background color
+            };
+        }
+    });
+
+    // Generate Excel file
+    workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'report.xlsx');
+    });
 }
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+
+
+
+
+
+
+// Function for export the table data to CSV
+function exportToCSV() {
+    const headerData = [
+        [healthCareName.innerHTML],
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
+        []
+    ];
+
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get headers
+
+    // get rows from the table
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+
+    // Calculate grand totals for each column (excluding the first column which is typically non-numeric)
+    const grandTotals = rows[0].map((_, colIndex) => {
+        if (colIndex === 0) return "Grand Total"; // Label for the first column
+        return rows.reduce((sum, row) => {
+            return sum + (parseFloat(row[colIndex]) || 0);
+        }, 0).toFixed(2); // Sum and format as needed
+    });
+
+    // Add grand totals row to the end of the rows array
+    const csvData = [...headerData, headers, ...rows, grandTotals];
+
+    // Convert array to CSV string
+    const csvString = csvData.map(row => row.join(',')).join('\n');
+
+    // Create blob for CSV string
+    const blob = new Blob([csvString], { type: 'text/csv' });
+
+    // Create download link
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'report.csv';
+
+    // Append link to DOM, simulate click, and remove link
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
-function slicedString(input) {
-    return input.split(',').map(str => str.trim());
+
+
+
+
+/*
+// function for exporting table data to pdf
+async function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Header data
+    const headerData = [
+        "Medicy Health Care",
+        "Daulatabad Thanar More, Daulatabad",
+        "GSTIN: ",
+        "Sales Summary Report 01/06/2024 To 30/06/2024",
+        "Report generated at: 26-06-24 01:10 PM"
+    ];
+
+    // Adding header data to PDF
+    headerData.forEach((text, index) => {
+        doc.text(text, 10, 10 + (index * 10)); // Adjust the Y coordinate as needed
+    });
+
+    // Retrieve headers and rows from the table
+    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+
+    // Moving the table down to avoid overlapping with the header
+    doc.autoTable({
+        startY: 60, // Adjust the start position for the table
+        head: [headers],
+        body: rows,
+    });
+
+    doc.save('report.pdf');
 }
+*/
+
+
+

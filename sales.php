@@ -260,7 +260,7 @@ if (!empty($soldItems)) {
                                                         <td>
                                                         <a class='ml-2' href='update-sales.php?id=" . url_enc($invoice) . "'><i class='fas fa-edit'></i></a>
                                                         
-                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=" . url_enc($invoice) . "'><i class='fas fa-print'></i></a>
+                                                        <a class='ml-2' href='". URL."invoices/sales-invoice.php?id=".url_enc($invoice) . "'><i class='fas fa-print'></i></a>
 
                                                         <a class='ml-2' data-id=" . $invoice . "><i class='fab fa-whatsapp'></i></i></a>
 
