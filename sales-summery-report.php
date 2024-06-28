@@ -3,7 +3,7 @@ require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php'; // healtcare data
 require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
@@ -22,7 +22,6 @@ $Products = new Products;
 $Admin = new Admin;
 $Employees   = new Employees;
 $Utility     = new Utility;
-
 
 
 // product category list
@@ -73,6 +72,8 @@ if ($_SESSION['ADMIN']) {
     $allEmpNameString = $adminData[0]->username . ',' . $empNameString;
 }
 
+
+
 ?>
 
 
@@ -114,6 +115,8 @@ if ($_SESSION['ADMIN']) {
                 <!-- Topbar -->
                 <?php include ROOT_COMPONENT . 'report-topbar.php'; ?>
                 <!-- End of Topbar -->
+
+
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -361,6 +364,13 @@ if ($_SESSION['ADMIN']) {
 
     <!-- plugin script for excel and pdf download -->
     <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/xlsx.full.min.js"></script>
+    <!-- ExcelJS CDN -->
+    <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/exceljs.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/exceljs-4.3.0.min.js"></script>
+    <!-- FileSaver.js CDN -->
+    <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/FileSaver.min-2.5.0.js"></script>
+       
+    <!-- pdf cdn -->
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.umd.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
