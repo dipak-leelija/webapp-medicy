@@ -13,7 +13,7 @@ require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR.'encrypt.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 
@@ -73,17 +73,26 @@ if (isset($_GET['bill_id'])) {
         $doctorName = $docId;
         $doctorReg  = NULL;
     }
-} elseif(isset($_GET['billId'])) {
+} elseif (isset($_GET['billId'])) {
     $billId = $_GET['billId'];
     $billId = url_dec($billId);
 
     $labBillData = json_decode($LabBilling->labBillDisplayById($billId)); // lab bill data
-
-    $testDate = $Utility->convertDateFormat($labBillData->data->test_date); // test date
-
     if ($labBillData->status) {
-        $patientColumn = 'patient_id';
-        $patientData = json_decode($Patients->chekPatientsDataOnColumn($patientColumn, $labBillData->data->patient_id, $adminId));
+        $patientId      = $labBillData->data->patient_id;
+        $payable        = $labBillData->data->total_after_discount;
+        $dicountAmount  = $labBillData->data->discount;
+        $dueAmount      = $labBillData->data->due_amount;
+        $paidAmount     = $labBillData->data->paid_amount;
+        $billDate       = $labBillData->data->bill_date;
+        $testDate       = $labBillData->data->test_date;
+
+
+        $patientData = json_decode($Patients->chekPatientsDataOnColumn('patient_id', $patientId, $adminId));
+        $patientName = $patientData->data->name;
+        $patientPhno = $patientData->data->phno;
+        $patientAge  = $patientData->data->age;
+
 
         if ($labBillData->data->refered_doctor != 'Self') {
             $docColumn = 'doctor_id';
@@ -96,15 +105,6 @@ if (isset($_GET['bill_id'])) {
             $doctorReg = '';
         }
 
-        $payable     = $labBillData->data->total_after_discount;
-        $patientName = $patientData->data->name;
-        $patientPhno = $patientData->data->phno;
-        $patientAge  = $patientData->data->age;
-
-        $paidAmount     = $labBillData->data->paid_amount;
-        $dueAmount      = $labBillData->data->due_amount;
-        $dicountAmount  = $labBillData->data->discount;
-        $billDate       = $labBillData->data->bill_date;
 
         $labBillDetailsData = json_decode($LabBillDetails->billDetailsById($billId));
 
@@ -140,8 +140,8 @@ if (isset($_GET['bill_id'])) {
 
 <body>
     <div class="custom-container">
-    <div class="custom-body <?= $payable == $paidAmount ? "paid-bg" : ''; ?>">
-    <!-- <div class="custom-body paid-bg"> -->
+        <div class="custom-body <?= $payable == $paidAmount ? "paid-bg" : ''; ?>">
+            <!-- <div class="custom-body paid-bg"> -->
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
@@ -183,7 +183,7 @@ if (isset($_GET['bill_id'])) {
                             <?php echo $patientName . ', <b>Age:</b> ' . $patientAge; ?></small></p>
                     <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>M:</b>
                             <?php echo $patientPhno;
-                            echo ', <b>Test date:</b> ' . $testDate; ?></small></p>
+                            echo ', <b>Test date:</b> ' . formatDateTime($testDate); ?></small></p>
                 </div>
                 <div class="col-sm-6 my-0">
                     <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered Doctor:</b>
@@ -274,30 +274,25 @@ if (isset($_GET['bill_id'])) {
                             <small><b>₹ <?php echo floatval($subTotal); ?></small></b>
                         </p>
                     </div>
-                    <?php
-                    // if(isset($_GET['billId'])){
-                    echo isset($_GET['billId']) ?
-                    '
-                    <div class="col-sm-8 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
-                    </div>
-                    <div class="col-sm-4 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹ ' . $dicountAmount . '</b></small>
-                        </p>
-                    </div>' : '';
+                    <?= isset($_GET['billId']) ?
+                        '<div class="col-sm-8 mb-1 text-end">
+                            <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
+                        </div>
+                        <div class="col-sm-4 mb-1 text-end">
+                            <p style="margin-top: -5px; margin-bottom: 0px;">
+                                <small><b>₹ ' . $dicountAmount . '</b></small>
+                            </p>
+                        </div>' : '';
 
                     echo ($dueAmount != NULL && $dueAmount > 0) ?
-                    '
-                    <div class="col-sm-8 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Due Amount:</b></small></p>
-                    </div>
-                    <div class="col-sm-4 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹ ' . $dueAmount . '</b></small>
-                        </p>
-                    </div>' : '';
-                    // }
+                        '<div class="col-sm-8 mb-1 text-end">
+                            <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Due Amount:</b></small></p>
+                        </div>
+                        <div class="col-sm-4 mb-1 text-end">
+                            <p style="margin-top: -5px; margin-bottom: 0px;">
+                                <small><b>₹ ' . $dueAmount . '</b></small>
+                            </p>
+                        </div>' : '';
                     ?>
                     <div class="col-sm-8 mb-1 text-end">
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
@@ -307,47 +302,6 @@ if (isset($_GET['bill_id'])) {
                             <small><b>₹ <?php echo floatval($paidAmount); ?></small></b>
                         </p>
                     </div>
-                    <!-- <div class="col-sm-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
-                    </div>
-                    <div class="col-sm-2 text-end">
-                        <?php
-                        // $cgst = 5;
-                        // echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$cgstPercentage.'%</small></p>';
-                        ?>
-                    </div>
-                    <div class="col-sm-2 text-end">
-                        <?php
-
-                        // $cgst = $cgst/100*$subTotal;
-                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$cgst.'</small></p>';
-
-                        ?>
-                    </div> -->
-                    <!-- <div class="col-sm-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
-                    </div>
-                    <div class="col-sm-2 text-end">
-                        <?php
-                        // $sgst = 5;
-                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$sgstPercentage.'%</small></p>';
-                        ?>
-                    </div>
-                    <div class="col-sm-2 text-end">
-                        <?php
-                        // $sgst = $sgst/100*$subTotal;
-                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small>'.$sgst.'</small></p>';
-                        ?>
-                    </div> -->
-                    <!-- <div class="col-sm-8 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Total:</b></small></p>
-                    </div>
-                    <div class="col-sm-4 text-end">
-                        <?php
-                        // $total = $subTotal + $sgst + $cgst;
-                        //echo '<p style="margin-top: -5px; margin-bottom: 0px;"><small><b>₹'.$paidAmount.'</b></small></p>';
-                        ?>
-                    </div> -->
                     <!--/end table total calculation -->
                 </div>
                 <hr class="mt-0" style="opacity: 0.3;">
@@ -355,7 +309,7 @@ if (isset($_GET['bill_id'])) {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2" href="test-appointments.php">Go Back</a>  <!--onclick="history.back()"-->
+            <a class="btn btn-primary shadow mx-2" href="test-appointments.php">Go Back</a> <!--onclick="history.back()"-->
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
     </div>
