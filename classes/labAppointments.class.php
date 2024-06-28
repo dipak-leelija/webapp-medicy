@@ -55,7 +55,7 @@ class LabAppointments
         }
     } //end appointmentsDisplay function
 
-    function showLabAppointmentsByAdminId($adminId='')
+    function labAppointmentNos($adminId='')
     {
         try {
             if(!empty($adminId)){
@@ -63,7 +63,7 @@ class LabAppointments
             }else{
                 $select = "SELECT  COUNT(*) as count  FROM lab_appointments";
             }
-            
+            echo $select;
             $selectQuery = $this->conn->query($select);
             $result = $selectQuery->fetch_assoc();
             return $result['count'];

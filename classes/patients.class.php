@@ -190,7 +190,6 @@ class Patients
         try {
             $selectData = "SELECT * FROM `patient_details` WHERE $column = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($selectData);
-
             if (!$stmt) {
                 throw new Exception('Error in preparing SQL statement');
             }
@@ -441,18 +440,24 @@ class Patients
 
 
     /// find new patient using visited and lab_visited attribute ///
-    function newPatientCount($adminId = '')
+    function newPatientToday($adminId = '')
     {
         try {
-
             if (!empty($adminId)) {
-                $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
+                $sql = "SELECT COUNT(*) as patient_count, added_on 
+                        FROM `patient_details` 
+                        WHERE `admin_id` = '$adminId' 
+                        AND (`visited` = '1' OR `lab_visited` = '1') 
+                        AND DATE(`added_on`) = CURDATE() 
+                        GROUP BY added_on";
             } else {
-                $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE  `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
+                $sql = "SELECT COUNT(*) as patient_count, added_on 
+                        FROM `patient_details` 
+                        WHERE (`visited` = '1' OR `lab_visited` = '1') 
+                        AND DATE(`added_on`) = CURDATE() 
+                        GROUP BY added_on";
             }
 
-            // $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
-            // print_r($sql);
             $result = $this->conn->query($sql);
             if ($result->num_rows > 0) {
                 $rows = [];
@@ -474,9 +479,9 @@ class Patients
         try {
 
             if (!empty($adminId)) {
-                $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
+                $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND (`visited` = 1 OR `lab_visited`= 1) AND DATE(`added_on`) = '$startDate'";
             } else {
-                $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
+                $sql    = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE (`visited` = 1 OR `lab_visited`= 1) AND DATE(`added_on`) = '$startDate'";
             }
             $result = $this->conn->query($sql);
             if ($result !== false) {
@@ -504,12 +509,12 @@ class Patients
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
-                AND `visited` = '1' AND `lab_visited` = '1'
+                AND (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
             } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
-                WHERE `visited` = '1' AND `lab_visited` = '1'
+                WHERE (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
             }
             $result = $this->conn->query($sql);
@@ -535,12 +540,12 @@ class Patients
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
-                AND `visited` = '1' AND `lab_visited` = '1'
+                AND (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
             } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
-                WHERE `visited` = '1' AND `lab_visited` = '1'
+                WHERE (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
             }
             $result = $this->conn->query($sql);
@@ -567,12 +572,12 @@ class Patients
                 $sql = "SELECT COUNT(*) as patient_count , added_on 
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
-                AND `visited` = '1' AND `lab_visited` = '1'
+                AND (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
             } else {
                 $sql = "SELECT COUNT(*) as patient_count , added_on 
                 FROM `patient_details` 
-                WHERE `visited` = '1' AND `lab_visited` = '1'
+                WHERE (`visited` = '1' OR `lab_visited` = '1')
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
             }
             $result = $this->conn->query($sql);
@@ -595,17 +600,20 @@ class Patients
     {
         try {
             if (!empty($adminId)) {
-                $sql = "SELECT COUNT(*) AS patient_count,added_on
-            FROM `patient_details` 
-            WHERE `admin_id` = '$adminId' 
-            AND `visited` = '1' AND `lab_visited` = '1'
-            AND `added_on` BETWEEN '$startDate' AND '$endDate' GROUP BY added_on";
+                $sql = "SELECT COUNT(*) AS patient_count, added_on
+                        FROM `patient_details` 
+                        WHERE `admin_id` = '$adminId' 
+                        AND (`visited` = '1' OR `lab_visited` = '1')
+                        AND `added_on` BETWEEN DATE_SUB('$startDate', INTERVAL 1 DAY) AND DATE_ADD('$endDate', INTERVAL 1 DAY)
+                        GROUP BY added_on";
             } else {
-                $sql = "SELECT COUNT(*) AS patient_count,added_on
-                FROM `patient_details` 
-                WHERE `visited` = '1' AND `lab_visited` = '1'
-                AND `added_on` BETWEEN '$startDate' AND '$endDate' GROUP BY added_on";
+                $sql = "SELECT COUNT(*) AS patient_count, added_on
+                        FROM `patient_details` 
+                        WHERE (`visited` = '1' OR `lab_visited` = '1')
+                        AND `added_on` BETWEEN DATE_SUB('$startDate', INTERVAL 1 DAY) AND DATE_ADD('$endDate', INTERVAL 1 DAY)
+                        GROUP BY added_on";
             }
+
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $rows = [];
@@ -626,7 +634,7 @@ class Patients
 
 
     // patient data filter function
-    function patientDataSearchFilter($searchVal='', $startDate='', $endDate='', $empId='', $adminId='')
+    function patientDataSearchFilter($searchVal = '', $startDate = '', $endDate = '', $empId = '', $adminId = '')
     {
         try {
             $searchSQL = "SELECT * FROM patient_details WHERE 1=1";

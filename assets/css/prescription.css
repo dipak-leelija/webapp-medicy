@@ -6,6 +6,17 @@ body {
     background: #fff;
 }
 
+.custom-container {
+    margin: auto;
+    width: 20cm;
+    min-width: 20cm;
+    max-width: 20cm;
+    height: 29.7cm;
+}
+.custom-body {
+    padding: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
 .w-5 {
     width: 5% !important;
 }
@@ -62,47 +73,22 @@ body {
     min-height: 70vh;
 }
 
-ul.li {
-    list-style-type: none;
+footer{
+    width: 100%;
+    font-size: 14px;
 }
-
-.footerDetails {
-    border: 1px solid black;
-    max-height: 40px;
+footer img{
+    width:28px;
+    height:20px;
 }
-
-.footerImgCol1 {
-    margin-left: 5px;
-    min-height: 50px;
-}
-
 .printButton {
-    margin-top: 10px;
     align-items: center;
     text-align: center;
 }
 
-@media only screen and (max-width: 770px) {
-    .headerHospitalDetails h1 {
-        font-size: 1.8rem;
-    }
-    .custom-width-name {
-        width: 32%;
-        margin-left: -30px;
-    }
-    .custom-width-email {
-        width: 42%;
-        margin-left: -30px;
-    }
-    .custom-width-number {
-        width: 38%;
-        margin-left: -30px;
-    }
-}
-
 @media print {
     @page {
-        margin: -25px 0 0;
+        margin: 0;
     }
     html,
     body {
@@ -110,6 +96,16 @@ ul.li {
         margin: 0 !important;
         padding: 0 !important;
         overflow: hidden;
+    }
+    .custom-container {
+        width: 100%;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    .custom-body {
+        margin-top: 0;
+        padding: 0;
+        box-shadow: none;
     }
     .headerHospitalLogo {
         width: 110px;
@@ -130,7 +126,6 @@ ul.li {
     }
     .header-doc-img {
         width: 9%;
-        /* height: 20px; */
         margin-top: auto;
         margin-bottom: auto;
         margin-left: -100px;
@@ -138,7 +133,6 @@ ul.li {
     .headerDoctorDetails {
         margin-top: -10px;
         width: 46%;
-        /* margin-right: -30px; */
         margin-left: 5px;
     }
     .space {
@@ -146,22 +140,7 @@ ul.li {
     }
     .footer {
         position: fixed;
-        bottom: 0px;
-        width: 93%;
-        font-size: 15px;
-        margin-left: -10px;
-    }
-    .custom-width-name {
-        width: 30%;
-        margin-left: -30px;
-    }
-    .custom-width-email {
-        width: 38%;
-        /* margin-left: -30px; */
-    }
-    .custom-width-number {
-        width: 35%;
-        /* margin-left: -10px; */
+        bottom: 0;
     }
     .printButton {
         visibility: hidden;

@@ -2,7 +2,7 @@
 
 
 ///initial total count ///
-$newPatients = $Patients->newPatientCount($adminId);
+$newPatients = $Patients->newPatientToday($adminId);
 $totalCount = 0;
 if ($newPatients) {
     foreach ($newPatients as $row) {
@@ -48,7 +48,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mt-n2 mb-2">
-                        <i class="fas fa-user-plus"></i> New Patients
+                        <i class="fas fa-user-plus"></i> <span id="new-patient-title">New Patients Today</span>
                     </div>
                     <div class=" mb-0">
                         <div class="h5 mb-0 font-weight-bold <?= (!$newPatients) ? 'text-secondary h6' : 'text-dark' ?>">
@@ -117,13 +117,15 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
         var newPatientElement = document.getElementById('newPatient');
+        let title = document.getElementById('new-patient-title');
 
         newPatientDtUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
         xmlhttp.open("GET", newPatientDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
         var newPatientDataByDate = xmlhttp.responseText;
-        // console.log(typeof(newPatientDataByDate));
+        title.innerText = `New Patients of ${newPatientDt}`;
+        // console.log(newPatientDataByDate);
         if (newPatientDataByDate) {
             var newPatientData = JSON.parse(newPatientDataByDate);
             if (newPatientData.length > 0) {
@@ -142,6 +144,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientDateRange() {
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
+        let title = document.getElementById('new-patient-title');
 
         newPatientDtRngUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
         xmlhttp.open("GET", newPatientDtRngUrl, false);
@@ -150,6 +153,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         var newPatientDataByDateRange = xmlhttp.responseText;
         // console.log(newPatientDataByDateRange);
         var newPatientElement = document.getElementById('newPatient');
+        title.innerText = `New Patients From ${newPatientStartDate} to ${newPatientEndDate}`;
 
         if (newPatientDataByDateRange && newPatientDataByDateRange !== 'No Data Found') {
             var parsedData = JSON.parse(newPatientDataByDateRange);
@@ -171,18 +175,22 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientCount(buttonId) {
         document.getElementById('newPatientDtPkr').style.display = 'none';
         document.getElementById('newPatientDtPkrRng').style.display = 'none';
+        var title = document.getElementById('new-patient-title');
 
         if (buttonId === 'newPatientLst24hrs') {
             document.getElementById('newPatient').textContent = <?= $totalCount24hrs ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast24Hours) ?>);
+            title.innerText = "New Patients Today";
         }
         if (buttonId === 'newPatientLst7') {
             document.getElementById('newPatient').textContent = <?= $totalCount7days ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast7Days) ?>);
+            title.innerText = "New Patients of Last Week";
         }
         if (buttonId === 'newPatientLst30') {
             document.getElementById('newPatient').textContent = <?= $totalCount30days ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast30Days) ?>);
+            title.innerText = "New Patients of Last Month";
         }
         if (buttonId === 'newPatientOnDt') {
             document.getElementById('newPatientDtPkr').style.display = 'block';

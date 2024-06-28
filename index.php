@@ -14,7 +14,8 @@ require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
-require_once CLASS_DIR . 'labAppointments.class.php';
+require_once CLASS_DIR . 'labBilling.class.php';
+// require_once CLASS_DIR . 'labAppointments.class.php';
 
 // require_once ROOT_DIR . '_config/accessPermission.php';
 // require_once ROOT_DIR . '_config/toastOnPermission.php';
@@ -27,7 +28,8 @@ $StockIn           = new StockIn();
 $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
-$LabAppointments   = new LabAppointments();
+$LabBilling        = new LabBilling;
+// $LabAppointments   = new LabAppointments();
 // $AccessPermission  = new AccessPermission();
 // $Employees         = new Employees;
 
@@ -36,13 +38,18 @@ $totalAppointments = $appoinments->appointmentsDisplay($adminId);
 $totalAppointments = json_decode($totalAppointments);
 
 if ($totalAppointments->status) {
-    $totalAppointmentsCount = count($totalAppointments->data);
+    $doctorAppointmentsCount = count($totalAppointments->data);
 } else {
-    $totalAppointmentsCount = 0;
+    $doctorAppointmentsCount = 0;
 }
 
-$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
-
+// $labAppointmentCount     = $LabAppointments->labAppointmentNos($adminId);
+$labBills = json_decode($LabBilling->labBillDisplay($adminId));
+if ($labBills->status == 1) {
+    $labBillNos = count($labBills->data);
+}else {
+    $labBillNos = 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -111,9 +118,9 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                         <?php if ($userRole != 1 || $userRole == 'ADMIN') : ?>
 
-                            <!-- Earnings (Monthly) Card Example -->
+                            <!-- Number of Appointments -->
                             <div class="col-xl-4 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "appointment-nos.php"; ?>
+                                <?php require_once ROOT_COMPONENT . "AppointmentNumbers.php"; ?>
                             </div>
 
                             <!-- Earnings (Monthly) Card Example -->
