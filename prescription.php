@@ -84,51 +84,39 @@ if ($doctorCategory->status == 1) {
 <body>
     <div class="custom-container">
         <div class="custom-body">
-            <div class="hospitslDetails mb-0">
-                <div class="row">
-                    <div class="col-2 headerHospitalLogo">
-                        <img class="mt-2" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>">
+            <div class="header hospitslDetails mb-0">
+                <div class="details-bx">
+                    <div class="col-5 left-header">
+                        <!-- <img class="prescription-logo" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>"> -->
+                        <!-- <div> -->
+                            <h1><?= $healthCareName ?></h1>
+                            <p><?= $healthCareAddress1 . ', ' . $healthCareCity . ', ' .  $patientDist ?></p>
+                            <p><?= $healthCareState . ', ' . $healthCarePin; ?></p>
+                        <!-- </div> -->
                     </div>
-                    <div class="col-4 headerHospitalDetails ps-0">
-                        <h1 class="text-primary fs-4 text-start fw-bold mb-2 mt-3 me-0"><?= $healthCareName ?></h1>
-                        <p class="text-start mb-0 me-0">
-                            <small><?= $healthCareAddress1 ?></small>
-                        </p>
-                        <p class="text-start mb-0 me-0" style="width:18rem;"><small><?= $healthCareCity . ', ' .  $patientDist ?></small></p>
-                        <p class="text-start  me-0">
-                            <small><?php echo $healthCareState . ', ' . $healthCarePin; ?></small>
-                        </p>
-                    </div>
-                    <div class="col-1 header-doc-img d-flex justify-content-left"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
-                    <div class=" text-danger col-5 headerDoctorDetails">
-                        <h2 class="text-end mt-3 fs-4 mb-0"><?= $DoctorName ?></h2>
-                        <p class="text-end fs-6 mb-0 ">
-                            <small><?= $DoctorReg != NULL ? 'REG NO : ' . $DoctorReg : ''; ?></small>
-                        </p>
-
-                        <p class="text-end fs-6 mb-0 ">
-                            <small><?= $DoctorDegree . ', ' . $doccategoryName ?></small>
-                        </p>
-                        <p class="text-end fs-6 mb-0"> <?php echo $DoctorAlsoWith ?></p>
-                        <h6 class="text-end fs-6 text-primary">
-                            <strong>Call for Appointment: <?= $healthCareApntbkNo ?></strong>
-                        </h6>
-
+                    <div class="col-5 right-header">
+                        <h2><?= $DoctorName ?></h2>
+                        <p><?= $DoctorReg != NULL ? 'REG NO : ' . $DoctorReg : ''; ?></p>
+                        <p><?= $DoctorDegree . ', ' . $doccategoryName ?></p>
+                        <p><?= $DoctorAlsoWith ?></p>
+                        <h6>Call for Appointment: <?= $healthCareApntbkNo ?></h>
                     </div>
                 </div>
-                <hr class="mb-0 mt-0" style="color: #00f;">
+
+                <div class="middle-icon"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
+                <hr class="mb-0 mt-1" style="color: #00f;">
             </div>
 
             <div class="row space mt-1">
                 <div class="col-3 border-end " style="border-color: #0000ff59 !important;">
                     <small class="mt-4">
-                        <b>A-ID:</b> <?php echo $apntId ?>
+                        <b>A-ID:</b> <?= $apntId ?>
                         <br>
-                        <b>P-ID:</b> <?php echo $patientId ?>
+                        <b>P-ID:</b> <?= $patientId ?>
                         <div class="mt-2">
                             <b>BP:</b>
                             <br>
-                            <b>WT:</b> <?php echo $patientWeight ?>
+                            <b>WT:</b> <?= $patientWeight ?>
                         </div>
                     </small>
                     <div class="my-4">
@@ -164,7 +152,7 @@ if ($doctorCategory->status == 1) {
                                 <span class="ms-3"> Sex: <?php echo $patientGender; ?> </span>
                             </p>
 
-                            <p class="col-3 mb-0 mt-0">
+                            <p class="col-3 text-end mb-0 mt-0">
                                 Date:
                                 <?php
                                 $date = date_create($appointmentDate);
@@ -177,7 +165,7 @@ if ($doctorCategory->status == 1) {
                 </div>
             </div>
             <footer class="footer">
-                <div class="d-flex justify-content-between border border-primary px-2 py-1">
+                <div class="d-flex justify-content-around border border-primary px-2 py-1">
                     <div>
                         <img id="healthcare-name-box" class="pe-2" src="<?= IMG_PATH ?>icons/hospital.png" />
                         <?php echo $healthCareName ?>
@@ -198,7 +186,7 @@ if ($doctorCategory->status == 1) {
                         যোগাযোগ করুন।</strong></p>
             </footer>
         </div>
-        <div class="printButton mb-5">
+        <div class="printButton p-3 mb-3">
             <button class="btn btn-primary" onclick="history.back()">Go Back</button>
             <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
         </div>

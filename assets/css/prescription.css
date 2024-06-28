@@ -1,9 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
+:root{
+    --primary: rgb(46, 46, 212);
+    --secondary: ;
+}
 body {
     color: #000;
     height: 100%;
     background-color: #fff;
     background: #fff;
+    font-size: 14px;
 }
 
 .custom-container {
@@ -17,34 +22,58 @@ body {
     padding: 15px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-.w-5 {
-    width: 5% !important;
+.header{
+    position: relative;
 }
-
-.w-10 {
-    width: 10% !important;
+.details-bx{
+    display: flex;
+    justify-content: space-between;
 }
-
-.w-15 {
-    width: 15% !important;
+.left-header{
+    /* display: flex;
+    justify-content: flex-start; */
 }
-
-.w-20 {
-    width: 20% !important;
+.left-header h1{
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
 }
-
-.w-60 {
-    width: 60% !important;
+.right-header p, .left-header p{
+    margin: 0;
 }
-
-.w-70 {
-    width: 70% !important;
+/* .prescription-logo{
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 3px;
+} */
+.right-header{
+    text-align: end;
 }
-
-.w-80 {
-    width: 80% !important;
+.right-header h2{
+    color: #ca2626;
+    font-size: 1.3rem;
+    margin-bottom: 0px;
 }
+.right-header p{
+    font-size: 12px;
+}
+.right-header h6{
+    font-size: 14px;
+    margin-top: 4px;
+    color: var(--primary);
+}
+.middle-icon{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+.middle-icon img{
+    width: 80px;
 
+}
 .card {
     padding: 30px 40px;
     /* background: rgb(216, 225, 243); */
@@ -56,7 +85,8 @@ body {
 .headerHospitalLogo img {
     width: 90px;
     aspect-ratio: 1/1;
-    /* height: 90px; */
+    object-fit: cover;
+    border-radius: 3px;
 }
 
 .headerDoctorDetails {
@@ -75,7 +105,6 @@ body {
 
 footer{
     width: 100%;
-    font-size: 14px;
 }
 footer img{
     width:28px;
@@ -88,13 +117,16 @@ footer img{
 
 @media print {
     @page {
-        margin: 0;
+        margin-top: 10px;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
+
     html,
     body {
         height: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
+        margin: 0;
         overflow: hidden;
     }
     .custom-container {
@@ -107,40 +139,13 @@ footer img{
         padding: 0;
         box-shadow: none;
     }
-    .headerHospitalLogo {
-        width: 110px;
-        height: 92px;
-        margin-left: -20px;
-    }
-    .headerHospitalLogo img {
-        margin-left: 15px;
-        width: 95%;
-        height: 95%;
-    }
-    .headerHospitalDetails {
-        margin-left: 5px;
-        width: 45%;
-    }
-    .headerHospitalDetails h1 {
-        font-size: 1.4rem;
-    }
-    .header-doc-img {
-        width: 9%;
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-left: -100px;
-    }
-    .headerDoctorDetails {
-        margin-top: -10px;
-        width: 46%;
-        margin-left: 5px;
-    }
+    
     .space {
-        min-height: 77vh;
+        min-height: 85vh;
     }
     .footer {
-        position: fixed;
-        bottom: 0;
+        /* position: fixed;
+        bottom: 0; */
     }
     .printButton {
         visibility: hidden;
