@@ -190,7 +190,6 @@ class Patients
         try {
             $selectData = "SELECT * FROM `patient_details` WHERE $column = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($selectData);
-
             if (!$stmt) {
                 throw new Exception('Error in preparing SQL statement');
             }
