@@ -142,8 +142,9 @@ if ($_SESSION['ADMIN']) {
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
-                                    <option value='pdf'>Download PDF File</option>
+                                    <!-- <option value='pdf'>Download PDF File</option> -->
                                 </select>
+                                <label class="d-none" id="download-checking">0</label>
                             </div>
                         </div>
                     </div>

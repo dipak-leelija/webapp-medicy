@@ -7,87 +7,88 @@
     <div class="p-2 bg-light" id="searchAll-list" style="max-height: 15rem; max-width:100%; position: absolute; z-index: 9999; top: 58px; overflow: scroll; display:none; margin-left: 1rem;background: rgb(255, 255, 255); border-radius: 0 0 3px 3px; margin-top: 0.1rem; transition: 3.3s ease; box-shadow: 0 5px 10px rgb(0 0 0 / 20%);">
     </div>
 
-    <!-- home icon  -->
-    <div class="col-1 p-2 text-center">
-        <a href="index.php">
-            <i class="fas fa-home font-weight-bold"></i>
-        </a>
-    </div>
-
-    <!-- health care details holding area -->
-    <div class="col-9 d-flex d-none text-center">
-        <div class="col-sm-3">
-            <label for="" id="healthcare-name"><?= $healthCareName; ?></label>
+    <div class="col-12 d-flex">
+        <!-- home icon  -->
+        <div class="col-1 p-2 text-center">
+            <a href="index.php">
+                <i class="fas fa-home font-weight-bold"></i>
+            </a>
+            <!-- health care details holding area -->
+            <div class="col-9 d-flex d-none text-center">
+                <div class="col-sm-3">
+                    <label for="" id="healthcare-name"><?= $healthCareName; ?></label>
+                </div>
+                <div class="col-sm-1">
+                    <label for="" id="healthcare-gstin"><?= $gstinData; ?></label>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" id="healthcare-address"><?= $healthCareAddress1 . ', ' . $healthCareAddress2; ?></label>
+                </div>
+                <div class="col-sm-2">
+                    <label for="" id="report-generation-date-time-holder"></label>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-1">
-            <label for="" id="healthcare-gstin"><?= $gstinData; ?></label>
-        </div>
-        <div class="col-sm-6">
-            <label for="" id="healthcare-address"><?= $healthCareAddress1.' '.$healthCareAddress2; ?></label>
-        </div>
-        <div class="col-sm-2">
-            <label for="" id="report-generation-date-time-holder"></label>
-        </div>
-    </div>
-
-
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
 
         
-        <div class="topbar-divider d-none d-sm-block"></div>
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
 
-        <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?= $userFname ?></span>
 
-                <?php
+            <div class="topbar-divider d-none d-sm-block"></div>
 
-                if (empty($userImg)) {
-                    $imagePath = DEFAULT_USER_IMG_PATH;
-                } else {
-                    if ($_SESSION['ADMIN']) {
-                        $imagePath = ADM_IMG_PATH . $userImg;
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?= $userFname ?></span>
+
+                    <?php
+
+                    if (empty($userImg)) {
+                        $imagePath = DEFAULT_USER_IMG_PATH;
                     } else {
-                        $imagePath = EMPLOYEE_IMG_PATH . $userImg;
+                        if ($_SESSION['ADMIN']) {
+                            $imagePath = ADM_IMG_PATH . $userImg;
+                        } else {
+                            $imagePath = EMPLOYEE_IMG_PATH . $userImg;
+                        }
                     }
-                }
 
-                ?>
+                    ?>
 
-                <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  IMG_PATH . 'undraw_profile.svg' ?>">
-                <!-- <img class="img-profile rounded-circle" src="<?= IMG_PATH . 'undraw_profile.svg'; ?>"> -->
-            </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="<?= URL . 'profile.php' ?>">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
+                    <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  IMG_PATH . 'undraw_profile.svg' ?>">
+                    <!-- <img class="img-profile rounded-circle" src="<?= IMG_PATH . 'undraw_profile.svg'; ?>"> -->
                 </a>
-                <a class="dropdown-item" href="<?= URL . 'clinic-setting.php' ?>">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="<?= URL . 'reports.php' ?>">
-                    <i class="fas fa-file-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Reports
-                </a>
-                <?php if ($_SESSION['ADMIN']) : ?>
-                    <a class="dropdown-item" href="<?= URL . 'employees.php' ?>">
-                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Employees
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="<?= URL . 'profile.php' ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
                     </a>
-                <?php endif ?>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
-            </div>
-        </li>
+                    <a class="dropdown-item" href="<?= URL . 'clinic-setting.php' ?>">
+                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Settings
+                    </a>
+                    <a class="dropdown-item" href="<?= URL . 'reports.php' ?>">
+                        <i class="fas fa-file-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Reports
+                    </a>
+                    <?php if ($_SESSION['ADMIN']) : ?>
+                        <a class="dropdown-item" href="<?= URL . 'employees.php' ?>">
+                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Employees
+                        </a>
+                    <?php endif ?>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
 
-    </ul>
+        </ul>
+    </div>
 
 </nav>
 <!-- End of Topbar -->
