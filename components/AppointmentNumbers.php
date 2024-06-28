@@ -17,9 +17,9 @@
         </div>
         <div class="h5 mb-0 font-weight-bold text-gray-800"> </div>
         <p class="mb-0 pb-0">
-            <small class="mb-0 pb-0"> Doctor Appointments: <?= ($labAppointment > 0) ? $labAppointment : '0'; ?></small>
+            <small class="mb-0 pb-0"> Doctor Appointments: <?= $doctorAppointmentsCount; ?></small>
             <br>
-            <small class="mb-0 pb-0"> Lab Appointments: <?= ($labAppointment > 0) ? $labAppointment : '0'; ?></small>
+            <small class="mb-0 pb-0"> Lab Appointments: <?= $labBillNos; ?></small>
         </p>
     </div>
 </div>
