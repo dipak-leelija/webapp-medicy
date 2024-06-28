@@ -33,7 +33,13 @@ body {
   color: #fff;
   text-align: end;
 }
-
+/* footer{
+  text-align: center;
+} */
+.footerCont{
+  display: flex;
+  justify-content: space-around;
+}
 /*
 .lab-address {
   color: #183697;
@@ -108,15 +114,13 @@ body {
 }
 
 /* ======================================================== */
-.print-page {
+/* .print-page {
   flex: 1;
   page-break-after: always;
-  /* Ensure each section starts a new page */
 }
 
 .print-page:last-of-type {
   page-break-after: auto;
-  /* Ensure the last section doesn't cause a blank page */
 }
 
 table {
@@ -141,6 +145,7 @@ td {
 
 @media print {
   @page {
+    size: A4;
     margin: 20;
   }
 
@@ -157,16 +162,16 @@ td {
     position: fixed;
     bottom: 0;
     page-break-after: always;
+    border: none;
   }
 
   .footer::after {
     content: '';
     display: block;
     page-break-before: always;
-    /* Ensure the footer only appears on the last page */
   }
 
-  .print-page {
+  .reportRow {
     height: 4px;
   }
 
@@ -181,4 +186,4 @@ td {
   .printButton {
     display: none;
   }
-}
+} */
