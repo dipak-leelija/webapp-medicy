@@ -754,72 +754,47 @@ function reportShow(parsedData) {
     grandTotalRow.classList.add('grand-total');
     grandTotalRow.style.fontWeight = 'bold'; // Make the row bold
 
-    // Create the first cell for "Grand Total"
+    // Initialize grand total for each header
+    const grandTotals = {};
     headers.forEach(header => {
-        if (header === 'Date') {
-            const labelCell = document.createElement('td');
-            labelCell.textContent = '';
-            labelCell.className = 'total-label'; // Adjust class name as needed
-            labelCell.style.fontWeight = 'bold'; // Make the cell bold
-            grandTotalRow.appendChild(labelCell);
-        } else if (header === 'Start Date') {
-            // Create two blank cells for "Start Date"
-            const labelCell1 = document.createElement('td');
-            labelCell1.textContent = '';
-            labelCell1.className = 'total-label1'; // Adjust class name as needed
-            labelCell1.style.fontWeight = 'bold'; // Make the cell bold
-            grandTotalRow.appendChild(labelCell1);
-
-            const labelCell2 = document.createElement('td');
-            labelCell2.textContent = '';
-            labelCell2.className = 'total-label2'; // Adjust class name as needed
-            labelCell2.style.fontWeight = 'bold'; // Make the cell bold
-            grandTotalRow.appendChild(labelCell2);
-        }
+        grandTotals[header] = 0;
     });
 
     // Iterate through headers to calculate column totals and build the row
     headers.forEach(header => {
-        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date' && header !== 'Total Sell') {
-            let columnTotal = 0;
+        // console.log(header);
+        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
-                if (headerMid.includes(data.category_name) && filterByVal.innerHTML === 'ICAT') {
-                    const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
-                    columnTotal += stockOutAmount;
-                } else if (headerMid.includes(data.payment_mode) && filterByVal.innerHTML === 'PM') {
-                    const totalAmount = parseFloat(data.total_amount || 0);
-                    columnTotal += totalAmount;
-                } else if (headerMid.includes(data.added_by_name) && filterByVal.innerHTML === 'STF') {
-                    const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
-                    columnTotal += stockOutAmount;
+                if (headerMid.includes(header)) {
+                    if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
+                        grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                    } else if (filterByVal.innerHTML === 'PM' && data.payment_mode === header) {
+                        grandTotals[header] += parseFloat(data.total_amount || 0);
+                    } else if (filterByVal.innerHTML === 'STF' && data.added_by_name === header) {
+                        grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                    }
+                } else if(header === 'Total Sell'){
+                    grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                } else if(header === 'Total Margin'){
+                    grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                } else if(header === 'Total Discount'){
+                    grandTotals[header] += parseFloat(data.total_discount || 0);
                 }
             });
-
-            const cell = document.createElement('td');
-            cell.textContent = `₹${columnTotal.toFixed(2)}`; // Add rupees sign
-            cell.className = 'total-cell';
-            grandTotalRow.appendChild(cell);
         }
     });
 
-    // Calculate grand total
-    let grandTotal = 0;
-    parsedData.forEach(data => {
-        if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
-            grandTotal += parseFloat(data.total_stock_out_amount || 0);
-        } else if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-            grandTotal += parseFloat(data.total_amount || 0);
-        } else if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-            grandTotal += parseFloat(data.total_stock_out_amount || 0);
+    // Create grand total row cells
+    headers.forEach(header => {
+        const cell = document.createElement('td');
+        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
+            cell.textContent = `₹${grandTotals[header].toFixed(2)}`;
+        } else {
+            cell.textContent = ''; // Leave Date, Start Date, End Date cells empty
         }
+        cell.className = 'total-cell';
+        grandTotalRow.appendChild(cell);
     });
-
-    // Append grand total cell
-    const grandTotalCell = document.createElement('td');
-    grandTotalCell.textContent = `₹${grandTotal.toFixed(2)}`; // Add rupees sign
-    grandTotalCell.className = 'grand-total-cell';
-    grandTotalCell.style.fontWeight = 'bold'; // Make the cell bold
-    grandTotalRow.appendChild(grandTotalCell);
 
     // Append the grand total row to the table head
     thead.appendChild(grandTotalRow);
@@ -880,6 +855,8 @@ function reportShow(parsedData) {
                 const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
                 rowData[data.category_name] += stockOutAmount;
                 totalSellAmount += stockOutAmount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Payment mode
@@ -887,6 +864,8 @@ function reportShow(parsedData) {
                 const totalAmount = parseFloat(data.total_amount || 0);
                 rowData[data.payment_mode] += totalAmount;
                 totalSellAmount += totalAmount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Staff name
@@ -894,6 +873,8 @@ function reportShow(parsedData) {
                 const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
                 rowData[data.added_by_name] += stockOutAmount;
                 totalSellAmount += stockOutAmount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
         });
 
