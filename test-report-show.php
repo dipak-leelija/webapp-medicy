@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
@@ -63,11 +62,11 @@ class PDF extends FPDF {
     function setTestData($data) {
         $this->testData = $data;
     }
-
+    ///.....for gradient color....///
     function Gradient($x, $y, $w, $h, $startColor, $endColor, $startPercentage=1, $direction = 'horizontal')
-{
-    list($r1, $g1, $b1) = $startColor;
-    list($r2, $g2, $b2) = $endColor;
+    {
+     list($r1, $g1, $b1) = $startColor;
+     list($r2, $g2, $b2) = $endColor;
 
     for ($i = 0; $i <= 100; $i++) {
         if ($i / 100 >= (1 - $startPercentage)) {
@@ -86,9 +85,10 @@ class PDF extends FPDF {
         } else {
             $this->Rect($x, $y + $i * ($h / 100), $w, $h / 100, 'F');
         }
-    }
-}
+      }
+    }///...end gradient color....///
 
+     //.....Header Star....//
     function Header() {
         global $healthCareName, $name, $patient_id, $age, $gender, $testDate;
 
@@ -102,11 +102,10 @@ class PDF extends FPDF {
             $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
             $imageHeight = 18; // Height of the image
             $this->Image('./assets/images/top-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
-            // $this->Image('./assets/images/top-wave.jpg', 2, 0, 220, 20);
             $this->Ln(2);
             $this->SetFont('Arial','B',25);
             $this->SetTextColor(24, 54, 151);
-            $this->Cell(0,15, $healthCareName, 0, 1, 'R');
+            $this->Cell(186,14, $healthCareName, 0, 1, 'R');
             $this->SetFont('Arial','',12);
              $this->Gradient($this->GetPageWidth() / 2, 24, $this->GetPageWidth() / 2 - 10, 8, [255, 255, 255], [24, 54, 151], 1, 'horizontal');
             $this->SetY(20);
@@ -115,7 +114,10 @@ class PDF extends FPDF {
             $this->SetFont('Arial','',10);
             $this->SetTextColor(24, 54, 151);
             $this->Cell(0,2, 'Daulatabad, Murshidabad, (W.B.), Pin -742302, Mobile:8695494415/9064390598, Website:www.medicy.in', 0, 1, 'R');
-            $this->Ln(5);
+            $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
+            $this->SetDrawColor(24, 54, 151);
+            $this->Line(28.3, 40, 200, 40);
+            $this->Ln(8);
             $this->SetFont('Arial','B',10);
             $this->SetTextColor(0, 0, 0);
             $this->Cell(0,5, "Patient's Name: $name", 0, 0,'L');
@@ -126,11 +128,13 @@ class PDF extends FPDF {
             $this->Cell(0,5, 'Reporting Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
             $this->Cell(0,5, 'Ref. by: DR. SELF', 0, 0, 'L');
             $this->Ln(5);
+            $this->SetDrawColor(0,0,0);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(2);
         }
-    }
+    }//.....Header end....//
 
+    //....footer start....//
     function Footer() {
         if ($this->isLastPage) {
             $this->SetY(-55);
@@ -142,95 +146,85 @@ class PDF extends FPDF {
             $this->Cell(0,10,'***END OF REPORT***', 0, 1, 'C');
             $this->Ln(2);
             $this->SetFont('Arial','I',10);
+            $this->SetTextColor(24, 54, 151);
             $this->Cell(60,5,'A Health Care Unit for :-', 4, 0, 'L');
+            $this->SetTextColor(0, 0, 0);
             $this->Cell(60,5,'Verified by :', 8, 0, 'R');
             $this->SetFont('Arial','B',10);
             $this->Cell(70,5,'DR. S.BISWAS', 0, 1, 'R');
             $this->SetFont('Arial','',10);
+            $this->SetTextColor(24, 54, 151);
             $this->Cell(60,5,'Advance Assay, USG & ECHO, Colour Doppler,', 0, 0, 'L');
             $this->Cell(60,5,'', 0, 0, 'C');
+            $this->SetTextColor(0, 0, 0);
             $this->Cell(70,5,'Consultant Pathologist(MD)', 0, 1, 'R');
+            $this->SetTextColor(24, 54, 151);
             $this->Cell(60,5,'Digital X-Ray, Special X-Ray, OPG, ECG & Eye.', 0, 0, 'L');
             $this->Cell(60,5,'', 0, 0, 'C');
+            $this->SetTextColor(0, 0, 0);
             $this->Cell(70,5,'Reg. No: 59304 (WBMC)', 0, 1, 'R');
 
-            // $this->Image('./assets/images/bottom-wave.jpg', 2, 276, 220, 20);
-            // $this->SetY(-11);
-            // $this->SetFont('Arial','I',7);
-            // $this->SetTextColor(255,255,255);
-            // $this->Cell(0,3,'*The result may be correlation clinically', 0, 1, 'R');
-            // $this->Cell(0,3,'*Patient identification not verified', 0, 1, 'R');
-            // $this->Cell(0,3,'*This report is not valid for medico legal purpose', 0, 1, 'R');
+            // Define left and right side spacing
+            $leftSpace = 3; // Left side space in mm
+            $rightSpace = -6; // Right side space in mm
+            $imageX = $leftSpace; // X position with left space
+            $imageY = 276; // Y position
+            $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
+            $imageHeight = 18; // Height of the image
 
-             // Define left and right side spacing
-        $leftSpace = 3; // Left side space in mm
-        $rightSpace = -6; // Right side space in mm
-        
-        // Calculate positions
-        $imageX = $leftSpace; // X position with left space
-        $imageY = 276; // Y position
-        $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
-        $imageHeight = 18; // Height of the image
-        
-        // Place the image with left and right side spaces
-        $this->Image('./assets/images/bottom-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
-        
-        $textY = $imageY + $imageHeight + -10; // Adjust Y position as needed
-        $this->SetY($textY);
-        $this->SetFont('Arial', 'I', 7);
-        $this->SetTextColor(255, 255, 255);
-        
-        $cellWidth = 180 - ($leftSpace + $rightSpace);
-        $this->Cell($cellWidth, 3, '*The result may be correlation clinically', 0, 1, 'R');
-        $this->Cell($cellWidth, 3, '*Patient identification not verified', 0, 1, 'R');
-        $this->Cell($cellWidth, 3, '*This report is not valid for medico legal purpose', 0, 1, 'R');
+            $this->Image('./assets/images/bottom-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
+            $textY = $imageY + $imageHeight + -10; // Adjust Y position as needed
+            $this->SetY($textY);
+            $this->SetFont('Arial', 'I', 7);
+            $this->SetTextColor(255, 255, 255);
+            $cellWidth = 180 - ($leftSpace + $rightSpace);
+            $this->Cell($cellWidth, 3, '*The result may be correlation clinically', 0, 1, 'R');
+            $this->Cell($cellWidth, 3, '*Patient identification not verified', 0, 1, 'R');
+            $this->Cell($cellWidth, 3, '*This report is not valid for medico legal purpose', 0, 1, 'R');
         }
-    }
-
+    }//....footer end....//
+ 
+    //.....Main test content start....//
     function AddContentPage() {
         $this->AddPage("","A4");
         $this->SetFont('Arial','B',12);
-        $this->Cell(0,10,'REPORT OF LIVER FUNCTION TEST',0,1,'C');
-        $this->Line(10, 40, 200, 40);
+        $this->Cell(0,8,'REPORT OF LIVER FUNCTION TEST',0,1,'C');
+        $lineWidth = 200 * 0.4; 
+        $lineX = (208 - $lineWidth) / 2;
+        $this->Line($lineX, $this->GetY(), $lineX + $lineWidth, $this->GetY());
         $this->Ln(10);
+       
 
-
-        // for ($i = 1; $i <= 20; $i++) {
-        //     $this->SetFont('Arial','B',10);
-        //     $this->Cell(90,5,'suger test',0,0, 'L');
-        //     $this->SetFont('Arial','B',10);
-        //     $this->Cell(90,5,':8.1 g/dl',0,1,'R');
-        //     $this->SetFont('Arial','',8);
-        //     $this->Cell(90,5,'Lorem ipsum dolor sit amet consectetur, adipisicing elit.',0,1);
-        //     $this->Cell(90,5,'Lorem ipsum dolor 12h - 76gh',0,1);
-        //     $this->Ln(5);
-        // }
-        // $this->Ln(2);
         foreach ($this->testData as $test) {
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(90, 5, $test['name'], 0, 0, 'L');
+            $this->Cell(50, 5, $test['name'], 0, 0, 'C');
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(90, 5, ':' . $test['value'], 0, 1, 'R');
+            $this->Cell(115, 5, ': ' . $test['value'], 0, 1, 'R');
             $this->SetFont('Arial', '', 8);
-            $this->Cell(90, 5, 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.', 0, 1);
-            $this->Cell(90, 5, 'Lorem ipsum dolor 12h - 76gh', 0, 1);
+            $this->Cell(62, 5, $test['ageGroup'] , 0, 1,'C');
+            $this->Cell(48, 5, $test['unit'] , 0, 1,'C');
+            // $this->Cell(0, 5, $test['description'], 0, 1);
+            // $this->Cell(90, 5, 'Lorem ipsum dolor 12h - 76gh', 0, 1);
             $this->Ln(5);
         }
          $this->Ln(2);
     }
+    //.....Main test content end....//
 
-    
+    //....footer set last page...//
     function AddLastPage() {
         $this->isLastPage = true;
-    }
+    }//footer end..///
 
+    ///....for date time format...///
     function formatDateTime($date, $separator) {
         return date("d{$separator}m{$separator}Y", strtotime($date));
-    }
+    }//...end format...//
 }
 
 if (isset($_POST['printPDF'])) {
 
+    ///...for getting dynamic data...///
     $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
     $labReportDetailbyId = json_decode($labReportDetailbyId, true);
 
@@ -244,19 +238,22 @@ if (isset($_POST['printPDF'])) {
             if ($decodedData !== null) {
                 $testData[] = [
                     'name' => $decodedData['sub_test_name'],
-                    'value' => $testValue
+                    'value' => $testValue,
+                    'description' => $decodedData['test_dsc'],
+                    'ageGroup' => $decodedData['age_group'],
+                    'unit' => $decodedData['unit'],
+
                 ];
             }
         }
-    }
-
+    }///....dynamic data end...///
 
     $pdf = new PDF();
+
     $pdf->AliasNbPages();
     $pdf->setTestData($testData);
     $pdf->AddContentPage();
     $pdf->AddLastPage();
-
     ob_clean();
     $pdf->Output();
     exit;
@@ -281,17 +278,20 @@ if (isset($_POST['printPDF'])) {
             <div>
                 <img src="./assets/images/top-wave.svg" alt="">
             </div>
-            <!-- <div class='lab-name'> -->
-            <h1 class='lab-name'><?= $healthCareName ?></h1>
-            <!-- </div> -->
-            <div>
+            <div class='lab-name'>
+                <h1 class='lab-name'><?= $healthCareName ?></h1>
+            </div>
+            <div class="lab-tag">
                 <span>DIAGNOSTIC & POLYCLINIC</span>
             </div>
-            <div>
+            <div class="lab-address">
                 <p>Daulatabad, Murshidabad,(W.B.),Pin -742302, Mobile:8695494415/9064390598,Website:www.medicy.in</p>
             </div>
-            <hr>
-            <div>
+            <div class="hear-icon">
+            <img src="./assets/images/report-heart.jpg" alt="">
+            </div>
+            <hr class="addHr">
+            <div class="patient-info">
                 <div>
                     <p><b>Patient's Name :</b> <?= $name; ?></p>
                     <p><b>Patient id :</b> <?= $patient_id ?></p>
@@ -304,58 +304,61 @@ if (isset($_POST['printPDF'])) {
                     <p><b>Reporting Date :</b> <?= formatDateTime($testDate, '/') ?></p>
                 </div>
             </div>
-            <hr>
+            <hr class="customHr">
         </header>
 
-        <div class="content">
+        <div class="report-area">
             <h5><U><b>REPORT OF LIVER FUNCTION TEST</b></U></h5>
 
             <table>
 
                 <?php
-        $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
-        $labReportDetailbyId = json_decode($labReportDetailbyId);
-        if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
-            for ($i = 0; $i < count($testIds); $i++) {
-                $patientTest = $SubTests->subTestById($testIds[$i]);
-                $decodedData = json_decode($patientTest, true);
-                if ($decodedData !== null) {
-                    $sub_test_name = $decodedData['sub_test_name'];
-        ?>
+                $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
+                $labReportDetailbyId = json_decode($labReportDetailbyId);
+                if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
+                    // foreach ($labReportDetailbyId as $report) {
+                    //     $test_value = $report->test_value;
+                    // }
+                    for ($i = 0; $i < count($testIds); $i++) {
+                        $patientTest = $SubTests->subTestById($testIds[$i]);
+                        $decodedData = json_decode($patientTest, true);
+                        if ($decodedData !== null) {
+                            $sub_test_name = $decodedData['sub_test_name'];
+                            $age_group     = $decodedData['age_group'];
+                ?>
                 <tr>
                     <td>
-                        <?= $sub_test_name ?>
+                        <div class="subtestHead">
+                            <b><?= $sub_test_name ?></b>
+                            <b>: <?= $testData[$i] ?></b>
+                        </div>
+                        <small><?= $age_group ?>: <?= $testData[$i] ?></small>
                         <br>
-                        <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</small>
-                        <br>
-                        <small>Lorem ipsum dolor 12h - 76gh </small>
                     </td>
-                    <td><?= $testData[$i] ?></td>
+                    <!-- <td><?= $testData[$i] ?></td> -->
                 </tr>
                 <?php
+                    }
+                   }
                 }
-            }
-        }
-
-        ?>
-
+                ?>
             </table>
         </div>
 
-        <footer>
-            <div>
+        <div class="footer-info">
+            <div class="footerTag">
                 <p>Reference values are obtained from the literature provided with reagent kit.</p>
-                <hr>
+                <hr style="width: 90%;height: 1px;background-color:gray;">
             </div>
 
-            <p><b>***END OF REPORT***</b></p>
-            <div>
-                <div>
-                    <p><small><i><b>A Health Care Unit for :-</b></i></small></p>
-                    <p><small><b>Advance Assay, USG & ECHO, Colour Doppler,</b></small></p>
-                    <p><small><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></small></p>
+            <p class="footerHead"><b>***END OF REPORT***</b></p>
+            <div class="footer-content">
+                <div class="footer-content-Left">
+                    <p><i><b>A Health Care Unit for :-</b></i></p>
+                    <p><b>Advance Assay, USG & ECHO, Colour Doppler,</b></p>
+                    <p><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></p>
                 </div>
-                <div><small><i><b>Verified by :</b></i></small></div>
+                <div class="verified-by"><small><i><b>Verified by :</b></i></small></div>
                 <div>
                     <p><b>DR. S.BISWAS</b></p>
                     <p><b>Consultant Pathologist(MD)</b></p>
@@ -366,11 +369,13 @@ if (isset($_POST['printPDF'])) {
             <div>
                 <img src="./assets/images/bottom-wave.svg" alt="">
             </div>
-        </footer>
+        </div>
     </section>
     <form method="post">
-    <input type="hidden" name="printPDF" value="1">
-    <button type="submit">Print PDF</button>
+        <div class="printButton">
+        <input type="hidden" name="printPDF" value="1">
+        <button type="submit" >Print PDF</button>
+        </div>
     </form>
 </body>
 
