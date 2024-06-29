@@ -121,14 +121,21 @@ function dayFilter(t){
 //// page all function dafination area
 // download file format selection function
 function selectDownloadType(ts){
-    if(ts.value == 'exl'){
-        exportToExcel();
-    }
-    if(ts.value == 'csv'){
-        exportToCSV();
-    }
-    if(ts.value == 'pdf'){
-        exportToPDF();
+    if(document.getElementById('download-checking').innerHTML == '1'){
+        if(ts.value == 'exl'){
+            exportToExcel();
+            downloadType.selectedIndex = 0;
+        }
+        if(ts.value == 'csv'){
+            exportToCSV();
+            downloadType.selectedIndex = 0;
+        }
+        if(ts.value == 'pdf'){
+            exportToPDF();
+        }
+    }else{
+        alert('generate report first!');
+        downloadType.selectedIndex = 0;
     }
 }
 // date range select function
@@ -673,18 +680,22 @@ function salesDataSearchFunction(array){
     }
 }
 
+
+
 // dynamic table generation on data
 let currentPage = 1;
 const rowsPerPage = 30; // Define the number of rows per page
 
+
 function reportShow(parsedData) {
     console.log(parsedData);
+    document.getElementById('download-checking').innerHTML = '1';
     // Reset table data
     dataTable.innerHTML = '';
 
     let currentDateTime = getCurrentDateTime();
     reportGenerationTime.innerHTML = currentDateTime;
-    
+
     // Define headers based on filter values
     const headerStart1 = ['Date'];
     const headerStart2 = ['Start Date', 'End Date'];
@@ -711,7 +722,7 @@ function reportShow(parsedData) {
         headerMid = slicedString(filterByStaffName.innerHTML);
     }
 
-    // header end on filter val
+    // Header end on filter val
     if (reportFilterVal.innerHTML === 'Total Sell') {
         headerEnd = headerEnd1;
     } else if (reportFilterVal.innerHTML === 'Total Margin') {
@@ -730,11 +741,90 @@ function reportShow(parsedData) {
     headers.forEach(headerText => {
         const th = document.createElement('th');
         th.textContent = headerText;
+        th.style.fontWeight = 'bold'; // Make the header bold
         tr.appendChild(th);
     });
     thead.appendChild(tr);
+
+    // Append the header row to the table head
     dataTable.appendChild(thead);
 
+    // Calculate and append the grand total row
+    const grandTotalRow = document.createElement('tr');
+    grandTotalRow.classList.add('grand-total');
+    grandTotalRow.style.fontWeight = 'bold'; // Make the row bold
+
+    // Create the first cell for "Grand Total"
+    headers.forEach(header => {
+        if (header === 'Date') {
+            const labelCell = document.createElement('td');
+            labelCell.textContent = '';
+            labelCell.className = 'total-label'; // Adjust class name as needed
+            labelCell.style.fontWeight = 'bold'; // Make the cell bold
+            grandTotalRow.appendChild(labelCell);
+        } else if (header === 'Start Date') {
+            // Create two blank cells for "Start Date"
+            const labelCell1 = document.createElement('td');
+            labelCell1.textContent = '';
+            labelCell1.className = 'total-label1'; // Adjust class name as needed
+            labelCell1.style.fontWeight = 'bold'; // Make the cell bold
+            grandTotalRow.appendChild(labelCell1);
+
+            const labelCell2 = document.createElement('td');
+            labelCell2.textContent = '';
+            labelCell2.className = 'total-label2'; // Adjust class name as needed
+            labelCell2.style.fontWeight = 'bold'; // Make the cell bold
+            grandTotalRow.appendChild(labelCell2);
+        }
+    });
+
+    // Iterate through headers to calculate column totals and build the row
+    headers.forEach(header => {
+        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date' && header !== 'Total Sell') {
+            let columnTotal = 0;
+            parsedData.forEach(data => {
+                if (headerMid.includes(data.category_name) && filterByVal.innerHTML === 'ICAT') {
+                    const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                    columnTotal += stockOutAmount;
+                } else if (headerMid.includes(data.payment_mode) && filterByVal.innerHTML === 'PM') {
+                    const totalAmount = parseFloat(data.total_amount || 0);
+                    columnTotal += totalAmount;
+                } else if (headerMid.includes(data.added_by_name) && filterByVal.innerHTML === 'STF') {
+                    const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                    columnTotal += stockOutAmount;
+                }
+            });
+
+            const cell = document.createElement('td');
+            cell.textContent = `₹${columnTotal.toFixed(2)}`; // Add rupees sign
+            cell.className = 'total-cell';
+            grandTotalRow.appendChild(cell);
+        }
+    });
+
+    // Calculate grand total
+    let grandTotal = 0;
+    parsedData.forEach(data => {
+        if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+            grandTotal += parseFloat(data.total_stock_out_amount || 0);
+        } else if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
+            grandTotal += parseFloat(data.total_amount || 0);
+        } else if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+            grandTotal += parseFloat(data.total_stock_out_amount || 0);
+        }
+    });
+
+    // Append grand total cell
+    const grandTotalCell = document.createElement('td');
+    grandTotalCell.textContent = `₹${grandTotal.toFixed(2)}`; // Add rupees sign
+    grandTotalCell.className = 'grand-total-cell';
+    grandTotalCell.style.fontWeight = 'bold'; // Make the cell bold
+    grandTotalRow.appendChild(grandTotalCell);
+
+    // Append the grand total row to the table head
+    thead.appendChild(grandTotalRow);
+
+    // Create tbody and populate with data
     const tbody = document.createElement('tbody');
 
     // Function to group data by key
@@ -778,7 +868,7 @@ function reportShow(parsedData) {
 
         let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
 
-        // set middle headers to 0 on initialization
+        // Initialize middle headers to 0
         headerMid.forEach(header => {
             rowData[header] = 0.00;
         });
@@ -787,36 +877,33 @@ function reportShow(parsedData) {
         groupData.forEach(data => {
             // On Product category
             if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
-                rowData[data.category_name] += parseFloat(data.total_stock_out_amount);
-                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                totalMargin += parseFloat(data.total_sales_margin || 0);
-                totalDiscount += parseFloat(data.total_discount || 0);
+                const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                rowData[data.category_name] += stockOutAmount;
+                totalSellAmount += stockOutAmount;
             }
 
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-                rowData[data.payment_mode] += parseFloat(data.total_amount);
-                totalSellAmount += parseFloat(data.total_amount || 0);
-                totalMargin += parseFloat(data.total_sales_margin || 0);
-                totalDiscount += parseFloat(data.total_discount || 0);
+                const totalAmount = parseFloat(data.total_amount || 0);
+                rowData[data.payment_mode] += totalAmount;
+                totalSellAmount += totalAmount;
             }
 
             // On Staff name
             if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-                rowData[data.added_by_name] += parseFloat(data.total_stock_out_amount);
-                totalSellAmount += parseFloat(data.total_stock_out_amount || 0);
-                totalMargin += parseFloat(data.total_sales_margin || 0);
-                totalDiscount += parseFloat(data.total_discount || 0);
+                const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                rowData[data.added_by_name] += stockOutAmount;
+                totalSellAmount += stockOutAmount;
             }
         });
 
-        // values based on reportFilterVal
+        // Set values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
-            rowData['Total Sell'] = totalSellAmount.toFixed(2);
+            rowData['Total Sell'] = `₹${totalSellAmount.toFixed(2)}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
-            rowData['Total Margin'] = totalMargin.toFixed(2);
+            rowData['Total Margin'] = `₹${totalMargin.toFixed(2)}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Discount') {
-            rowData['Total Discount'] = totalDiscount.toFixed(2);
+            rowData['Total Discount'] = `₹${totalDiscount.toFixed(2)}`; // Add rupees sign
         }
 
         // Create table cells for each header
@@ -830,86 +917,28 @@ function reportShow(parsedData) {
         return tr;
     };
 
-    // Function to display data for the current page
-    const displayPage = (data) => {
-        tbody.innerHTML = ''; // Clear existing rows
+    // Display all data without pagination
+    Object.keys(groupedData).forEach(groupKey => {
+        const groupData = groupedData[groupKey];
+        const tr = createRows(groupData, groupKey, headers);
+        tbody.appendChild(tr);
+    });
 
-        const startIndex = (currentPage - 1) * rowsPerPage;
-        const endIndex = startIndex + rowsPerPage;
-        const currentPageData = data.slice(startIndex, endIndex);
-
-        currentPageData.forEach(groupKey => {
-            const groupData = groupedData[groupKey];
-            const tr = createRows(groupData, groupKey, headers);
-            tbody.appendChild(tr);
-        });
-
-        dataTable.appendChild(tbody);
-    };
-
-    // Function to create pagination buttons
-    const createPagination = (data) => {
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = ''; // Clear existing pagination buttons
-
-        const totalPages = Math.ceil(data.length / rowsPerPage);
-
-        // Previous button
-        const prevButton = document.createElement('button');
-        prevButton.innerHTML = '&larr;';
-        prevButton.disabled = currentPage === 1;
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayPage(Object.keys(groupedData));
-                createPagination(Object.keys(groupedData));
-            }
-        });
-        paginationDiv.appendChild(prevButton);
-
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-            const pageButton = document.createElement('button');
-            pageButton.textContent = i;
-            if (i === currentPage) {
-                pageButton.classList.add('active');
-            }
-            pageButton.addEventListener('click', () => {
-                currentPage = i;
-                displayPage(Object.keys(groupedData));
-                createPagination(Object.keys(groupedData));
-            });
-            paginationDiv.appendChild(pageButton);
-        }
-
-        // Next button
-        const nextButton = document.createElement('button');
-        nextButton.innerHTML = '&rarr;';
-        nextButton.disabled = currentPage === totalPages;
-        nextButton.addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayPage(Object.keys(groupedData));
-                createPagination(Object.keys(groupedData));
-            }
-        });
-        paginationDiv.appendChild(nextButton);
-    };
-
-    // Display the first page and create pagination
-    displayPage(Object.keys(groupedData));
-    createPagination(Object.keys(groupedData));
+    // Append tbody to the table
+    dataTable.appendChild(tbody);
 }
 
 
 
 
-
 /// exporting function gose down there
-// Function for export the table data to CSV
+// Function for export the table data to Excel
 function exportToExcel() {
-    const headerData = [
+    
+    const headerData1 = [
         [healthCareName.innerHTML],
+    ];
+    const headerData2 = [
         [healthCareAddress.innerHTML],
         ["GSTIN : " + healthCareGstin.innerHTML],
         [],
@@ -923,24 +952,33 @@ function exportToExcel() {
     });
 
     // Calculate grand totals for each column (excluding the first column which is the date column)
-    const grandTotals = rows[0].map((_, colIndex) => {
+    const grandTotals = headers.map((_, colIndex) => {
         if (colIndex === 0) return "Grand Total"; // Label for the first column
         return rows.reduce((sum, row) => {
-            return sum + (parseFloat(row[colIndex]) || 0);
+            const value = row[colIndex].replace(/[^0-9.-]+/g, ""); // Remove non-numeric characters like currency symbols
+            return sum + (parseFloat(value) || 0);
         }, 0).toFixed(2); // Sum and format as needed
     });
-
-    // Append grand totals row to the rows array
-    rows.push(grandTotals);
 
     // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Report');
 
-    // Add header data to the worksheet with merged cells and center alignment
+    // Add header data1 to the worksheet with merged cells, center alignment, and specified font
     let currentRow = 1; // Start at row 1
 
-    headerData.forEach(rowData => {
+    headerData1.forEach(rowData => {
+        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
+        const mergedCell = worksheet.getCell(`A${currentRow}`);
+        mergedCell.value = rowData[0];
+        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
+        mergedCell.font = { size: 14, bold: true }; // Set font size to 14 and bold
+        currentRow++;
+    });
+
+    // Add header data2 to the worksheet with merged cells and center alignment
+    headerData2.forEach(rowData => {
         const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
@@ -1036,7 +1074,7 @@ function exportToCSV() {
     });
 
     // Add grand totals row to the end of the rows array
-    const csvData = [...headerData, headers, ...rows, grandTotals];
+    const csvData = [...headerData, headers, ...rows];
 
     // Convert array to CSV string
     const csvString = csvData.map(row => row.join(',')).join('\n');

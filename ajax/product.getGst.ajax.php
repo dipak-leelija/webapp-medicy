@@ -26,17 +26,17 @@ if (isset($_GET["id"])) {
     $showProducts = $showProducts->data;
     $gstId = $showProducts[0]->gst;
 
-    // echo $gstId;
+    echo $gstId;
     // 
-    $col = 'id';
-    $gstData = json_decode($Gst->seletGstByColVal($col, $gstId));
-    if($gstData->status){
-        $gstData = $gstData->data;
+    // $col = 'id';
+    // $gstData = json_decode($Gst->seletGstByColVal($col, $gstId));
+    // if($gstData->status){
+    //     $gstData = $gstData->data;
 
-        echo $gstData[0]->percentage;
-    } else {
-        echo null;
-    }
+    //     echo $gstData[0]->percentage;
+    // } else {
+    //     echo null;
+    // }
     
 }
 
