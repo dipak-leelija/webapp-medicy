@@ -90,6 +90,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                 <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
                                                     aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                    <i class="fas fa-file-alt" style="color: #EB449F;margin-right:8px"></i>
                                                     Sales Report
                                                 </button>
                                             </h2>
@@ -101,6 +102,28 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                 </div>
                                                 <div class="accordion-body">
                                                     <a href="gst-sales-report.php">GST Sales Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                    aria-expanded="false" aria-controls="flush-collapseThree">
+                                                    <i class="fas fa-percent" style="color: #3ED6CB;margin-right:8px"></i>Margin Report
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingThree"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="item-wise-margin-report.php">Item Wise Margin</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="bill-wise-margin-report.php">Bill Wise Margin</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="purchase-analysis-report.php">Purchase Analysis Report</a>
                                                 </div>
                                             </div>
                                         </div>
