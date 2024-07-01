@@ -19,58 +19,7 @@ $StockOut = new StockOut;
 $StockInDetails = new StockInDetails;
 $Distributor = new Distributor;
 $Products = new Products;
-$Admin = new Admin;
-$Employees   = new Employees;
 $Utility     = new Utility;
-
-
-// product category list
-$prodCategory       = json_decode($Products->productCategory());
-if ($prodCategory) {
-    $prodCategoryData = $prodCategory->data;
-} else {
-    $prodCategoryData = [];
-}
-
-
-// emp list
-$col = 'admin_id';
-$employeeDetails = json_decode($Employees->selectEmpByCol($col, $adminId));
-
-
-$empIdString = '';
-$empNameString = '';
-if ($employeeDetails->status) {
-    $employeeDetails = $employeeDetails->data;
-    foreach ($employeeDetails as $empDetails) {
-        if ($empIdString == '') {
-            $empIdString = $empIdString . $empDetails->emp_id;
-        } else {
-            $empIdString = $empIdString . ',' . $empDetails->emp_id;
-        }
-
-        if ($empNameString == '') {
-            $empNameString = $empNameString . $empDetails->emp_username;
-        } else {
-            $empNameString = $empNameString . ',' . $empDetails->emp_username;
-        }
-    }
-} else {
-    $employeeDetails = array();
-}
-
-// user id string generation 
-$allUserIdString = $adminId . ',' . $empIdString;;
-
-// user name string generation depend on session
-if ($_SESSION['ADMIN']) {
-    $allEmpNameString = $username . ',' . $empNameString;
-} else {
-    $adminData = json_decode($Admin->adminDetails($adminId));
-    $adminData = $adminData->data;
-    $adminName = $adminData[0]->fname;
-    $allEmpNameString = $adminData[0]->username . ',' . $empNameString;
-}
 
 
 
@@ -132,10 +81,7 @@ if ($_SESSION['ADMIN']) {
                         </div>
                         <div class="col-md-3 d-flex text-center p-3 pt-0">
                             <div class="col-sm-4">
-                                <!-- <button type="button" id="print-report" name="print-report"
-                                    class="btn btn-sm btn-primary border-0 text-center">
-                                    Print
-                                </button> -->
+                                <!-- blanck div -->
                             </div>
                             <div class="col-sm-8 bg-info bg-opacity-10">
                                 <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
@@ -183,19 +129,15 @@ if ($_SESSION['ADMIN']) {
                                 <label class="d-none" id="filter-by-val"></label>
                             </div>
 
-                            <div class="col-md-2 bg-white me-3 selectDiv" id="date-range-select-div">
+                            <div class="col-md-2 selectDiv" id="date-range-select-div">
                                 <div class="input-group">
-                                    <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
+                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="appointment-search" id="search-by-id-name-contact" style="width:10rem;" value="<?= isset($match) ? $match : ''; ?>">
 
-                                    <div class="input-group-append" id="appointment-search-filter-1">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                     </div>
-
-                                    <!-- <div class="d-none input-group-append" > -->
-                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
-                                    <!-- </div> -->
                                 </div>
-                                <label class="d-none" id="dt-rng-val"></label>
+                                <label class="d-none" id="item-search-val"></label>
                             </div>
 
                             <!-- find button on filter -->
@@ -228,12 +170,35 @@ if ($_SESSION['ADMIN']) {
                             </div>
                         </div>
 
-
+                        <!-- margin summery div -->
+                        <div class="col-12 mt-2 d-flex">
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6 d-flex">
+                                <div class="col-sm-3 text-end">
+                                    <label for="">Total Sales Amount</label><br>
+                                    <label for="" id="total-sales-amount">amount1</label>
+                                </div>
+                                <div class="col-sm-3 text-end">
+                                    <label for="">Total Purchase</label><br>
+                                    <label for="" id="total-purchase-amount">amount2</label>
+                                </div>
+                                <div class="col-sm-3 text-end">
+                                    <label for="">Total Net GST</label><br>
+                                    <label for="" id="total-purchase-amount">amount3</label>
+                                </div>
+                                <div class="col-sm-3 text-end">
+                                    <label for="">Total Profit</label><br>
+                                    <label for="" id="total-purchase-amount">amount4</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- report table start -->
-                        <table class="table" id="report-table">
+                        <table class="table" id="item-wise-margin-table">
                             <!-- dynamic table gose hear -->
-
                         </table>
+                        
                         <div class="col-md-12 text-center">
                             <div id="pagination"></div>
                         </div>
@@ -281,23 +246,8 @@ if ($_SESSION['ADMIN']) {
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
-    <script src="<?php echo JS_PATH; ?>sales-report-control.js"></script>
+    <script src="<?php echo JS_PATH; ?>item-wise-margin-report.js"></script>
 
-    <!-- checkbox checked or unchecked  -->
-    <script>
-        function toggleCheckboxes(source) {
-            const checkboxes = document.querySelectorAll('.checkbox-menu input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.disabled) {
-                    checkbox.checked = source.checked;
-                }
-            });
-
-            if (source.value == 'AC') {
-                document.getElementById('prod-category').innerHTML = 'All Category';
-            }
-        }
-    </script>
 </body>
 
 </html>
