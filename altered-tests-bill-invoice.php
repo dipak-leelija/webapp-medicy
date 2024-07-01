@@ -215,7 +215,7 @@ if (isset($_POST['bill-generate'])) {
     /* ================ Bill Details Insertion End ================= */
     if ($addBillDetails) {
         echo "<script>alert('Bill Updated.');</script>";
-        $redirectUrl = URL."test-invoice.php?billId=" . url_enc($billId);
+        $redirectUrl = URL."invoices/lab-invoice.php?billId=" . url_enc($billId);
         header("Location: " . $redirectUrl);
     }else{
         echo "<script>alert('Bill Details Uptaion Failed.');</script>";
