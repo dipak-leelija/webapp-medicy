@@ -309,7 +309,7 @@ if (isset($_GET['bill_id'])) {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2" href="test-appointments.php">Go Back</a> <!--onclick="history.back()"-->
+            <a class="btn btn-primary shadow mx-2" href="../test-appointments.php">Go Back</a> <!--onclick="history.back()"-->
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
     </div>
