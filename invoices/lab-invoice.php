@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
+// require_once CLASS_DIR.'hospital.class.php';
 
 
 
@@ -26,6 +27,7 @@ $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
 $Utility         = new Utility;
+// $HealthCare     = new HealthCare;
 // $LabAppointments = new LabAppointments();
 
 if (isset($_GET['bill_id'])) {
@@ -123,6 +125,259 @@ if (isset($_GET['bill_id'])) {
         }
     }
 }
+
+// Include FPDF library
+require('../assets/plugins/pdfprint/fpdf/fpdf.php');
+
+class PDF extends FPDF {
+
+    var $isLastPage = false;
+
+    private $billId;
+    private $billingDate;
+    private $billDate;
+    private $subTotal;
+    private $discountAmount;
+    private $dueAmount;
+    private $paidAmount;
+    private $LabBillDetails;
+    private $SubTests;
+    private $healthCareLogo;
+
+    // Constructor with parameters
+    function __construct($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests, $healthCareLogo) {
+        parent::__construct();
+        $this->billId = $billId;
+        $this->billingDate = $billingDate;
+        $this->billDate = $billDate;
+        // $this->subTotal = $subTotal;
+        $this->discountAmount = $discountAmount;
+        $this->dueAmount = $dueAmount;
+        $this->paidAmount = $paidAmount;
+        $this->LabBillDetails = $LabBillDetails;
+        $this->SubTests = $SubTests;
+        $this->healthCareLogo = $healthCareLogo;
+    }
+
+    function Header() {
+        global $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $billId, $billingDate, $billDate, $patientName, $patientAge, $patientPhno, $testDate, $doctorName, $doctorReg;
+
+        if ($this->PageNo() == 1) {  ///this line only show the header first page
+
+            //.. healthCareLogo...///
+            $logoX = 10;
+            $logoY = 12;
+            $logoWidth = 20;
+            $logoHeight = 20;
+            if (!empty($this->healthCareLogo)) {
+                $this->Image($this->healthCareLogo, $logoX, $logoY, $logoWidth, $logoHeight);
+            }
+
+            ///....Title (Healthcare Name)...///
+            $this->SetFont('Arial', 'B', 16);
+            $this->SetXY($logoX + $logoWidth + 5, $logoY); // Position next to the logo
+            $this->Cell(90, 8, $healthCareName, 0, 1, 'L'); // Centered text
+
+            // Address
+            $this->SetFont('Arial', '', 10);
+            $address = "$healthCareAddress1, $healthCareAddress2\n$healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo";
+            $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
+            $this->MultiCell(90, 5, $address, 0, 'L');
+
+            ///...Invoice Info
+            $this->SetY(10); // Reset Y position
+            $this->SetX(-50); // Align to the right
+            // Draw vertical line
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
+            // $this->Ln(0);
+            $this->MultiCell(80, 5, "Invoice: \n#$billId\n" . (isset($billingDate) && !empty($billingDate) ?     formatDateTime($billingDate) : formatDateTime($billDate)), 0, 'L');
+            // Patient Info
+            $this->Ln(10);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->SetY($this->GetY() + 2);
+            $this->MultiCell(0, 5, "Patient: $patientName, Age: $patientAge\nM: $patientPhno, Test date: " .     formatDateTime($testDate), 0, 'L');
+            // Doctor Info
+            $this->SetY($this->GetY() - 10); // Move Y position up to align with patient info
+            $this->SetX(-80); // Align to the right
+            $this->MultiCell(70, 5, "Referred Doctor: $doctorName\n" . ($doctorReg != NULL ? "Reg: $doctorReg"     : "Reg: N/A"), 0, 'R');
+            $this->Ln(1);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(10);
+        }
+    }
+
+
+     // Page footer
+    function Footer() {
+        if ($this->isLastPage) { /// this line only show the footer last page 
+
+            $pageHeight = $this->GetPageHeight();
+            $middleY = $pageHeight / 2;
+            $this->SetY($middleY);
+            $this->SetLineWidth(0.4);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(4);
+
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(110, 5, 'Total Amount:', 0, 0, 'R');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(80, 5, ' ' . number_format(floatval($this->subTotal), 2), 0, 1, 'R');
+
+            if (isset($_GET['billId'])) {
+                $this->SetFont('Arial', 'B', 10);
+                $this->Cell(110, 5, 'Less Amount:', 0, 0, 'R');
+                $this->SetFont('Arial', '', 10);
+                $this->Cell(80, 5, ' ' . number_format(floatval($this->discountAmount), 2), 0, 1, 'R');
+            }
+
+            if ($this->dueAmount != NULL && $this->dueAmount > 0) {
+                $this->SetFont('Arial', 'B', 10);
+                $this->Cell(110, 5, 'Due Amount:', 0, 0, 'R');
+                $this->SetFont('Arial', '', 10);
+                $this->Cell(80, 5, ' ' . number_format(floatval($this->dueAmount), 2), 0, 1, 'R');
+            }
+
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(110, 5, 'Paid Amount:', 0, 0, 'R');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(80, 5, ' ' . number_format(floatval($this->paidAmount), 2), 0, 1, 'R');
+
+            $this->Ln(4);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+        }
+    }
+
+    function AddContentPage() {
+        $this->AddPage();
+        ///....add paid badge...///
+        if( $this->paidAmount){
+            $imageX = 50; // X position with left space
+            $imageY = 70;
+            $imageWidth = 100; // Adjusted width with spaces
+            $imageHeight = 60; // Height of the image
+           $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+       }///....end page badge...///
+
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
+        $this->Cell(80, -10, 'Description', 0, 0, 'L');
+        $this->Cell(30, -10, 'Price ()', 0, 0, 'L');
+        $this->Cell(30, -10, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(30, -10, 'Amount ()', 0, 1, 'R');
+        $this->Ln(10);
+        $this->SetDrawColor(108, 117, 125);
+        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
+
+        ///...Bill Details...///
+        $this->SetFont('Arial', '', 10);
+        $slno = 1;
+        $rowsPerPage = 8; // Maximum rows per page
+        $rowCounter = 0;
+        $billDetails = json_decode($this->LabBillDetails->billDetailsById($this->billId))->data;
+
+        foreach ($billDetails as $rowDetails) {
+            if ($rowCounter >= $rowsPerPage) {
+
+                ///....show first page total amount...////
+                $this->SetFont('Arial', 'B', 10);
+                $this->Cell(170, 10, 'Total Amount:', 0, 0, 'R');
+                $this->SetFont('Arial', '', 10);
+                $this->Cell(20, 10, '' .$amount, 0, 1, 'R');
+
+                // Add new page if rowCounter reaches rowsPerPage
+                $this->AddPage();
+                $this->Ln(10);
+                $this->SetFont('Arial', '', 10);
+
+                $rowCounter = 0; // Reset row counter for new page
+
+                 ///....add paid badge...///
+               if($this->paidAmount){
+                   $imageX = 50; // X position with left space
+                   $imageY = 70;
+                   $imageWidth = 100; // Adjusted width with spaces
+                   $imageHeight = 60; // Height of the image
+                  $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+                }///....end page badge...///
+            }
+
+            $subTestId = $rowDetails->test_id;
+            $testAmount = $rowDetails->price_after_discount;
+            $testDisc = $rowDetails->percentage_of_discount_on_test;
+
+            if ($subTestId != '') {
+                $showSubTest = json_decode($this->SubTests->subTestById($subTestId));
+                $testName = $showSubTest->sub_test_name;
+                $testPrice = $showSubTest->price;
+
+                //...start dotted row line...//
+                if ($slno > 1) {
+                    $this->SetDrawColor(183, 182, 182); // Set color for the dotted line
+                    $dotWidth = 0.5; // Width of each dot
+                    $spaceWidth = 0.2; // Space between each dot
+                    $lineLength = 200; // Length of the line
+                    $x = 10; // Starting X position
+                    $y = $this->GetY(); // Current Y position
+                
+                    // Draw the dotted line
+                    $drawDot = true; // Initialize to draw dot
+                    while ($x <= $lineLength) {
+                        if ($drawDot) {
+                            $this->Line($x, $y, $x + $dotWidth, $y); // Draw dot
+                        }
+                        $x += $dotWidth + $spaceWidth; // Move X position to next dot
+                        $drawDot = !$drawDot; // Switch drawing state for next dot
+                    }
+                }//...end dotted row...///
+                
+                $this->Cell(20, 10, $slno, 0, 0, 'L');
+                $this->Cell(80, 10, $testName, 0, 0, 'L');
+                $this->Cell(30, 10, $testPrice, 0, 0, 'L');
+                $this->Cell(30, 10, $testDisc, 0, 0, 'L');
+                $this->Cell(30, 10, $testAmount, 0, 1, 'R');
+                $amount  = $amount + $testAmount;
+                $slno++;
+                $this->subTotal += $testAmount;
+                $rowCounter++;
+            } 
+        }
+    }
+
+    //....footer set last page...//
+    function AddLastPage() {
+        $this->isLastPage = true;
+    }//footer end..///
+
+}
+
+if (isset($_POST['printPDF'])) {
+
+    $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
+    if ($healthCare->status === 1 ) {
+        $healthCare = $healthCare->data;
+        $healthCareLogo      = $healthCare->logo;
+        $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL.$healthCareLogo;
+        // print($healthCareLogo);
+        $logoFilename = basename($healthCareLogo);
+        // print($logoFilename);
+        // $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL .  rawurlencode($healthCareLogo);
+        $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : realpath('../assets/images/orgs/'.$logoFilename.'');
+    }
+    // exit;
+
+    $pdf = new PDF($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests,$healthCareLogo);
+    $pdf->AliasNbPages();
+    $pdf->AddContentPage();
+    $pdf->AddLastPage();
+    ob_clean();
+    $pdf->Output();
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -145,7 +400,8 @@ if (isset($_GET['bill_id'])) {
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;"
+                            src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8 ps-4">
                         <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
@@ -309,8 +565,12 @@ if (isset($_GET['bill_id'])) {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2" href="../test-appointments.php">Go Back</a> <!--onclick="history.back()"-->
-            <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
+            <a class="btn btn-primary shadow mx-2" href="../test-appointments.php">Go Back</a>
+            <!--onclick="history.back()"-->
+            <!-- <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button> -->
+            <form method="post">
+                <button class="btn btn-primary shadow mx-2" type="submit" name="printPDF">Print PDF</button>
+            </form>
         </div>
     </div>
 </body>
