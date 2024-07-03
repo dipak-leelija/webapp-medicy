@@ -14,13 +14,11 @@ require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 
-
 $StockOut = new StockOut;
 $StockInDetails = new StockInDetails;
 $Distributor = new Distributor;
 $Products = new Products;
 $Utility     = new Utility;
-
 
 
 ?>
@@ -47,6 +45,7 @@ $Utility     = new Utility;
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
+    <link href="<?php echo CSS_PATH; ?>date-picker/daterangepicker.css" rel="stylesheet">
 
 </head>
 
@@ -91,50 +90,37 @@ $Utility     = new Utility;
                                     <!-- <option value='pdf'>Download PDF File</option> -->
                                 </select>
                                 <label class="d-none" id="download-checking">0</label>
+                                <label class="d-none" id="selected-start-date"></label>
+                                <label class="d-none" id="selected-end-date"></label>
                             </div>
                         </div>
                     </div>
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
+
                             <!-- filter date range -->
-                            <div class="col-md-2 bg-white me-3 selectDiv" id="date-range-select-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
-                                    <option value="" disabled selected>Select Date</option>
-                                    <option value="T">Today</option>
-                                    <option value="Y">Yesterday</option>
-                                    <option value="TM">This Month</option>
-                                    <option value="PM">Previous Month</option>
-                                    <option value="CFY">Current Fiscal Year</option>
-                                    <option value="PFY">Previous Fiscal Year</option>
-                                    <option value="CR">Csutom Range</option>
-                                </select>
-                                <label class="d-none" id="dt-rng-val"></label>
+                            <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between p-1" id="date-range-select-div">
+                                <span id="selected-date" style="flex-grow: 1;">Select Date</span>
+                                <i class="fa fa-calendar"></i>
                             </div>
-
-                            <div class="d-none col-md-2 bg-white me-3 selectDiv" id="inputed-date-range-div">
-                                <div class="input-group w-100">
-                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;" />
-
-                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -31px;" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
-                                </div>
-                            </div>
+                            <!-- <label for="" class="d-none" id="selected-date-range"></label> -->
 
                             <!-- filter on category -->
                             <div class="col-md-2 bg-white me-3 selectDiv" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter" onchange="reportTypeFilterSelect(this)">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter" onchange="reportOnFilter(this)">
                                     <option value="" disabled selected>Report Type</option>
                                     <option value="S">Sales</option>
                                     <option value="SR">Sales Return</option>
                                 </select>
-                                <label class="d-none" id="filter-by-val"></label>
+                                <label class="d-none" id="report-on-filter"></label>
                             </div>
 
-                            <div class="col-md-2 selectDiv" id="date-range-select-div">
+                            <div class="col-md-2 selectDiv" id="data-filter-search-div">
                                 <div class="input-group">
-                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="appointment-search" id="search-by-id-name-contact" style="width:10rem;" value="<?= isset($match) ? $match : ''; ?>">
+                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="item-search" id="search-by-item" style="width:10rem;">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
                                 <label class="d-none" id="item-search-val"></label>
@@ -142,55 +128,34 @@ $Utility     = new Utility;
 
                             <!-- find button on filter -->
                             <div class="col-md-1 searchFilterDiv" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="salesSummerySearch()">
+                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="itemMerginSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
-                            </div>
-                        </div>
-
-                        <div class="row d-flex">
-                            <!-- date picker dive -->
-                            <label class="d-none" id="date-range-control-flag">0</label>
-                            <label class="d-none" id="url-control-flag">0</label>
-                            <div class="dropdown-menu  p-2 row" id="dtPickerDiv" style="display:none;">
-                                <div class=" col-md-12">
-                                    <div class="d-flex">
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date" onchange="selectStartDate(this)">
-                                        </div>
-                                        <div class="dtPicker" style="margin-right: 1rem;">
-                                            <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date" onchange="selectEndDate(this)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <label class="d-none" id="selected-start-date"></label>
-                                <label class="d-none" id="selected-end-date"></label>
                             </div>
                         </div>
 
                         <!-- margin summery div -->
                         <div class="col-12 mt-2 d-flex">
                             <div class="col-md-6">
-                                
+
                             </div>
-                            <div class="col-md-6 d-flex">
+
+                            <div class="d-none col-md-6 d-flex" id="grand-total-div">
                                 <div class="col-sm-3 text-end">
                                     <label for="">Total Sales Amount</label><br>
-                                    <label for="" id="total-sales-amount">amount1</label>
+                                    <span>&#8377;</span><label for="" id="total-sales-amount">0</label>
                                 </div>
                                 <div class="col-sm-3 text-end">
                                     <label for="">Total Purchase</label><br>
-                                    <label for="" id="total-purchase-amount">amount2</label>
+                                    <span>&#8377;</span><label for="" id="total-purchase-amount">0</label>
                                 </div>
                                 <div class="col-sm-3 text-end">
                                     <label for="">Total Net GST</label><br>
-                                    <label for="" id="total-purchase-amount">amount3</label>
+                                    <span>&#8377;</span><label for="" id="net-gst-amount">0</label>
                                 </div>
                                 <div class="col-sm-3 text-end">
                                     <label for="">Total Profit</label><br>
-                                    <label for="" id="total-purchase-amount">amount4</label>
+                                    <span>&#8377;</span><label for="" id="total-profit-amount">0</label>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +163,7 @@ $Utility     = new Utility;
                         <table class="table" id="item-wise-margin-table">
                             <!-- dynamic table gose hear -->
                         </table>
-                        
+
                         <div class="col-md-12 text-center">
                             <div id="pagination"></div>
                         </div>
@@ -233,6 +198,12 @@ $Utility     = new Utility;
     <script src="<?php echo JS_PATH; ?>sb-admin-2.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
 
+    <!-- date range jquery plugin -->
+    <script type="text/javascript" src="<?= PLUGIN_PATH ?>jquery/date-picker/jquery.min.js"></script>
+    <script type="text/javascript" src="<?= PLUGIN_PATH ?>jquery/date-picker/moment.min.js"></script>
+    <script type="text/javascript" src="<?= PLUGIN_PATH ?>jquery/date-picker/daterangepicker.min.js"></script>
+
+
     <!-- plugin script for excel and pdf download -->
     <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/xlsx.full.min.js"></script>
     <!-- ExcelJS CDN -->
@@ -246,7 +217,7 @@ $Utility     = new Utility;
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
-    <script src="<?php echo JS_PATH; ?>item-wise-margin-report.js"></script>
+    <script src="<?php echo JS_PATH; ?>item-mergin-report.js"></script>
 
 </body>
 

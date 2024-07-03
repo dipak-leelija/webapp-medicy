@@ -120,7 +120,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                     <a href="item-wise-margin-report.php">Item Wise Margin</a>
                                                 </div>
                                                 <div class="accordion-body">
-                                                    <a href="bill-wise-margin-report.php">Bill Wise Margin</a>
+                                                    <a href="bill-item-wise-margin-report.php">Bill-Item Wise Margin</a>
                                                 </div>
                                                 <div class="accordion-body">
                                                     <a href="purchase-analysis-report.php">Purchase Analysis Report</a>

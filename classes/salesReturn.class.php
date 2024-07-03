@@ -32,7 +32,6 @@ class SalesReturn
 
 
 
-
     function salesReturnDisplay($adminId)
     {
         try {
@@ -49,6 +48,7 @@ class SalesReturn
             return $e->getMessage();
         }
     } //end employeesDisplay function
+
 
 
 
@@ -559,12 +559,100 @@ class SalesReturn
 
 
 
+
     function updateSalesReturnOnReturnCancel($id, $returnQty, $refundAmount)
     {
         $cancelReturnDetails = "UPDATE `sales_return_details` SET `return_qty` = '$returnQty', `refund_amount`='$refundAmount' WHERE `id`='$id'";
         $cancelReturnData = $this->conn->query($cancelReturnDetails);
         return $cancelReturnData;
     }
+
+
+
+
+
+    function salesReturnMarginDataFetch($startDate, $endDate, $adminId, $item = '')
+    { 
+        $data = array();
+        try {
+            $marginQuery = "SELECT 
+                                COALESCE(adm.username, emp.emp_username) AS added_by_name,
+                                COALESCE(pd.name, 'cash sales') AS patient_name,
+                                sr.invoice_id AS bill_no,
+                                DATE_FORMAT(sr.bill_date, '%d-%m-%Y') AS bill_date,
+                                p.name AS item,
+                                CONCAT(sod.weightage, ' ', sod.unit) AS unit,
+                                sod.qty AS stock_out_qty,
+                                sod.loosely_count AS stock_out_lqty,
+                                cs.qty AS current_qty,
+                                sid.mrp AS mrp,
+                                (sod.amount / sod.qty) AS sales_amount,
+                                (sid.amount / sid.qty) AS p_amount,
+                                sod.gst_amount AS gst_amount,
+                                sod.profit_margin AS margin_amount,
+                                ((((sod.amount - sod.profit_margin) * 100) / sod.amount)) AS margin_percent,
+                                m.short_name AS manuf_short_name,
+                                pt.name AS category
+                            FROM 
+                                sales_return_details srd
+                            JOIN 
+                                sales_return sr ON srd.invoice_id = sr.invoice_id
+                            JOIN 
+                                stock_out_details sod ON (sod.item_id = srd.item_id AND sod.invoice_id = sr.invoice_id)
+                            LEFT JOIN 
+                                patient_details pd ON sr.patient_id = pd.patient_id
+                            JOIN 
+                                current_stock cs ON srd.item_id = cs.stock_in_details_id
+                            JOIN 
+                                stock_in_details sid ON cs.stock_in_details_id = sid.id
+                            JOIN 
+                                products p ON srd.product_id = p.product_id
+                            JOIN 
+                                manufacturer m ON p.manufacturer_id = m.id
+                            JOIN 
+                                product_type pt ON pt.id = p.type
+                            LEFT JOIN 
+                                admin adm ON sr.added_by = adm.admin_id
+                            LEFT JOIN 
+                                employees emp ON sr.added_by = emp.emp_id
+                            WHERE 
+                                DATE(sr.added_on) BETWEEN ? AND ?
+                                AND sr.admin_id = ?";
+
+            if ($item != '') {
+                $marginQuery .= " AND sod.item_name = ?";
+            }
+
+            $stmt = $this->conn->prepare($marginQuery);
+
+            if ($item != '') {
+                $stmt->bind_param("ssss", $startDate, $endDate, $adminId, $item);
+            } else {
+                $stmt->bind_param("sss", $startDate, $endDate, $adminId);
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $response = ['status' => '1', 'data' => $data];
+            } else {
+                $response = ['status' => '0', 'data' => 'No records found'];
+            }
+
+            $stmt->close();
+
+            return json_encode($response);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
+
 
 
 
