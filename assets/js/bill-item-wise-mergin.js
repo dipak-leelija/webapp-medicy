@@ -159,6 +159,7 @@ function itemMerginSearch(){
         endDt: endDate,
         filterBy: selectedReportOn.innerHTML,
         searchOn: searchItem,
+        searchFlag: 1,
     };
 
     itemMerginDataSearch(dataArray);
@@ -203,17 +204,6 @@ function reportShow(reportData) {
 
     // Create table headers
     const thead = document.createElement('thead');
-
-    // Add header data rows
-    // header.forEach(headerRow => {
-    //     const headerRowElement = document.createElement('tr');
-    //     const headerCell = document.createElement('th');
-    //     headerCell.colSpan = header.length; // Spanning across all columns
-    //     headerCell.textContent = headerRow;
-    //     headerCell.style.fontWeight = 'bold'; // Make the header bold
-    //     headerRowElement.appendChild(headerCell);
-    //     thead.appendChild(headerRowElement);
-    // });
 
     // Add main column headers row
     const tr = document.createElement('tr');
@@ -300,8 +290,10 @@ function reportShow(reportData) {
         row.appendChild(itemNetGstCell);
 
         const itemProfitAmountPercentageCell = document.createElement('td');
-        itemProfitAmountPercentageCell.textContent = parseFloat(data.margin_percent).toFixed(2) + '%'; // Format to 2 decimal places with % sign
-        totalProfit += parseFloat(data.margin_percent);
+        let profit = data.profit;
+        profit = profit.toFixed(2);
+        itemProfitAmountPercentageCell.textContent = profit+'( '+parseFloat(data.p).toFixed(2) + '%)'; // Format to 2 decimal places with % sign
+        totalProfit += parseFloat(profit).toFixed(2);
         row.appendChild(itemProfitAmountPercentageCell);
 
         // Append the row to the table body
@@ -321,7 +313,7 @@ function reportShow(reportData) {
 
 
 
-/*
+
 // download file format selection function
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -362,14 +354,18 @@ function exportToExcel() {
     });
 
     // Calculate grand totals for each column (excluding the first column which is the date column)
-    const grandTotals = headers.map((_, colIndex) => {
-        
-         // Label for the first column
-        return rows.reduce((sum, row) => {
-            const value = row[colIndex].replace(/[^0-9.-]+/g, ""); // Remove non-numeric characters like currency symbols
+    const numColumns = headers.length;
+    const grandTotals = new Array(numColumns).fill('');
+    const startColumn = numColumns - 4; // Start from the last four columns
+
+    for (let colIndex = startColumn; colIndex < numColumns; colIndex++) {
+        grandTotals[colIndex] = rows.reduce((sum, row) => {
+            // Extract numeric value outside parentheses
+            const match = row[colIndex].match(/([0-9.-]+)(?:\s*\([^)]*\))?/);
+            const value = match ? match[1].replace(/[^0-9.-]+/g, "") : "0";
             return sum + (parseFloat(value) || 0);
         }, 0).toFixed(2); // Sum and format as needed
-    });
+    }
 
     // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
@@ -400,6 +396,7 @@ function exportToExcel() {
 
     // Add an empty row for spacing
     worksheet.addRow([]);
+    currentRow++; // Increment row index for spacing
 
     // Add headers row to the worksheet and apply bold font
     const headersRow = worksheet.addRow(headers);
@@ -450,4 +447,87 @@ function exportToExcel() {
         saveAs(blob, 'report.xlsx');
     });
 }
-*/
+
+
+
+
+// export to csv
+function exportToCSV() {
+    const headerData1 = [
+        [healthCareName.innerHTML],
+    ];
+    const headerData2 = [
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
+    ];
+
+    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    });
+
+    // Calculate grand totals for each column (excluding the first column which is the date column)
+    const numColumns = headers.length;
+    const grandTotals = new Array(numColumns).fill('');
+    const startColumn = numColumns - 4; // Start from the last four columns
+
+    for (let colIndex = startColumn; colIndex < numColumns; colIndex++) {
+        grandTotals[colIndex] = rows.reduce((sum, row) => {
+            // Extract numeric value outside parentheses
+            const match = row[colIndex].match(/([0-9.-]+)(?:\s*\([^)]*\))?/);
+            const value = match ? match[1].replace(/[^0-9.-]+/g, "") : "0";
+            return sum + (parseFloat(value) || 0);
+        }, 0).toFixed(2); // Sum and format as needed
+    }
+
+    // Function to escape CSV values
+    function escapeCSVValue(value) {
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+            value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value;
+    }
+
+    // Create CSV content
+    let csvContent = '';
+
+    // Add header data1 to the CSV content
+    headerData1.forEach(rowData => {
+        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+    });
+
+    // Add header data2 to the CSV content
+    headerData2.forEach(rowData => {
+        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+    });
+
+    // Add an empty row for spacing
+    csvContent += '\n';
+
+    // Add headers row to the CSV content
+    csvContent += headers.map(escapeCSVValue).join(',') + '\n';
+
+    // Add rows to the CSV content
+    rows.forEach(row => {
+        csvContent += row.map(escapeCSVValue).join(',') + '\n';
+    });
+
+    // Add the grand totals row to the CSV content
+    csvContent += grandTotals.map(escapeCSVValue).join(',') + '\n';
+
+    // Create a blob from the CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link to download the CSV file
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'report.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

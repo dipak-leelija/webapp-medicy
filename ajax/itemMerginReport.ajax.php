@@ -25,13 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
     $startDate = $dataArray->startDt;
     $endDate = $dataArray->endDt;
     $searchOn = $dataArray->searchOn;
+    $flag = $dataArray->searchFlag;
 
     if($searchFilter == 'sales-table'){
-        $merginDataByItem = $StockOut->salesMarginDataFetch($startDate, $endDate, $adminId, $searchOn);
+        $merginDataByItem = $StockOut->salesMarginDataFetch($startDate, $endDate, $adminId, $flag, $searchOn);
     }
 
     if($searchFilter == 'sales-return-table'){
-        $merginDataByItem = $SalesReturn->salesReturnMarginDataFetch($startDate, $endDate, $adminId, $searchOn);
+        $merginDataByItem = $SalesReturn->salesReturnMarginDataFetch($startDate, $endDate, $adminId, $flag, $searchOn);
     }
 
     print_r($merginDataByItem);

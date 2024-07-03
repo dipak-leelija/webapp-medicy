@@ -2393,8 +2393,7 @@ class StockOut
 
 
     // stock out margin data
-    function salesMarginDataFetch($startDate, $endDate, $adminId, $item = '')
-    {
+    function salesMarginDataFetch($startDate, $endDate, $adminId, $flag, $item = '') {
         $data = array();
         try {
             $marginQuery = "SELECT 
@@ -2414,6 +2413,7 @@ class StockOut
                                 sod.gst_amount AS gst_amount,
                                 sod.profit_margin AS margin_amount,
                                 ((((sod.amount - sod.profit_margin) * 100) / sod.amount)) AS margin_percent,
+                                ((sod.amount / sod.qty) - ((sid.amount / sid.qty)+sod.gst_amount)) AS profit,
                                 m.short_name AS manuf_short_name,
                                 pt.name AS category
                             FROM 
@@ -2439,23 +2439,30 @@ class StockOut
                             WHERE 
                                 DATE(so.added_on) BETWEEN ? AND ?
                                 AND so.admin_id = ?";
-
+            
             if ($item != '') {
-                $marginQuery .= " AND sod.item_name = ?";
+                if ($flag == 0) {
+                    $marginQuery .= " AND sod.item_name = ?";
+                } elseif ($flag == 1) {
+                    $marginQuery .= " AND (sod.item_name = ? OR pd.name = ?)";
+                }
             }
-
+    
             $stmt = $this->conn->prepare($marginQuery);
-
+    
             if ($item != '') {
-                $stmt->bind_param("ssss", $startDate, $endDate, $adminId, $item);
+                if ($flag == 0) {
+                    $stmt->bind_param("ssss", $startDate, $endDate, $adminId, $item);
+                } elseif ($flag == 1) {
+                    $stmt->bind_param("sssss", $startDate, $endDate, $adminId, $item, $item);
+                }
             } else {
                 $stmt->bind_param("sss", $startDate, $endDate, $adminId);
             }
-
+    
             $stmt->execute();
-
+    
             $result = $stmt->get_result();
-
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
@@ -2464,15 +2471,17 @@ class StockOut
             } else {
                 $response = ['status' => '0', 'data' => 'No records found'];
             }
-
+    
             $stmt->close();
-
+    
             return json_encode($response);
         } catch (Exception $e) {
             error_log($e->getMessage());
             return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
     }
+    
+    
 
 
 
