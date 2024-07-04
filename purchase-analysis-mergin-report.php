@@ -13,13 +13,11 @@ require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
-
 $StockOut = new StockOut;
 $StockInDetails = new StockInDetails;
 $Distributor = new Distributor;
 $Products = new Products;
 $Utility     = new Utility;
-
 
 ?>
 
@@ -35,7 +33,7 @@ $Utility     = new Utility;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Bill Item Wise Margin Reports</title>
+    <title>Purchae Analysis</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -64,8 +62,6 @@ $Utility     = new Utility;
                 <?php include ROOT_COMPONENT . 'report-topbar.php'; ?>
                 <!-- End of Topbar -->
 
-
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
@@ -74,7 +70,7 @@ $Utility     = new Utility;
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Bill - Item Wise Margin</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Purchase Analysis Report</li>
                                 </ol>
                             </nav>
                         </div>
@@ -100,66 +96,31 @@ $Utility     = new Utility;
 
                             <!-- filter date range -->
                             <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between p-1" id="date-range-select-div">
-                                <span id="selected-date" style="flex-grow: 1;">Select Date</span>
+                                <span id="selected-date" style="flex-grow: 1;"></span>
                                 <i class="fa fa-calendar"></i>
                             </div>
 
-                            <!-- filter on category -->
-                            <div class="col-md-2 bg-white me-3 selectDiv" id="category-filter-div">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="category-filter" id="category-filter" onchange="reportOnFilter(this)">
-                                    <option value="" disabled selected>Report Type</option>
-                                    <option value="S">Sales</option>
-                                    <option value="SR">Sales Return</option>
-                                </select>
-                                <label class="d-none" id="report-on-filter"></label>
-                            </div>
-
-                            <div class="col-md-2 selectDiv" id="data-filter-search-div">
+                            <div class="col-md-4 selectDiv" id="data-filter-search-div">
                                 <div class="input-group">
-                                    <input class="cxv-inp border-0" type="text" placeholder="Search..." name="item-search" id="search-by-item" style="width:10rem;">
+                                    <input class="cxv-inp border-0 w-75" type="text" placeholder="Search by Distributor, Item, Manufacturer" name="data-search" id="search-by-data">
 
                                     <div class="input-group-append">
                                         <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
-                                <label class="d-none" id="item-search-val"></label>
+                                <label class="d-none" id="search-val"></label>
                             </div>
 
                             <!-- find button on filter -->
                             <div class="col-md-1 searchFilterDiv" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="itemMerginSearch()">
+                                <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="purchaseAnalysisSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- margin summery div -->
-                        <div class="col-12 mt-2 d-flex">
-                            <div class="col-md-6">
-
-                            </div>
-
-                            <div class="d-none col-md-6 d-flex" id="grand-total-div">
-                                <div class="col-sm-3 text-end">
-                                    <label for="">Total Sales Amount</label><br>
-                                    <span>&#8377;</span><label for="" id="total-sales-amount">0</label>
-                                </div>
-                                <div class="col-sm-3 text-end">
-                                    <label for="">Total Purchase</label><br>
-                                    <span>&#8377;</span><label for="" id="total-purchase-amount">0</label>
-                                </div>
-                                <div class="col-sm-3 text-end">
-                                    <label for="">Total Net GST</label><br>
-                                    <span>&#8377;</span><label for="" id="net-gst-amount">0</label>
-                                </div>
-                                <div class="col-sm-3 text-end">
-                                    <label for="">Total Profit</label><br>
-                                    <span>&#8377;</span><label for="" id="total-profit-amount">0</label>
-                                </div>
-                            </div>
-                        </div>
                         <!-- report table start -->
-                        <table class="table" id="item-wise-margin-table">
+                        <table class="table" id="purchase-analysis-table">
                             <!-- dynamic table gose hear -->
                         </table>
 
@@ -216,7 +177,7 @@ $Utility     = new Utility;
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
-    <script src="<?php echo JS_PATH; ?>bill-item-wise-mergin.js"></script>
+    <script src="<?php echo JS_PATH; ?>purchase-analysis-table.js"></script>
 
 </body>
 

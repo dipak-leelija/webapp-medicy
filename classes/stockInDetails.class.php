@@ -437,6 +437,73 @@ class StockInDetails
 
 
 
+    // ================ STOCK IN DETAILS ANALYSIS ==================
+    function purchaseAnalysisReport($date, $admin, $searchData = '')
+    {
+        try {
+            $data = array();
+            $select = "SELECT 
+                            si.bill_date AS bill_date,
+                            si.distributor_bill AS bill_no,
+                            d.name AS dist_name,
+                            p.name AS item_name,
+                            (sid.qty + sid.free_qty) AS qty,
+                            sid.mrp AS mrp,
+                            sid.ptr AS ptr,
+                            ((sid.mrp - sid.ptr ) * 100 / sid.mrp) AS margin
+                        FROM 
+                            stock_in_details sid
+                        JOIN
+                            stock_in si ON si.id = sid.stokIn_id 
+                        JOIN
+                            products p ON p.product_id = sid.product_id
+                        JOIN
+                            distributor d ON d.id = si.distributor_id 
+                        JOIN
+                            manufacturer mf ON mf.id = p.manufacturer_id 
+                        WHERE
+                            DATE(si.added_on) = ?
+                            AND si.admin_id = ?";
+
+            if ($searchData != '') {
+                $select .= " AND (p.name = ? OR d.name = ? OR mp.name = ?)";
+            }
+
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt === false) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+
+            // Bind parameters
+            if ($searchData != '') {
+                $stmt->bind_param("sssss", $date, $admin, $searchData, $searchData);
+            } else {
+                $stmt->bind_param("ss", $date, $admin);
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+            } else {
+                $data[] = '';
+            }
+
+            // Close the statement
+            $stmt->close();
+            return json_encode(['status' => '1', 'data' => $data]);
+        } catch (Exception $e) {
+            return ['status' => '0', 'error' => $e->getMessage()];
+        }
+    }
+
+
+
+
 
     function stockInDelete($distBill, $batchNo)
     {
