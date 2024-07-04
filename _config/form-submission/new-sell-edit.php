@@ -293,7 +293,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // exit;
 
-header("Location: item-invoice-reprint.php?id=".url_enc($invoiceNo));
+// header("Location: item-invoice-reprint.php?id=".url_enc($invoiceNo));
+$redirectUrl = URL."invoices/sales-invoice.php?id=".url_enc($invoiceNo);
+header("Location: " .$redirectUrl );
 exit;
 ?>
 

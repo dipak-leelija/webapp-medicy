@@ -144,7 +144,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
                     // header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
                     // exit;
-                    header("Location: ". URL."invoices/sales-invoice.php?id=".url_enc($invoiceId));
+                    // header("Location: ". URL."invoices/sales-invoice.php?id=".url_enc($invoiceId));
+                    $redirectUrl = URL."invoices/sales-invoice.php?id=".url_enc($invoiceId);
+                    header("Location: " .$redirectUrl );
                 }
             }
         }
