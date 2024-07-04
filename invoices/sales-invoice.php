@@ -195,7 +195,9 @@ class PDF extends FPDF
 
             $this->SetX($startX);
             if ($this->reffby !== 'Cash Sales') {
+                $this->SetFont('Arial', 'B', 10);
                 $this->Cell(30, 5, 'Referred By: ', 0, 0, 'L');
+                $this->SetFont('Arial', '', 10);
                 $this->Cell(30, 5, $this->reffby, 0, 'L');
             }else{
                 $this->Cell(30, 5,'');
@@ -387,6 +389,18 @@ class PDF extends FPDF
 }
 
 if (isset($_POST['printPDF'])) {
+
+    $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
+    if ($healthCare->status === 1 ) {
+        $healthCare = $healthCare->data;
+        $healthCareLogo      = $healthCare->logo;
+        $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL.$healthCareLogo;
+        // print($healthCareLogo);
+        $logoFilename = basename($healthCareLogo);
+        // print($logoFilename);
+        // $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL .  rawurlencode($healthCareLogo);
+        $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : realpath('../assets/images/orgs/'.$logoFilename.'');
+    }
 
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     foreach ($stockOut as $stockOut) {
