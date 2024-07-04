@@ -35,7 +35,7 @@ $Utility     = new Utility;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Item Wise Margin Reports</title>
+    <title>Bill Item Wise Margin Reports</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -74,7 +74,7 @@ $Utility     = new Utility;
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Item Wise Margin</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Bill - Item Wise Margin</li>
                                 </ol>
                             </nav>
                         </div>
@@ -117,7 +117,7 @@ $Utility     = new Utility;
 
                             <div class="col-md-2 selectDiv" id="data-filter-search-div">
                                 <div class="input-group">
-                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="item-search" id="search-by-item" style="width:10rem;">
+                                    <input class="cxv-inp border-0" type="text" placeholder="Search..." name="item-search" id="search-by-item" style="width:10rem;">
 
                                     <div class="input-group-append">
                                         <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
@@ -217,7 +217,7 @@ $Utility     = new Utility;
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
-    <script src="<?php echo JS_PATH; ?>item-mergin-report.js"></script>
+    <script src="<?php echo JS_PATH; ?>bill-item-wise-mergin.js"></script>
 
 </body>
 

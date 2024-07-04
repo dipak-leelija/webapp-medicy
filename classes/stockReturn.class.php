@@ -610,6 +610,9 @@ class StockReturn
         }
     }
 
+
+    // =====
+
     // ---------------------- STOCK RETURN DETAILS ITEMS DELETE -----------------------------
 
     function delteStockReturnDetailsbyReturnId($stockReturnedId)
