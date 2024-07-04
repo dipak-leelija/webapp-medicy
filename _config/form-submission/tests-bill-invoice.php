@@ -140,7 +140,7 @@ if (isset($_POST['bill-generate'])) {
             $addBillDetails = json_decode($addBillDetails);
             if($addBillDetails->status){
                 $redirectUrl = URL."invoices/lab-invoice.php?billId=" . url_enc($billId);
-                // header("Location: " . $redirectUrl);
+                header("Location: " . $redirectUrl);
                 // header("Location: reprint-test-bill.php?billId=".url_enc($billId));
                 exit;
             }else{
