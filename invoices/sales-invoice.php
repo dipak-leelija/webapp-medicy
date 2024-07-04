@@ -74,6 +74,339 @@ $selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
 // print_r($selectClinicInfo->data);
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
+
+
+// Include FPDF library
+require('../assets/plugins/pdfprint/fpdf/fpdf.php');
+
+// Extend the FPDF class
+class PDF extends FPDF
+{
+    private $invoiceId;
+    private $pMode;
+    private $billDate;
+    private $patientName;
+    private $patientAge;
+    private $patientPhno;
+    private $totalGSt;
+    private $totalMrp;
+    private $billAmout;
+    private $healthCareLogo;
+    private $healthCareName;
+    private $healthCareAddress1;
+    private $healthCareAddress2;
+    private $healthCareCity;
+    private $healthCarePin;
+    private $healthCarePhno;
+    private $healthCareApntbkNo;
+    private $gstinData;
+    private $reffby;
+    private $slno;
+    private $isLastPage;
+
+    // Constructor with parameters
+    function __construct($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby) {
+        parent::__construct();
+
+        $this->invoiceId = $invoiceId;
+        $this->pMode = $pMode;
+        $this->billDate = $billDate;
+        $this->patientName = $patientName;
+        $this->patientAge = $patientAge;
+        $this->patientPhno = $patientPhno;
+        $this->totalGSt = $totalGSt;
+        $this->totalMrp = $totalMrp;
+        $this->billAmout = $billAmout;
+        $this->healthCareLogo = $healthCareLogo;
+        $this->healthCareName = $healthCareName;
+        $this->healthCareAddress1 = $healthCareAddress1;
+        $this->healthCareAddress2 = $healthCareAddress2;
+        $this->healthCareCity = $healthCareCity;
+        $this->healthCarePin = $healthCarePin;
+        $this->healthCarePhno = $healthCarePhno;
+        $this->healthCareApntbkNo = $healthCareApntbkNo;
+        $this->gstinData = $gstinData;
+        $this->reffby = $reffby;
+    }
+
+    function Header() {
+        global $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $invoiceId, $pMode, $billdate, $patientName, $patientAge, $patientPhno, $gstinData;
+
+        if ($this->PageNo() == 1) {  ///this line only show the header first page
+
+            //.. healthCareLogo...///
+            $logoX = 10;
+            $logoY = 12;
+            $logoWidth = 20;
+            $logoHeight = 20;
+            if (!empty($this->healthCareLogo)) {
+                $this->Image($this->healthCareLogo, $logoX, $logoY, $logoWidth, $logoHeight);
+            }
+
+            ///....Title (Healthcare Name)...///
+            $this->SetFont('Arial', 'B', 16);
+            $this->SetXY($logoX + $logoWidth + 5, $logoY); // Position next to the logo
+            $this->Cell(90, 8, $healthCareName, 0, 1, 'L'); // Centered text
+
+            // Address
+            $this->SetFont('Arial', '', 10);
+            $address = "$healthCareAddress1, $healthCareAddress2\n$healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo\nGST ID : $gstinData";
+            
+            $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
+            $this->MultiCell(90, 5, $address, 0, 'L');
+
+            ///...Invoice Info
+            $this->SetY(15); // Reset Y position
+            $this->SetX(-50); // Align to the right
+            // Draw vertical line
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
+            $this->SetFont('Arial', 'B', 10);
+            $this->cell(80, 0, ' Invoice:', 0, 'L');
+            $this->SetFont('Arial', '', 10);
+            $this->MultiCell(80, 5, "\n #$invoiceId\n Payment:$pMode\n Date: $this->billDate", 0, 'L');
+
+            $this->Ln(6);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(10);
+        }
+    }
+
+    // Page footer
+    function Footer() {
+        if ($this->isLastPage) { /// this line only show the footer last page 
+
+            $pageHeight = $this->GetPageHeight();
+            $middleY = $pageHeight / 2;
+            $this->SetY($middleY);
+            $this->SetLineWidth(0.4);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(2);
+
+           // Set the font for the footer content
+           $this->SetFont('Arial', '', 10);
+
+            // Patient Info
+            $this->SetY($this->GetY() + 2); // Add some padding
+            $startX = 10;
+            $currentY = $this->GetY();
+
+            $this->SetX($startX);
+            if ($this->reffby !== 'Cash Sales') {
+                $this->Cell(30, 5, 'Referred By: ', 0, 0, 'L');
+                $this->Cell(30, 5, $this->reffby, 0, 'L');
+            }else{
+                $this->Cell(30, 5,'');
+            }
+            $this->SetX($startX);
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(30, 5, 'Patient: ', 0, 0, 'L');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(30, 5, $this->patientName, 0, 'L');
+            $this->SetX($startX);
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(30, 5, 'Age: ', 0, 0, 'L');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(30, 5, $this->patientAge, 0, 1, 'L');
+            $this->SetX($startX);
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(30, 5, 'Contact: ', 0, 0, 'L');
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(30, 5, $this->patientPhno, 0, 1, 'L');
+
+            // GST Calculation
+            $this->SetY(150); // Reset Y position
+            $this->SetX(98); // Align to the right
+            // Draw vertical line
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
+
+            $startX = 70;
+            $this->SetY($currentY); // Reset Y position to top of the section
+            $this->SetX($startX);
+            $this->Cell(70, 5, 'CGST ', 0, 0, 'C');
+            $this->Cell(-10, 5, ': ' . ($this->totalGSt / 2), 0, 1, 'C');
+            $this->SetX($startX);
+            $this->Cell(70, 5, 'SGST ', 0, 0, 'C');
+            $this->Cell(-10, 5, ': ' . ($this->totalGSt / 2), 0, 1, 'C');
+            $this->SetX($startX);
+            $this->Cell(76, 5, 'Total GST ', 0, 0, 'C');
+            $this->Cell(-24, 5, ': ' . $this->totalGSt, 0, 1, 'C');
+
+            // Amount Calculation
+            $startX = 140;
+            $this->SetY($currentY); // Reset Y position to top of the section
+            $this->SetX($startX);
+            $this->Cell(20, 5, 'MRP ', 0, 0, 'R');
+            $this->Cell(40, 5, ': ' . $this->totalMrp, 0, 1, 'R');
+            $this->SetX($startX);
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(25, 5, 'Payable ', 0, 0, 'R');
+            $this->Cell(35, 5, ': ' . $this->billAmout, 0, 1, 'R');
+            $this->SetX($startX);
+            $this->SetFont('Arial', '', 10);
+            $this->Cell(29, 5, 'You Saved ', 0, 0, 'R');
+            $this->Cell(29, 5, ': ' . ($this->totalMrp - $this->billAmout), 0, 1, 'R');
+            
+            $this->Ln(5);
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+        }
+    }
+
+    function AddContentPage($details, $billDate, $pMode, $Products, $Manufacturer) {
+        $this->AddPage();
+
+        ///....add paid badge...///
+        if( $this->$pMode != 'Credit'){
+            $imageX = 50; // X position with left space
+            $imageY = 70;
+            $imageWidth = 100; // Adjusted width with spaces
+            $imageHeight = 60; // Height of the image
+           $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+       }///....end page badge...///
+
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
+        $this->Cell(30, -10, 'Name', 0, 0, 'L');
+        $this->Cell(18, -10, 'Manuf.', 0, 0, 'L');
+        $this->Cell(18, -10, 'Batch', 0, 0, 'L');
+        $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
+        $this->Cell(16, -10, 'QTY', 0, 0, 'L');
+        $this->Cell(18, -10, 'MRP', 0, 0, 'L');
+        $this->Cell(18, -10, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(18, -10, 'GST(%)', 0, 0, 'L');
+        $this->Cell(18, -10, 'Amount ()', 0, 1, 'R');
+        $this->Ln(10);
+        $this->SetDrawColor(108, 117, 125);
+        $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
+
+        $slno = 1;
+        $rowsPerPage = 8; // Maximum rows per page
+        $rowCounter = 0;
+        // Loop through details and add rows
+        foreach ($details as $detail) {
+
+        $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+                
+                        
+                        if ($checkTable->status) {
+                            $table = 'products';
+                        } else {
+                            $table = 'product_request';
+                        }
+                        
+
+                        $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+
+                        $product = $productResponse->data;
+                        // print_r($product);
+
+                        $packQty = $product->unit_quantity;
+
+                        if (isset($product->manufacturer_id)) {
+                            $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+
+                            $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                        } else {
+                            $manufacturerName = '';
+                        }
+
+                        if ($rowCounter >= $rowsPerPage) {
+
+                            ///....show first page total amount...////
+                            $this->SetFont('Arial', 'B', 10);
+                            $this->Cell(170, 10, 'Total Amount:', 0, 0, 'R');
+                            $this->SetFont('Arial', '', 10);
+                            $this->Cell(20, 10, '' .$amount, 0, 1, 'R');
+            
+                            // Add new page if rowCounter reaches rowsPerPage
+                            $this->AddPage();
+                            $this->Ln(10);
+                            $this->SetFont('Arial', '', 10);
+            
+                            $rowCounter = 0; // Reset row counter for new page
+            
+                             ///....add paid badge...///
+                           if($this->paidAmount){
+                               $imageX = 50; // X position with left space
+                               $imageY = 70;
+                               $imageWidth = 100; // Adjusted width with spaces
+                               $imageHeight = 60; // Height of the image
+                              $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+                            }///....end page badge...///
+                        }
+
+        $this->SetFont('Arial', '', 8);
+        // Draw dotted line between rows if $slno is greater than 1
+        if ($slno > 1) {
+            $this->SetDrawColor(183, 182, 182); // Set color for the dotted line
+            $dotWidth = 0.5; // Width of each dot
+            $spaceWidth = 0.2; // Space between each dot
+            $lineLength = 200; // Length of the line
+            $x = 10; // Starting X position
+            $y = $this->GetY(); // Current Y position
+            
+            // Draw the dotted line
+            $drawDot = true; // Initialize to draw dot
+            while ($x <= $lineLength) {
+                if ($drawDot) {
+                    $this->Line($x, $y, $x + $dotWidth, $y); // Draw dot
+                }
+                $x += $dotWidth + $spaceWidth; // Move X position to next dot
+                $drawDot = !$drawDot; // Switch drawing state for next dot
+            }
+        }
+
+        $this->Cell(20, 10, $slno, 0, 0, 'L');
+        $this->Cell(30, 10, substr($detail['item_name'], 0, 15), 0, 0, 'L');
+        $this->Cell(18, 10, $manufacturerName, 0, 0, 'L');
+        $this->Cell(18, 10, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(16, 10, $detail['exp_date'], 0, 0, 'L');
+        $this->Cell(16, 10, $detail['qty'], 0, 0, 'L');
+        $this->Cell(18, 10, $detail['mrp'], 0, 0, 'L');
+        $this->Cell(18, 10, $detail['discount'], 0, 0, 'L');
+        $this->Cell(18, 10, $detail['gst'], 0, 0, 'L');
+        $this->Cell(18, 10, $detail['amount'], 0, 1, 'R');
+
+        $amount  = $amount + $detail['amount'];
+        // $this->Ln(1); // Move to next line
+        $slno++;
+        $rowCounter++;
+    }
+       
+    }
+
+    //....footer set last page...//
+    function AddLastPage() {
+        $this->isLastPage = true;
+    }//footer
+
+}
+
+if (isset($_POST['printPDF'])) {
+
+    $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
+    foreach ($stockOut as $stockOut) {
+     $reffby         = $stockOut['reff_by'];
+     $billDate       = $stockOut['bill_date'];
+     print_r($billdate);
+    }
+
+    // exit;
+    $pdf = new PDF($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby);
+
+    $pdf->AliasNbPages();
+    $pdf->AddContentPage($details,$billDate, $pMode, $Products, $Manufacturer);
+    $pdf->AddLastPage();
+    ob_clean();
+    $pdf->Output();
+    exit;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +428,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-1">
-                        <img class="float-end" style="height: 55px; width: 58px;position: absolute;" src="<?= $healthCareLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;position: absolute;"
+                            src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-8 ps-4">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -105,7 +439,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="text-start" style="margin-top: -6px; margin-bottom: 0px;">
                             <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
-                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b> </small><?php echo $gstinData ?></p>
+                        <p class="m-0" style="font-size: 0.850em;"><small><b>GST ID :</b>
+                            </small><?php echo $gstinData ?></p>
 
                     </div>
                     <div class="col-3 invoice-info">
@@ -142,7 +477,8 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
                         //=========================
                         $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
-
+                
+                        
                         if ($checkTable->status) {
                             $table = 'products';
                         } else {
@@ -270,16 +606,19 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
         <button class="btn btn-primary shadow mx-2" onclick="bactoNewSell()">Go Back</button>
-        <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
+        <!-- <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button> -->
+        <form method="post">
+            <button class="btn btn-primary shadow mx-2" type="submit" name="printPDF">Print PDF</button>
+        </form>
     </div>
     </div>
 </body>
 <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 <script>
-    const bactoNewSell = () => {
-        window.location = "<?php echo LOCAL_DIR ?>new-sales.php";
-    }
+const bactoNewSell = () => {
+    window.location = "<?php echo LOCAL_DIR ?>new-sales.php";
+}
 </script>
 
 </html>
