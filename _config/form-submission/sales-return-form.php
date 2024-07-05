@@ -186,7 +186,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
 // exit;
-header("Location: sales-return-details.php?id=".url_enc($returned['sales_return_id']));
+// header("Location: sales-return-details.php?id=".url_enc($returned['sales_return_id']));
+$redirectUrl = URL."invoices/sales-return-invoice.php?id=".url_enc($returned['sales_return_id']);
+header("Location: " .$redirectUrl );
 exit;
 ?>
 
