@@ -207,7 +207,7 @@ function reportShow(reportData) {
         row.appendChild(itemMerginCell);
 
         const itemMerginDiff = document.createElement('td');
-        itemMerginDiff.textContent = parseFloat(data.margin_diff).toFixed(2); // Format to 2 decimal places
+        itemMerginDiff.textContent = parseFloat(data.margin_diff).toFixed(2)+' %'; // Format to 2 decimal places
         itemMerginDiff.style.textAlign = 'right'; // Right align the text
         row.appendChild(itemMerginDiff);
 

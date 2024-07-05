@@ -2404,16 +2404,42 @@ class StockOut
                                 sod.item_name AS item,
                                 CONCAT(sod.weightage, ' ', sod.unit) AS unit,
                                 so.added_on AS stock_out_date,
-                                sod.qty AS stock_out_qty,
+                                CASE 
+                                    WHEN sod.unit = 'Tablets' OR sod.unit = 'Capsules' THEN
+                                        CASE 
+                                            WHEN MOD(sod.loosely_count, sod.weightage) = 0 THEN sod.qty
+                                            ELSE CONCAT(sod.loosely_count,' (L)')
+                                        END
+                                    ELSE sod.qty
+                                END AS stock_out_qty,
                                 sod.loosely_count AS stock_out_lqty,
-                                cs.qty AS current_qty,
+                                CASE 
+                                    WHEN cs.unit = 'Tablets' OR cs.unit = 'Capsules' THEN 
+                                        CONCAT(cs.qty,' (',cs.loosely_count,' ', 'L)') 
+                                    ELSE cs.qty
+                                END AS current_qty,
                                 sid.mrp AS mrp,
-                                (sod.amount / sod.qty) AS sales_amount,
+                                CASE 
+                                    WHEN sod.unit = 'Tablets' OR sod.unit = 'Capsules' THEN 
+                                        ((sod.amount / sod.loosely_count) * sod.weightage)
+                                    ELSE 
+                                        (sod.amount / sod.qty)
+                                END AS sales_amount,
                                 (sid.amount / sid.qty) AS p_amount,
-                                sod.gst_amount AS gst_amount,
+                                CASE 
+                                    WHEN sod.unit = 'Tablets' OR sod.unit = 'Capsules' THEN 
+                                        (sod.gst_amount - ((sid.gst_amount / sid.loosely_count) * sod.loosely_count))
+                                    ELSE 
+                                        (sod.gst_amount - ((sid.gst_amount / sid.qty) * sod.qty))
+                                END AS gst_amount,
                                 sod.profit_margin AS margin_amount,
-                                ((((sod.amount - sod.profit_margin) * 100) / sod.amount)) AS margin_percent,
-                                ((sod.amount / sod.qty) - ((sid.amount / sid.qty)+sod.gst_amount)) AS profit,
+                                (((sod.amount - sod.profit_margin) * 100) / sod.amount) AS margin_percent,
+                                CASE 
+                                    WHEN sod.unit = 'Tablets' OR sod.unit = 'Capsules' THEN 
+                                        (sod.amount - (((sid.amount / sid.loosely_count) * sod.loosely_count) + sod.gst_amount))
+                                    ELSE 
+                                        ((sod.amount / sod.qty) - ((sid.amount / sid.qty) + sod.gst_amount))
+                                END AS profit,
                                 m.short_name AS manuf_short_name,
                                 pt.name AS category
                             FROM 

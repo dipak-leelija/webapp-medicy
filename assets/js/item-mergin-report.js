@@ -273,10 +273,13 @@ function reportShow(reportData) {
         totalNetGst = parseFloat(totalNetGst) + parseFloat(data.gst_amount);
         row.appendChild(itemNetGstCell);
 
+
         const itemProfitAmountPercentageCell = document.createElement('td');
-        let profit = data.profit;
+        let profit = (parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - (parseFloat(data.gst_amount) / parseInt(data.stock_out_qty));
+        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        profit = parseFloat(profit) * parseInt(data.stock_out_qty);
         profit = profit.toFixed(2);
-        itemProfitAmountPercentageCell.textContent = profit+' ('+parseFloat(data.margin_percent).toFixed(2) + '%'+')'; // Format to 2 decimal places with % sign
+        itemProfitAmountPercentageCell.textContent = profit+' ('+profitPercent.toFixed(2) + '%'+')'; // Format to 2 decimal places with % sign
         totalProfit = parseFloat(totalProfit) + parseFloat(profit);
         row.appendChild(itemProfitAmountPercentageCell);
 
@@ -288,7 +291,7 @@ function reportShow(reportData) {
     totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
     netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
     let profitAmount = parseFloat(totalSalesAmount) -  parseFloat(totalPurchaseAmount);
-    totalProfitAmountLable.innerHTML = profitAmount.toFixed(2);
+    totalProfitAmountLable.innerHTML = totalProfit.toFixed(2);
 
     // Append the table body to the table
     itemMarginTable.appendChild(tbody);
