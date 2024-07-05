@@ -148,10 +148,14 @@ function reportShow(reportData) {
 
     // Add main column headers row
     const tr = document.createElement('tr');
-    header.forEach(headerText => {
+    header.forEach((headerText, index) => {
         const th = document.createElement('th');
         th.textContent = headerText;
         th.style.fontWeight = 'bold'; // Make the header bold
+        // Right align specific headers
+        if (index >= 4 && index <= 10) {
+            th.style.textAlign = 'right';
+        }
         tr.appendChild(th);
     });
     thead.appendChild(tr);
@@ -202,13 +206,21 @@ function reportShow(reportData) {
         itemMerginCell.style.textAlign = 'right'; // Right align the text
         row.appendChild(itemMerginCell);
 
-        // calculate margin difference %
+        const itemMerginDiff = document.createElement('td');
+        itemMerginDiff.textContent = parseFloat(data.margin_diff).toFixed(2); // Format to 2 decimal places
+        itemMerginDiff.style.textAlign = 'right'; // Right align the text
+        row.appendChild(itemMerginDiff);
 
-        // calculate margin difference amount
+        const itemMerginDiffAmount = document.createElement('td');
+        itemMerginDiffAmount.textContent = parseFloat(data.margin_diff_amount).toFixed(2);; // Format to 2 decimal places 
+        itemMerginDiffAmount.style.textAlign = 'right'; // Right align the text
+        row.appendChild(itemMerginDiffAmount);
 
-        // calculate average margin percent
+        const itemAvgMargin = document.createElement('td');
+        itemAvgMargin.textContent = parseFloat(data.avg_margin).toFixed(2);; // Format to 2 decimal places
+        itemAvgMargin.style.textAlign = 'right'; // Right align the text
+        row.appendChild(itemAvgMargin);
 
-        // Append the row to the table body
         tbody.appendChild(row);
     });
 
