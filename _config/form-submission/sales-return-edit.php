@@ -224,7 +224,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-header("Location: sales-return-details.php?id=".url_enc($returnId));
+// header("Location: sales-return-details.php?id=".url_enc($returnId));
+$redirectUrl = URL."invoices/sales-return-invoice.php?id=".url_enc($returnId);
+header("Location: " .$redirectUrl );
 exit;
 ?>
 
