@@ -177,7 +177,7 @@ function itemMerginDataSearch(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    console.log(report);
+    // console.log(report);
     report = JSON.parse(report);
     if(report.status == '1'){
         reportShow(report.data);
@@ -207,10 +207,13 @@ function reportShow(reportData) {
 
     // Add main column headers row
     const tr = document.createElement('tr');
-    header.forEach(headerText => {
+    header.forEach((headerText, index) => {
         const th = document.createElement('th');
         th.textContent = headerText;
         th.style.fontWeight = 'bold'; // Make the header bold
+        if (index >= header.length - 5) {
+            th.style.textAlign = 'right'; // Right align last five headers
+        }
         tr.appendChild(th);
     });
     thead.appendChild(tr);
@@ -272,30 +275,32 @@ function reportShow(reportData) {
 
         const itemMrpCell = document.createElement('td');
         itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
+        itemMrpCell.style.textAlign = 'right'; // Right align
         row.appendChild(itemMrpCell);
 
         const itemSalesAmountCell = document.createElement('td');
         itemSalesAmountCell.textContent = parseFloat(data.sales_amount).toFixed(2); // Format to 2 decimal places
+        itemSalesAmountCell.style.textAlign = 'right'; // Right align
         totalSalesAmount += parseFloat(data.sales_amount);
         row.appendChild(itemSalesAmountCell);
 
         const itemPurchaseAmountCell = document.createElement('td');
         itemPurchaseAmountCell.textContent = parseFloat(data.p_amount).toFixed(2); // Format to 2 decimal places
+        itemPurchaseAmountCell.style.textAlign = 'right'; // Right align
         totalPurchaseAmount += parseFloat(data.p_amount);
         row.appendChild(itemPurchaseAmountCell);
 
         const itemNetGstCell = document.createElement('td');
         itemNetGstCell.textContent = parseFloat(data.gst_amount).toFixed(2); // Format to 2 decimal places
+        itemNetGstCell.style.textAlign = 'right'; // Right align
         totalNetGst += parseFloat(data.gst_amount);
         row.appendChild(itemNetGstCell);
 
         const itemProfitAmountPercentageCell = document.createElement('td');
-        let profit = (parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - (parseFloat(data.gst_amount) / parseInt(data.stock_out_qty));
+        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
         let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
-        profit = parseFloat(profit) * parseInt(data.stock_out_qty);
-        profit = profit.toFixed(2);
-        itemProfitAmountPercentageCell.textContent = profit+' ('+profitPercent.toFixed(2) + '%'+')'; // Format to 2 decimal places with % sign
-        totalProfit += parseFloat(profit).toFixed(2);
+        itemProfitAmountPercentageCell.textContent = profit.toFixed(2)+' ('+profitPercent.toFixed(2)+'%)';
+        itemProfitAmountPercentageCell.style.textAlign = 'right'; // Right align
         row.appendChild(itemProfitAmountPercentageCell);
 
         // Append the row to the table body
@@ -311,6 +316,7 @@ function reportShow(reportData) {
     // Append the table body to the table
     itemMarginTable.appendChild(tbody);
 }
+
 
 
 

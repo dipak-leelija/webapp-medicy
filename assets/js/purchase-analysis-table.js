@@ -121,7 +121,7 @@ function purchaseAnalysisDataSearch(array){
     
     
     report = JSON.parse(report);
-    
+    // console.log(report);
     if(report.status == '1'){
         reportShow(report.data);
     }else{
