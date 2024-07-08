@@ -183,7 +183,7 @@ class PDF extends FPDF
             $this->SetLineWidth(0.4);
             $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(2);
+            // $this->Ln(2);
 
            // Set the font for the footer content
            $this->SetFont('Arial', '', 10);
@@ -252,7 +252,7 @@ class PDF extends FPDF
             $this->Cell(29, 5, 'You Saved ', 0, 0, 'R');
             $this->Cell(29, 5, ': ' . ($this->totalMrp - $this->billAmout), 0, 1, 'R');
             
-            $this->Ln(5);
+            $this->Ln(6);
             $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
         }
@@ -559,13 +559,15 @@ if (isset($_POST['printPDF'])) {
                 <div class="row my-0">
                     <div class="col-5">
                         <div class="row mt-2">
-                            <div class="col-2">
-                                <?= $reffby !== 'Cash Sales' ? '<b><small>Referred By:' . $reffby . '</small></b><br>' : ""; ?>
+                            <div class="col-4 pe-0">
+                                <?= $reffby !== 'Cash Sales' ? '<b><small>Referred By</small></b><br>' : " "; ?>
                                 <b><small>Patient </small></b><br>
                                 <b><small>Age</small></b><br>
                                 <b><small>Contact</small></b>
                             </div>
-                            <div class="col-9">
+                            <div class="col-8">
+                                <!-- <?php $reffby !== 'Cash Sales' ? '<p class="text-start mb-0"><small>'.$reffby.'</small></p>' : 'Cash Sales'; ?> -->
+                                <p class="text-start mb-0"><small><?= $reffby !== 'Cash Sales' ? $reffby :''?></small></p>
                                 <p class="text-start mb-0"><small><?= ' :   ' . $patientName; ?></small></p>
                                 <p class="text-start mb-0"><small><?= ' :   ' . $patientAge; ?></small></p>
                                 <p class="text-start"><small><?= ' :   ' . $patientPhno; ?></small></p>
