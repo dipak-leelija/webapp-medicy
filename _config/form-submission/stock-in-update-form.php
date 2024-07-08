@@ -338,7 +338,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // exit;
 $preparedData = url_enc(json_encode(['stockIn_Id' => $stockIn_Id]));
-header('Location: purchase-invoice.php?data='.$preparedData);
+// header('Location: purchase-invoice.php?data='.$preparedData);
+$redirectUrl  =URL."invoices/purchase-invoice.php?data=".$preparedData;
+header('Location: '.$redirectUrl);
 exit;
 
 ?>
