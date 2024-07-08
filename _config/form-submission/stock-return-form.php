@@ -119,7 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 // exit;
 if (isset($detailesReturned) && ($detailesReturned == true)) {
     $response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
-    header("Location: ".URL."stock-return-invoice.php?data=".$response);
+    // header("Location: ".URL."stock-return-invoice.php?data=".$response);
+    $redirectUrl = URL."invoices/purchase-return-invoice.php?data=" . $response;
+    header("Location: $redirectUrl");
     exit;
 }
 
