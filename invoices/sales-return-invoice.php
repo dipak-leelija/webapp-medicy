@@ -438,7 +438,7 @@ if (isset($_POST['printPDF'])) {
                 <div class="row">
                     <div class="col-sm-1">
                         <!-- <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" -->
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo ?>"
+                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo ?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
@@ -550,7 +550,7 @@ if (isset($_POST['printPDF'])) {
 
                     $isLastRow = $index === count($salesReturnDetails) - 1;
                     // Add border style only if it's not the last row
-                    $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
+                    $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;height:24px;';
 
                    echo ' <tr style="'.$borderStyle.'">
                         <th scope="row" class="pt-1 pb-1"><small>' . $slno . '</small> </th>
@@ -578,16 +578,16 @@ if (isset($_POST['printPDF'])) {
 
                 <div class="row my-0">
                     <div class="col-5">
-                        <div class="row m-2">
-                            <div class="col-2 ms-4">
+                        <div class="row mt-2">
+                            <div class="col-2">
                                 <b><small>Patient </small></b><br>
                                 <!-- <b><small>Age</small></b><br> -->
                                 <b><small>Contact</small></b>
                             </div>
                             <div class="col-9">
-                                <p class="text-start mb-0"><small><?= ' :   ' . $patientName; ?></small></p>
-                                <!-- <p class="text-start mb-0"><small><?= ' :   ' . $patientAge; ?></small></p> -->
-                                <p class="text-start"><small><?= ' :   ' . $patientPhno; ?></small></p>
+                                <p class="text-start mb-0"><small><?= ' :  ' . $patientName; ?></small></p>
+                                <!-- <p class="text-start mb-0"><small><?= ' :  ' . $patientAge; ?></small></p> -->
+                                <p class="text-start"><small><?= ':  ' . $patientPhno; ?></small></p>
                             </div>
                         </div>
                     </div>
