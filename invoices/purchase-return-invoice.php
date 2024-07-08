@@ -118,11 +118,11 @@ class PDF extends FPDF
         ///....add paid badge...///
         if( $this->$pMode != 'Credit'){
             if ($dueDate == $crrntDt){
-            $imageX = 50; // X position with left space
+            $imageX = 80; // X position with left space
             $imageY = 70;
-            $imageWidth = 100; // Adjusted width with spaces
-            $imageHeight = 60; // Height of the image
-           $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+            $imageWidth = 50; // Adjusted width with spaces
+            $imageHeight = 50; // Height of the image
+           $this->Image('../assets/images/refund-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
             }
        }///....end page badge...///
 
@@ -234,7 +234,6 @@ class PDF extends FPDF
             $this->SetFont('Arial', '', 10);
             $this->MultiCell(80, 5,  " $this->pharmacyName\n $this->pharmacyContact", 0, 'L');
 
-            // GST Calculation
             $this->SetY(149); // Reset Y position
             $this->SetX(92); // Align to the right
             // Draw vertical line
@@ -253,16 +252,22 @@ class PDF extends FPDF
             $this->Cell(78, 5, 'Total GST :', 0, 0, 'C');
             $this->Cell(-24, 5, '' . floatval($this->returnGst), 0, 1, 'C');
 
+            $this->SetY(149); // Reset Y position
+            $this->SetX(150); // Align to the right
+            // Draw vertical line
+            $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
+
             // Amount Calculation
             $startX = 140;
             $this->SetY($currentY); // Reset Y position to top of the section
             $this->SetX($startX);
-            $this->Cell(35, 5, 'Total Items :', 0, 0, 'R');
-            $this->Cell(25, 5, '' . $this->itemQty, 0, 1, 'R');
+            $this->Cell(32, 5, 'Total Items :', 0, 0, 'R');
+            $this->Cell(28, 5, '' . $this->itemQty, 0, 1, 'R');
             $this->SetX($startX);
             $this->SetFont('Arial', '', 10);
-            $this->Cell(35, 5, 'Total Units :', 0, 0, 'R');
-            $this->Cell(25, 5, '' . $this->totalReturnQty, 0, 1, 'R');
+            $this->Cell(32, 5, 'Total Units :', 0, 0, 'R');
+            $this->Cell(28, 5, '' . $this->totalReturnQty, 0, 1, 'R');
             $this->SetX($startX);
             $this->SetFont('Arial', '', 10);
             $this->Cell(35, 5, 'Total Refund :', 0, 0, 'R');
