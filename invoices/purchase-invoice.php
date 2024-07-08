@@ -286,7 +286,7 @@ class PDF extends FPDF
             $this->SetFont('Arial', '', 8);
            
             $this->Cell(-5, 5, $slno, 0, 0, 'L');
-             $yBefore = $this->GetY();
+            $yBefore = $this->GetY();
             $this->SetY($yBefore); // Reset Y to avoid new line issues
             $this->SetX($this->GetX() + 10); // Move X to the next position
             $this->MultiCell(35, 4, "$pname\n$pQTY $itemUnitName", 0, 'L');
