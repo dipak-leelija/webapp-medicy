@@ -391,7 +391,7 @@ if (isset($_POST['printPDF'])) {
 
                         $isLastRow = $index === count($returnDetails) - 1;
                         // Add border style only if it's not the last row
-                        $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
+                        $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;height:24px;';
 
                     echo '<tr style="'.$borderStyle.'">
                         <th scope="row" class="pt-1 pb-1"><small style="font-weight: normal; font-size: 0.750em;">' . substr($productName, 0, 20) . '</small>
