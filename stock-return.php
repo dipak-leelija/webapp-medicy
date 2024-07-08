@@ -309,8 +309,12 @@ if ($stockReturnLists->status == '1') {
                                                         $col = 'emp_id';
                                                         $empData = json_decode($Employees->selectEmpByCol($col, $row->added_by));
 
-                                                        $empData = $empData->data;
-                                                        $empName = $empData[0]->emp_name;
+                                                        if($empData->status != '0'){
+                                                            $empData = $empData->data;
+                                                            $empName = $empData[0]->emp_name;
+                                                        }else{
+                                                            $empName = '';
+                                                        }
                                                     } else {
                                                         $empName = '';
                                                     }
