@@ -121,7 +121,7 @@ function purchaseAnalysisDataSearch(array){
     
     
     report = JSON.parse(report);
-    
+    // console.log(report);
     if(report.status == '1'){
         reportShow(report.data);
     }else{
@@ -207,17 +207,25 @@ function reportShow(reportData) {
         row.appendChild(itemMerginCell);
 
         const itemMerginDiff = document.createElement('td');
-        itemMerginDiff.textContent = parseFloat(data.margin_diff).toFixed(2); // Format to 2 decimal places
+        const marginDiffValue = parseFloat(data.margin_diff).toFixed(2);
+        itemMerginDiff.textContent = marginDiffValue + ' %'; // Format to 2 decimal places
         itemMerginDiff.style.textAlign = 'right'; // Right align the text
+        if (marginDiffValue < 0) {
+            itemMerginDiff.style.color = 'red'; // Set text color to red for negative values
+        }
         row.appendChild(itemMerginDiff);
 
         const itemMerginDiffAmount = document.createElement('td');
-        itemMerginDiffAmount.textContent = parseFloat(data.margin_diff_amount).toFixed(2);; // Format to 2 decimal places 
+        const marginDiffAmountValue = parseFloat(data.margin_diff_amount).toFixed(2);
+        itemMerginDiffAmount.textContent = marginDiffAmountValue; // Format to 2 decimal places
         itemMerginDiffAmount.style.textAlign = 'right'; // Right align the text
+        if (marginDiffAmountValue < 0) {
+            itemMerginDiffAmount.style.color = 'red'; // Set text color to red for negative values
+        }
         row.appendChild(itemMerginDiffAmount);
 
         const itemAvgMargin = document.createElement('td');
-        itemAvgMargin.textContent = parseFloat(data.avg_margin).toFixed(2);; // Format to 2 decimal places
+        itemAvgMargin.textContent = parseFloat(data.avg_margin).toFixed(2); // Format to 2 decimal places
         itemAvgMargin.style.textAlign = 'right'; // Right align the text
         row.appendChild(itemAvgMargin);
 

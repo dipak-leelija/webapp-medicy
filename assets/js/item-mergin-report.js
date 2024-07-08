@@ -206,10 +206,13 @@ function reportShow(reportData) {
     const thead = document.createElement('thead');
     const tr = document.createElement('tr');
     
-    header.forEach(headerText => {
+    header.forEach((headerText, index) => {
         const th = document.createElement('th');
         th.textContent = headerText;
         th.style.fontWeight = 'bold'; // Make the header bold
+        if (index >= 5) {
+            th.style.textAlign = 'right'; // Right-align last 5 header cells
+        }
         tr.appendChild(th);
     });
     thead.appendChild(tr);
@@ -252,32 +255,37 @@ function reportShow(reportData) {
 
         const itemCurrentQtyCell = document.createElement('td');
         itemCurrentQtyCell.textContent = data.current_qty;
+        itemCurrentQtyCell.style.textAlign = 'right'; // Right-align the data cell
         row.appendChild(itemCurrentQtyCell);
 
         const itemMrpCell = document.createElement('td');
         itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
+        itemMrpCell.style.textAlign = 'right'; // Right-align the data cell
         row.appendChild(itemMrpCell);
 
         const itemSalesAmountCell = document.createElement('td');
         itemSalesAmountCell.textContent = parseFloat(data.sales_amount).toFixed(2); // Format to 2 decimal places
+        itemSalesAmountCell.style.textAlign = 'right'; // Right-align the data cell
         totalSalesAmount = parseFloat(totalSalesAmount) + parseFloat(data.sales_amount);
         row.appendChild(itemSalesAmountCell);
 
         const itemPurchaseAmountCell = document.createElement('td');
         itemPurchaseAmountCell.textContent = parseFloat(data.p_amount).toFixed(2); // Format to 2 decimal places
+        itemPurchaseAmountCell.style.textAlign = 'right'; // Right-align the data cell
         totalPurchaseAmount = parseFloat(totalPurchaseAmount) + parseFloat(data.p_amount);
         row.appendChild(itemPurchaseAmountCell);
 
         const itemNetGstCell = document.createElement('td');
         itemNetGstCell.textContent = parseFloat(data.gst_amount).toFixed(2); // Format to 2 decimal places
+        itemNetGstCell.style.textAlign = 'right'; // Right-align the data cell
         totalNetGst = parseFloat(totalNetGst) + parseFloat(data.gst_amount);
         row.appendChild(itemNetGstCell);
 
         const itemProfitAmountPercentageCell = document.createElement('td');
-        let profit = data.profit;
-        profit = profit.toFixed(2);
-        itemProfitAmountPercentageCell.textContent = profit+' ('+parseFloat(data.margin_percent).toFixed(2) + '%'+')'; // Format to 2 decimal places with % sign
-        totalProfit = parseFloat(totalProfit) + parseFloat(profit);
+        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        itemProfitAmountPercentageCell.textContent = profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)';
+        itemProfitAmountPercentageCell.style.textAlign = 'right'; // Right-align the data cell
         row.appendChild(itemProfitAmountPercentageCell);
 
         // Append the row to the table body
@@ -287,8 +295,9 @@ function reportShow(reportData) {
     totalSalesAmountLabel.innerHTML = totalSalesAmount.toFixed(2);
     totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
     netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
-    let profitAmount = parseFloat(totalSalesAmount) -  parseFloat(totalPurchaseAmount);
-    totalProfitAmountLable.innerHTML = profitAmount.toFixed(2);
+    let totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount);
+    let totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
+    totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
 
     // Append the table body to the table
     itemMarginTable.appendChild(tbody);

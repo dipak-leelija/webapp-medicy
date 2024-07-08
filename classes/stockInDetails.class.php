@@ -492,13 +492,15 @@ class StockInDetails
             while ($row = $result->fetch_object()) {
                 $data[] = $row;
             }
+            $returnData = ['status'=>'1', 'data'=>$data];
         } else {
             $data[] = '';
+            $returnData = ['status'=>'0', 'data'=>$data];
         }
 
         // Close the statement
         $stmt->close();
-        return json_encode(['status' => '1', 'data' => $data]);
+        return json_encode($returnData);
     } catch (Exception $e) {
         return ['status' => '0', 'error' => $e->getMessage()];
     }
