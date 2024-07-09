@@ -315,7 +315,7 @@ class PDF extends FPDF
     }//footer
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $totalGst = 0;
     $totalMrp = 0;
@@ -345,7 +345,7 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 ?>
 
 <!DOCTYPE html>

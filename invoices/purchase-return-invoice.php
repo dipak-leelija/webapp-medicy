@@ -285,7 +285,7 @@ class PDF extends FPDF
     }//footer
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $pdf = new PDF($pharmacyName, $pharmacyContact, $returnGst, $itemQty, $totalReturnQty, $refund);
     $pdf->AliasNbPages();
@@ -294,7 +294,7 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 ?>
 
 <!DOCTYPE html>

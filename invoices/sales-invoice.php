@@ -388,7 +388,7 @@ class PDF extends FPDF
 
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
     if ($healthCare->status === 1 ) {
@@ -418,12 +418,12 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 
 
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -433,7 +433,7 @@ if (isset($_POST['printPDF'])) {
     <title><?= "Sales Invoice - $patientName - #$invoiceId"?></title>
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/receipts.css">
-</head>
+</head> -->
 
 
 <body>

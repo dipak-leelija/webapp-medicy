@@ -386,7 +386,7 @@ class PDF extends FPDF
 
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
     if ($healthCare->status === 1 ) {
@@ -411,7 +411,7 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 ?>
 
 <!DOCTYPE html>
