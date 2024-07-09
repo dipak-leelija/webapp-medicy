@@ -134,10 +134,18 @@ color:#183697 ;
   text-align: end;
 }
 
-.printButton {
+.printDiv{
   display: flex;
  justify-content: center;
  padding: 4px;
+}
+.printButton{
+  padding: 10px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #4e73df;
+  border: none;
+  cursor: pointer;
 }
 
 .addHr{

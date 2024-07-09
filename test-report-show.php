@@ -372,9 +372,9 @@ if (isset($_POST['printPDF'])) {
         </div>
     </section>
     <form method="post">
-        <div class="printButton">
+        <div class="printDiv">
         <input type="hidden" name="printPDF" value="1">
-        <button type="submit" >Print PDF</button>
+        <button class="printButton" type="submit" >Print PDF</button>
         </div>
     </form>
 </body>

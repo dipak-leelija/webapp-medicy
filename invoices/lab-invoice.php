@@ -274,7 +274,7 @@ class PDF extends FPDF {
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
 
         ///...Bill Details...///
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 9);
         $slno = 1;
         $rowsPerPage = 8; // Maximum rows per page
         $rowCounter = 0;
@@ -355,7 +355,7 @@ class PDF extends FPDF {
 
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
     if ($healthCare->status === 1 ) {
@@ -377,7 +377,7 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 ?>
 
 <!DOCTYPE html>

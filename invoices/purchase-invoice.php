@@ -315,7 +315,7 @@ class PDF extends FPDF
     }//footer
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
     $totalGst = 0;
     $totalMrp = 0;
@@ -345,7 +345,7 @@ if (isset($_POST['printPDF'])) {
     ob_clean();
     $pdf->Output();
     exit;
-}
+// }
 ?>
 
 <!DOCTYPE html>
@@ -509,7 +509,7 @@ if (isset($_POST['printPDF'])) {
 
                         $isLastRow = $index === count($itemDetials) - 1;
                         // Add border style only if it's not the last row
-                        $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;';
+                        $borderStyle = $isLastRow ? 'border-bottom: transparent;' : 'border-bottom: #dfdfdf;height:24px;';
                     ?>
                         <tr style="<?php echo $borderStyle ?>">
                             <th scope="row" class="pt-1 pb-1"><small style="font-size: 0.750em;">
