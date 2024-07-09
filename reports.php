@@ -21,9 +21,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
@@ -69,17 +67,12 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingOne">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                    aria-expanded="false" aria-controls="flush-collapseOne">
-                                                    <i class="fas fa-file-invoice-dollar"
-                                                    style="color: #085996;margin-right:8px"></i> Purchae Report
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    <i class="fas fa-file-invoice-dollar" style="color: #085996;margin-right:8px"></i> Purchae Report
                                                 </button>
                                             </h2>
-                                            
-                                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-headingOne"
-                                                data-bs-parent="#accordionFlushExample">
+
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
                                                     <a href="purchase-report.php">Purchae Report</a>
                                                 </div>
@@ -87,16 +80,12 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         </div>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingTwo">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
-                                                    aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                                                     <i class="fas fa-file-alt" style="color: #EB449F;margin-right:8px"></i>
                                                     Sales Report
                                                 </button>
                                             </h2>
-                                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-headingTwo"
-                                                data-bs-parent="#accordionFlushExample">
+                                            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
                                                     <a href="sales-summery-report.php">Sales Summery Report</a>
                                                 </div>
@@ -107,15 +96,11 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         </div>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingThree">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                                    aria-expanded="false" aria-controls="flush-collapseThree">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                                                     <i class="fas fa-percent" style="color: #3ED6CB;margin-right:8px"></i>Margin Report
                                                 </button>
                                             </h2>
-                                            <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-headingThree"
-                                                data-bs-parent="#accordionFlushExample">
+                                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
                                                     <a href="item-wise-margin-report.php">Item Wise Margin</a>
                                                 </div>
@@ -127,17 +112,36 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingFour">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                                                    aria-expanded="false" aria-controls="flush-collapseFour">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                                    <i class="fas fa-box fa-fw fa-solid" style="color: #00ace6;margin-right:8px"></i>Stock Reports
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="expiry-report.php">Expiry report</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="item-batch-wise-stock-report.php">Item batch wise stock</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="annual-audit-report.php">Annual audit</a>
+                                                </div>
+                                                <div class="accordion-body">
+                                                    <a href="annual-audit-report.php">Item wise closing stock</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingFive">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
                                                     Inventory Report
                                                 </button>
                                             </h2>
-                                            <div id="flush-collapseFour" class="accordion-collapse collapse"
-                                                aria-labelledby="flush-headingFour"
-                                                data-bs-parent="#accordionFlushExample">
+                                            <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
                                                     <a href="">Inventory Report</a>
                                                 </div>
@@ -170,29 +174,25 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                 <div class="col-8">
                                     <div class="col-md-12 mt-3 me-5 d-flex p-3 flex-wrap">
                                         <a href="purchase-report.php" class="reportCard rounded m-2">
-                                            <span><i class="fas fa-file-invoice-dollar"
-                                                    style="color: #085996;font-size:3rem"></i></span>
+                                            <span><i class="fas fa-file-invoice-dollar" style="color: #085996;font-size:3rem"></i></span>
                                             <div class="ms-2">
                                                 <p class="m-0 p-0">Purchase Report</p>
                                             </div>
                                         </a>
                                         <a href="gst-sales-report.php" class="reportCard rounded m-2">
-                                            <span><i class="fas fa-file-alt"
-                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <span><i class="fas fa-file-alt" style="color: #B197FC;font-size:3rem"></i></span>
                                             <div class="ms-2">
                                                 <p class="m-0 p-0">GST Sales Report</p>
                                             </div>
                                         </a>
                                         <a href="sales-summery-report.php" class="reportCard rounded m-2">
-                                            <span><i class="fas fa-file-alt"
-                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <span><i class="fas fa-file-alt" style="color: #B197FC;font-size:3rem"></i></span>
                                             <div class="ms-2">
                                                 <p class="m-0 p-0">Sales Summary Report</p>
                                             </div>
                                         </a>
                                         <a href="" class="reportCard rounded m-2">
-                                            <span><i class="fas fa-file-alt"
-                                                    style="color: #B197FC;font-size:3rem"></i></span>
+                                            <span><i class="fas fa-file-alt" style="color: #B197FC;font-size:3rem"></i></span>
                                             <div class="ms-2">
                                                 <p class="m-0 p-0">Inventory Report</p>
                                             </div>
