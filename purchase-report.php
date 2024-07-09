@@ -123,7 +123,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <select class="cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterReportType(this)">
                                     <option value="" disabled selected>Report Type</option>
                                     <option value="P">Purchase</option>
-                                    <option value="PR">Purchase Return</option>
+                                    <!-- <option value="PR">Purchase Return</option> -->
                                 </select>
                                 <label class="d-none" id="selected-report-type"></label>
                             </div>
