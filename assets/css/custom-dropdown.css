@@ -25,9 +25,9 @@
 }
 
 .c-inp option:hover,
-.cvx-inp1 option:hover{
-    outline: none !important;
-    border: none !important;
+select option:hover{
+    /* outline: none !important;
+    border: none !important; */
     color: #ffffff;
     background-color: rgba(12, 161, 246, 1) !important;
     cursor: pointer;

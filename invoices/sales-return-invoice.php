@@ -161,17 +161,16 @@ class PDF extends FPDF
             $this->MultiCell(90, 5, $address, 0, 'L');
 
             ///...Invoice Info
-            $this->SetY(15); // Reset Y position
+            $this->SetY(20); // Reset Y position
             $this->SetX(-50); // Align to the right
             // Draw vertical line
             $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
             $this->SetFont('Arial', 'B', 10);
             $this->cell(80, 0, ' Invoice:', 0, 'L');
             $this->SetFont('Arial', '', 10);
             $this->MultiCell(80, 5, " \n Bill Id: #$invoiceId\n Payment: $refundMode\n Date: $this->billDate", 0, 'L');
 
-            $this->Ln(6);
             $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(10);
@@ -243,18 +242,18 @@ class PDF extends FPDF
         }///....end page badge...///
     
         $this->SetFont('Arial', 'B', 9);
-        $this->Cell(16, -10, 'SL. NO.', 0, 0, 'L');
-        $this->Cell(28, -10, 'Name', 0, 0, 'L');
+        $this->Cell(14, -10, 'SL. NO.', 0, 0, 'L');
+        $this->Cell(30, -10, 'Name', 0, 0, 'L');
         $this->Cell(15, -10, 'Manuf.', 0, 0, 'L');
-        $this->Cell(15, -10, 'Batch', 0, 0, 'L');
-        $this->Cell(14, -10, 'Exp.', 0, 0, 'L');
+        $this->Cell(20, -10, 'Batch', 0, 0, 'L');
+        $this->Cell(13, -10, 'Exp.', 0, 0, 'L');
         $this->Cell(14, -10, 'Unit.', 0, 0, 'L');
         $this->Cell(14, -10, 'Buy Qty', 0, 0, 'L');
-        $this->Cell(14, -10, 'Ret.Qty', 0, 0, 'L');
-        $this->Cell(14, -10, 'Rate', 0, 0, 'L');
+        $this->Cell(13, -10, 'Ret.Qty', 0, 0, 'L');
+        $this->Cell(13, -10, 'Rate', 0, 0, 'L');
         $this->Cell(15, -10, 'Disc (%)', 0, 0, 'L');
-        $this->Cell(15, -10, 'GST(%)', 0, 0, 'L');
-        $this->Cell(16, -10, 'Amount ()', 0, 1, 'R');
+        $this->Cell(14, -10, 'GST(%)', 0, 0, 'L');
+        $this->Cell(16, -10, 'Amount', 0, 1, 'R');
         $this->Ln(10);
         $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
@@ -347,7 +346,7 @@ class PDF extends FPDF
                 $drawDot = !$drawDot; // Switch drawing state for next dot
             }
         }
-        $this->Cell(16, 5, $slno, 0, 0, 'L');
+        $this->Cell(14, 5, $slno, 0, 0, 'L');
 
         $productName = $product->name;
         if (strlen($productName) > 15) {
@@ -356,15 +355,15 @@ class PDF extends FPDF
         $x = $this->GetX();
         $y = $this->GetY(2);
         // $this->Ln(2);
-        $this->MultiCell(28, 5, $productName, 0, 'L');
-        $this->SetXY($x + 28, $y-2);
+        $this->MultiCell(30, 5, $productName, 0, 'L');
+        $this->SetXY($x + 30, $y-2);
         // $this->Cell(28, 10, $product->name, 0, 0, 'L');
         $this->Cell(15, 10, $manufacturerName, 0, 0, 'L');
-        $this->Cell(16, 10, $detail['batch_no'], 0, 0, 'L');
-        $this->Cell(14, 10, $detail['exp'], 0, 0, 'L');
+        $this->Cell(20, 10, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(13, 10, $detail['exp'], 0, 0, 'L');
         $this->Cell(16, 10, $detail['weatage'], 0, 0, 'L');
-        $this->Cell(14, 10, $purchasedQty, 0, 0, 'L');
-        $this->Cell(13, 10, $detail['return_qty'], 0, 0, 'L');
+        $this->Cell(12, 10, $purchasedQty, 0, 0, 'L');
+        $this->Cell(12, 10, $detail['return_qty'], 0, 0, 'L');
         $this->Cell(14, 10, $detail['ptr'], 0, 0, 'L');
         $this->Cell(15, 10, $detail['disc'], 0, 0, 'L');
         $this->Cell(15, 10, $detail['gst'], 0, 0, 'L');

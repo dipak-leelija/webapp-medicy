@@ -127,15 +127,15 @@ class PDF extends FPDF
        }///....end page badge...///
 
        $this->SetFont('Arial', 'B', 10);
-       $this->Cell(30, -10, 'Name', 0, 0, 'L');
-       $this->Cell(16, -10, 'Batch', 0, 0, 'L');
-       $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
-       $this->Cell(16, -10, 'P.Qty', 0, 0, 'L');
-       $this->Cell(16, -10, 'Free', 0, 0, 'L');
-       $this->Cell(18, -10, 'MRP', 0, 0, 'L');
+       $this->Cell(31, -10, 'Name', 0, 0, 'L');
+       $this->Cell(22, -10, 'Batch', 0, 0, 'L');
+       $this->Cell(15, -10, 'Exp.', 0, 0, 'L');
+       $this->Cell(15, -10, 'P.Qty', 0, 0, 'L');
+       $this->Cell(14, -10, 'Free', 0, 0, 'L');
+       $this->Cell(16, -10, 'MRP', 0, 0, 'L');
        $this->Cell(16, -10, 'PTR', 0, 0, 'L');
-       $this->Cell(16, -10, 'GST%', 0, 0, 'L');
-       $this->Cell(16, -10, 'DIS%', 0, 0, 'L');
+       $this->Cell(15, -10, 'GST%', 0, 0, 'L');
+       $this->Cell(15, -10, 'DIS%', 0, 0, 'L');
        $this->Cell(16, -10, 'Return', 0, 0, 'L');
        $this->Cell(15, -10, 'Refund', 0, 1, 'R');
        $this->Ln(10);
@@ -188,16 +188,15 @@ class PDF extends FPDF
             $this->SetX($this->GetX());
             $this->MultiCell(35, 4, "$productName\n$setof", 0, 'L');
             $this->SetY($yBefore); // Reset Y to avoid new line issues
-            $this->SetX($this->GetX()+30); // Move X to the next positio
-            $this->Cell(16, 5, $batchNo, 0, 0, 'L');
-            $this->Cell(16, 5, $expDate, 0, 0, 'L');
-            // $this->Cell(16, 5, $setof, 0, 0, 'L');
-            $this->Cell(16, 5, $purchasedQty, 0, 0, 'L');
-            $this->Cell(18, 5, $freeQty, 0, 0, 'L');
+            $this->SetX($this->GetX()+32); // Move X to the next positio
+            $this->Cell(22, 5, $batchNo, 0, 0, 'L');
+            $this->Cell(15, 5, $expDate, 0, 0, 'L');
+            $this->Cell(14, 5, $purchasedQty, 0, 0, 'L');
+            $this->Cell(14, 5, $freeQty, 0, 0, 'L');
             $this->Cell(16, 5, $mrp, 0, 0, 'L');
             $this->Cell(16, 5, $ptr, 0, 0, 'L');
-            $this->Cell(16, 5, $gstPercent.'%', 0, 0, 'L');
-            $this->Cell(16, 5, $discParcent.'%', 0, 0, 'L');
+            $this->Cell(15, 5, $gstPercent.'%', 0, 0, 'L');
+            $this->Cell(15, 5, $discParcent.'%', 0, 0, 'L');
             $this->Cell(16, 5, $returnQty, 0, 0, 'L');
             $this->Cell(15, 5, $refundAmount, 0, 1, 'R');
 
