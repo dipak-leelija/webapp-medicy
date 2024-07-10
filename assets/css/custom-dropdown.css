@@ -24,6 +24,28 @@
     border: none !important;
 }
 
+.c-inp option:hover,
+.cvx-inp1 option:hover{
+    outline: none !important;
+    border: none !important;
+    color: #ffffff;
+    background-color: rgba(12, 161, 246, 1) !important;
+    cursor: pointer;
+}
+
+.dropdown-menu li{
+    padding: 4px 12px;
+}
+.dropdown-menu li:hover,
+.dropdown-menu label:hover,
+.dropdown-menu input:hover{
+    color: #ffffff;
+    background-color: rgba(12, 161, 246, 1) !important;
+    cursor: pointer;
+}
+/* .dropdown-menu li, label:hover{
+    cursor: pointer;
+} */
 
 #print-report{
     padding-bottom: 6px;

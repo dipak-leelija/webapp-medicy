@@ -96,7 +96,7 @@ if ($_SESSION['ADMIN']) {
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
+    <!-- <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 </head>
@@ -180,7 +180,7 @@ if ($_SESSION['ADMIN']) {
                                 <div class="input-group w-100">
                                     <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;" />
 
-                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -31px;" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
+                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -23px;padding-right:0px" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
                                 </div>
                             </div>
 
@@ -197,17 +197,17 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- product category list -->
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
-                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0" type="button" id="prod-category" name="prod-category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn cvx-inp1 dropdown-toggle bg-white w-100 p-1 border-0 overflow-hidden" type="button" id="prod-category" name="prod-category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Item Category
                                 </button>
-                                <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow w-75 fs-6" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)">All Category</label>
+                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)">  All Category</label>
                                     </li>
                                     <?php
                                     if (!empty($prodCategoryData)) {
                                         foreach ($prodCategoryData as $categoryData) {
-                                            echo '<li><label><input type="checkbox" value="' . $categoryData->id . '" id="' . $categoryData->name . '" onclick="toggleCheckboxes1(this)"> ' . $categoryData->name . ' </label></li>';
+                                            echo '<li><label class="m-0"><input type="checkbox" value="' . $categoryData->id . '" id="' . $categoryData->name . '" onclick="toggleCheckboxes1(this)"> ' . $categoryData->name . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -220,31 +220,31 @@ if ($_SESSION['ADMIN']) {
                             <!-- filter payment mode -->
 
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
-                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1" type="button" id="payment-mode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1 w-100 overflow-hidden" type="button" id="payment-mode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="caret" id="payment-mode-select-span">Select Payment Mode</span>
                                 </button>
                                 <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes2(this)">All Payment Mode</label>
+                                        <label class="m-0"><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes2(this)"> All Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes2(this)">Cash</label>
+                                        <label class="m-0"><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes2(this)"> Cash</label>
                                     </li>
 
                                     <li>
-                                        <label>
-                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes2(this)">Credit
+                                        <label class="m-0">
+                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes2(this)"> Credit
                                         </label>
                                     </li>
                                     <li>
-                                        <label>
-                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes2(this)">UPI
+                                        <label class="m-0">
+                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes2(this)"> UPI
                                         </label>
                                     </li>
                                     <li>
-                                        <label>
-                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes2(this)">Card
+                                        <label class="m-0">
+                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes2(this)"> Card
                                         </label>
                                     </li>
                                     <label class="d-none" id="filter-by-payment-mode-val"></label>
@@ -253,21 +253,21 @@ if ($_SESSION['ADMIN']) {
 
 
                             <!-- filter on staff -->
-                            <div class="dropdown d-none col-md-2" id="staff-filter-div">
-                                <button class="btn dropdown-toggle bg-white w-100" type="button" id="staff-filter" name="staff-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="staff-filter-div">
+                                <button class="btn cvx-inp1 btn-default dropdown-toggle p-1 w-100" type="button" id="staff-filter" name="staff-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     Select Staff
                                 </button>
                                 <ul class="dropdown-menu staff-list-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)">All Staff</label>
+                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)"> All Staff</label>
                                     </li>
                                     <li>
-                                        <label><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?= $adminName; ?> (admin)</label>
+                                        <label class="m-0"><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?=  $adminName; ?> (admin)</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
                                         foreach ($employeeDetails as $empData) {
-                                            echo '<li><label><input type="checkbox" onclick="toggleCheckboxes3(this)" id="' . $empData->emp_username . '" value="' . $empData->emp_id . '"> ' . $empData->emp_username . ' </label></li>';
+                                            echo '<li><label class="m-0"><input type="checkbox" onclick="toggleCheckboxes3(this)" id="' . $empData->emp_username . '" value="' . $empData->emp_id . '"> ' . $empData->emp_username . ' </label></li>';
                                         }
                                     }
                                     ?>
@@ -281,8 +281,8 @@ if ($_SESSION['ADMIN']) {
 
 
                             <!-- additional filter  -->
-                            <div class="d-none col-md-2 mt-2" id="report-filter-div">
-                                <select class="cvx-inp1 border-0 w-75 h-100" name="sales-report-on" id="sales-report-on" onchange="filterReportOn(this)">
+                            <div class="dropdown d-none col-md-2 me-3 bg-white selectDiv" id="report-filter-div">
+                                <select class="cvx-inp1 border-0 p-1 w-100" name="sales-report-on" id="sales-report-on" onchange="filterReportOn(this)">
                                     <option value="" selected>Select Report Filter</option>
                                     <option value="TS">Total Sales (&#8377)</option>
                                     <option value="TM">Total Margin (&#8377)</option>
