@@ -883,7 +883,7 @@ function reportShow(parsedData) {
                 }
 
                 amount = amount.toFixed(2);
-
+                console.log('amount '+amount);
                 rowData[data.category_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
@@ -902,7 +902,7 @@ function reportShow(parsedData) {
                 }
 
                 amount = amount.toFixed(2);
-
+                console.log('amount '+amount);
                 rowData[data.payment_mode] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
@@ -921,7 +921,7 @@ function reportShow(parsedData) {
                 }
 
                 amount = amount.toFixed(2);
-                
+                console.log('amount '+amount);
                 rowData[data.added_by_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
