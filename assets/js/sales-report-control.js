@@ -882,7 +882,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.category_name] += amount.toFixed(2);
+                rowData[data.category_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
@@ -899,7 +899,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.payment_mode] += amount.toFixed(2);
+                rowData[data.payment_mode] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
@@ -916,7 +916,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.added_by_name] += amount.toFixed(2);
+                rowData[data.added_by_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
