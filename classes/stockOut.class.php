@@ -1456,6 +1456,8 @@ class StockOut
             throw new Exception("Invalid group filter parameter");
         }
 
+        echo $sqlQuery;
+
         try {
             // Prepare and execute the query
             $stmt = $this->conn->prepare($sqlQuery);
@@ -1469,7 +1471,7 @@ class StockOut
             $stmt->execute();
 
             $result = $stmt->get_result();
-
+            print_r($result);
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {

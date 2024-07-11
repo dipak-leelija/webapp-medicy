@@ -771,7 +771,7 @@ function reportShow(parsedData) {
                     if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
                         grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
                     } else if (filterByVal.innerHTML === 'PM' && data.payment_mode === header) {
-                        grandTotals[header] += parseFloat(data.total_amount || 0);
+                        grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
                     } else if (filterByVal.innerHTML === 'STF' && data.added_by_name === header) {
                         grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
                     }
@@ -864,7 +864,6 @@ function reportShow(parsedData) {
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
                 const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
-                console.log(stockOutAmount);
                 rowData[data.payment_mode] += stockOutAmount;
                 totalSellAmount += stockOutAmount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
