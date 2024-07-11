@@ -863,7 +863,7 @@ function reportShow(parsedData) {
 
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-                const totalAmount = parseFloat(data.total_amount || 0);
+                const totalAmount = parseFloat(data.total_stock_out_amount || 0);
                 rowData[data.payment_mode] += totalAmount;
                 totalSellAmount += totalAmount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);

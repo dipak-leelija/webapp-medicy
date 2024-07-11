@@ -1333,7 +1333,7 @@ class StockOut
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
-        $sqlPart3 = "SUM(so.amount) AS total_amount,
+        $sqlPart3 = "SUM(so.amount) AS total_stock_out_amount,
                  SUM(sod.sales_margin) AS total_sales_margin,
                  SUM(so.disc) as total_discount
                  FROM 
