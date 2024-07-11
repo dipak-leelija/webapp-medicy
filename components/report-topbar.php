@@ -9,7 +9,7 @@
 
     <div class="col-12 d-flex">
         <!-- home icon  -->
-        <div class="col-1 p-2 text-center">
+        <div class="col-1 p-2 mt-3 text-center">
             <a href="index.php">
                 <i class="fas fa-home font-weight-bold"></i>
             </a>

@@ -805,11 +805,85 @@ class CurrentStock {
 
 
 
+
+
+    // ========== item expiry details report function ==========
+    function itemExpiryDataDetails($startDate, $endDate, $admin, $search = '') {
+        $data = array();
+        try {
+            // Define the base query
+            $selectQuery1 = "SELECT 
+                                dist.name AS dist_name,
+                                dist.gst_id AS dist_gstin,
+                                cs.product_id AS product,
+                                cs.qty AS current_qty,
+                                cs.ptr AS item_ptr,
+                                cs.exp_date AS exp_date
+                            FROM 
+                                current_stock cs
+                            JOIN 
+                                stock_in_details sid ON sid.id = cs.stock_in_details_id
+                            JOIN 
+                                stock_in si ON si.id = sid.stokIn_id
+                            JOIN 
+                                distributor dist ON dist.id = si.distributor_id
+                            WHERE 
+                                STR_TO_DATE(CONCAT('01/', cs.exp_date), '%d/%m/%Y') BETWEEN STR_TO_DATE(?, '%d/%m/%Y') AND STR_TO_DATE(?, '%d/%m/%Y')
+                                AND si.admin_id = ?";  
+        
+            $selectQuery2 = " AND (dist.name LIKE ? OR dist.gst_id LIKE ?)";
+                            
+            if ($search != '') {
+                $selectQuery = $selectQuery1 . $selectQuery2;
+            } else {
+                $selectQuery = $selectQuery1;
+            }
+            
+            // Prepare the statement
+            $stmt = $this->conn->prepare($selectQuery);
+            
+            if ($stmt) {
+                // Bind parameters based on the presence of the search term
+                if ($search != '') {
+                    $searchParam = '%' . $search . '%';
+                    $stmt->bind_param("sss", $startDate, $endDate, $admin); // Bind the base parameters
+                    $stmt->bind_param("ss", $searchParam, $searchParam); // Bind the search parameters
+                } else {
+                    $stmt->bind_param("sss", $startDate, $endDate, $admin); // Bind the base parameters only
+                }
+    
+                // Execute the statement
+                $stmt->execute();
+        
+                // Get the result
+                $result = $stmt->get_result();
+        
+                // Fetch data
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return json_encode(['status' => '1', 'data' => $data]);
+                } else {
+                    return json_encode(['status' => '0']);  // No results
+                }
+                
+                // Close the statement
+                $stmt->close();
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Log and return the error message
+            error_log("Error: " . $e->getMessage());
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);  // Changed to '0' for an error status
+        }
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////////
     //=============================delete section =========================
     ///////////////////////////////////////////////////////////////////////
-
-
 
     function deleteCurrentStockbyId($productId)
     {
