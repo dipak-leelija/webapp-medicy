@@ -156,17 +156,15 @@ class PDF extends FPDF
             $this->MultiCell(90, 5, $address, 0, 'L');
 
             ///...Invoice Info
-            $this->SetY(15); // Reset Y position
+            $this->SetY(20); // Reset Y position
             $this->SetX(-50); // Align to the right
             // Draw vertical line
             $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
             $this->SetFont('Arial', 'B', 10);
             $this->cell(80, 0, ' Invoice:', 0, 'L');
             $this->SetFont('Arial', '', 10);
             $this->MultiCell(80, 5, "\n #$invoiceId\n Payment:$pMode\n Date: $this->billDate", 0, 'L');
-
-            $this->Ln(6);
             $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(10);
@@ -219,38 +217,38 @@ class PDF extends FPDF
             $this->Cell(30, 5, $this->patientPhno, 0, 1, 'L');
 
             // GST Calculation
-            $this->SetY(150); // Reset Y position
+            $this->SetY(149); // Reset Y position
             $this->SetX(98); // Align to the right
             // Draw vertical line
             $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
 
             $startX = 70;
             $this->SetY($currentY); // Reset Y position to top of the section
             $this->SetX($startX);
-            $this->Cell(70, 5, 'CGST ', 0, 0, 'C');
-            $this->Cell(-10, 5, ': ' . ($this->totalGSt / 2), 0, 1, 'C');
+            $this->Cell(70, 5, 'CGST :', 0, 0, 'C');
+            $this->Cell(-10, 5, ' ' . ($this->totalGSt / 2), 0, 1, 'C');
             $this->SetX($startX);
-            $this->Cell(70, 5, 'SGST ', 0, 0, 'C');
-            $this->Cell(-10, 5, ': ' . ($this->totalGSt / 2), 0, 1, 'C');
+            $this->Cell(70, 5, 'SGST :', 0, 0, 'C');
+            $this->Cell(-10, 5, ' ' . ($this->totalGSt / 2), 0, 1, 'C');
             $this->SetX($startX);
-            $this->Cell(76, 5, 'Total GST ', 0, 0, 'C');
-            $this->Cell(-24, 5, ': ' . $this->totalGSt, 0, 1, 'C');
+            $this->Cell(76, 5, 'Total GST :', 0, 0, 'C');
+            $this->Cell(-24, 5, ' ' . $this->totalGSt, 0, 1, 'C');
 
             // Amount Calculation
             $startX = 140;
             $this->SetY($currentY); // Reset Y position to top of the section
             $this->SetX($startX);
-            $this->Cell(20, 5, 'MRP ', 0, 0, 'R');
-            $this->Cell(40, 5, ': ' . $this->totalMrp, 0, 1, 'R');
+            $this->Cell(20, 5, 'MRP :', 0, 0, 'R');
+            $this->Cell(40, 5, ' ' . $this->totalMrp, 0, 1, 'R');
             $this->SetX($startX);
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(25, 5, 'Payable ', 0, 0, 'R');
-            $this->Cell(35, 5, ': ' . $this->billAmout, 0, 1, 'R');
+            $this->Cell(26, 5, 'Payable :', 0, 0, 'R');
+            $this->Cell(34, 5, ' ' . $this->billAmout, 0, 1, 'R');
             $this->SetX($startX);
             $this->SetFont('Arial', '', 10);
-            $this->Cell(29, 5, 'You Saved ', 0, 0, 'R');
-            $this->Cell(29, 5, ': ' . ($this->totalMrp - $this->billAmout), 0, 1, 'R');
+            $this->Cell(30, 5, 'You Saved  :', 0, 0, 'R');
+            $this->Cell(28, 5, ' ' . ($this->totalMrp - $this->billAmout), 0, 1, 'R');
             
             $this->Ln(6);
             $this->SetDrawColor(108, 117, 125);
@@ -271,15 +269,15 @@ class PDF extends FPDF
        }///....end page badge...///
 
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
-        $this->Cell(30, -10, 'Name', 0, 0, 'L');
+        $this->Cell(16, -10, 'SL. NO.', 0, 0, 'L');
+        $this->Cell(34, -10, 'Name', 0, 0, 'L');
         $this->Cell(18, -10, 'Manuf.', 0, 0, 'L');
-        $this->Cell(18, -10, 'Batch', 0, 0, 'L');
+        $this->Cell(20, -10, 'Batch', 0, 0, 'L');
         $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
         $this->Cell(16, -10, 'QTY', 0, 0, 'L');
         $this->Cell(18, -10, 'MRP', 0, 0, 'L');
-        $this->Cell(18, -10, 'Disc (%)', 0, 0, 'L');
-        $this->Cell(18, -10, 'GST(%)', 0, 0, 'L');
+        $this->Cell(16, -10, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(16, -10, 'GST(%)', 0, 0, 'L');
         $this->Cell(18, -10, 'Amount ()', 0, 1, 'R');
         $this->Ln(10);
         $this->SetDrawColor(108, 117, 125);
@@ -362,15 +360,15 @@ class PDF extends FPDF
             }
         }
 
-        $this->Cell(20, 10, $slno, 0, 0, 'L');
-        $this->Cell(30, 10, substr($detail['item_name'], 0, 15), 0, 0, 'L');
+        $this->Cell(16, 10, $slno, 0, 0, 'L');
+        $this->Cell(34, 10, substr($detail['item_name'], 0, 15), 0, 0, 'L');
         $this->Cell(18, 10, $manufacturerName, 0, 0, 'L');
-        $this->Cell(18, 10, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(21, 10, $detail['batch_no'], 0, 0, 'L');
         $this->Cell(16, 10, $detail['exp_date'], 0, 0, 'L');
-        $this->Cell(16, 10, $detail['qty'], 0, 0, 'L');
+        $this->Cell(15, 10, $detail['qty'], 0, 0, 'L');
         $this->Cell(18, 10, $detail['mrp'], 0, 0, 'L');
-        $this->Cell(18, 10, $detail['discount'], 0, 0, 'L');
-        $this->Cell(18, 10, $detail['gst'], 0, 0, 'L');
+        $this->Cell(16, 10, $detail['discount'], 0, 0, 'L');
+        $this->Cell(16, 10, $detail['gst'], 0, 0, 'L');
         $this->Cell(18, 10, $detail['amount'], 0, 1, 'R');
 
         $amount  = $amount + $detail['amount'];

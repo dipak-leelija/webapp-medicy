@@ -166,7 +166,7 @@ class PDF extends FPDF {
 
             //.. healthCareLogo...///
             $logoX = 10;
-            $logoY = 12;
+            $logoY = 14;
             $logoWidth = 20;
             $logoHeight = 20;
             if (!empty($this->healthCareLogo)) {
@@ -185,15 +185,15 @@ class PDF extends FPDF {
             $this->MultiCell(90, 5, $address, 0, 'L');
 
             ///...Invoice Info
-            $this->SetY(10); // Reset Y position
-            $this->SetX(-50); // Align to the right
+            $this->SetY(22); // Reset Y position
+            $this->SetX(-40); // Align to the right
             // Draw vertical line
             $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 17);
             // $this->Ln(0);
-            $this->MultiCell(80, 5, "Invoice: \n#$billId\n" . (isset($billingDate) && !empty($billingDate) ?     formatDateTime($billingDate) : formatDateTime($billDate)), 0, 'L');
+            $this->MultiCell(80, 5, " Invoice: \n #$billId\n" . (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
             // Patient Info
-            $this->Ln(10);
+            $this->Ln(2);
             $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->SetY($this->GetY() + 2);
@@ -266,9 +266,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
         $this->Cell(80, -10, 'Description', 0, 0, 'L');
-        $this->Cell(30, -10, 'Price ()', 0, 0, 'L');
+        $this->Cell(30, -10, 'Price', 0, 0, 'L');
         $this->Cell(30, -10, 'Disc (%)', 0, 0, 'L');
-        $this->Cell(30, -10, 'Amount ()', 0, 1, 'R');
+        $this->Cell(30, -10, 'Amount', 0, 1, 'R');
         $this->Ln(10);
         $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line

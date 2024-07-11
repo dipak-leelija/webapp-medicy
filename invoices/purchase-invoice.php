@@ -162,7 +162,7 @@ class PDF extends FPDF
             $this->Cell(-10, 5, '' . $this->cGst, 0, 1, 'C');
             $this->SetX($startX);
             $this->Cell(78, 5, 'Total GST :', 0, 0, 'C');
-            $this->Cell(-24, 5, '' . $this->totalGst, 0, 1, 'C');
+            $this->Cell(-21, 5, '' . $this->totalGst, 0, 1, 'C');
 
             // Amount Calculation
             $startX = 140;
@@ -202,10 +202,10 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(12, -10, 'SL.', 0, 0, 'L');
         $this->Cell(30, -10, 'Item', 0, 0, 'L');
-        $this->Cell(16, -10, 'Batch', 0, 0, 'L');
+        $this->Cell(22, -10, 'Batch', 0, 0, 'L');
         $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
-        $this->Cell(16, -10, 'QTY', 0, 0, 'L');
-        $this->Cell(16, -10, 'F.QTY', 0, 0, 'L');
+        $this->Cell(14, -10, 'QTY', 0, 0, 'L');
+        $this->Cell(14, -10, 'F.QTY', 0, 0, 'L');
         $this->Cell(18, -10, 'MRP', 0, 0, 'L');
         $this->Cell(16, -10, 'PTR', 0, 0, 'L');
         $this->Cell(16, -10, 'Disc', 0, 0, 'L');
@@ -292,10 +292,10 @@ class PDF extends FPDF
             $this->MultiCell(35, 4, "$pname\n$pQTY $itemUnitName", 0, 'L');
             $this->SetY($yBefore); // Reset Y to avoid new line issues
             $this->SetX($this->GetX() + 42); // Move X to the next position
-            $this->Cell(16, 5, $batchNo, 0, 0, 'L');
+            $this->Cell(22, 5, $batchNo, 0, 0, 'L');
             $this->Cell(16, 5, $ExpDate, 0, 0, 'L');
-            $this->Cell(16, 5, $qty, 0, 0, 'L');
-            $this->Cell(16, 5, $FreeQty, 0, 0, 'L');
+            $this->Cell(14, 5, $qty, 0, 0, 'L');
+            $this->Cell(14, 5, $FreeQty, 0, 0, 'L');
             $this->Cell(18, 5, $Mrp, 0, 0, 'L');
             $this->Cell(16, 5, $Ptr, 0, 0, 'L');
             $this->Cell(16, 5, $discPercent.'%', 0, 0, 'L');
