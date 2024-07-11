@@ -863,9 +863,10 @@ function reportShow(parsedData) {
 
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-                const totalAmount = parseFloat(data.total_stock_out_amount || 0);
-                rowData[data.payment_mode] += totalAmount;
-                totalSellAmount += totalAmount;
+                const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                console.log(stockOutAmount);
+                rowData[data.payment_mode] += stockOutAmount;
+                totalSellAmount += stockOutAmount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
@@ -873,6 +874,7 @@ function reportShow(parsedData) {
             // On Staff name
             if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
                 const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                console.log(stockOutAmount);
                 rowData[data.added_by_name] += stockOutAmount;
                 totalSellAmount += stockOutAmount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
