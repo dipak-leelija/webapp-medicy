@@ -674,7 +674,6 @@ function salesDataSearchFunction(array){
 
     // console.log(report);
     report = JSON.parse(report);
-    console.log('hello');
     if(report.status == '1'){
         reportShow(report.data);
     }else{
@@ -882,7 +881,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.category_name] += amount;
+                rowData[data.category_name] += parseFloat(amount).toFixed(2);
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
@@ -899,7 +898,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.payment_mode] += amount;
+                rowData[data.payment_mode] += parseFloat(amount).toFixed(2);
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
@@ -916,7 +915,7 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.added_by_name] += amount;
+                rowData[data.added_by_name] += parseFloat(amount).toFixed(2);
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
