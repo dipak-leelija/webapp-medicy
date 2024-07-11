@@ -768,7 +768,7 @@ function reportShow(parsedData) {
         if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
                 if (headerMid.includes(header)) {
-                    console.log(header);
+                    // console.log(header);
                     if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
                         if (reportFilterVal.innerHTML === 'Total Sell') {
                             grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
@@ -873,51 +873,51 @@ function reportShow(parsedData) {
         groupData.forEach(data => {
             // On Product category
             if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
-                let stockOutAmount = 0;
+                let amount = 0;
                 if (reportFilterVal.innerHTML === 'Total Sell') {
-                    stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                    amount = parseFloat(data.total_stock_out_amount || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Margin') {
-                    stockOutAmount = parseFloat(data.total_sales_margin || 0);
+                    amount = parseFloat(data.total_sales_margin || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Discount') {
-                    stockOutAmount = parseFloat(data.total_discount || 0);
+                    amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.category_name] += stockOutAmount;
-                totalSellAmount += stockOutAmount;
+                rowData[data.category_name] += amount.toFixed(2);
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-                let stockOutAmount = 0;
+                let amount = 0;
                 if (reportFilterVal.innerHTML === 'Total Sell') {
-                    stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                    amount = parseFloat(data.total_stock_out_amount || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Margin') {
-                    stockOutAmount = parseFloat(data.total_sales_margin || 0);
+                    amount = parseFloat(data.total_sales_margin || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Discount') {
-                    stockOutAmount = parseFloat(data.total_discount || 0);
+                    amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.payment_mode] += stockOutAmount;
-                totalSellAmount += stockOutAmount;
+                rowData[data.payment_mode] += amount.toFixed(2);
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Staff name
             if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-                let stockOutAmount = 0;
+                let amount = 0;
                 if (reportFilterVal.innerHTML === 'Total Sell') {
-                    stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
+                    amount = parseFloat(data.total_stock_out_amount || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Margin') {
-                    stockOutAmount = parseFloat(data.total_sales_margin || 0);
+                    amount = parseFloat(data.total_sales_margin || 0);
                 } else if (reportFilterVal.innerHTML === 'Total Discount') {
-                    stockOutAmount = parseFloat(data.total_discount || 0);
+                    amount = parseFloat(data.total_discount || 0);
                 }
 
-                rowData[data.added_by_name] += stockOutAmount;
-                totalSellAmount += stockOutAmount;
+                rowData[data.added_by_name] += amount.toFixed(2);
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
