@@ -1284,21 +1284,22 @@ class StockOut
                 throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
             }
 
-            // Bind the parameters
+            // Bind the 
             $stmt->bind_param('sss', $adminId, $startDate, $endDate);
-
+           
             $stmt->execute();
 
             $result = $stmt->get_result();
+            print_r($result);
 
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
-                $returnResult = ['status' => true, 'data' => $data];
+                $returnResult = ['status' => '1', 'data' => $data];
             } else {
-                $returnResult = ['status' => false];
+                $returnResult = ['status' => '0'];
             }
 
             $stmt->close();

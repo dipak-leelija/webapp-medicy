@@ -117,7 +117,7 @@ $Utility     = new Utility;
 
                             <div class="col-md-2 selectDiv" id="data-filter-search-div">
                                 <div class="input-group">
-                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="item-search" id="search-by-item" style="width:10rem;">
+                                    <input class="cxv-inp border-0" type="text" placeholder="Search Item" name="item-search" id="search-by-item" style="width:10rem;" autocomplete="off">
 
                                     <div class="input-group-append">
                                         <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
