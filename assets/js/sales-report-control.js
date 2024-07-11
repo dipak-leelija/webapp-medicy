@@ -929,13 +929,17 @@ function reportShow(parsedData) {
             }
         });
 
+        totalSellAmount = totalSellAmount.toFixed(2);
+        totalMargin = totalMargin.toFixed(2);
+        totalDiscount = totalDiscount.toFixed(2);
+
         // Set values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
-            rowData['Total Sell'] = `₹${totalSellAmount.toFixed(2)}`; // Add rupees sign
+            rowData['Total Sell'] = `₹${totalSellAmount}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
-            rowData['Total Margin'] = `₹${totalMargin.toFixed(2)}`; // Add rupees sign
+            rowData['Total Margin'] = `₹${totalMargin}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Discount') {
-            rowData['Total Discount'] = `₹${totalDiscount.toFixed(2)}`; // Add rupees sign
+            rowData['Total Discount'] = `₹${totalDiscount}`; // Add rupees sign
         }
 
         // Create table cells for each header
