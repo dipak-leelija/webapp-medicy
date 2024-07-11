@@ -1228,7 +1228,7 @@ class StockOut
     // sales report on item category
     function stockOutReportOnItemCategory($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
     {
-        $sqlPart1 = "SELECT c.name AS category_name,";
+        $sqlPart1 = "SELECT pt.name AS category_name,";
 
         $sqlPart2a = "DATE(so.added_on) AS added_on, 
                   MIN(DATE(so.added_on)) AS start_date,
@@ -1250,22 +1250,22 @@ class StockOut
                  JOIN 
                     products p ON sod.product_id = p.product_id
                  JOIN 
-                    product_type c ON p.type = c.id
+                    product_type pt ON p.type = pt.name
                  WHERE 
                     so.admin_id = ?
                     AND DATE(so.added_on) BETWEEN ? AND ?
-                    AND c.name IN ($searchOnData)
+                    AND pt.name IN ($searchOnData)
                  GROUP BY 
-                    c.name,";
+                    pt.name,";
 
         $sqlPart4a = "DATE(so.added_on) 
-                  ORDER BY DATE(so.added_on), c.name";
+                  ORDER BY DATE(so.added_on), pt.name";
         $sqlPart4b = "start_date 
-                  ORDER BY start_date, c.name";
+                  ORDER BY start_date, pt.name";
         $sqlPart4c = "YEAR(so.added_on), 
                   MONTH(so.added_on)
                   ORDER BY 
-                  YEAR(so.added_on), MONTH(so.added_on), c.name";
+                  YEAR(so.added_on), MONTH(so.added_on), pt.name";
 
         if ($groupFilter == 0) {
             $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
@@ -1290,7 +1290,7 @@ class StockOut
             $stmt->execute();
 
             $result = $stmt->get_result();
-            print_r($result);
+            // print_r($result);
 
             if ($result->num_rows > 0) {
                 $data = array();
