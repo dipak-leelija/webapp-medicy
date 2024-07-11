@@ -674,7 +674,7 @@ function salesDataSearchFunction(array){
 
     // console.log(report);
     report = JSON.parse(report);
-    console.log('hello');
+    
     if(report.status == '1'){
         reportShow(report.data);
     }else{
@@ -690,7 +690,7 @@ const rowsPerPage = 30; // Define the number of rows per page
 
 
 function reportShow(parsedData) {
-    console.log(parsedData);
+    // console.log(parsedData);
     document.getElementById('download-checking').innerHTML = '1';
     // Reset table data
     dataTable.innerHTML = '';
