@@ -1333,7 +1333,7 @@ class StockOut
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
-        $sqlPart3 = "SUM(so.amount) AS total_amount,
+        $sqlPart3 = "SUM(so.amount) AS total_stock_out_amount,
                  SUM(sod.sales_margin) AS total_sales_margin,
                  SUM(so.disc) as total_discount
                  FROM 
@@ -1366,6 +1366,8 @@ class StockOut
             throw new Exception("Invalid group filter parameter");
         }
 
+        // echo $sqlQuery;
+
         try {
             // Prepare and execute the query
             $stmt = $this->conn->prepare($sqlQuery);
@@ -1379,7 +1381,7 @@ class StockOut
             $stmt->execute();
 
             $result = $stmt->get_result();
-
+            // print_r($result);
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {
@@ -1454,6 +1456,8 @@ class StockOut
             throw new Exception("Invalid group filter parameter");
         }
 
+        // echo $sqlQuery;
+
         try {
             // Prepare and execute the query
             $stmt = $this->conn->prepare($sqlQuery);
@@ -1467,7 +1471,7 @@ class StockOut
             $stmt->execute();
 
             $result = $stmt->get_result();
-
+            // print_r($result);
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {

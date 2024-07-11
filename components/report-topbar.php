@@ -9,14 +9,9 @@
 
     <div class="col-12 d-flex">
         <!-- home icon  -->
-        <div class="d-flex align-items-center p-2">
-            <a class="btn btn-primary" href="<?= URL ?>" >
-                <i class="fas fa-home"></i>
-                Dashboard
-            </a>
-            <a class="btn btn-secondary ms-2" href="<?= URL ?>reports.php" >
-                <i class="fas fa-file-alt"></i>
-                Reports
+        <div class="col-1 p-2 text-center">
+            <a href="index.php">
+                <i class="fas fa-home font-weight-bold"></i>
             </a>
             <!-- health care details holding area -->
             <div class="col-9 d-flex d-none text-center">

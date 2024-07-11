@@ -674,6 +674,7 @@ function salesDataSearchFunction(array){
 
     // console.log(report);
     report = JSON.parse(report);
+    console.log('hello');
     if(report.status == '1'){
         reportShow(report.data);
     }else{
@@ -767,12 +768,31 @@ function reportShow(parsedData) {
         if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
                 if (headerMid.includes(header)) {
+                    // console.log(header);
                     if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
-                        grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
                     } else if (filterByVal.innerHTML === 'PM' && data.payment_mode === header) {
-                        grandTotals[header] += parseFloat(data.total_amount || 0);
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
                     } else if (filterByVal.innerHTML === 'STF' && data.added_by_name === header) {
-                        grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
                     }
                 } else if(header === 'Total Sell'){
                     grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
@@ -853,39 +873,73 @@ function reportShow(parsedData) {
         groupData.forEach(data => {
             // On Product category
             if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
-                const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
-                rowData[data.category_name] += stockOutAmount;
-                totalSellAmount += stockOutAmount;
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
+                }
+
+                amount = amount.toFixed(2);
+                console.log('amount '+amount);
+                rowData[data.category_name] += amount;
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Payment mode
             if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
-                const totalAmount = parseFloat(data.total_amount || 0);
-                rowData[data.payment_mode] += totalAmount;
-                totalSellAmount += totalAmount;
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
+                }
+
+                amount = amount.toFixed(2);
+                console.log('amount '+amount);
+                rowData[data.payment_mode] += amount;
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
 
             // On Staff name
             if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
-                const stockOutAmount = parseFloat(data.total_stock_out_amount || 0);
-                rowData[data.added_by_name] += stockOutAmount;
-                totalSellAmount += stockOutAmount;
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
+                }
+
+                amount = amount.toFixed(2);
+                console.log('amount '+amount);
+                rowData[data.added_by_name] += amount;
+                totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
             }
         });
 
+        totalSellAmount = totalSellAmount.toFixed(2);
+        totalMargin = totalMargin.toFixed(2);
+        totalDiscount = totalDiscount.toFixed(2);
+
         // Set values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
-            rowData['Total Sell'] = `₹${totalSellAmount.toFixed(2)}`; // Add rupees sign
+            rowData['Total Sell'] = `₹${totalSellAmount}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
-            rowData['Total Margin'] = `₹${totalMargin.toFixed(2)}`; // Add rupees sign
+            rowData['Total Margin'] = `₹${totalMargin}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Discount') {
-            rowData['Total Discount'] = `₹${totalDiscount.toFixed(2)}`; // Add rupees sign
+            rowData['Total Discount'] = `₹${totalDiscount}`; // Add rupees sign
         }
 
         // Create table cells for each header
@@ -909,6 +963,7 @@ function reportShow(parsedData) {
     // Append tbody to the table
     dataTable.appendChild(tbody);
 }
+
 
 
 

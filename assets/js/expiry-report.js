@@ -2,12 +2,9 @@ const xmlhttp = new XMLHttpRequest();
 
 const selectedDateSpan = document.getElementById('selected-date');
 const selectedDateRange = document.getElementById('selected-date-range');
-const selectedReportOn = document.getElementById('report-on-filter');
-const searchedItem = document.getElementById('search-by-item');
-const itemSearchVal = document.getElementById('item-search-val');
+const searchedItem = document.getElementById('search-by');
 
 // data holding labels
-const downloadType = document.getElementById('download-file-type');
 const healthCareName = document.getElementById('healthcare-name');
 const healthCareGstin = document.getElementById('healthcare-gstin');
 const healthCareAddress = document.getElementById('healthcare-address');
@@ -15,20 +12,11 @@ const reportGenerationTime = document.getElementById('report-generation-date-tim
 const selectedStartDate = document.getElementById('selected-start-date');
 const selectedEndDate = document.getElementById('selected-end-date');
 
-// output labels
-const totalSalesAmountLabel = document.getElementById('total-sales-amount');
-const totalPurchaseAmountLable = document.getElementById('total-purchase-amount');
-const netGstAmountLable = document.getElementById('net-gst-amount');
-const totalProfitAmountLable = document.getElementById('total-profit-amount');
-
 // buttons
 const reset1 = document.getElementById('search-reset-1');
 
-// divs
-const grandTotalShow = document.getElementById('grand-total-div');
-
 // dynamic table 
-const itemMarginTable = document.getElementById('item-wise-margin-table');
+const itemExpiaryReportTable = document.getElementById('expiry-report-table');
 
 // date picker div range control script
 $(function() {
@@ -49,10 +37,9 @@ $(function() {
             'Last 60 Days': [moment().subtract(59, 'days'), moment()],
             'Last 90 Days': [moment().subtract(89, 'days'), moment()],
             'Last 120 Days': [moment().subtract(119, 'days'), moment()],
-            'Last 180 Days': [moment().subtract(179, 'days'), moment()],
-            'Custom Range': [moment().subtract(29, 'days'), moment()]
+            'Last 180 Days': [moment().subtract(179, 'days'), moment()]
         },
-        alwaysShowCalendars: true, // Show calendars for custom range
+        alwaysShowCalendars: false, // Show calendars for custom range
         opens: 'right', // Position the calendar
         startDate: moment().subtract(29, 'days'), // Default start date
         endDate: moment() // Default end date
@@ -100,38 +87,22 @@ function getCurrentDateTime() {
 // convert date format
 function convertDateFormat(dateStr) {
     const [day, month, year] = dateStr.split('-');
-    const newDateStr = `${year}-${month}-${day}`;
+    const newDateStr = `${day}/${month}/${year}`;
 
     return newDateStr;
-}
-
-
-
-
-
-// control functions
-function reportOnFilter(t){
-    if(t.value == 'S'){
-        selectedReportOn.innerHTML = 'sales-table';
-    }
-    if(t.value == 'SR'){
-        selectedReportOn.innerHTML = 'sales-return-table';
-    }
 }
 
 // close button contorl
 function resteUrl(){
     searchedItem.value = '';
     reset1.style.display = 'none';
-    itemMerginSearch();
+    itemExpiryReportSearch();
 }
 
-
-function itemMerginSearch(){
+function itemExpiryReportSearch(){
     let searchItem = '';
     let startDate = '';
     let endDate = '';
-    let searchFlag = 0;
     
     if($(selectedDateSpan).text() == 'Select Date'){
         alert('Select Date');
@@ -143,58 +114,52 @@ function itemMerginSearch(){
         selectedStartDate.innerHTML = startDate;
         selectedEndDate.innerHTML = endDate;   
     }
-
-    if(selectedReportOn.innerHTML == ''){
-        alert('select report type');
-        return;
-    }
-
+    
     if(searchedItem.value == ''){
         searchItem = '';
     }else{
         searchItem = searchedItem.value;
         reset1.style.display = 'block';
     }
-
+    
     // console.log(startDate, endDate);
     let dataArray = {
         startDt: startDate,
         endDt: endDate,
-        filterBy: selectedReportOn.innerHTML,
-        searchOn: searchItem,
-        searchFlag: 0,
+        searchOn: searchItem
     };
 
-    itemMerginDataSearch(dataArray);
+    itemExpiaryDataSearch(dataArray);
 }
 
 
 
 // item mergin data search function (ajax call)
-function itemMerginDataSearch(array){
+function itemExpiaryDataSearch(array){
 
     let arryString = JSON.stringify(array);
-    let salesDataReport = `ajax/itemMerginReport.ajax.php?dataArray=${arryString}`;
+    let salesDataReport = `ajax/itemExpiryReport.ajax.php?dataArray=${arryString}`;
     xmlhttp.open("GET", salesDataReport, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    // console.log(report);
     report = JSON.parse(report);
+    console.log(report);
     if(report.status == '1'){
-        reportShow(report.data);
+        itemExpiryReportShow(report.data);
     }else{
         grandTotalShow.classList.add('d-none');
-        itemMarginTable.innerHTML = '';
+        itemExpiaryReportTable.innerHTML = '';
         alert('no data found');
     }
 }
 
 
-function reportShow(reportData) {
+function itemExpiryReportShow(reportData) {
     console.log(reportData);
-    itemMarginTable.innerHTML = '';
+    itemExpiaryReportTable.innerHTML = '';
+    /*
     document.getElementById('download-checking').innerHTML = '1';
     grandTotalShow.classList.remove('d-none');
 
@@ -220,7 +185,7 @@ function reportShow(reportData) {
     thead.appendChild(tr);
 
     // Append the header row to the table head
-    itemMarginTable.appendChild(thead);
+    itemExpiaryReportTable.appendChild(thead);
 
     // Create table body
     const tbody = document.createElement('tbody');
@@ -301,8 +266,9 @@ function reportShow(reportData) {
     let totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
     totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
 
+    */
     // Append the table body to the table
-    itemMarginTable.appendChild(tbody);
+    // itemExpiaryReportTable.appendChild(tbody);
 }
 
 
@@ -344,8 +310,8 @@ function exportToExcel() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
+    const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
@@ -460,8 +426,8 @@ function exportToCSV() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
+    const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
+    const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
         return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
     });
 
