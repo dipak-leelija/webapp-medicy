@@ -672,7 +672,7 @@ function salesDataSearchFunction(array){
     xmlhttp.send(null);
     let report = xmlhttp.responseText;
 
-    console.log(report);
+    // console.log(report);
     report = JSON.parse(report);
     
     if(report.status == '1'){
