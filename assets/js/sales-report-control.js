@@ -674,7 +674,7 @@ function salesDataSearchFunction(array){
 
     // console.log(report);
     report = JSON.parse(report);
-    console.log('hello');
+    
     if(report.status == '1'){
         reportShow(report.data);
     }else{
@@ -690,7 +690,7 @@ const rowsPerPage = 30; // Define the number of rows per page
 
 
 function reportShow(parsedData) {
-    console.log(parsedData);
+    // console.log(parsedData);
     document.getElementById('download-checking').innerHTML = '1';
     // Reset table data
     dataTable.innerHTML = '';
@@ -882,8 +882,6 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                amount = amount.toFixed(2);
-                console.log('amount '+amount);
                 rowData[data.category_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
@@ -901,8 +899,6 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                amount = amount.toFixed(2);
-                console.log('amount '+amount);
                 rowData[data.payment_mode] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
@@ -920,8 +916,6 @@ function reportShow(parsedData) {
                     amount = parseFloat(data.total_discount || 0);
                 }
 
-                amount = amount.toFixed(2);
-                console.log('amount '+amount);
                 rowData[data.added_by_name] += amount;
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
@@ -929,17 +923,13 @@ function reportShow(parsedData) {
             }
         });
 
-        totalSellAmount = totalSellAmount.toFixed(2);
-        totalMargin = totalMargin.toFixed(2);
-        totalDiscount = totalDiscount.toFixed(2);
-
         // Set values based on reportFilterVal
         if (reportFilterVal.innerHTML === 'Total Sell') {
-            rowData['Total Sell'] = `₹${totalSellAmount}`; // Add rupees sign
+            rowData['Total Sell'] = `₹${totalSellAmount.toFixed(2)}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Margin') {
-            rowData['Total Margin'] = `₹${totalMargin}`; // Add rupees sign
+            rowData['Total Margin'] = `₹${totalMargin.toFixed(2)}`; // Add rupees sign
         } else if (reportFilterVal.innerHTML === 'Total Discount') {
-            rowData['Total Discount'] = `₹${totalDiscount}`; // Add rupees sign
+            rowData['Total Discount'] = `₹${totalDiscount.toFixed(2)}`; // Add rupees sign
         }
 
         // Create table cells for each header

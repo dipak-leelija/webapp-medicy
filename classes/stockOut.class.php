@@ -1240,9 +1240,10 @@ class StockOut
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
-        $sqlPart3 = "SUM(sod.amount) AS total_stock_out_amount,
-                 SUM(sod.sales_margin) AS total_sales_margin,
-                 SUM(so.disc) as total_discount
+        $sqlPart3 = "ROUND(SUM(sod.amount), 2) AS total_stock_out_amount,
+        
+                 ROUND(SUM(sod.sales_margin), 2) AS total_sales_margin,
+                 ROUND(SUM(so.disc), 2) as total_discount
                  FROM 
                     stock_out so
                  JOIN 
@@ -1333,9 +1334,9 @@ class StockOut
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
-        $sqlPart3 = "SUM(so.amount) AS total_stock_out_amount,
-                 SUM(sod.sales_margin) AS total_sales_margin,
-                 SUM(so.disc) as total_discount
+        $sqlPart3 = "ROUND(SUM(so.amount), 2) AS total_stock_out_amount,
+                 ROUND(SUM(sod.sales_margin), 2) AS total_sales_margin,
+                 ROUND(SUM(so.disc), 2) as total_discount
                  FROM 
                     stock_out so
                  JOIN 
@@ -1419,9 +1420,9 @@ class StockOut
                   MIN(DATE(so.added_on)) AS start_date,
                   MAX(DATE(so.added_on)) AS end_date,";
 
-        $sqlPart3 = "SUM(sod.amount) AS total_stock_out_amount,
-                 SUM(sod.sales_margin) AS total_sales_margin,
-                 SUM(so.disc) as total_discount
+        $sqlPart3 = "ROUND(SUM(sod.amount), 2) AS total_stock_out_amount,
+                 ROUND(SUM(sod.sales_margin), 2) AS total_sales_margin,
+                 ROUND(SUM(so.disc), 2) as total_discount
                  FROM 
                     stock_out so
                  JOIN 
