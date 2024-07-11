@@ -674,7 +674,7 @@ function salesDataSearchFunction(array){
 
     // console.log(report);
     report = JSON.parse(report);
-    
+    console.log('hello');
     if(report.status == '1'){
         reportShow(report.data);
     }else{
