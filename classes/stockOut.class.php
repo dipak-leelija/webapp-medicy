@@ -1334,9 +1334,11 @@ class StockOut
 
 
     // sales report on payment mode
-    function stockOutReportOnPaymentMode($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
+    function stockOutReportOnPaymentMode($additionalFilter1, $groupFilter, $searchOnData, $startDate, $endDate, $adminId)
     {
         $sqlPart1 = "SELECT so.payment_mode,";
+
+        $sqlPart1b = "DATE(so.bill_date) AS bil_dt,";
 
         $sqlPart2a = "DATE(so.added_on) AS added_on, 
                   MIN(DATE(so.added_on)) AS start_date,
@@ -1371,15 +1373,27 @@ class StockOut
                   ORDER BY 
                   YEAR(so.added_on), MONTH(so.added_on), so.payment_mode";
 
-        if ($groupFilter == 0) {
-            $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
-        } elseif ($groupFilter == 1) {
-            $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
-        } elseif ($groupFilter == 2) {
-            $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
-        } else {
-            throw new Exception("Invalid group filter parameter");
-        }
+                  if($additionalFilter1 == 1){
+                    if ($groupFilter == 0) {
+                        $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+                    } elseif ($groupFilter == 1) {
+                        $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+                    } elseif ($groupFilter == 2) {
+                        $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+                    } else {
+                        throw new Exception("Invalid group filter parameter");
+                    }
+                }else{
+                    if ($groupFilter == 0) {
+                        $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+                    } elseif ($groupFilter == 1) {
+                        $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+                    } elseif ($groupFilter == 2) {
+                        $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+                    } else {
+                        throw new Exception("Invalid group filter parameter");
+                    }
+                }
 
         // echo $sqlQuery;
 
@@ -1420,9 +1434,11 @@ class StockOut
 
 
     // sales report function on addedBy
-    function stockOutReportOnAddedBy($groupFilter, $searchOnData, $startDate, $endDate, $adminId)
+    function stockOutReportOnAddedBy($additionalFilter1, $groupFilter, $searchOnData, $startDate, $endDate, $adminId)
     {
         $sqlPart1 = "SELECT COALESCE(adm.username, emp.emp_username) AS added_by_name,";
+
+        $sqlPart1b = "DATE(so.bill_date) AS bil_dt,";
 
         $sqlPart2a = "DATE(so.added_on) AS added_on, 
                   MIN(DATE(so.added_on)) AS start_date,
@@ -1461,14 +1477,26 @@ class StockOut
                   ORDER BY 
                   YEAR(so.added_on), MONTH(so.added_on), added_by_name";
 
-        if ($groupFilter == 0) {
-            $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
-        } elseif ($groupFilter == 1) {
-            $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
-        } elseif ($groupFilter == 2) {
-            $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
-        } else {
-            throw new Exception("Invalid group filter parameter");
+        if($additionalFilter1 == 1){
+            if ($groupFilter == 0) {
+                $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+            } elseif ($groupFilter == 1) {
+                $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+            } elseif ($groupFilter == 2) {
+                $sqlQuery = $sqlPart1. $sqlPart1b . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+            } else {
+                throw new Exception("Invalid group filter parameter");
+            }
+        }else{
+            if ($groupFilter == 0) {
+                $sqlQuery = $sqlPart1 . $sqlPart2a . $sqlPart3 . $sqlPart4a;
+            } elseif ($groupFilter == 1) {
+                $sqlQuery = $sqlPart1 . $sqlPart2b . $sqlPart3 . $sqlPart4b;
+            } elseif ($groupFilter == 2) {
+                $sqlQuery = $sqlPart1 . $sqlPart2c . $sqlPart3 . $sqlPart4c;
+            } else {
+                throw new Exception("Invalid group filter parameter");
+            }
         }
 
         // echo $sqlQuery;
