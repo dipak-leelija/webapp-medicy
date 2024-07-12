@@ -10,11 +10,11 @@
     <div class="col-12 d-flex">
         <!-- home icon  -->
         <div class="d-flex align-items-center p-2">
-            <a class="btn btn-primary" href="<?= URL ?>" >
+            <a class="focus-out btn btn-primary" href="<?= URL ?>" >
                 <i class="fas fa-home"></i>
                 Dashboard
             </a>
-            <a class="btn btn-secondary ms-2" href="<?= URL ?>reports.php" >
+            <a class="focus-out btn btn-secondary ms-2" href="<?= URL ?>reports.php" >
                 <i class="fas fa-file-alt"></i>
                 Reports
             </a>
