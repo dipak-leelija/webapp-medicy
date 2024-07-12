@@ -24,6 +24,10 @@ const salesReportOn = document.getElementById('sales-report-on'); // report gene
 
 const dateRangeSelectDiv = document.getElementById('date-range-select-div');
 const datePickerDiv = document.getElementById('dtPickerDiv');
+const additionalFilter = document.getElementById('extraFilterDiv');
+
+const checkSelectAdditionalFilter = document.getElementById('extra-filter-check');
+const selectedAdditionalFilter = document.getElementById('selected-additional-fiter');
 
 const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
 
@@ -138,6 +142,7 @@ function selectDownloadType(ts){
         downloadType.selectedIndex = 0;
     }
 }
+
 // date range select function
 function dateRangeFilter(t){
     dateRangeVal.innerHTML = t.value;
@@ -253,6 +258,17 @@ function dateRangeReset(){
     dateRangeSelectDiv.classList.remove('d-none');
 }
 
+
+function extraFilterDiv(){
+    if(checkSelectAdditionalFilter.innerHTML == '0'){
+        additionalFilter.style.display = 'block';
+        checkSelectAdditionalFilter.innerHTML = '1';
+    }else{
+        additionalFilter.style.display = 'none';
+        checkSelectAdditionalFilter.innerHTML = '0';
+    }
+    
+}
 
 // category select filter
 function categoryFilterSelect(t){
@@ -586,8 +602,19 @@ function getCurrentDateTime() {
 }
 
 
+
+function additionalCheckBoxFunction(){
+    if(document.getElementById('bill-date-checked-check-box').checked == true){
+        console.log('hello');
+    }else{
+        console.log('hi');
+    }
+}
+
+
 // sales data search call (funning ajax query)
 function salesSummerySearch() {
+    additionalCheckBoxFunction();
     let searchString = '';
 
     let dtFilter = dayFilterVal.innerHTML;
@@ -650,8 +677,8 @@ function salesSummerySearch() {
         filterBy: filterByVal.innerHTML,
     };
 
-    // console.log(dataArray);
-    salesDataSearchFunction(dataArray);
+    console.log(dataArray);
+    // salesDataSearchFunction(dataArray);
 }
 
 

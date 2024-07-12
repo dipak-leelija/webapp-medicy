@@ -202,7 +202,7 @@ if ($_SESSION['ADMIN']) {
                                 </button>
                                 <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow w-75 fs-6" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)">  All Category</label>
+                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)"> All Category</label>
                                     </li>
                                     <?php
                                     if (!empty($prodCategoryData)) {
@@ -262,7 +262,7 @@ if ($_SESSION['ADMIN']) {
                                         <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)"> All Staff</label>
                                     </li>
                                     <li>
-                                        <label class="m-0"><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?=  $adminName; ?> (admin)</label>
+                                        <label class="m-0"><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?= $adminName; ?> (admin)</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
@@ -299,6 +299,12 @@ if ($_SESSION['ADMIN']) {
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
+
+
+                            <button type="button" id="search-filter" name="find-report" class="btn btn-primary btn-sm text-center" onclick="extraFilterDiv()" style="width: 2rem;">
+                                <i class="fas fa-filter"></i>
+                            </button>
+
                         </div>
 
                         <div class="row d-flex">
@@ -320,6 +326,20 @@ if ($_SESSION['ADMIN']) {
                                 </div>
                                 <label class="d-none" id="selected-start-date"></label>
                                 <label class="d-none" id="selected-end-date"></label>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex">
+                            <!-- extra filter div -->
+                            <label class="d-none" id="extra-filter-check">0</label>
+                            <label class="d-none" id="selected-additional-fiter"></label>
+                            <div class="col-md-5 p-2 ml-5" id="extraFilterDiv" style="display: none;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="bill-date-checked-check-box">
+                                    <label class="form-check-label" for="bill-date-checked-check-box">
+                                        Show Bill Date
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -370,7 +390,7 @@ if ($_SESSION['ADMIN']) {
     <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/exceljs-4.3.0.min.js"></script>
     <!-- FileSaver.js CDN -->
     <script src="<?= PLUGIN_PATH ?>report-export-script/excel-download-script/FileSaver.min-2.5.0.js"></script>
-       
+
     <!-- pdf cdn -->
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.umd.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
