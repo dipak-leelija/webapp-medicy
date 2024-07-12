@@ -97,7 +97,7 @@ if ($_SESSION['ADMIN']) {
         rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
     <!-- <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
@@ -348,7 +348,7 @@ if ($_SESSION['ADMIN']) {
                                 </div>
                                 <div class="offcanvas-body mt-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="focus-out border border-1 form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Show Bill Date
                                         </label>
@@ -428,7 +428,8 @@ if ($_SESSION['ADMIN']) {
 
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
     <script src="<?php echo PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo JS_PATH ?>/bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
+    <!-- <script src="<?php echo JS_PATH ?>/bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script> -->
+    <script src="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
