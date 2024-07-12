@@ -348,7 +348,7 @@ if ($_SESSION['ADMIN']) {
                                 </div>
                                 <div class="offcanvas-body mt-4">
                                     <div class="form-check">
-                                        <input class="focus-out border border-1 form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="form-check-input" type="checkbox" value="" id="bill-date-checked-check-box">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Show Bill Date
                                         </label>
@@ -382,20 +382,20 @@ if ($_SESSION['ADMIN']) {
                             </div>
                         </div>
 
-                        <div class="row d-flex">
-                            <!-- extra filter div -->
+                        <!-- <div class="row d-flex">
+                            <!-- extra filter div --
                             <label class="d-none" id="extra-filter-check">0</label>
                             <label class="d-none" id="selected-additional-fiter"></label>
                             <div class="col-md-5 p-2 ml-5" id="extraFilterDiv" style="display: none;">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value=""
-                                        id="bill-date-checked-check-box">
+                                        id="bill-date-checked-check-box" onclick="filterCheck1(this)">
                                     <label class="form-check-label" for="bill-date-checked-check-box">
                                         Show Bill Date
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <!-- report table start -->

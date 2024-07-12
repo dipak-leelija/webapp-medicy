@@ -8,64 +8,65 @@ const dataTable = document.getElementById('report-table');
 const reportTypeFilter = document.getElementById('day-filter');  // primary filter select class
 const dateRangeSelect = document.getElementById('date-range'); // date range select class
 const categoryFilter = document.getElementById('category-filter'); // primary filter category select
-
+const datePickerDiv = document.getElementById('dtPickerDiv');
+const additionalFilterDiv = document.getElementById('extraFilterDiv');
 const productCategorySelectDiv = document.getElementById('prod-category-select-div'); // item category select div secondary filter
-
-const productCategoryBtn = document.getElementById('prod-category'); // item category select button
-
 const paymentModeDiv = document.getElementById('payment-mode-div'); // payment mode select div secondary filter
-const paymentMode = document.getElementById('payment-mode'); // payment mode select class
-
 const staffFilterDiv = document.getElementById('staff-filter-div'); // staff select div secondary filter
+const reportFilterDiv = document.getElementById('report-filter-div'); // report generation on primary filter div
+const dateRangeSelectDiv = document.getElementById('date-range-select-div');
+const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
+
+
+// BUTTONS
+const productCategoryBtn = document.getElementById('prod-category'); // item category select button
 const staffFilter = document.getElementById('staff-filter'); // staff select dropdown button
 
-const reportFilterDiv = document.getElementById('report-filter-div'); // report generation on primary filter div
+
+// FILTERS
+const paymentMode = document.getElementById('payment-mode'); // payment mode select class
 const salesReportOn = document.getElementById('sales-report-on'); // report generation on primary filter select
-
-const dateRangeSelectDiv = document.getElementById('date-range-select-div');
-const datePickerDiv = document.getElementById('dtPickerDiv');
-const additionalFilter = document.getElementById('extraFilterDiv');
-
 const checkSelectAdditionalFilter = document.getElementById('extra-filter-check');
 const selectedAdditionalFilter = document.getElementById('selected-additional-fiter');
 
-const inputedDateRangeDiv = document.getElementById('inputed-date-range-div');
+
+// FILTER CHECK BOX
+const filterCheckbox1 = document.getElementById('bill-date-checked-check-box');
+
 
 /// constand default data holders .........
 const downloadType = document.getElementById('download-file-type');
 const dayFilterVal = document.getElementById('day-filter-val');
 const dateRangeVal = document.getElementById('dt-rng-val');
 const filterByVal = document.getElementById('filter-by-val');
-
 const filterByProdCategoryIdVal = document.getElementById('filter-by-prod-categoty-id-val');
 const filterByProdCategoryNameVal = document.getElementById('filter-by-prod-categoty-name');
-
 const filterByPaymentModeVal = document.getElementById('filter-by-payment-mode-val');
-
 const filterByStaffName = document.getElementById('filter-by-staff-name');
 const filterByStaffId = document.getElementById('filter-by-staff-id');
-
 const reportFilterVal = document.getElementById('report-filter-val');
-
 const selectedStartDate = document.getElementById('selected-start-date');
 const selectedEndDate = document.getElementById('selected-end-date');
-
 const inputedDateRange = document.getElementById('inputed-date-range');
-
 const healthCareName = document.getElementById('healthcare-name');
 const healthCareGstin = document.getElementById('healthcare-gstin');
 const healthCareAddress = document.getElementById('healthcare-address');
 const reportGenerationTime = document.getElementById('report-generation-date-time-holder');
+
+
 /// dropdown inner html constant
 const paymentModeConst = document.getElementById('payment-mode-select-span');
+
 
 /// all staff data on admin 
 const allCurrentStaffNameOnAdmin = document.getElementById('all-stuff-name-data');
 const allCurrentStaffIdOnAdmin = document.getElementById('all-stuff-id-data');
 
+
 //// temp data holder
 let tempStartDate = '';
 let tempEndDate = '';
+
 
 // date range modified function 
 function formatDate(dateString) {
@@ -259,16 +260,6 @@ function dateRangeReset(){
 }
 
 
-function extraFilterDiv(){
-    if(checkSelectAdditionalFilter.innerHTML == '0'){
-        additionalFilter.style.display = 'block';
-        checkSelectAdditionalFilter.innerHTML = '1';
-    }else{
-        additionalFilter.style.display = 'none';
-        checkSelectAdditionalFilter.innerHTML = '0';
-    }
-    
-}
 
 // category select filter
 function categoryFilterSelect(t){
@@ -603,22 +594,44 @@ function getCurrentDateTime() {
 
 
 
+// function extraFilterDiv(){
+//     if(dayFilterVal.innerHTML == '0'){
+//         if(checkSelectAdditionalFilter.innerHTML == '0'){
+//             additionalFilterDiv.style.display = 'block';
+//             checkSelectAdditionalFilter.innerHTML = '1';
+//         }else{
+//             additionalFilterDiv.style.display = 'none';
+//             checkSelectAdditionalFilter.innerHTML = '0';
+//         } 
+//     }else{
+//         alert('bill date only can show in day wise report!');
+//     }
+// }
+
+
+
 function additionalCheckBoxFunction(){
-    if(document.getElementById('bill-date-checked-check-box').checked == true){
-        console.log('hello');
+    if(filterCheckbox1.checked == true){
+        return 1;
     }else{
-        console.log('hi');
+        return 0;
     }
 }
 
 
+
+
 // sales data search call (funning ajax query)
 function salesSummerySearch() {
-    additionalCheckBoxFunction();
+    
     let searchString = '';
-
     let dtFilter = dayFilterVal.innerHTML;
+    let additionalFilter1 = additionalCheckBoxFunction();
 
+    if(dtFilter != '0'){
+        additionalFilter1 = 0;
+    }
+    
     // date range input check
     if(dateRangeVal.innerHTML == ''){
         alert('select date range');
@@ -675,10 +688,9 @@ function salesSummerySearch() {
         startDt: startDate,
         endDt: endDate,
         filterBy: filterByVal.innerHTML,
+        additionalFilter1 : additionalFilter1
     };
-
-    console.log(dataArray);
-    // salesDataSearchFunction(dataArray);
+    salesDataSearchFunction(dataArray);
 }
 
 
@@ -726,7 +738,16 @@ function reportShow(parsedData) {
     reportGenerationTime.innerHTML = currentDateTime;
 
     // Define headers based on filter values
-    const headerStart1 = ['Date'];
+    const headerStart1a = ['Date'];
+    const headerStart1b = ['Date', 'Bill Date'];
+    let headerStart1;
+    parsedData.forEach(item => {
+        if (item.hasOwnProperty('bil_dt')) {
+            headerStart1 = headerStart1b
+        } else {
+            headerStart1 = headerStart1a
+        }
+    });
     const headerStart2 = ['Start Date', 'End Date'];
     const headerEnd1 = ['Total Sell'];
     const headerEnd2 = ['Total Margin'];
@@ -792,7 +813,7 @@ function reportShow(parsedData) {
     // Iterate through headers to calculate column totals and build the row
     headers.forEach(header => {
         // console.log(header);
-        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
+        if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
                 if (headerMid.includes(header)) {
                     // console.log(header);
@@ -821,11 +842,11 @@ function reportShow(parsedData) {
                             grandTotals[header] += parseFloat(data.total_discount || 0);
                         }
                     }
-                } else if(header === 'Total Sell'){
+                } else if (header === 'Total Sell') {
                     grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
-                } else if(header === 'Total Margin'){
+                } else if (header === 'Total Margin') {
                     grandTotals[header] += parseFloat(data.total_sales_margin || 0);
-                } else if(header === 'Total Discount'){
+                } else if (header === 'Total Discount') {
                     grandTotals[header] += parseFloat(data.total_discount || 0);
                 }
             });
@@ -835,7 +856,7 @@ function reportShow(parsedData) {
     // Create grand total row cells
     headers.forEach(header => {
         const cell = document.createElement('td');
-        if (header !== 'Date' && header !== 'Start Date' && header !== 'End Date') {
+        if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
             cell.textContent = `₹${grandTotals[header].toFixed(2)}`;
         } else {
             cell.textContent = ''; // Leave Date, Start Date, End Date cells empty
@@ -947,6 +968,11 @@ function reportShow(parsedData) {
                 totalSellAmount += amount;
                 totalMargin += parseFloat(data.total_sales_margin || 0);
                 totalDiscount += parseFloat(data.total_discount || 0);
+            }
+
+            // On Bill Date
+            if (data.bil_dt) {
+                rowData['Bill Date'] = formatDate(data.bil_dt);
             }
         });
 

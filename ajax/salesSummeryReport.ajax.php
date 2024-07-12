@@ -22,12 +22,11 @@ $Utility = new Utility;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
 
-    
 
     $dataArray = $_GET['dataArray'];
     $dataArray = json_decode($dataArray);
 
-
+    $additionalFilter1 = $dataArray->additionalFilter1;
     $dateGroupFilter = $dataArray->datefilter;
 
     $searchOnString = $dataArray->searchOn;
@@ -52,15 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dataArray'])) {
     }
 
     if ($filterBy == 'ICAT') {
-        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
+        $stockOutDataReport = $StockOut->stockOutReportOnItemCategory($additionalFilter1, $dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
     }
 
     if($filterBy == 'PM'){
-        $stockOutDataReport = $StockOut->stockOutReportOnPaymentMode($dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
+        $stockOutDataReport = $StockOut->stockOutReportOnPaymentMode($additionalFilter1, $dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
     }
 
     if($filterBy == 'STF'){
-        $stockOutDataReport = $StockOut->stockOutReportOnAddedBy($dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
+        $stockOutDataReport = $StockOut->stockOutReportOnAddedBy($additionalFilter1, $dateGroupFilter, $searchString, $startDt, $endDt, $adminId);
     }
 
     print_r($stockOutDataReport);
