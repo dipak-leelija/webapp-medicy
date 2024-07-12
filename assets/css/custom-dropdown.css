@@ -18,12 +18,17 @@
     background-color: #c3bff1;
 }
 
-.c-inp,
+/* .c-inp,
 .cvx-inp1{
     outline: none !important;
     border: none !important;
+    box-shadow: none !important;
+} */
+.focus-out{
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
-
 .c-inp option:hover,
 select option:hover{
     /* outline: none !important;
@@ -43,9 +48,7 @@ select option:hover{
     background-color: rgba(12, 161, 246, 1) !important;
     cursor: pointer;
 }
-/* .dropdown-menu li, label:hover{
-    cursor: pointer;
-} */
+
 
 #print-report{
     padding-bottom: 6px;
