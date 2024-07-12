@@ -13,19 +13,22 @@ require_once CLASS_DIR . 'packagingUnit.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 
+require_once CLASS_DIR . 'InvoiceComponents.class.php';
+
+
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 $invoiceId = $_GET['id'];
 
 //  INSTANTIATING CLASS
+$ClinicInfo      = new HealthCare;
 $StockOut        = new StockOut();
 $Products        = new Products();
 $ItemUnit        = new ItemUnit();
 $PackagingUnits  = new PackagingUnits();
 $Manufacturer    = new Manufacturer();
 $Patients        = new Patients;
-$ClinicInfo  = new HealthCare;
 // echo $healthCareLogo;
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -82,15 +85,19 @@ require('../assets/plugins/pdfprint/fpdf/fpdf.php');
 // Extend the FPDF class
 class PDF extends FPDF
 {
+    use PrintComponents;
+
     private $invoiceId;
     private $pMode;
     private $billDate;
-    private $patientName;
-    private $patientAge;
-    private $patientPhno;
-    private $totalGSt;
-    private $totalMrp;
-    private $billAmout;
+    private $PATIENTNAME;
+    private $PATIENTAGE;
+    private $PATIENTPHNO;
+
+    private $TOTALGST;
+    private $TOTALMRP;
+    private $BILLAMOUT;
+
     private $healthCareLogo;
     private $healthCareName;
     private $healthCareAddress1;
@@ -100,7 +107,7 @@ class PDF extends FPDF
     private $healthCarePhno;
     private $healthCareApntbkNo;
     private $gstinData;
-    private $reffby;
+    private $REFFBY;
     private $slno;
     private $isLastPage;
 
@@ -108,152 +115,35 @@ class PDF extends FPDF
     function __construct($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby) {
         parent::__construct();
 
-        $this->invoiceId = $invoiceId;
-        $this->pMode = $pMode;
-        $this->billDate = $billDate;
-        $this->patientName = $patientName;
-        $this->patientAge = $patientAge;
-        $this->patientPhno = $patientPhno;
-        $this->totalGSt = $totalGSt;
-        $this->totalMrp = $totalMrp;
-        $this->billAmout = $billAmout;
-        $this->healthCareLogo = $healthCareLogo;
-        $this->healthCareName = $healthCareName;
+        $this->invoiceId        = $invoiceId;
+        $this->pMode            = $pMode;
+        $this->billDate         = $billDate;
+        $this->PATIENTNAME      = $patientName;
+        $this->PATIENTAGE       = $patientAge;
+        $this->PATIENTPHNO      = $patientPhno;
+        $this->TOTALGST         = $totalGSt;
+        $this->TOTALMRP         = $totalMrp;
+        $this->BILLAMOUT        = $billAmout;
+        $this->healthCareLogo   = $healthCareLogo;
+        $this->healthCareName   = $healthCareName;
         $this->healthCareAddress1 = $healthCareAddress1;
         $this->healthCareAddress2 = $healthCareAddress2;
-        $this->healthCareCity = $healthCareCity;
-        $this->healthCarePin = $healthCarePin;
-        $this->healthCarePhno = $healthCarePhno;
+        $this->healthCareCity   = $healthCareCity;
+        $this->healthCarePin    = $healthCarePin;
+        $this->healthCarePhno   = $healthCarePhno;
         $this->healthCareApntbkNo = $healthCareApntbkNo;
-        $this->gstinData = $gstinData;
-        $this->reffby = $reffby;
+        $this->gstinData        = $gstinData;
+        $this->REFFBY           = $reffby;
     }
 
+    //page header
     function Header() {
-        global $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $invoiceId, $pMode, $billdate, $patientName, $patientAge, $patientPhno, $gstinData;
-
-        if ($this->PageNo() == 1) {  ///this line only show the header first page
-
-            //.. healthCareLogo...///
-            $logoX = 10;
-            $logoY = 12;
-            $logoWidth = 20;
-            $logoHeight = 20;
-            if (!empty($this->healthCareLogo)) {
-                $this->Image($this->healthCareLogo, $logoX, $logoY, $logoWidth, $logoHeight);
-            }
-
-            ///....Title (Healthcare Name)...///
-            $this->SetFont('Arial', 'B', 16);
-            $this->SetXY($logoX + $logoWidth + 5, $logoY); // Position next to the logo
-            $this->Cell(90, 8, $healthCareName, 0, 1, 'L'); // Centered text
-
-            // Address
-            $this->SetFont('Arial', '', 10);
-            $address = "$healthCareAddress1, $healthCareAddress2\n$healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo\nGST ID : $gstinData";
-            
-            $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
-            $this->MultiCell(90, 5, $address, 0, 'L');
-
-            ///...Invoice Info
-            $this->SetY(20); // Reset Y position
-            $this->SetX(-50); // Align to the right
-            // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
-            $this->SetFont('Arial', 'B', 10);
-            $this->cell(80, 0, ' Invoice:', 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->MultiCell(80, 5, "\n #$invoiceId\n Payment:$pMode\n Date: $this->billDate", 0, 'L');
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(10);
-        }
+        $this->billHeader();
     }
 
-    // Page footer
-    function Footer() {
-        if ($this->isLastPage) { /// this line only show the footer last page 
-
-            $pageHeight = $this->GetPageHeight();
-            $middleY = $pageHeight / 2;
-            $this->SetY($middleY);
-            $this->SetLineWidth(0.4);
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-            // $this->Ln(2);
-
-           // Set the font for the footer content
-           $this->SetFont('Arial', '', 10);
-
-            // Patient Info
-            $this->SetY($this->GetY() + 2); // Add some padding
-            $startX = 10;
-            $currentY = $this->GetY();
-
-            $this->SetX($startX);
-            if ($this->reffby !== 'Cash Sales') {
-                $this->SetFont('Arial', 'B', 10);
-                $this->Cell(30, 5, 'Referred By: ', 0, 0, 'L');
-                $this->SetFont('Arial', '', 10);
-                $this->Cell(30, 5, $this->reffby, 0, 'L');
-            }else{
-                $this->Cell(30, 5,'');
-            }
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(30, 5, 'Patient: ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, $this->patientName, 0, 'L');
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(30, 5, 'Age: ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, $this->patientAge, 0, 1, 'L');
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(30, 5, 'Contact: ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, $this->patientPhno, 0, 1, 'L');
-
-            // GST Calculation
-            $this->SetY(149); // Reset Y position
-            $this->SetX(98); // Align to the right
-            // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 22);
-
-            $startX = 70;
-            $this->SetY($currentY); // Reset Y position to top of the section
-            $this->SetX($startX);
-            $this->Cell(70, 5, 'CGST :', 0, 0, 'C');
-            $this->Cell(-10, 5, ' ' . ($this->totalGSt / 2), 0, 1, 'C');
-            $this->SetX($startX);
-            $this->Cell(70, 5, 'SGST :', 0, 0, 'C');
-            $this->Cell(-10, 5, ' ' . ($this->totalGSt / 2), 0, 1, 'C');
-            $this->SetX($startX);
-            $this->Cell(76, 5, 'Total GST :', 0, 0, 'C');
-            $this->Cell(-24, 5, ' ' . $this->totalGSt, 0, 1, 'C');
-
-            // Amount Calculation
-            $startX = 140;
-            $this->SetY($currentY); // Reset Y position to top of the section
-            $this->SetX($startX);
-            $this->Cell(20, 5, 'MRP :', 0, 0, 'R');
-            $this->Cell(40, 5, ' ' . $this->totalMrp, 0, 1, 'R');
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(26, 5, 'Payable :', 0, 0, 'R');
-            $this->Cell(34, 5, ' ' . $this->billAmout, 0, 1, 'R');
-            $this->SetX($startX);
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, 'You Saved  :', 0, 0, 'R');
-            $this->Cell(28, 5, ' ' . ($this->totalMrp - $this->billAmout), 0, 1, 'R');
-            
-            $this->Ln(6);
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-        }
+    //page footer
+    function Footer(){
+        $this->billFooter();
     }
 
     function AddContentPage($details, $billDate, $pMode, $Products, $Manufacturer) {
@@ -268,17 +158,17 @@ class PDF extends FPDF
            $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
        }///....end page badge...///
 
-        $this->SetFont('Arial', 'B', 10);
-        $this->Cell(16, -10, 'SL. NO.', 0, 0, 'L');
-        $this->Cell(34, -10, 'Name', 0, 0, 'L');
-        $this->Cell(18, -10, 'Manuf.', 0, 0, 'L');
-        $this->Cell(20, -10, 'Batch', 0, 0, 'L');
-        $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
-        $this->Cell(16, -10, 'QTY', 0, 0, 'L');
-        $this->Cell(18, -10, 'MRP', 0, 0, 'L');
-        $this->Cell(16, -10, 'Disc (%)', 0, 0, 'L');
-        $this->Cell(16, -10, 'GST(%)', 0, 0, 'L');
-        $this->Cell(18, -10, 'Amount ()', 0, 1, 'R');
+        $this->SetFont('Arial', 'B', 9);
+        $this->Cell(10, -14, 'SL.', 0, 0, 'L');
+        $this->Cell(40, -14, 'Name', 0, 0, 'L');
+        $this->Cell(18, -14, 'Manuf.', 0, 0, 'L');
+        $this->Cell(20, -14, 'Batch', 0, 0, 'L');
+        $this->Cell(16, -14, 'Exp.', 0, 0, 'L');
+        $this->Cell(16, -14, 'QTY', 0, 0, 'L');
+        $this->Cell(18, -14, 'MRP', 0, 0, 'L');
+        $this->Cell(16, -14, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(16, -14, 'GST(%)', 0, 0, 'L');
+        $this->Cell(18, -14, 'Amount', 0, 1, 'R');
         $this->Ln(10);
         $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
@@ -360,16 +250,16 @@ class PDF extends FPDF
             }
         }
 
-        $this->Cell(16, 10, $slno, 0, 0, 'L');
-        $this->Cell(34, 10, substr($detail['item_name'], 0, 15), 0, 0, 'L');
-        $this->Cell(18, 10, $manufacturerName, 0, 0, 'L');
-        $this->Cell(21, 10, $detail['batch_no'], 0, 0, 'L');
-        $this->Cell(16, 10, $detail['exp_date'], 0, 0, 'L');
-        $this->Cell(15, 10, $detail['qty'], 0, 0, 'L');
-        $this->Cell(18, 10, $detail['mrp'], 0, 0, 'L');
-        $this->Cell(16, 10, $detail['discount'], 0, 0, 'L');
-        $this->Cell(16, 10, $detail['gst'], 0, 0, 'L');
-        $this->Cell(18, 10, $detail['amount'], 0, 1, 'R');
+        $this->Cell(10, 8, $slno, 0, 0, 'L');
+        $this->Cell(40, 8, substr($detail['item_name'], 0, 25), 0, 0, 'L');
+        $this->Cell(18, 8, $manufacturerName, 0, 0, 'L');
+        $this->Cell(21, 8, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(16, 8, $detail['exp_date'], 0, 0, 'L');
+        $this->Cell(15, 8, $detail['qty'], 0, 0, 'L');
+        $this->Cell(18, 8, $detail['mrp'], 0, 0, 'L');
+        $this->Cell(16, 8, $detail['discount'], 0, 0, 'L');
+        $this->Cell(16, 8, $detail['gst'], 0, 0, 'L');
+        $this->Cell(18, 8, $detail['amount'], 0, 1, 'R');
 
         $amount  = $amount + $detail['amount'];
         // $this->Ln(1); // Move to next line

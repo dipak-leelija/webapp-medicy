@@ -162,7 +162,7 @@ if ($_SESSION['ADMIN']) {
                             <div class=" shadow bg-white rounded  profile">
 
 
-                                <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
+                                <!-- <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
                                     <div class="ml-3">
                                         <img class="img-uv-view shadow-lg "
                                             src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>"
@@ -185,7 +185,36 @@ if ($_SESSION['ADMIN']) {
                                     </div>
                                     <div class="p-name">
                                         <h2 class="mb-0"><?= $firstName . " " . $lastName ?></h2>
-                                        <p class="text-primary">Username: <?= $userName; ?></p>
+                                        <p class="text-primary mb-0">Username: <?= $userName; ?></p>
+                                        <p class="text-primary small">ID: <?= $adminId; ?></p>
+                                    </div>
+                                </div> -->
+
+                                <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+                                    <div class="w-25">
+                                        <img class="img-uv-view shadow-lg "
+                                            src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>"
+                                            alt="">
+                                        <div class="position-absolute translate-middle ml-5">
+                                            <form method="POST"
+                                                action="<?= URL ?>_config/form-submission/profileSetup-form.php"
+                                                id="profileImageForm" enctype="multipart/form-data">
+                                                <input type="file" style="display:none;" id="img-uv-input"
+                                                    accept=".jpg,.jpeg,.png" name="profile-image"
+                                                    onchange="validateFileType(this)">
+                                                <label for="img-uv-input"
+                                                    class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i
+                                                        class="fas fa-camera"></i></label>
+                                                <div class="alert alert-danger d-none" id="err-show" role="alert">
+                                                    Only jpg/jpeg and png files are allowed!
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="w-75">
+                                        <h2 class="mb-0"><?= $firstName . " " . $lastName ?></h2>
+                                        <p class="text-primary mb-0">Username: <?= $userName; ?></p>
+                                        <p class="text-primary small">ID: <?= $adminId; ?></p>
                                     </div>
                                 </div>
 
