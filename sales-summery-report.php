@@ -339,16 +339,16 @@ if ($_SESSION['ADMIN']) {
                                 data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="width: 2rem;">
                                 <i class="fas fa-filter"></i>
                             </button>
-                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                            <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="offcanvasRight"
                                 aria-labelledby="offcanvasRightLabel">
-                                <div class="offcanvas-header">
+                                <div class="offcanvas-header bg-info text-white">
                                     <h5 class="offcanvas-title" id="offcanvasRightLabel">Search Filter</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                                 </div>
-                                <div class="offcanvas-body mt-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="bill-date-checked-check-box">
+                                <div class="offcanvas-body mt-5">
+                                    <div class="form-check ms-4">
+                                        <input class="form-check-input focus-ring focus-ring-light" type="checkbox" value="" id="bill-date-checked-check-box">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Show Bill Date
                                         </label>

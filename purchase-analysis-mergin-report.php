@@ -101,11 +101,11 @@ $Utility     = new Utility;
                             </div>
 
                             <div class="col-md-4 bg-white me-3 selectDiv" id="data-filter-search-div">
-                                <div class="input-group">
+                                <div class="d-flex">
                                     <input class="focus-out cxv-inp border-0 p-1 w-100" type="text" placeholder="Search by Distributor, Item, Manufacturer" name="data-search" id="search-by-data">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm shadow-none input-group-append bg-white border-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
+                                        <button class="btn btn-sm shadow-none input-group-append bg-white border-0 pe-0" id="search-reset-1" type="button" onclick="resteUrl(this.id)" style="display: none;"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
                                 <label class="d-none" id="search-val"></label>
