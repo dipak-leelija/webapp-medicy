@@ -729,7 +729,7 @@ const rowsPerPage = 30; // Define the number of rows per page
 
 
 function reportShow(parsedData) {
-    console.log(parsedData);
+    // console.log(parsedData);
     document.getElementById('download-checking').innerHTML = '1';
     // Reset table data
     dataTable.innerHTML = '';
@@ -743,10 +743,8 @@ function reportShow(parsedData) {
     let headerStart1;
     parsedData.forEach(item => {
         if (item.hasOwnProperty('bil_dt')) {
-            console.log('bill date found');
             headerStart1 = headerStart1b
         } else {
-            console.log('bill date not found');
             headerStart1 = headerStart1a
         }
     });
@@ -814,7 +812,7 @@ function reportShow(parsedData) {
 
     // Iterate through headers to calculate column totals and build the row
     headers.forEach(header => {
-        console.log(header);
+        // console.log(header);
         if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
                 if (headerMid.includes(header)) {
