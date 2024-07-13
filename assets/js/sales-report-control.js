@@ -723,17 +723,14 @@ function salesDataSearchFunction(array){
 
 
 
-// dynamic table generation on data
-let currentPage = 1;
-const rowsPerPage = 30; // Define the number of rows per page
-
-
 function reportShow(parsedData) {
     // console.log(parsedData);
     document.getElementById('download-checking').innerHTML = '1';
+
     // Reset table data
     dataTable.innerHTML = '';
 
+    // Set current date and time
     let currentDateTime = getCurrentDateTime();
     reportGenerationTime.innerHTML = currentDateTime;
 
@@ -743,11 +740,12 @@ function reportShow(parsedData) {
     let headerStart1;
     parsedData.forEach(item => {
         if (item.hasOwnProperty('bil_dt')) {
-            headerStart1 = headerStart1b
+            headerStart1 = headerStart1b;
         } else {
-            headerStart1 = headerStart1a
+            headerStart1 = headerStart1a;
         }
     });
+
     const headerStart2 = ['Start Date', 'End Date'];
     const headerEnd1 = ['Total Sell'];
     const headerEnd2 = ['Total Margin'];
@@ -772,7 +770,7 @@ function reportShow(parsedData) {
         headerMid = slicedString(filterByStaffName.innerHTML);
     }
 
-    // Header end on filter val
+    // Header end based on reportFilterVal
     if (reportFilterVal.innerHTML === 'Total Sell') {
         headerEnd = headerEnd1;
     } else if (reportFilterVal.innerHTML === 'Total Margin') {
@@ -812,11 +810,9 @@ function reportShow(parsedData) {
 
     // Iterate through headers to calculate column totals and build the row
     headers.forEach(header => {
-        // console.log(header);
         if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
             parsedData.forEach(data => {
                 if (headerMid.includes(header)) {
-                    // console.log(header);
                     if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
                         if (reportFilterVal.innerHTML === 'Total Sell') {
                             grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
@@ -997,15 +993,116 @@ function reportShow(parsedData) {
     };
 
     // Display all data without pagination
+    const allRows = [];
     Object.keys(groupedData).forEach(groupKey => {
         const groupData = groupedData[groupKey];
         const tr = createRows(groupData, groupKey, headers);
-        tbody.appendChild(tr);
+        allRows.push(tr);
     });
+
+    // Pagination settings
+    const rowsPerPage = 15;
+    let currentPage = 1;
+    const totalPages = Math.ceil(allRows.length / rowsPerPage);
+
+    // Function to render the current page
+    const renderPage = (page) => {
+        tbody.innerHTML = '';
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        allRows.slice(start, end).forEach(row => {
+            tbody.appendChild(row);
+        });
+        updatePaginationControls();
+    };
+
+    // Function to update pagination controls
+    const updatePaginationControls = () => {
+        paginationControls.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'pagination justify-content-center';
+
+        const prevItem = document.createElement('li');
+        prevItem.className = 'page-item';
+        const prevButton = document.createElement('a');
+        prevButton.className = 'page-link';
+        prevButton.href = '#';
+        prevButton.textContent = '◀'; // Left arrow
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        });
+        prevItem.appendChild(prevButton);
+        ul.appendChild(prevItem);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            const button = document.createElement('a');
+            button.className = 'page-link';
+            button.href = '#';
+            button.textContent = i;
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                currentPage = i;
+                renderPage(currentPage);
+            });
+            li.appendChild(button);
+            ul.appendChild(li);
+        }
+
+        const nextItem = document.createElement('li');
+        nextItem.className = 'page-item';
+        const nextButton = document.createElement('a');
+        nextButton.className = 'page-link';
+        nextButton.href = '#';
+        nextButton.textContent = '▶'; // Right arrow
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        });
+        nextItem.appendChild(nextButton);
+        ul.appendChild(nextItem);
+
+        paginationControls.appendChild(ul);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage(currentPage);
+                }
+            } else if (event.key === 'ArrowRight') {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPage(currentPage);
+                }
+            }
+        });
+    };
 
     // Append tbody to the table
     dataTable.appendChild(tbody);
+
+    // Create and append pagination controls
+    const paginationControls = document.createElement('div');
+    paginationControls.className = 'pagination-controls mt-3'; // Add Bootstrap spacing class
+    dataTable.parentElement.appendChild(paginationControls);
+
+    // Render the first page
+    renderPage(currentPage);
 }
+
 
 
 
@@ -1116,7 +1213,7 @@ function exportToExcel() {
     // Generate Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'report.xlsx');
+        saveAs(blob, 'sales-summery-report.xlsx');
     });
 }
 
@@ -1165,7 +1262,7 @@ function exportToCSV() {
     // Create download link
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'report.csv';
+    link.download = 'sales-summery-report.csv';
 
     // Append link to DOM, simulate click, and remove link
     document.body.appendChild(link);
