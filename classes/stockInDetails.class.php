@@ -509,61 +509,70 @@ class StockInDetails
 
     // stock in details gst report
     // ================ STOCK IN DETAILS ANALYSIS ==================
-    function gstPurchaseDetailsReport($startDate, $endDate, $admin)
-    {
-        try {
-            $data = array();
-            $select = "SELECT 
-                            si.bill_date AS bill_date,
-                            DATE(si.added_on) AS added_on,
-                            si.distributor_bill AS bill_no,
-                            d.name AS dist_name,
-                            p.name AS item_name,
-                            sid.amount AS total_Paid_on_item,
-                            sid.gst AS total_gst_percent,
-                            sid.gst_amount AS total_gst_amount
-                        FROM 
-                            stock_in_details sid
-                        JOIN
-                            stock_in si ON si.id = sid.stokIn_id 
-                        JOIN
-                            products p ON p.product_id = sid.product_id
-                        JOIN
-                            distributor d ON d.id = si.distributor_id 
-                        WHERE
-                            DATE(si.added_on) BETWEEN  ? AND ?
-                            AND si.admin_id = ?";
+    function gstPurchaseDetailsReport($filterOn, $startDate, $endDate, $admin)
+{
+    try {
+        $data = array();
+        
+        // Base query
+        $selectQuery = "SELECT 
+                        si.bill_date AS bill_date,
+                        DATE(si.added_on) AS added_on,
+                        si.distributor_bill AS bill_no,
+                        d.name AS dist_name,
+                        p.name AS item_name,
+                        sid.amount AS total_paid_on_item,
+                        sid.gst AS total_gst_percent,
+                        sid.gst_amount AS total_gst_amount
+                    FROM 
+                        stock_in_details sid
+                    JOIN
+                        stock_in si ON si.id = sid.stokIn_id 
+                    JOIN
+                        products p ON p.product_id = sid.product_id
+                    JOIN
+                        distributor d ON d.id = si.distributor_id 
+                    WHERE
+                        DATE(si.added_on) BETWEEN ? AND ?
+                        AND si.admin_id = ?";
 
-            $stmt = $this->conn->prepare($select);
+        // Add condition for GST filter
+        $additionNlaQuery = " AND sid.gst = 0";
 
-            if ($stmt === false) {
-                throw new Exception("Error preparing the query: " . $this->conn->error);
-            }
-
-            // Bind parameters
-            $stmt->bind_param("sss", $startDate, $endDate, $admin);
-            
-
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
-                }
-                $returnData = ['status'=>'1', 'data'=>$data];
-            } else {
-                $data[] = '';
-                $returnData = ['status'=>'0', 'data'=>$data];
-            }
-
-            // Close the statement
-            $stmt->close();
-            return json_encode($returnData);
-        } catch (Exception $e) {
-            return ['status' => '0', 'error' => $e->getMessage()];
+        // Append additional query condition based on filter
+        if ($filterOn == 0) {
+            $selectQuery .= $additionNlaQuery;
         }
+
+        $stmt = $this->conn->prepare($selectQuery);
+
+        if ($stmt === false) {
+            throw new Exception("Error preparing the query: " . $this->conn->error);
+        }
+
+        // Bind parameters
+        $stmt->bind_param("sss", $startDate, $endDate, $admin);
+        
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            $returnData = ['status' => '1', 'data' => $data];
+        } else {
+            $returnData = ['status' => '0', 'data' => []];
+        }
+
+        // Close the statement
+        $stmt->close();
+        return json_encode($returnData);
+    } catch (Exception $e) {
+        return json_encode(['status' => '0', 'error' => $e->getMessage()]);
     }
+}
+
 
 
     
