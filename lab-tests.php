@@ -9,12 +9,12 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR . 'labTestTypes.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'pagination.class.php';
 
-$labTypes       = new LabTestTypes;
+$labTypes       = new Pathology;
 $subTests       = new SubTests;
 $Pagination     = new Pagination;
 
@@ -26,13 +26,13 @@ $match = '';
 
 if (isset($_GET['search'])) {
     $searchVal = $match = $_GET['search'];
-    $showLabTypes = json_decode($labTypes->searchLabTest($searchVal));
+    $testCategories = json_decode($labTypes->searchLabTest($searchVal));
 } else {
-    $showLabTypes = json_decode($labTypes->showLabTypes());
+    $testCategories = json_decode($labTypes->showTestCategories());
 }
 
-if ($showLabTypes->status) {
-    $labData = $showLabTypes->data;
+if ($testCategories->status) {
+    $labData = $testCategories->data;
 
     if (!empty($labData)) {
 
@@ -150,9 +150,10 @@ if ($showLabTypes->status) {
                                                 <thead class="bg-primary text-light">
                                                     <tr>
                                                         <th></th>
-                                                        <th>Test Name</th>
-                                                        <th>Provided By</th>
-                                                        <th>Sub Tests</th>
+                                                        <th>Category Name</th>
+                                                        <th>Description</th>
+                                                        <th>Tests Nos</th>
+                                                        <th>Status</th>
                                                         <th class="text-center">Action</th>
                                                     </tr>
                                                 </thead>
@@ -161,21 +162,20 @@ if ($showLabTypes->status) {
 
                                                 
 
-                                                    foreach ($slicedLabTestData as $showLabTypesShow) {
-                                                        $testTypeId = $showLabTypesShow->id;
-                                                        $testName   = $showLabTypesShow->test_type_name;
-                                                        $testDsc    = $showLabTypesShow->dsc;
-                                                        $testPvdBy  = $showLabTypesShow->provided_by;
-                                                        $testImg    =  $showLabTypesShow->image;
+                                                    foreach ($slicedLabTestData as $eachCategory) {
+                                                        $testCatId = $eachCategory->id;
+                                                        $catName   = $eachCategory->name;
+                                                        $catDsc    = $eachCategory->dsc;
+                                                        $catImg    = $eachCategory->image;
+                                                        $catStatus = $eachCategory->status;
 
-                                                        // $testImg = LABTEST_IMG_PATH . $testImg;
-                                                        if (!empty($testImg)) {
-                                                            $testImg = LABTEST_IMG_PATH . $testImg;
+                                                        if (!empty($catImg)) {
+                                                            $catImg = LABTEST_IMG_PATH . $catImg;
                                                         } else {
-                                                            $testImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+                                                            $catImg = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
                                                         }
 
-                                                        $subTestData = json_decode($subTests->showSubTestsByCatId($testTypeId));
+                                                        $subTestData = json_decode($labTypes->showTestByCat($testCatId));
                                                         if ($subTestData->status) {
                                                             $subTestCount = count($subTestData->data);
                                                         } else {
@@ -185,20 +185,19 @@ if ($showLabTypes->status) {
 
                                                         <tr>
                                                             <td class='testImg'>
-                                                                <img src="<?php echo $testImg; ?>" alt="">
+                                                                <img src="<?= $catImg; ?>" alt="">
                                                             </td>
-                                                            <td><?php echo $testName; ?></td>
-                                                            <td><?php echo $testPvdBy; ?></td>
-                                                            <td><?php echo $subTestCount; ?></td>
+                                                            <td><?= $catName; ?></td>
+                                                            <td><?= $catDsc; ?></td>
+                                                            <td><?= $subTestCount; ?></td>
+                                                            <td><?= $catStatus; ?></td>
                                                             <td class='text-center'>
 
-                                                                <a class='text-light' href=" single-lab-page.php?labtypeid=<?php echo url_enc($testTypeId) ?>">
+                                                                <a class='text-light' href=" single-lab-page.php?labtypeid=<?= url_enc($testCatId) ?>">
                                                                     <i class="fas fa-eye" style="color: #4e73df;"></i>
                                                                 </a>
 
-                                                                <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?php echo $testTypeId; ?>)" style="color: #4e73df;"></i>
-
-                                                                <!-- <a class='text-light' id="<?php echo $testTypeId ?>" onclick="deleteTestType(this)"><i class="far fa-trash-alt" style="color: #ff0000;"></i></a> -->
+                                                                <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?= $testCatId; ?>)" style="color: #4e73df;"></i>
 
                                                             </td>
                                                         </tr>
