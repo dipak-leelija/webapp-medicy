@@ -67,7 +67,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingOne">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                                                     <i class="fas fa-file-invoice-dollar" style="color: #085996;margin-right:8px"></i> Purchae Report
                                                 </button>
                                             </h2>
@@ -80,7 +80,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         </div>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingTwo">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                                                     <i class="fas fa-file-alt" style="color: #EB449F;margin-right:8px"></i>
                                                     Sales Report
                                                 </button>
@@ -96,7 +96,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         </div>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingThree">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                                                     <i class="fas fa-percent" style="color: #3ED6CB;margin-right:8px"></i>Margin Report
                                                 </button>
                                             </h2>
@@ -115,7 +115,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingFour">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                                                     <i class="fas fa-box fa-fw fa-solid" style="color: #00ace6;margin-right:8px"></i>Stock Reports
                                                 </button>
                                             </h2>
@@ -137,7 +137,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingFive">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
                                                     Inventory Report
                                                 </button>
                                             </h2>

@@ -55,7 +55,7 @@ if (isset($_GET['reportGenerat'])) {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH; ?>bootstrap 5/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
     <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
     <link href="<?php echo CSS_PATH; ?>date-picker/daterangepicker.css" rel="stylesheet">
@@ -99,7 +99,7 @@ if (isset($_GET['reportGenerat'])) {
                             <div class="col-sm-4">
                             </div>
                             <div class="col-sm-8 bg-info bg-opacity-10">
-                                <select class="c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
+                                <select class="focus-out c-inp p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -112,7 +112,7 @@ if (isset($_GET['reportGenerat'])) {
                     <div class=" shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
 
-                            <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between p-1" id="date-range-select-div">
+                            <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between align-items-center p-1" id="date-range-select-div">
                                 <span id="selected-month" style="flex-grow: 1;"></span>
                                 <i class="fa fa-calendar"></i>
                                 <input type="hidden" id="date-input" />
@@ -120,7 +120,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter report type -->
                             <div class="col-md-2 bg-white me-3 selectDiv">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterReportType(this)">
+                                <select class="focus-out cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterReportType(this)">
                                     <option value="" disabled selected>Report Type</option>
                                     <option value="P">Purchase</option>
                                     <!-- <option value="PR">Purchase Return</option> -->
@@ -130,7 +130,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- filter purchase type -->
                             <div class="col-md-2 bg-white me-3 selectDiv">
-                                <select class="cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
+                                <select class="focus-out cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
                                     <option value="" disabled selected>Purchase Type</option>
                                     <option value="WG">With GST</option>
                                     <option value="NG">Without GST</option>
@@ -140,7 +140,7 @@ if (isset($_GET['reportGenerat'])) {
 
                             <!-- find button on filter -->
                             <div class="col-md-2 searchFilterDiv">
-                                <button type="button" id="search-filter" name="search-filter" class="btn btn-primary text-center btn-sm" onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="search-filter" class="focus-out btn btn-primary text-center btn-sm" onclick="filterSearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -175,7 +175,7 @@ if (isset($_GET['reportGenerat'])) {
 
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
     <script src="<?php echo PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo JS_PATH; ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
