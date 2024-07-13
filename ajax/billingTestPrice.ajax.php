@@ -2,18 +2,17 @@
 require_once dirname(__DIR__).'/config/constant.php';
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'Pathology.class.php';
 
 
 $subTestId = $_GET['subtest_id'];
 
-$SubTests = new SubTests();
-$showSubTestsId = $SubTests->showSubTestsId($subTestId);
+$Pathology = new Pathology();
+$testsDetails = $Pathology->showTestById($subTestId);
 
-foreach($showSubTestsId as $rowsSubTest){
+foreach($testsDetails as $rowsSubTest){
     $testPrice = $rowsSubTest['price'];
     echo $testPrice;
-
 }
 
 

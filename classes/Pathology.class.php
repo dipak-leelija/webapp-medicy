@@ -182,7 +182,6 @@ class Pathology{
     function showTestList()
     {
         try {
-            $data = [];
             $selectTest = "SELECT * FROM `test_list`";
             $testQuery = $this->conn->query($selectTest);
             while ($result = $testQuery->fetch_array()) {
@@ -194,6 +193,15 @@ class Pathology{
         }
     } // end showSubTests function
 
+    function showTestById($testId)
+    {
+        $selectTestById = "SELECT * FROM test_list WHERE `id` = '$testId'";
+        $subTestQuery = $this->conn->query($selectTestById);
+        while ($result = $subTestQuery->fetch_assoc()) {
+            $data = $result;
+        }
+        return $data;
+    } // end showLabTypesById function
 
     function showTestByCat($catId)
     {

@@ -174,7 +174,7 @@ class Doctors
             if ($selectDocByIdQuery->num_rows > 0) {
                 $docData = array(); // Initialize an array to store data
                 while ($result = $selectDocByIdQuery->fetch_object()) {
-                    $docData[] = $result; // Append each doctor name to the array
+                    $docData = $result; // Append each doctor name to the array
                 }
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $docData]);
             } else {

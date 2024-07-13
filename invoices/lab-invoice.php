@@ -6,44 +6,42 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 
-require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
-// require_once CLASS_DIR.'hospital.class.php';
-
-
-
 
 
 //  INSTANTIATING CLASS
-$LabBilling      = new LabBilling();
-$LabBillDetails  = new LabBillDetails();
-$SubTests        = new SubTests();
-$Doctors         = new Doctors();
-$Patients        = new Patients();
-$Utility         = new Utility;
-// $HealthCare     = new HealthCare;
-// $LabAppointments = new LabAppointments();
+$LabBilling         = new LabBilling();
+$LabBillDetails     = new LabBillDetails();
+$Pathology          = new Pathology();
+$Doctors            = new Doctors();
+$Patients           = new Patients();
+$Utility            = new Utility;
 
-if (isset($_GET['bill_id'])) {
+if (isset($_GET['bill_id']) || isset($_GET['billId'])):
 
-    $billId = $_GET['bill_id'];
-    $billId = url_dec($billId);
+    if (isset($_GET['bill_id'])) {
+        $billId = url_dec($_GET['bill_id']);
+    }
+
+    if (isset($_GET['billId'])) {
+        $billId = url_dec($_GET['billId']);
+    }
 
     $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
     $billId         = $labBil->data->bill_id;
-    $billingDate    = $labBil->data->bill_date;
+    $billDate       = $labBil->data->bill_date;
     $patientId      = $labBil->data->patient_id;
     $docId          = $labBil->data->refered_doctor;
     $testDate       = $labBil->data->test_date;
     $totalAmount    = $labBil->data->total_amount;
-    $totalDiscount  = $labBil->data->discount;
+    $dicountAmount  = $labBil->data->discount;
     $afterDiscount  = $labBil->data->total_after_discount;
     $cgst           = $labBil->data->cgst;
     $sgst           = $labBil->data->sgst;
@@ -63,78 +61,45 @@ if (isset($_GET['bill_id'])) {
     if (is_numeric($docId)) {
         $showDoctor = $Doctors->showDoctorNameById($docId);
         $showDoctor = json_decode($showDoctor);
-        // print_r($showDoctor);
         if ($showDoctor->status == 1) {
-            foreach ($showDoctor->data as $rowDoctor) {
-                $doctorName = $rowDoctor->doctor_name;
-                $doctorReg = $rowDoctor->doctor_reg_no;
-                // print_r($doctorName);
-            }
+                $doctorName = $showDoctor->data->doctor_name;
+                $doctorReg = $showDoctor->data->doctor_reg_no;
         }
     } else {
         $doctorName = $docId;
         $doctorReg  = NULL;
     }
-} elseif (isset($_GET['billId'])) {
-    $billId = $_GET['billId'];
-    $billId = url_dec($billId);
 
-    $labBillData = json_decode($LabBilling->labBillDisplayById($billId)); // lab bill data
-    if ($labBillData->status) {
-        $patientId      = $labBillData->data->patient_id;
-        $payable        = $labBillData->data->total_after_discount;
-        $dicountAmount  = $labBillData->data->discount;
-        $dueAmount      = $labBillData->data->due_amount;
-        $paidAmount     = $labBillData->data->paid_amount;
-        $billDate       = $labBillData->data->bill_date;
-        $testDate       = $labBillData->data->test_date;
-
-
-        $patientData = json_decode($Patients->chekPatientsDataOnColumn('patient_id', $patientId, $adminId));
-        $patientName = $patientData->data->name;
-        $patientPhno = $patientData->data->phno;
-        $patientAge  = $patientData->data->age;
-
-
-        if ($labBillData->data->refered_doctor != 'Self') {
-            $docColumn = 'doctor_id';
-            $docData = json_decode($Doctors->chekDataOnColumn($docColumn, $labBillData->data->refered_doctor, $adminId));
-
-            $doctorName  = $docData->data->doctor_name;
-            $doctorReg  = $docData->data->doctor_reg_no;
-        } else {
-            $doctorName = 'SELF';
-            $doctorReg = '';
-        }
-
-
+    /*
         $labBillDetailsData = json_decode($LabBillDetails->billDetailsById($billId));
 
         if ($labBillDetailsData->status) {
             $labBillDetailsData = $labBillDetailsData->data;
 
-            $discArray = [];
-            $amountArray = [];
-            $amountAfterDisc = [];
+            // $discArray = [];
+            // $amountArray = [];
+            // $amountAfterDisc = [];
 
-            foreach ($labBillDetailsData as $detailsData) {
-                array_push($discArray, $detailsData->percentage_of_discount_on_test);
-                array_push($amountArray, $detailsData->test_price);
-                array_push($amountAfterDisc, $detailsData->price_after_discount);
-            }
+            // foreach ($labBillDetailsData as $detailsData) {
+            //     array_push($discArray, $detailsData->percentage_of_discount_on_test);
+            //     array_push($amountArray, $detailsData->test_price);
+            //     array_push($amountAfterDisc, $detailsData->price_after_discount);
+            // }
         }
-    }
-}
+    */
+
+endif;
 
 // Include FPDF library
 require('../assets/plugins/pdfprint/fpdf/fpdf.php');
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $isLastPage = false;
 
     private $billId;
-    private $billingDate;
+    // private $billingDate;
     private $billDate;
     private $subTotal;
     private $discountAmount;
@@ -145,10 +110,11 @@ class PDF extends FPDF {
     private $healthCareLogo;
 
     // Constructor with parameters
-    function __construct($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests, $healthCareLogo) {
+    function __construct($billId, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests, $healthCareLogo)
+    {
         parent::__construct();
         $this->billId = $billId;
-        $this->billingDate = $billingDate;
+        // $this->billingDate = $billingDate;
         $this->billDate = $billDate;
         // $this->subTotal = $subTotal;
         $this->discountAmount = $discountAmount;
@@ -159,7 +125,8 @@ class PDF extends FPDF {
         $this->healthCareLogo = $healthCareLogo;
     }
 
-    function Header() {
+    function Header()
+    {
         global $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $billId, $billingDate, $billDate, $patientName, $patientAge, $patientPhno, $testDate, $doctorName, $doctorReg;
 
         if ($this->PageNo() == 1) {  ///this line only show the header first page
@@ -191,7 +158,7 @@ class PDF extends FPDF {
             $this->SetDrawColor(108, 117, 125);
             $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 17);
             // $this->Ln(0);
-            $this->MultiCell(80, 5, " Invoice: \n #$billId\n" . (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
+            $this->MultiCell(80, 5, " Invoice: \n #$billId\n" . (isset($billingDate) && !empty($billingDate) ? formatDateTime($billingDate) : formatDateTime($billDate)), 0, 'L');
             // Patient Info
             $this->Ln(2);
             $this->SetDrawColor(108, 117, 125);
@@ -210,8 +177,9 @@ class PDF extends FPDF {
     }
 
 
-     // Page footer
-    function Footer() {
+    // Page footer
+    function Footer()
+    {
         if ($this->isLastPage) { /// this line only show the footer last page 
 
             $pageHeight = $this->GetPageHeight();
@@ -252,16 +220,17 @@ class PDF extends FPDF {
         }
     }
 
-    function AddContentPage() {
+    function AddContentPage()
+    {
         $this->AddPage();
         ///....add paid badge...///
-        if( $this->paidAmount){
+        if ($this->paidAmount) {
             $imageX = 50; // X position with left space
             $imageY = 70;
             $imageWidth = 100; // Adjusted width with spaces
             $imageHeight = 60; // Height of the image
-           $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
-       }///....end page badge...///
+            $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+        } ///....end page badge...///
 
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
@@ -287,7 +256,7 @@ class PDF extends FPDF {
                 $this->SetFont('Arial', 'B', 10);
                 $this->Cell(170, 10, 'Total Amount:', 0, 0, 'R');
                 $this->SetFont('Arial', '', 10);
-                $this->Cell(20, 10, '' .$amount, 0, 1, 'R');
+                $this->Cell(20, 10, '' . $amount, 0, 1, 'R');
 
                 // Add new page if rowCounter reaches rowsPerPage
                 $this->AddPage();
@@ -296,14 +265,14 @@ class PDF extends FPDF {
 
                 $rowCounter = 0; // Reset row counter for new page
 
-                 ///....add paid badge...///
-               if($this->paidAmount){
-                   $imageX = 50; // X position with left space
-                   $imageY = 70;
-                   $imageWidth = 100; // Adjusted width with spaces
-                   $imageHeight = 60; // Height of the image
-                  $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
-                }///....end page badge...///
+                ///....add paid badge...///
+                if ($this->paidAmount) {
+                    $imageX = 50; // X position with left space
+                    $imageY = 70;
+                    $imageWidth = 100; // Adjusted width with spaces
+                    $imageHeight = 60; // Height of the image
+                    $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+                } ///....end page badge...///
             }
 
             $subTestId = $rowDetails->test_id;
@@ -311,9 +280,11 @@ class PDF extends FPDF {
             $testDisc = $rowDetails->percentage_of_discount_on_test;
 
             if ($subTestId != '') {
-                $showSubTest = json_decode($this->SubTests->subTestById($subTestId));
-                $testName = $showSubTest->sub_test_name;
-                $testPrice = $showSubTest->price;
+                // print_r($this->SubTests->showTestById($subTestId));
+                // exit;
+                $showSubTest = $this->SubTests->showTestById($subTestId);
+                $testName = $showSubTest['name'];
+                $testPrice = $showSubTest['price'];
 
                 //...start dotted row line...//
                 if ($slno > 1) {
@@ -323,7 +294,7 @@ class PDF extends FPDF {
                     $lineLength = 200; // Length of the line
                     $x = 10; // Starting X position
                     $y = $this->GetY(); // Current Y position
-                
+
                     // Draw the dotted line
                     $drawDot = true; // Initialize to draw dot
                     while ($x <= $lineLength) {
@@ -333,8 +304,8 @@ class PDF extends FPDF {
                         $x += $dotWidth + $spaceWidth; // Move X position to next dot
                         $drawDot = !$drawDot; // Switch drawing state for next dot
                     }
-                }//...end dotted row...///
-                
+                } //...end dotted row...///
+
                 $this->Cell(20, 10, $slno, 0, 0, 'L');
                 $this->Cell(80, 10, $testName, 0, 0, 'L');
                 $this->Cell(30, 10, $testPrice, 0, 0, 'L');
@@ -344,39 +315,40 @@ class PDF extends FPDF {
                 $slno++;
                 $this->subTotal += $testAmount;
                 $rowCounter++;
-            } 
+            }
         }
     }
 
     //....footer set last page...//
-    function AddLastPage() {
+    function AddLastPage()
+    {
         $this->isLastPage = true;
-    }//footer end..///
+    } //footer end..///
 
 }
 
 // if (isset($_POST['printPDF'])) {
 
-    $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
-    if ($healthCare->status === 1 ) {
-        $healthCare = $healthCare->data;
-        $healthCareLogo      = $healthCare->logo;
-        $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL.$healthCareLogo;
-        // print($healthCareLogo);
-        $logoFilename = basename($healthCareLogo);
-        // print($logoFilename);
-        // $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL .  rawurlencode($healthCareLogo);
-        $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : realpath('../assets/images/orgs/'.$logoFilename.'');
-    }
-    // exit;
+$healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
+if ($healthCare->status === 1) {
+    $healthCare = $healthCare->data;
+    $healthCareLogo      = $healthCare->logo;
+    $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH . 'logo-p.png' : URL . $healthCareLogo;
+    // print($healthCareLogo);
+    $logoFilename = basename($healthCareLogo);
+    // print($logoFilename);
+    // $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL .  rawurlencode($healthCareLogo);
+    $healthCareLogo = empty($healthCareLogo) ? SITE_IMG_PATH . 'logo-p.png' : realpath('../assets/images/orgs/' . $logoFilename . '');
+}
+// exit;
 
-    $pdf = new PDF($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests,$healthCareLogo);
-    $pdf->AliasNbPages();
-    $pdf->AddContentPage();
-    $pdf->AddLastPage();
-    ob_clean();
-    $pdf->Output();
-    exit;
+$pdf = new PDF($billId, $billDate, $totalAmount, $dicountAmount, $dueAmount, $paidAmount, $LabBillDetails, $Pathology, $healthCareLogo);
+$pdf->AliasNbPages();
+$pdf->AddContentPage();
+$pdf->AddLastPage();
+ob_clean();
+$pdf->Output();
+exit;
 // }
 ?>
 
@@ -400,8 +372,7 @@ class PDF extends FPDF {
             <div class="card-body ">
                 <div class="row mt-2">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;"
-                            src="<?= $healthCareLogo ?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8 ps-4">
                         <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
@@ -486,9 +457,9 @@ class PDF extends FPDF {
                     $testDisc  = $rowDetails->percentage_of_discount_on_test;
 
                     if ($subTestId != '') {
-                        $showSubTest = json_decode($SubTests->subTestById($subTestId));
-                        $testName = $showSubTest->sub_test_name;
-                        $testPrice = $showSubTest->price;
+                        $showSubTest = $Pathology->showTestById($subTestId);
+                        $testName = $showSubTest['name'];
+                        $testPrice = $showSubTest['price'];
 
                         if ($slno > 1) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
