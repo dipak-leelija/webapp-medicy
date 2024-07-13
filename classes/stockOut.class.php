@@ -2510,7 +2510,7 @@ class StockOut
                             JOIN 
                                 manufacturer m ON p.manufacturer_id = m.id
                             JOIN 
-                                product_type pt ON pt.id = p.type
+                                product_type pt ON pt.name = p.type
                             LEFT JOIN 
                                 admin adm ON so.added_by = adm.admin_id
                             LEFT JOIN 
@@ -2527,6 +2527,8 @@ class StockOut
                 }
             }
     
+            // echo $marginQuery;
+
             $stmt = $this->conn->prepare($marginQuery);
     
             if ($item != '') {
@@ -2542,6 +2544,7 @@ class StockOut
             $stmt->execute();
     
             $result = $stmt->get_result();
+            // print_r($result);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
