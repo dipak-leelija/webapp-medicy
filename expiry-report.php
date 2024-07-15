@@ -91,11 +91,28 @@ $Utility     = new Utility;
                             </div>
                         </div>
                     </div>
+
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
 
+                            <div class="col-md-2 bg-white me-3 selectDiv">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dateRangeType" id="dateRangeED" value="ED" onchange="filterOnDateRangeType(this)">
+                                    <label class="form-check-label" for="dateRangeED">
+                                        Expired Items Data
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dateRangeType" id="dateRangeEG" value="EG" onchange="filterOnDateRangeType(this)">
+                                    <label class="form-check-label" for="dateRangeEG">
+                                        Expiring Items Data
+                                    </label>
+                                </div>
+                                <label class="d-none" id="selected-date-range-type"></label>
+                            </div>
+
                             <!-- filter date range -->
-                            <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between align-items-center p-1" id="date-range-select-div">
+                            <div class="col-md-2 bg-white me-3 selectDiv d-flex text-center justify-content-between align-items-center p-1" id="date-range-select-div" onclick="checkFlag()">
                                 <span id="selected-date" style="flex-grow: 1;">Select Date</span>
                                 <i class="fa fa-calendar"></i>
                             </div>
@@ -104,7 +121,7 @@ $Utility     = new Utility;
 
                             <!-- <label for="" class="d-none" id="selected-date-range"></label> -->
 
-                            <!-- search by optional filter -->
+                            <!-- search by data filter -->
                             <div class="col-md-4 selectDiv" id="data-filter-search-div">
                                 <div class="input-group">
                                     <input class="focus-out cxv-inp border-0 w-100 p-1" type="text" placeholder=" Search by distributor name or GSTIN" name="search-by" id="search-by" autocomplete="off">
@@ -129,8 +146,8 @@ $Utility     = new Utility;
                             <!-- dynamic table gose hear -->
                         </table>
 
-                        <div class="col-md-12 text-center">
-                            <div id="pagination"></div>
+                        <div class="col-md-12 text-right">
+                            <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>
 
                     </div>

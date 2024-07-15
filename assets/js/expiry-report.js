@@ -11,6 +11,7 @@ const healthCareAddress = document.getElementById('healthcare-address');
 const reportGenerationTime = document.getElementById('report-generation-date-time-holder');
 const selectedStartDate = document.getElementById('selected-start-date');
 const selectedEndDate = document.getElementById('selected-end-date');
+const dateRangeType = document.getElementById('selected-date-range-type');
 
 // buttons
 const reset1 = document.getElementById('search-reset-1');
@@ -18,45 +19,84 @@ const reset1 = document.getElementById('search-reset-1');
 // dynamic table 
 const itemExpiaryReportTable = document.getElementById('expiry-report-table');
 
-// date picker div range control script
-$(function() {
-    function cb(start, end) {
-        $('#date-range-select-div span').html(start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+// Function to handle date range type selection
+function filterOnDateRangeType(t) {
+    dateRangeType.innerHTML = t.value;
+    initDatePicker();
+}
+
+// Function to initialize date picker based on date range type
+function initDatePicker() {
+    $(function() {
+        function cb(start, end) {
+            $('#date-range-select-div span').html(start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+        }
+
+        const commonSettings = {
+            autoUpdateInput: false,
+            showDropdowns: true,
+            locale: {
+                format: 'DD-MM-YYYY',
+                cancelLabel: 'Clear'
+            },
+            alwaysShowCalendars: false,
+            opens: 'right'
+        };
+
+        let dateRanges, startDate, endDate;
+
+        if (dateRangeType.innerHTML === 'ED') {
+            dateRanges = {
+                '30 Days': [moment().subtract(29, 'days'), moment()],
+                '45 Days': [moment().subtract(44, 'days'), moment()],
+                '60 Days': [moment().subtract(59, 'days'), moment()],
+                '90 Days': [moment().subtract(89, 'days'), moment()],
+                '120 Days': [moment().subtract(119, 'days'), moment()],
+                '180 Days': [moment().subtract(179, 'days'), moment()]
+            };
+            startDate = moment().subtract(29, 'days');
+            endDate = moment();
+        } else if (dateRangeType.innerHTML === 'EG') {
+            dateRanges = {
+                '30 Days': [moment(), moment().add(29, 'days')],
+                '45 Days': [moment(), moment().add(44, 'days')],
+                '60 Days': [moment(), moment().add(59, 'days')],
+                '90 Days': [moment(), moment().add(89, 'days')],
+                '120 Days': [moment(), moment().add(119, 'days')],
+                '180 Days': [moment(), moment().add(179, 'days')]
+            };
+            startDate = moment();
+            endDate = moment().add(29, 'days');
+        } else {
+            alert('Select Range Type first!');
+            return;
+        }
+
+        $('#date-range-select-div').daterangepicker({
+            ...commonSettings,
+            ranges: dateRanges,
+            startDate: startDate,
+            endDate: endDate,
+            minDate: dateRangeType.innerHTML === 'EG' ? moment() : undefined
+        }, cb);
+
+        $('#date-range-select-div').on('apply.daterangepicker', function(ev, picker) {
+            cb(picker.startDate, picker.endDate);
+        });
+
+        $('#date-range-select-div').on('cancel.daterangepicker', function(ev, picker) {
+            $('#date-range-select-div span').html('Select Date');
+        });
+
+        $('#date-range-select-div span').html('Select Date');
+    });
+}
+
+function checkFlag(){
+    if(dateRangeType.innerHTML == ''){
+        alert('Select Expiry Type');
     }
-
-    $('#date-range-select-div').daterangepicker({
-        autoUpdateInput: false, // initial value
-        showDropdowns: true, // year and month controls
-        locale: {
-            format: 'DD-MM-YYYY',
-            cancelLabel: 'Clear'
-        },
-        ranges: {
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'Last 45 Days': [moment().subtract(44, 'days'), moment()],
-            'Last 60 Days': [moment().subtract(59, 'days'), moment()],
-            'Last 90 Days': [moment().subtract(89, 'days'), moment()],
-            'Last 120 Days': [moment().subtract(119, 'days'), moment()],
-            'Last 180 Days': [moment().subtract(179, 'days'), moment()]
-        },
-        alwaysShowCalendars: false, // Show calendars for custom range
-        opens: 'right', // Position the calendar
-        startDate: moment().subtract(29, 'days'), // Default start date
-        endDate: moment() // Default end date
-    }, cb);
-
-    $('#date-range-select-div').on('apply.daterangepicker', function(ev, picker) {
-        cb(picker.startDate, picker.endDate);
-    });
-
-    $('#date-range-select-div').on('cancel.daterangepicker', function(ev, picker) {
-        $('#date-range-select-div span').html('Select Date'); // reset placeholder
-    });
-
-    $('#date-range-select-div span').html('Select Date'); // initial placeholder
-});
-
-
+}
 
 // date splitter
 function separateDates(dateRange) {
@@ -160,105 +200,177 @@ function itemExpiaryDataSearch(array){
 
 
 function itemExpiryReportShow(reportData) {
-    console.log(reportData);
-    itemExpiaryReportTable.innerHTML = '';
-    
-    document.getElementById('download-checking').innerHTML = '1';
-    // grandTotalShow.classList.remove('d-none');
+    // Pagination constants
+    const rowsPerPage = 25;
+    let currentPage = 1;
 
-    let currentDateTime = getCurrentDateTime();
-    reportGenerationTime.innerHTML = currentDateTime;
+    function renderTable(data, page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = data.slice(start, end);
 
-    // Define headers
-    const header = ['Distributor', 'GSTIN', 'Total Items', 'Total Quantity', 'Stock by PTR'];
+        itemExpiaryReportTable.innerHTML = '';
+        
+        document.getElementById('download-checking').innerHTML = '1';
+        // grandTotalShow.classList.remove('d-none');
 
-    // Create table headers
-    const thead = document.createElement('thead');
-    const tr = document.createElement('tr');
+        let currentDateTime = getCurrentDateTime();
+        reportGenerationTime.innerHTML = currentDateTime;
 
-    header.forEach((headerText, index) => {
-        const th = document.createElement('th');
-        th.textContent = headerText;
-        th.style.fontWeight = 'bold'; 
-    
-        if (index >= 2) {
-            th.style.textAlign = 'right'; 
-        }
-    
-        tr.appendChild(th);
-    });
-    thead.appendChild(tr);
-    // Append the header row to the table head
-    itemExpiaryReportTable.appendChild(thead);
+        // Define headers
+        const header = ['Distributor', 'GSTIN', 'Total Items', 'Total Quantity', 'Stock by PTR'];
 
-    // Create table body
-    const tbody = document.createElement('tbody');
+        // Create table headers
+        const thead = document.createElement('thead');
+        const tr = document.createElement('tr');
 
-    let distNamesList = [];
-    reportData.forEach(data => {
-        distNamesList.push(data.dist_name);
-    });
-
-    const distNames = [...new Set(distNamesList)].sort();
-    console.log(distNames);
-    
-    let totalQantity = 0;
-    let stockByPtr = 0;
-
-    distNames.forEach(distributor => {
-        let totalItems = 0;
-        let distGstin = '';
-        let distributorTotalQuantity = 0;
-        let distributorStockByPtr = 0;
-
-        reportData.forEach(data => {
-            if (distributor == data.dist_name) {
-                totalItems++;
-                totalQantity += data.current_qty;
-                stockByPtr += data.current_qty * data.item_ptr;
-
-                if(data.dist_gstin != ''){
-                    distGstin = data.dist_gstin;
-                }else{
-                    distGstin = 'No GST data found!';
-                }
-                
-                distributorTotalQuantity += data.current_qty;
-                distributorStockByPtr += data.current_qty * data.item_ptr;
+        header.forEach((headerText, index) => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            th.style.fontWeight = 'bold'; 
+        
+            if (index >= 2) {
+                th.style.textAlign = 'right'; 
             }
+        
+            tr.appendChild(th);
+        });
+        thead.appendChild(tr);
+        // Append the header row to the table head
+        itemExpiaryReportTable.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+
+        let distNamesList = [];
+        paginatedData.forEach(data => {
+            distNamesList.push(data.dist_name);
         });
 
-        const row = document.createElement('tr');
+        const distNames = [...new Set(distNamesList)].sort();
+        
+        let totalQantity = 0;
+        let stockByPtr = 0;
 
-        const distNameCell = document.createElement('td');
-        distNameCell.textContent = distributor;
-        row.appendChild(distNameCell);
+        distNames.forEach(distributor => {
+            let totalItems = 0;
+            let distGstin = '';
+            let distributorTotalQuantity = 0;
+            let distributorStockByPtr = 0;
 
-        const distGstinCell = document.createElement('td');
-        distGstinCell.textContent = distGstin;
-        row.appendChild(distGstinCell);
+            paginatedData.forEach(data => {
+                if (distributor == data.dist_name) {
+                    totalItems++;
+                    totalQantity += data.current_qty;
+                    stockByPtr += data.current_qty * data.item_ptr;
 
-        const totalItemCell = document.createElement('td');
-        totalItemCell.textContent = totalItems;
-        totalItemCell.style.textAlign = 'right';
-        row.appendChild(totalItemCell);
+                    if(data.dist_gstin != ''){
+                        distGstin = data.dist_gstin;
+                    }else{
+                        distGstin = 'No GST ID found!';
+                    }
+                    
+                    distributorTotalQuantity += data.current_qty;
+                    distributorStockByPtr += data.current_qty * data.item_ptr;
+                }
+            });
 
-        const totalQantityCell = document.createElement('td');
-        totalQantityCell.textContent = distributorTotalQuantity;
-        totalQantityCell.style.textAlign = 'right';
-        row.appendChild(totalQantityCell);
+            const row = document.createElement('tr');
 
-        const stockByPtrCell = document.createElement('td');
-        stockByPtrCell.textContent = distributorStockByPtr.toFixed(2);
-        stockByPtrCell.style.textAlign = 'right';
-        row.appendChild(stockByPtrCell);
+            const distNameCell = document.createElement('td');
+            distNameCell.textContent = distributor;
+            row.appendChild(distNameCell);
 
-        tbody.appendChild(row);
-    });
+            const distGstinCell = document.createElement('td');
+            distGstinCell.textContent = distGstin;
+            row.appendChild(distGstinCell);
 
-    // Append the table body to the table
-    itemExpiaryReportTable.appendChild(tbody);
+            const totalItemCell = document.createElement('td');
+            totalItemCell.textContent = totalItems;
+            totalItemCell.style.textAlign = 'right';
+            row.appendChild(totalItemCell);
+
+            const totalQantityCell = document.createElement('td');
+            totalQantityCell.textContent = distributorTotalQuantity;
+            totalQantityCell.style.textAlign = 'right';
+            row.appendChild(totalQantityCell);
+
+            const stockByPtrCell = document.createElement('td');
+            stockByPtrCell.textContent = distributorStockByPtr.toFixed(2);
+            stockByPtrCell.style.textAlign = 'right';
+            row.appendChild(stockByPtrCell);
+
+            tbody.appendChild(row);
+        });
+
+        // Append the table body to the table
+        itemExpiaryReportTable.appendChild(tbody);
+
+        // Create pagination controls
+        createPaginationControls(reportData.length, page);
+    }
+
+    function createPaginationControls(totalRows, page) {
+        const paginationControls = document.getElementById('pagination-controls');
+        paginationControls.innerHTML = ''; // Clear previous controls
+
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        if (totalPages > 1) {
+            const paginationWrapper = document.createElement('div');
+            paginationWrapper.className = 'd-flex align-items-center justify-content-center';
+
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.innerHTML = '&#8592;'; // Left arrow
+            prevButton.disabled = page === 1;
+            prevButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            prevButton.addEventListener('click', () => {
+                currentPage--;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(prevButton);
+
+            if (totalPages > 3) {
+                // Show "1 of n" format after the third page
+                const pageNumber = document.createElement('span');
+                pageNumber.textContent = `${page} of ${totalPages}`;
+                pageNumber.className = `mx-1 ${'fw-bold text-primary'}`;
+                paginationWrapper.appendChild(pageNumber);
+            } else {
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageNumber = document.createElement('span');
+                    pageNumber.textContent = i;
+                    pageNumber.className = `mx-1 ${i === page ? 'fw-bold text-primary' : 'text-skyblue'}`;
+                    pageNumber.style.cursor = 'pointer';
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable(reportData, currentPage);
+                    });
+                    paginationWrapper.appendChild(pageNumber);
+                }
+            }
+
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.innerHTML = '&#8594;'; // Right arrow
+            nextButton.disabled = page === totalPages;
+            nextButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            nextButton.addEventListener('click', () => {
+                currentPage++;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(nextButton);
+
+            paginationControls.appendChild(paginationWrapper);
+        }
+    }
+
+    // Initial render
+    renderTable(reportData, currentPage);
 }
+
 
 
 
@@ -269,11 +381,11 @@ function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
         if(ts.value == 'exl'){
             exportToExcel();
-            downloadType.selectedIndex = 0;
+            // downloadType.selectedIndex = 0;
         }
         if(ts.value == 'csv'){
             exportToCSV();
-            downloadType.selectedIndex = 0;
+            // downloadType.selectedIndex = 0;
         }
         if(ts.value == 'pdf'){
             exportToPDF();
