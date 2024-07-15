@@ -190,6 +190,8 @@ function itemMerginDataSearch(array){
 }
 
 
+
+
 function reportShow(reportData) {
     console.log(reportData);
     itemMarginTable.innerHTML = '';

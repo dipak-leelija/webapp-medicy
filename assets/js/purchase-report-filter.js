@@ -167,7 +167,7 @@ function gstPurchaseReportSearch(array){
     report = JSON.parse(report);
     // console.log(report);
     if(report.status == '1'){
-        reportShow(report.data);
+        purchaseReportShow(report.data);
     }else{
         stockInStockReturnGstReportTable.innerHTML = '';
         alert('no data found');
@@ -179,9 +179,9 @@ function gstPurchaseReportSearch(array){
 
 
 
-function reportShow(reportData) {
-    // Constants
-    const rowsPerPage = 15;
+function purchaseReportShow(reportData) {
+    // pagination page Constants
+    const rowsPerPage = 25;
     let currentPage = 1;
 
     // Clear the table and other elements
@@ -317,17 +317,25 @@ function reportShow(reportData) {
             });
             paginationWrapper.appendChild(prevButton);
 
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
+            if (totalPages > 3) {
+                // Show "1 of n" format after the third page
                 const pageNumber = document.createElement('span');
-                pageNumber.textContent = i;
-                pageNumber.className = `mx-1 ${i === page ? 'fw-bold text-primary' : 'text-skyblue'}`;
-                pageNumber.style.cursor = 'pointer';
-                pageNumber.addEventListener('click', () => {
-                    currentPage = i;
-                    renderTable(reportData, currentPage);
-                });
+                pageNumber.textContent = `${page} of ${totalPages}`;
+                pageNumber.className = `mx-1 ${'fw-bold text-primary'}`;
                 paginationWrapper.appendChild(pageNumber);
+            } else {
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageNumber = document.createElement('span');
+                    pageNumber.textContent = i;
+                    pageNumber.className = `mx-1 ${i === page ? 'fw-bold text-primary' : 'text-skyblue'}`;
+                    pageNumber.style.cursor = 'pointer';
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable(reportData, currentPage);
+                    });
+                    paginationWrapper.appendChild(pageNumber);
+                }
             }
 
             // Next button

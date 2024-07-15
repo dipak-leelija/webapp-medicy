@@ -351,8 +351,8 @@ if ($_SESSION['ADMIN']) {
                             <!-- dynamic table gose hear -->
 
                         </table>
-                        <div class="col-md-12 text-center">
-                            <div id="pagination-container" class="pagination-container"></div>
+                        <div class="col-md-12 text-right">
+                            <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>
 
                     </div>
