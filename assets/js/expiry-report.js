@@ -149,128 +149,116 @@ function itemExpiaryDataSearch(array){
     if(report.status == '1'){
         itemExpiryReportShow(report.data);
     }else{
-        grandTotalShow.classList.add('d-none');
+        // grandTotalShow.classList.add('d-none');
         itemExpiaryReportTable.innerHTML = '';
         alert('no data found');
     }
 }
 
 
+
+
+
 function itemExpiryReportShow(reportData) {
     console.log(reportData);
     itemExpiaryReportTable.innerHTML = '';
-    /*
+    
     document.getElementById('download-checking').innerHTML = '1';
-    grandTotalShow.classList.remove('d-none');
+    // grandTotalShow.classList.remove('d-none');
 
     let currentDateTime = getCurrentDateTime();
     reportGenerationTime.innerHTML = currentDateTime;
 
-    // Define headers based on filter values
-    const header = ['Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)'];
+    // Define headers
+    const header = ['Distributor', 'GSTIN', 'Total Items', 'Total Quantity', 'Stock by PTR'];
 
     // Create table headers
     const thead = document.createElement('thead');
     const tr = document.createElement('tr');
-    
+
     header.forEach((headerText, index) => {
         const th = document.createElement('th');
         th.textContent = headerText;
-        th.style.fontWeight = 'bold'; // Make the header bold
-        if (index >= 5) {
-            th.style.textAlign = 'right'; // Right-align last 5 header cells
+        th.style.fontWeight = 'bold'; 
+    
+        if (index >= 2) {
+            th.style.textAlign = 'right'; 
         }
+    
         tr.appendChild(th);
     });
     thead.appendChild(tr);
-
     // Append the header row to the table head
     itemExpiaryReportTable.appendChild(thead);
 
     // Create table body
     const tbody = document.createElement('tbody');
 
-    let totalSalesAmount = 0;
-    let totalPurchaseAmount = 0;
-    let totalNetGst = 0;
-    let totalProfit = 0;
-
-    // Populate the table with report data
+    let distNamesList = [];
     reportData.forEach(data => {
+        distNamesList.push(data.dist_name);
+    });
+
+    const distNames = [...new Set(distNamesList)].sort();
+    console.log(distNames);
+    
+    let totalQantity = 0;
+    let stockByPtr = 0;
+
+    distNames.forEach(distributor => {
+        let totalItems = 0;
+        let distGstin = '';
+        let distributorTotalQuantity = 0;
+        let distributorStockByPtr = 0;
+
+        reportData.forEach(data => {
+            if (distributor == data.dist_name) {
+                totalItems++;
+                totalQantity += data.current_qty;
+                stockByPtr += data.current_qty * data.item_ptr;
+
+                if(data.dist_gstin != ''){
+                    distGstin = data.dist_gstin;
+                }else{
+                    distGstin = 'No GST data found!';
+                }
+                
+                distributorTotalQuantity += data.current_qty;
+                distributorStockByPtr += data.current_qty * data.item_ptr;
+            }
+        });
+
         const row = document.createElement('tr');
 
-        // Create cells for each piece of data
-        const itemNameCell = document.createElement('td');
-        itemNameCell.textContent = data.item;
-        row.appendChild(itemNameCell);
+        const distNameCell = document.createElement('td');
+        distNameCell.textContent = distributor;
+        row.appendChild(distNameCell);
 
-        const itemCategoryCell = document.createElement('td');
-        itemCategoryCell.textContent = data.category || ''; // Add category data
-        row.appendChild(itemCategoryCell);
+        const distGstinCell = document.createElement('td');
+        distGstinCell.textContent = distGstin;
+        row.appendChild(distGstinCell);
 
-        const itemUnitCell = document.createElement('td');
-        itemUnitCell.textContent = data.unit || ''; // Add unit data
-        row.appendChild(itemUnitCell);
+        const totalItemCell = document.createElement('td');
+        totalItemCell.textContent = totalItems;
+        totalItemCell.style.textAlign = 'right';
+        row.appendChild(totalItemCell);
 
-        const itemManufCell = document.createElement('td');
-        itemManufCell.textContent = data.manuf_short_name || ''; // Add manufacturer short name
-        row.appendChild(itemManufCell);
+        const totalQantityCell = document.createElement('td');
+        totalQantityCell.textContent = distributorTotalQuantity;
+        totalQantityCell.style.textAlign = 'right';
+        row.appendChild(totalQantityCell);
 
-        const itemSalesQtyCell = document.createElement('td');
-        itemSalesQtyCell.textContent = data.stock_out_qty;
-        row.appendChild(itemSalesQtyCell);
+        const stockByPtrCell = document.createElement('td');
+        stockByPtrCell.textContent = distributorStockByPtr.toFixed(2);
+        stockByPtrCell.style.textAlign = 'right';
+        row.appendChild(stockByPtrCell);
 
-        const itemCurrentQtyCell = document.createElement('td');
-        itemCurrentQtyCell.textContent = data.current_qty;
-        itemCurrentQtyCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemCurrentQtyCell);
-
-        const itemMrpCell = document.createElement('td');
-        itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
-        itemMrpCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemMrpCell);
-
-        const itemSalesAmountCell = document.createElement('td');
-        itemSalesAmountCell.textContent = parseFloat(data.sales_amount).toFixed(2); // Format to 2 decimal places
-        itemSalesAmountCell.style.textAlign = 'right'; // Right-align the data cell
-        totalSalesAmount = parseFloat(totalSalesAmount) + parseFloat(data.sales_amount);
-        row.appendChild(itemSalesAmountCell);
-
-        const itemPurchaseAmountCell = document.createElement('td');
-        itemPurchaseAmountCell.textContent = parseFloat(data.p_amount).toFixed(2); // Format to 2 decimal places
-        itemPurchaseAmountCell.style.textAlign = 'right'; // Right-align the data cell
-        totalPurchaseAmount = parseFloat(totalPurchaseAmount) + parseFloat(data.p_amount);
-        row.appendChild(itemPurchaseAmountCell);
-
-        const itemNetGstCell = document.createElement('td');
-        itemNetGstCell.textContent = parseFloat(data.gst_amount).toFixed(2); // Format to 2 decimal places
-        itemNetGstCell.style.textAlign = 'right'; // Right-align the data cell
-        totalNetGst = parseFloat(totalNetGst) + parseFloat(data.gst_amount);
-        row.appendChild(itemNetGstCell);
-
-        const itemProfitAmountPercentageCell = document.createElement('td');
-        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
-        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
-        itemProfitAmountPercentageCell.textContent = profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)';
-        itemProfitAmountPercentageCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemProfitAmountPercentageCell);
-
-        // Append the row to the table body
         tbody.appendChild(row);
     });
 
-    totalSalesAmountLabel.innerHTML = totalSalesAmount.toFixed(2);
-    totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
-    netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
-    let totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount);
-    let totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
-    totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
-
-    */
     // Append the table body to the table
-    // itemExpiaryReportTable.appendChild(tbody);
+    itemExpiaryReportTable.appendChild(tbody);
 }
-
 
 
 
@@ -296,6 +284,7 @@ function selectDownloadType(ts){
     }
 }
 
+
 // exporting function gose down there
 // Function for export the table data to Excel
 function exportToExcel() {
@@ -311,23 +300,23 @@ function exportToExcel() {
     ];
 
     const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
+    headers.push('Total'); // Add 'Total' to the headers
+
     const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+        const cells = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+        const total = parseFloat(cells[cells.length - 1].replace(/[^0-9.-]+/g, "")) || 0; // Get the last column's value
+        cells.push(total.toFixed(2)); // Add total to each row
+        return cells;
     });
 
-    // Calculate grand totals for each column (excluding the first column which is the date column)
+    // Calculate grand total for the last column
     const numColumns = headers.length;
     const grandTotals = new Array(numColumns).fill('');
-    const startColumn = numColumns - 4; // Start from the last four columns
-
-    for (let colIndex = startColumn; colIndex < numColumns; colIndex++) {
-        grandTotals[colIndex] = rows.reduce((sum, row) => {
-            // Extract numeric value outside parentheses
-            const match = row[colIndex].match(/([0-9.-]+)(?:\s*\([^)]*\))?/);
-            const value = match ? match[1].replace(/[^0-9.-]+/g, "") : "0";
-            return sum + (parseFloat(value) || 0);
-        }, 0).toFixed(2); // Sum and format as needed
-    }
+    grandTotals[0] = 'Total'; // Set the label for the first cell in the grand total row
+    grandTotals[numColumns - 1] = rows.reduce((sum, row) => {
+        const value = parseFloat(row[row.length - 1]) || 0;
+        return sum + value;
+    }, 0).toFixed(2);
 
     // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
@@ -398,7 +387,7 @@ function exportToExcel() {
             cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: '00FF00' } // Green background color
+                fgColor: { argb: 'FF0000' } // Green background color
             };
         }
     });
@@ -406,9 +395,12 @@ function exportToExcel() {
     // Generate Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'report.xlsx');
+        saveAs(blob, 'expired-items-report.xlsx');
     });
 }
+
+
+
 
 
 
@@ -427,23 +419,23 @@ function exportToCSV() {
     ];
 
     const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
+    headers.push('Total'); // Add 'Total' to the headers
+
     const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+        const cells = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+        const total = parseFloat(cells[cells.length - 1].replace(/[^0-9.-]+/g, "")) || 0; // Get the last column's value
+        cells.push(total.toFixed(2)); // Add total to each row
+        return cells;
     });
 
-    // Calculate grand totals for each column (excluding the first column which is the date column)
+    // Calculate grand total for the last column
     const numColumns = headers.length;
     const grandTotals = new Array(numColumns).fill('');
-    const startColumn = numColumns - 4; // Start from the last four columns
-
-    for (let colIndex = startColumn; colIndex < numColumns; colIndex++) {
-        grandTotals[colIndex] = rows.reduce((sum, row) => {
-            // Extract numeric value outside parentheses
-            const match = row[colIndex].match(/([0-9.-]+)(?:\s*\([^)]*\))?/);
-            const value = match ? match[1].replace(/[^0-9.-]+/g, "") : "0";
-            return sum + (parseFloat(value) || 0);
-        }, 0).toFixed(2); // Sum and format as needed
-    }
+    grandTotals[0] = 'Total'; // Set the label for the first cell in the grand total row
+    grandTotals[numColumns - 1] = rows.reduce((sum, row) => {
+        const value = parseFloat(row[row.length - 1]) || 0;
+        return sum + value;
+    }, 0).toFixed(2);
 
     // Function to escape CSV values
     function escapeCSVValue(value) {
@@ -487,9 +479,10 @@ function exportToCSV() {
     // Create a link to download the CSV file
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', 'report.csv');
+    link.setAttribute('download', 'expired-items-report.csv');
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
+
