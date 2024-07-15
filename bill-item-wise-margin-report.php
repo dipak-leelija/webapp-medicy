@@ -163,8 +163,8 @@ $Utility     = new Utility;
                             <!-- dynamic table gose hear -->
                         </table>
 
-                        <div class="col-md-12 text-center">
-                            <div id="pagination"></div>
+                        <div class="col-md-12 text-right">
+                            <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>
 
                     </div>
