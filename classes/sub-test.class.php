@@ -7,20 +7,20 @@ class SubTests
     use DatabaseConnection;
 
 
-    function showSubTests()
-    {
-        try {
-            $data = [];
-            $selectTest = "SELECT * FROM `sub_tests`";
-            $testQuery = $this->conn->query($selectTest);
-            while ($result = $testQuery->fetch_array()) {
-                $data[] = $result;
-            }
-            return $data;
-        } catch (Exception $e) {
-            $e->getMessage();
-        }
-    } // end showSubTests function
+    // function showSubTests()
+    // {
+    //     try {
+    //         $data = [];
+    //         $selectTest = "SELECT * FROM `sub_tests`";
+    //         $testQuery = $this->conn->query($selectTest);
+    //         while ($result = $testQuery->fetch_array()) {
+    //             $data[] = $result;
+    //         }
+    //         return $data;
+    //     } catch (Exception $e) {
+    //         $e->getMessage();
+    //     }
+    // } // end showSubTests function
 
 
 
@@ -79,29 +79,29 @@ class SubTests
 
 
 
-    function showSubTestsByCatId($showLabtypeId)
-    {
-        try {
-            $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `parent_test_id` = '$showLabtypeId'";
+    // function showSubTestsByCatId($showLabtypeId)
+    // {
+    //     try {
+    //         $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `parent_test_id` = '$showLabtypeId'";
 
-            $stmt = $this->conn->prepare($selectTestByCatId);
-            $stmt->execute();
+    //         $stmt = $this->conn->prepare($selectTestByCatId);
+    //         $stmt->execute();
 
-            $result = $stmt->get_result();
+    //         $result = $stmt->get_result();
 
-            if ($result->num_rows > 0) {
-                $data = [];
-                while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
-                }
-                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
-            } else {
-                return json_encode(['status' => false, 'message' => 'No data found']);
-            }
-        } catch (Exception $e) {
-            return ['status' => false, 'message' => $e->getMessage()];
-        }
-    }
+    //         if ($result->num_rows > 0) {
+    //             $data = [];
+    //             while ($row = $result->fetch_assoc()) {
+    //                 $data[] = $row;
+    //             }
+    //             return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+    //         } else {
+    //             return json_encode(['status' => false, 'message' => 'No data found']);
+    //         }
+    //     } catch (Exception $e) {
+    //         return ['status' => false, 'message' => $e->getMessage()];
+    //     }
+    // }
 
 
 

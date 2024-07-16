@@ -103,9 +103,12 @@ if (isset($_GET['reportGenerat'])) {
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
-                                    <option value='pdf'>Download PDF File</option>
+                                    <!-- <option value='pdf'>Download PDF File</option> -->
                                 </select>
                                 <label class="d-none" id="download-checking">0</label>
+                                <label class="d-none" id="selected-start-date"></label>
+                                <label class="d-none" id="selected-end-date"></label>
+                                <label class="d-none" id="report-generation-date-time-holder"></label>
                             </div>
                         </div>
                     </div>
@@ -123,7 +126,7 @@ if (isset($_GET['reportGenerat'])) {
                                 <select class="focus-out cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterReportType(this)">
                                     <option value="" disabled selected>Report Type</option>
                                     <option value="P">Purchase</option>
-                                    <!-- <option value="PR">Purchase Return</option> -->
+                                    <option value="PR">Purchase Return</option>
                                 </select>
                                 <label class="d-none" id="selected-report-type"></label>
                             </div>
@@ -150,8 +153,8 @@ if (isset($_GET['reportGenerat'])) {
                             <!-- dynamic table gose hear -->
                         </table>
 
-                        <div class="col-md-12 text-center">
-                            <div id="pagination"></div>
+                        <div class="col-md-12 text-right">
+                            <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>
 
                     </div>

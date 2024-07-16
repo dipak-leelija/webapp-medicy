@@ -181,7 +181,7 @@ function itemMerginDataSearch(array){
     // console.log(report);
     report = JSON.parse(report);
     if(report.status == '1'){
-        reportShow(report.data);
+        itemMerginReportShow(report.data);
     }else{
         grandTotalShow.classList.add('d-none');
         itemMarginTable.innerHTML = '';
@@ -190,118 +190,199 @@ function itemMerginDataSearch(array){
 }
 
 
-function reportShow(reportData) {
-    console.log(reportData);
+
+
+function itemMerginReportShow(reportData) {
+    // pagination page Constants
+    const rowsPerPage = 25;
+    let currentPage = 1;
+
+    // Clear the table and other elements
     itemMarginTable.innerHTML = '';
     document.getElementById('download-checking').innerHTML = '1';
     grandTotalShow.classList.remove('d-none');
 
+    // Set the current date and time
     let currentDateTime = getCurrentDateTime();
     reportGenerationTime.innerHTML = currentDateTime;
 
     // Define headers based on filter values
     const header = ['Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)'];
 
-    // Create table headers
-    const thead = document.createElement('thead');
-    const tr = document.createElement('tr');
-    
-    header.forEach((headerText, index) => {
-        const th = document.createElement('th');
-        th.textContent = headerText;
-        th.style.fontWeight = 'bold'; // Make the header bold
-        if (index >= 5) {
-            th.style.textAlign = 'right'; // Right-align last 5 header cells
+    // Function to render table
+    function renderTable(data, page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = data.slice(start, end);
+
+        // Clear previous table content
+        itemMarginTable.innerHTML = '';
+
+        // Create table headers
+        const thead = document.createElement('thead');
+        const tr = document.createElement('tr');
+        header.forEach((headerText, index) => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            th.style.fontWeight = 'bold'; // Make the header bold
+            if (index >= 5) {
+                th.style.textAlign = 'right'; // Right-align last 5 header cells
+            }
+            tr.appendChild(th);
+        });
+        thead.appendChild(tr);
+
+        // Append the header row to the table head
+        itemMarginTable.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+
+        let totalSalesAmount = 0;
+        let totalPurchaseAmount = 0;
+        let totalNetGst = 0;
+        let totalProfitAmount = 0;
+        let totalProfitParcent = 0;
+
+        // Populate the table with report data
+        paginatedData.forEach(data => {
+            const row = document.createElement('tr');
+
+            // Create cells for each piece of data
+            const itemNameCell = document.createElement('td');
+            itemNameCell.textContent = data.item;
+            row.appendChild(itemNameCell);
+
+            const itemCategoryCell = document.createElement('td');
+            itemCategoryCell.textContent = data.category || ''; // Add category data
+            row.appendChild(itemCategoryCell);
+
+            const itemUnitCell = document.createElement('td');
+            itemUnitCell.textContent = data.unit || ''; // Add unit data
+            row.appendChild(itemUnitCell);
+
+            const itemManufCell = document.createElement('td');
+            itemManufCell.textContent = data.manuf_short_name || ''; // Add manufacturer short name
+            row.appendChild(itemManufCell);
+
+            const itemSalesQtyCell = document.createElement('td');
+            itemSalesQtyCell.textContent = data.stock_out_qty;
+            row.appendChild(itemSalesQtyCell);
+
+            const itemCurrentQtyCell = document.createElement('td');
+            itemCurrentQtyCell.textContent = data.current_qty;
+            itemCurrentQtyCell.style.textAlign = 'right'; // Right-align the data cell
+            row.appendChild(itemCurrentQtyCell);
+
+            const itemMrpCell = document.createElement('td');
+            itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
+            itemMrpCell.style.textAlign = 'right'; // Right-align the data cell
+            row.appendChild(itemMrpCell);
+
+            const itemSalesAmountCell = document.createElement('td');
+            itemSalesAmountCell.textContent = parseFloat(data.sales_amount).toFixed(2); // Format to 2 decimal places
+            itemSalesAmountCell.style.textAlign = 'right'; // Right-align the data cell
+            totalSalesAmount = parseFloat(totalSalesAmount) + parseFloat(data.sales_amount);
+            row.appendChild(itemSalesAmountCell);
+
+            const itemPurchaseAmountCell = document.createElement('td');
+            itemPurchaseAmountCell.textContent = parseFloat(data.p_amount).toFixed(2); // Format to 2 decimal places
+            itemPurchaseAmountCell.style.textAlign = 'right'; // Right-align the data cell
+            totalPurchaseAmount = parseFloat(totalPurchaseAmount) + parseFloat(data.p_amount);
+            row.appendChild(itemPurchaseAmountCell);
+
+            const itemNetGstCell = document.createElement('td');
+            itemNetGstCell.textContent = parseFloat(data.gst_amount).toFixed(2); // Format to 2 decimal places
+            itemNetGstCell.style.textAlign = 'right'; // Right-align the data cell
+            totalNetGst = parseFloat(totalNetGst) + parseFloat(data.gst_amount);
+            row.appendChild(itemNetGstCell);
+
+            const itemProfitAmountPercentageCell = document.createElement('td');
+            let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+            let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+            itemProfitAmountPercentageCell.textContent = profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)';
+            itemProfitAmountPercentageCell.style.textAlign = 'right'; // Right-align the data cell
+            row.appendChild(itemProfitAmountPercentageCell);
+
+            // Append the row to the table body
+            tbody.appendChild(row);
+        });
+
+        totalSalesAmountLabel.innerHTML = totalSalesAmount.toFixed(2);
+        totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
+        netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
+        totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount) - parseFloat(totalNetGst);
+        totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
+        totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
+
+        // Append the table body to the table
+        itemMarginTable.appendChild(tbody);
+
+        // Create pagination controls
+        createPaginationControls(reportData.length, page);
+    }
+
+    function createPaginationControls(totalRows, page) {
+        const paginationControls = document.getElementById('pagination-controls');
+        paginationControls.innerHTML = ''; // Clear previous controls
+
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        if (totalPages > 1) {
+            const paginationWrapper = document.createElement('div');
+            paginationWrapper.className = 'd-flex align-items-center justify-content-center';
+
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.innerHTML = '&#8592;'; // Left arrow
+            prevButton.disabled = page === 1;
+            prevButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            prevButton.addEventListener('click', () => {
+                currentPage--;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(prevButton);
+
+            if (totalPages > 3) {
+                // Show "1 of n" format after the third page
+                const pageNumber = document.createElement('span');
+                pageNumber.textContent = `${page} of ${totalPages}`;
+                pageNumber.className = `mx-1 ${'fw-bold text-primary'}`;
+                paginationWrapper.appendChild(pageNumber);
+            } else {
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageNumber = document.createElement('span');
+                    pageNumber.textContent = i;
+                    pageNumber.className = `mx-1 ${i === page ? 'fw-bold text-primary' : 'text-skyblue'}`;
+                    pageNumber.style.cursor = 'pointer';
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable(reportData, currentPage);
+                    });
+                    paginationWrapper.appendChild(pageNumber);
+                }
+            }
+
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.innerHTML = '&#8594;'; // Right arrow
+            nextButton.disabled = page === totalPages;
+            nextButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            nextButton.addEventListener('click', () => {
+                currentPage++;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(nextButton);
+
+            paginationControls.appendChild(paginationWrapper);
         }
-        tr.appendChild(th);
-    });
-    thead.appendChild(tr);
+    }
 
-    // Append the header row to the table head
-    itemMarginTable.appendChild(thead);
-
-    // Create table body
-    const tbody = document.createElement('tbody');
-
-    let totalSalesAmount = 0;
-    let totalPurchaseAmount = 0;
-    let totalNetGst = 0;
-    let totalProfit = 0;
-
-    // Populate the table with report data
-    reportData.forEach(data => {
-        const row = document.createElement('tr');
-
-        // Create cells for each piece of data
-        const itemNameCell = document.createElement('td');
-        itemNameCell.textContent = data.item;
-        row.appendChild(itemNameCell);
-
-        const itemCategoryCell = document.createElement('td');
-        itemCategoryCell.textContent = data.category || ''; // Add category data
-        row.appendChild(itemCategoryCell);
-
-        const itemUnitCell = document.createElement('td');
-        itemUnitCell.textContent = data.unit || ''; // Add unit data
-        row.appendChild(itemUnitCell);
-
-        const itemManufCell = document.createElement('td');
-        itemManufCell.textContent = data.manuf_short_name || ''; // Add manufacturer short name
-        row.appendChild(itemManufCell);
-
-        const itemSalesQtyCell = document.createElement('td');
-        itemSalesQtyCell.textContent = data.stock_out_qty;
-        row.appendChild(itemSalesQtyCell);
-
-        const itemCurrentQtyCell = document.createElement('td');
-        itemCurrentQtyCell.textContent = data.current_qty;
-        itemCurrentQtyCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemCurrentQtyCell);
-
-        const itemMrpCell = document.createElement('td');
-        itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
-        itemMrpCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemMrpCell);
-
-        const itemSalesAmountCell = document.createElement('td');
-        itemSalesAmountCell.textContent = parseFloat(data.sales_amount).toFixed(2); // Format to 2 decimal places
-        itemSalesAmountCell.style.textAlign = 'right'; // Right-align the data cell
-        totalSalesAmount = parseFloat(totalSalesAmount) + parseFloat(data.sales_amount);
-        row.appendChild(itemSalesAmountCell);
-
-        const itemPurchaseAmountCell = document.createElement('td');
-        itemPurchaseAmountCell.textContent = parseFloat(data.p_amount).toFixed(2); // Format to 2 decimal places
-        itemPurchaseAmountCell.style.textAlign = 'right'; // Right-align the data cell
-        totalPurchaseAmount = parseFloat(totalPurchaseAmount) + parseFloat(data.p_amount);
-        row.appendChild(itemPurchaseAmountCell);
-
-        const itemNetGstCell = document.createElement('td');
-        itemNetGstCell.textContent = parseFloat(data.gst_amount).toFixed(2); // Format to 2 decimal places
-        itemNetGstCell.style.textAlign = 'right'; // Right-align the data cell
-        totalNetGst = parseFloat(totalNetGst) + parseFloat(data.gst_amount);
-        row.appendChild(itemNetGstCell);
-
-        const itemProfitAmountPercentageCell = document.createElement('td');
-        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
-        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
-        itemProfitAmountPercentageCell.textContent = profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)';
-        itemProfitAmountPercentageCell.style.textAlign = 'right'; // Right-align the data cell
-        row.appendChild(itemProfitAmountPercentageCell);
-
-        // Append the row to the table body
-        tbody.appendChild(row);
-    });
-
-    totalSalesAmountLabel.innerHTML = totalSalesAmount.toFixed(2);
-    totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
-    netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
-    let totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount);
-    let totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
-    totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
-
-    // Append the table body to the table
-    itemMarginTable.appendChild(tbody);
+    // Initial render
+    renderTable(reportData, currentPage);
 }
+
 
 
 

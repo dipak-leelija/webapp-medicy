@@ -32,24 +32,7 @@ html{
     /* background-color:#c5c5c521; */
     padding: 4px;
 }
-.title{
-    margin-top: 20px;
-}
-.text_box .title h1{
-    margin: 0;
-    font-weight: 600;
-    font-size: 24px;
-}
-.text_box .title p{
-    line-height: 25px;
-}
-.title2{
-    padding-top: 18px;
-}
-.title2 h2{
-    font-size: 15px;
-    font-weight: bolder;
-}
+
 .provide{
     padding-top: 25px;
 }
@@ -69,10 +52,6 @@ html{
 }
 .provide_lab .logo img{
     width: 90px;
-}
-.provide_lab_para p{
-    /* padding-top: 15px; */
-    font-size: 16px;
 }
 .need{
     padding-top: 25px;

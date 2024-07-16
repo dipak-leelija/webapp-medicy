@@ -609,9 +609,74 @@ class StockReturn
             return false;
         }
     }
-
-
     // =====
+
+    
+
+    //  purchaser return report function
+    function gstPurchaseReturnDetailsReport($gstBasedFilter, $startDate, $endDate, $adminId) {
+        try {
+            $data = array();
+            
+            // Base query
+            $selectQuery = "SELECT 
+                                DATE(sr.return_date) AS bill_date,
+                                DATE(sr.added_on) AS added_on,
+                                srd.dist_bill_no AS bill_no,
+                                d.name AS dist_name,
+                                p.name AS item_name,
+                                srd.refund_amount AS total_paid_on_item,
+                                srd.gst AS total_gst_percent,
+                                ROUND(srd.refund_amount - (srd.refund_amount / (1 + (srd.gst / 100))), 2) AS total_gst_amount
+                            FROM 
+                                stock_return_details srd
+                            JOIN
+                                stock_return sr ON sr.id = srd.stock_return_id 
+                            JOIN
+                                products p ON p.product_id = srd.product_id
+                            JOIN
+                                distributor d ON d.id = sr.distributor_id 
+                            WHERE
+                                DATE(sr.added_on) BETWEEN ? AND ?
+                                AND sr.admin_id = ?";
+        
+            // Add condition for GST filter
+            if ($gstBasedFilter == 0) {
+                $selectQuery .= " AND srd.gst = 0";
+            }
+        
+            $stmt = $this->conn->prepare($selectQuery);
+        
+            if ($stmt === false) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+        
+            // Bind parameters
+            $stmt->bind_param("sss", $startDate, $endDate, $adminId);
+        
+            $stmt->execute();
+        
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnData = ['status' => '1', 'data' => $data];
+            } else {
+                $returnData = ['status' => '0', 'data' => []];
+            }
+        
+            // Close the statement
+            $stmt->close();
+            return json_encode($returnData);
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
+    
+
+
+
 
     // ---------------------- STOCK RETURN DETAILS ITEMS DELETE -----------------------------
 

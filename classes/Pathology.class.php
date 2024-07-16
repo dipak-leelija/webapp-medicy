@@ -1,48 +1,50 @@
 <?php
 
-class LabTestTypes extends UtilityFiles
-{
+class Pathology{
 
     use DatabaseConnection;
 
+    /********************************************************************************************
+     *                                  Test Category Table                                     *
+     ********************************************************************************************/
 
-    function addLabTypes($image, $testName, $testPvdBy, $testDsc)
-    {
-        try {
-            $addLabType = "INSERT INTO `tests_types` (`image`, `test_type_name`, `provided_by`, `dsc`) VALUES (?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($addLabType);
+    // function addTestCategory($image, $testName, $testPvdBy, $testDsc)
+    // {
+    //     try {
+    //         $addLabType = "INSERT INTO `test_category` (`name`, `dsc`, `image`, `status`, `added_on`) VALUES (?, ?, ?, ?)";
+    //         $stmt = $this->conn->prepare($addLabType);
 
-            if ($stmt === false) {
-                throw new Exception('Prepare failed: ' . $this->conn->error);
-            }
+    //         if ($stmt === false) {
+    //             throw new Exception('Prepare failed: ' . $this->conn->error);
+    //         }
 
-            $stmt->bind_param('ssss', $image, $testName, $testPvdBy, $testDsc);
+    //         $stmt->bind_param('ssss', $image, $testName, $testPvdBy, $testDsc);
 
-            $result = $stmt->execute();
+    //         $result = $stmt->execute();
 
-            if ($stmt->affected_rows > 0) {
-                $response = ['status' => true, 'message' => 'success'];
-            } else {
-                $response = ['status' => false, 'message' => 'Data insertion fails'];
-            }
+    //         if ($stmt->affected_rows > 0) {
+    //             $response = ['status' => true, 'message' => 'success'];
+    //         } else {
+    //             $response = ['status' => false, 'message' => 'Data insertion fails'];
+    //         }
 
-            $stmt->close();
-            return json_encode($response);
-        } catch (Exception $e) {
-            return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
-        }
-    }
-
-
+    //         $stmt->close();
+    //         return json_encode($response);
+    //     } catch (Exception $e) {
+    //         return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    //     }
+    // }
 
 
 
 
-    function showLabTypes()
+
+
+    function showTestCategories()
     {
         try {
             $data = [];
-            $selectLabType = "SELECT * FROM `tests_types`";
+            $selectLabType = "SELECT * FROM `test_category`";
             $labTypeQuery = $this->conn->query($selectLabType);
             $rows = $labTypeQuery->num_rows;
 
@@ -96,20 +98,20 @@ class LabTestTypes extends UtilityFiles
 
 
 
-    function showLabTypesById($showLabtypeId)
+    function showLabCat($showLabtypeId)
     {
         try {
             $data = [];
-            $selectLabType = "SELECT * FROM tests_types WHERE `tests_types`.`id` = '$showLabtypeId'";
+            $selectLabType = "SELECT * FROM test_category WHERE `id` = '$showLabtypeId'";
             $labTypeQuery = $this->conn->query($selectLabType);
-            while ($result = $labTypeQuery->fetch_array()) {
+            while ($result = $labTypeQuery->fetch_assoc()) {
                 $data[] = $result;
             }
             return $data;
         } catch (Exception $e) {
             $e->getMessage();
         }
-    } // end showLabTypesById function
+    } // end showLabCat function
 
 
 
@@ -171,5 +173,50 @@ class LabTestTypes extends UtilityFiles
         }
     } // end deleteLabTypes function
 
+    
+    /********************************************************************************************
+     *                                      Test List Table                                     *
+     ********************************************************************************************/
+
+     
+    function showTestList()
+    {
+        try {
+            $data = [];
+            $selectTest = "SELECT * FROM `test_list`";
+            $testQuery = $this->conn->query($selectTest);
+            while ($result = $testQuery->fetch_array()) {
+                $data[] = $result;
+            }
+            return $data;
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    } // end showSubTests function
+
+
+    function showTestByCat($catId)
+    {
+        try {
+            $query = "SELECT * FROM `test_list` WHERE `cat_id` = '$catId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = [];
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
 
 } //end of LabTypes Class

@@ -4,7 +4,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'UtilityFiles.class.php';
-require_once CLASS_DIR . 'labTestTypes.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
@@ -13,31 +13,31 @@ $showLabtypeId = $_GET['labtypeid'];
 if (isset($_GET['labtypeid'])) {
     $showLabtypeId = url_dec($_GET['labtypeid']);
     //Fetching Test Categories
-    $labTypes       = new LabTestTypes;
-    $showLabType = $labTypes->showLabTypesById($showLabtypeId);
-    
+    $Pathology       = new Pathology;
 
-    if(is_array($showLabType)){
-        foreach ($showLabType as $labtype) {
-            $labTypeImge = $labtype['image'];
-    
-            if(!empty($labTypeImge)){
-                $labTypeImge = LABTEST_IMG_PATH .  $labTypeImge;
-            }else{
-                $labTypeImge = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
+    $labCat = $Pathology->showLabCat($showLabtypeId);
+
+
+    if (is_array($labCat)) {
+        foreach ($labCat as $eachCat) {
+            $catImage  = $eachCat['image'];
+            $catName   = $eachCat['name'];
+            $catDsc    = $eachCat['dsc'];
+            // $catStatus = $eachCat['status'];
+
+            if (!empty($catImage)) {
+                $catImage = LABTEST_IMG_PATH .  $catImage;
+            } else {
+                $catImage = LABTEST_IMG_PATH . 'default-lab-test/labtest.svg';
             }
-            $labTypeName = $labtype['test_type_name'];
-            $pvdBy = $labtype['provided_by'];
-            $labTypeDsc = $labtype['dsc'];
         }
     }
     //Fetching Sub Tests data
-    $subTests = new SubTests();
-    $subTestShow = json_decode($subTests->showSubTestsByCatId($showLabtypeId));
-    if($subTestShow->status){
-        $subTestShow = $subTestShow->data;
-    }else{
-        $subTestShow = [];
+    $allTests = json_decode($Pathology->showTestByCat($showLabtypeId));
+    if ($allTests->status) {
+        $allTests = $allTests->data;
+    } else {
+        $allTests = [];
     }
 }
 ?>
@@ -54,13 +54,10 @@ if (isset($_GET['labtypeid'])) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet">
@@ -91,112 +88,71 @@ if (isset($_GET['labtypeid'])) {
                 <!-- End of Topbar -->
                 <section class="main_section">
                     <div class="provide_lab mobile-only mx-3">
-                        <div class="h5 medicy_lab"><b>Medicy Health Care</b></div>
-                        <div class="logo"><img src="<?php echo ASSETS_PATH ?>img/Logo.png" alt=""></div>
+                        <div class="h5 medicy_lab"><b><?= $catName; ?></b></div>
+                        <div class="logo"><img src="<?= ASSETS_PATH ?>img/Logo.png" alt=""></div>
                     </div>
                     <div class="single_page">
                         <div class="image">
                             <div class="border border-2 p-2" style="max-height: 270px;">
-                                <img src="<?php echo $labTypeImge ?>" alt="Lab Type Image">
+                                <img src="<?= $catImage ?>" alt="Lab Type Image">
                             </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <div>
-                                    <h5>Provided by</h5>
-                                </div>
-                                <div class="provide_lab_para">
-                                    <p class="m-0 p-0"><?php echo $pvdBy; ?></p>
-                                </div>
-                            </div>
-
                         </div>
 
                         <div class="text_box">
-
                             <div class="provide_lab large-screen">
-                                <div class="medicy_lab"><b>Medicy Health Care</b></div>
+                                <div class="medicy_lab">
+                                    <b><?= $catName; ?></b>
+                                </div>
                                 <div class="logo"><img src="<?php echo ASSETS_PATH ?>img/Logo.png" alt=""></div>
                             </div>
-                            <div class="title">
-                                <h1><?php echo $labTypeName; ?></h1>
-                                <p>Ideal for individuals aged <b>11-80 years</b> <br> Includes
-
-                                    <b><?php if ($subTestShow != 0) {
-                                            echo count($subTestShow) . 'tests';
-                                        } else {
-                                            echo '0 Tests';
-                                        } ?>
-                                    </b>
-                                </p>
+                            <div>
+                                <?= $catDsc; ?>
                             </div>
-
-                            <div class="title2">
-                                <h2>Description</h2>
-                                <p><?php echo $labTypeDsc; ?></p>
-                            </div>
-
-                            <!-- <div class="included_test">
-
-                                <h2>Includes
-                                    <?php if (!empty($subTestShow)) {
-                                        echo count($subTestShow) . 'tests';
-                                    } else {
-                                        echo '0 Tests';
-                                    } ?>
-                                    Tests</h2> -->
                         </div>
+
                     </div>
 
-                    <div class="text-white text-center m-2 py-2" style="background-color:#4e73df;">
-
-                        <h4>Includes
-                            <?php if ($subTestShow != 0) {
-                                        echo count($subTestShow);
-                                    } else {
-                                        echo '0';
-                                    } ?>
-                            Tests</h4>
-                    </div>
+                    <h4 class="text-white text-center m-2 py-2" style="background-color:#4e73df;" >Includes <?= $allTests != 0 ? count($allTests) : '0'; ?> Tests</h4>
 
                     <div class="row m-2 ">
                         <?php
-    if ($subTestShow != 0) {
-        $subTestCount = count($subTestShow);
-        $columnCount = ceil($subTestCount / 3);
-        $column = 1;
+                        if ($allTests != 0) {
+                            $subTestCount = count($allTests);
+                            $columnCount = ceil($subTestCount / 3);
+                            $column = 1;
 
-        // Counter for the accordion ID
-        $accordionId = 0;
+                            // Counter for the accordion ID
+                            $accordionId = 0;
 
-        // Counter for the subtest items
-        $itemCount = 0;
+                            // Counter for the subtest items
+                            $itemCount = 0;
 
-        // Loop through each subtest
-        foreach ($subTestShow as $subTest) {
-            // Increment the accordion ID
-            $accordionId++;
+                            // Loop through each subtest
+                            foreach ($allTests as $subTest) {
+                                // Increment the accordion ID
+                                $accordionId++;
 
-            // Get subtest details
-            $subTestName = $subTest->sub_test_name;
-            $subTestAge = $subTest->age_group;
-            $subTestPrep = $subTest->test_preparation;
-            $subTestDsc = $subTest->test_dsc;
-            $subTestPrice = $subTest->price;
+                                // Get subtest details
+                                $subTestName = $subTest->name;
+                                $subTestPrep = $subTest->preparation;
+                                $subTestDsc = $subTest->dsc;
+                                $subTestPrice = $subTest->price;
 
-            // If it's the first item or a multiple of the column count, start a new column
-            if ($itemCount == 0 || $itemCount % $columnCount == 0) {
-                // Close previous column if it's not the first one
-                if ($itemCount > 0) {
-                    echo '</div>';
-                }
-                // Start a new column
-                echo '<div class="col-12 col-md-4 p-3 py-4 item-column">';
-            }
+                                // If it's the first item or a multiple of the column count, start a new column
+                                if ($itemCount == 0 || $itemCount % $columnCount == 0) {
+                                    // Close previous column if it's not the first one
+                                    if ($itemCount > 0) {
+                                        echo '</div>';
+                                    }
+                                    // Start a new column
+                                    echo '<div class="col-12 col-md-4 p-3 py-4 item-column">';
+                                }
 
-            // Increment item counter
-            $itemCount++;
+                                // Increment item counter
+                                $itemCount++;
 
-            // Output accordion item
-            echo '<div class="accordion accordion-flush border-0 bg-none mb-2" id="accordionFlushExample' . $accordionId . '">
+                                // Output accordion item
+                                echo '<div class="accordion accordion-flush border-0 bg-none mb-2" id="accordionFlushExample' . $accordionId . '">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-heading' . $accordionId . '">
                             <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse' . $accordionId . '" aria-expanded="false" aria-controls="flush-collapse' . $accordionId . '">
@@ -208,11 +164,10 @@ if (isset($_GET['labtypeid'])) {
 
                         <div id="flush-collapse' . $accordionId . '" class="accordion-collapse collapse" aria-labelledby="flush-heading' . $accordionId . '" data-bs-parent="#accordionFlushExample' . $accordionId . '">
                             <div class="accordion-body">
-                                <h4>Description</h4>
+                                <h5>Description</h5>
                                 <p>' . $subTestDsc . '</p>
-                                <h4>Percussion For This Test</h4>
+                                <h5>Percussion For This Test</h5>
                                 <p>' . $subTestPrep . '</p>
-                                <p>Age Group: <b>' . $subTestAge . '</b></p>
                                 <div>
                                     <p>Rs-' . $subTestPrice . '</p>
                                 </div>
@@ -220,28 +175,21 @@ if (isset($_GET['labtypeid'])) {
                         </div>
                     </div>
                 </div>';
-        }
+                            }
 
-        // Close the last column
-        echo '</div>';
-    } else {
-        echo '<div class="border border-3"><div class=" h5 text-center mt-2 py-5" style="border: 2px dashed #a9a7a7">No Tests available in this type of Test</div></div>';
-    }
-    ?>
+                            // Close the last column
+                            echo '</div>';
+                        } else {
+                            echo '<div class="border border-3"><div class=" h5 text-center mt-2 py-5" style="border: 2px dashed #a9a7a7">No Tests available in this type of Test</div></div>';
+                        }
+                        ?>
                     </div>
 
 
                 </section>
 
-                <div>
-                    <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-                </div>
-
-
                 <!-- Bootstrap JS -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
                 </script>
 
                 <!-- Bootstrap core JavaScript-->
