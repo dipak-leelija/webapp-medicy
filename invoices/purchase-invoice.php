@@ -14,6 +14,8 @@ require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
 
+require_once CLASS_DIR . 'InvoiceComponents.class.php';
+
 
 $ClinicInfo     = new HealthCare;
 $Distributor    = new Distributor();
@@ -78,111 +80,27 @@ require('../assets/plugins/pdfprint/fpdf/fpdf.php');
 
 class PDF extends FPDF
 {
-    private $pharmacyName, $pharmacyContact, $cGst, $totalGst, $totalMrp, $billAmnt;
-    function __construct($pharmacyName, $pharmacyContact, $cGst, $totalGst, $totalMrp, $billAmnt) {
+    use PrintComponents;
+    private $pharmacyName, $pharmacyContact,$distContact,$distEmail, $cGst, $totalGst, $totalMrp, $billAmnt, $distributorName;
+    function __construct($pharmacyName, $pharmacyContact,$distContact,$distEmail, $cGst, $totalGst, $totalMrp, $billAmnt, $distributorName) {
         parent::__construct();
+        $this->distributorName = $distributorName;
         $this->pharmacyName = $pharmacyName;
         $this->pharmacyContact =$pharmacyContact;
+        $this->distContact = $distContact;
+        $this->distEmail = $distEmail;
         $this->cGst = $cGst;
         $this->totalGst = $totalGst;
         $this->totalMrp = $totalMrp;
         $this->billAmnt = $billAmnt;
     }
     function Header() {
-        global $distributorName, $distAddress, $distPIN, $distContact, $healthCareApntbkNo,$distributorBill, $pMode,$billDate, $dueDate, $patientName, $patientAge, $patientPhno, $gstinData;
-
-        if ($this->PageNo() == 1) {  ///this line only show the header first page
-
-            ///....Title (distributorName Name)...///
-            $this->SetFont('Arial', 'B', 16);
-            $this->Cell(90, 8, $distributorName, 0, 1, 'L'); // Centered text
-
-            // Address
-            $this->SetFont('Arial', '', 10);
-            $address = "$distAddress, $distPIN\nM: $distContact,\nGST ID : $gstinData";
-            $this->MultiCell(100, 5, $address, 0, 'L');
-
-            ///...Invoice Info
-            $this->SetY(15); // Reset Y position
-            $this->SetX(-50); // Align to the right
-            // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 24);
-            $this->SetFont('Arial', 'B', 10);
-            $this->cell(80, 0, ' Purchase:', 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->MultiCell(80, 5, "\n #$distributorBill\n Payment:$pMode\n Bill Date:$billDate\n Due Date: $dueDate", 0, 'L');
-
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(10);
-        }
+       $this->purchaseHeader();
     }
 
     // Page footer
     function Footer() {
-        if ($this->isLastPage) { /// this line only show the footer last page 
-
-            $pageHeight = $this->GetPageHeight();
-            $middleY = $pageHeight / 2;
-            $this->SetY($middleY);
-            $this->SetLineWidth(0.4);
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(2);
-
-           // Set the font for the footer content
-           $this->SetFont('Arial', '', 10);
-
-            // Patient Info
-            $this->SetY($this->GetY() + 2); // Add some padding
-            $startX = 10;
-            $currentY = $this->GetY();
-
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(30, 5, 'Bill To : ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->MultiCell(80, 5,  " $this->pharmacyName\n $this->pharmacyContact", 0, 'L');
-
-            // GST Calculation
-            $this->SetY(149); // Reset Y position
-            $this->SetX(92); // Align to the right
-            // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
-
-            $startX = 70;
-            $this->SetY($currentY); // Reset Y position to top of the section
-            $this->SetX($startX);
-            $this->Cell(72, 5, 'CGST :', 0, 0, 'C');
-            $this->Cell(-10, 5, '' . $this->cGst, 0, 1, 'C');
-            $this->SetX($startX);
-            $this->Cell(72, 5, 'SGST :', 0, 0, 'C');
-            $this->Cell(-10, 5, '' . $this->cGst, 0, 1, 'C');
-            $this->SetX($startX);
-            $this->Cell(78, 5, 'Total GST :', 0, 0, 'C');
-            $this->Cell(-21, 5, '' . $this->totalGst, 0, 1, 'C');
-
-            // Amount Calculation
-            $startX = 140;
-            $this->SetY($currentY); // Reset Y position to top of the section
-            $this->SetX($startX);
-            $this->Cell(20, 5, 'MRP :', 0, 0, 'R');
-            $this->Cell(40, 5, '' . $this->totalMrp, 0, 1, 'R');
-            $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(30, 5, 'You Saved :', 0, 0, 'R');
-            $this->Cell(30, 5, '' . ($this->totalMrp - $this->billAmnt), 0, 1, 'R');
-            $this->SetX($startX);
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, 'Net Amoun :', 0, 0, 'R');
-            $this->Cell(30, 5, '' . $this->billAmnt, 0, 1, 'R');
-            
-            $this->Ln(2);
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line(10, $this->GetY(), 200, $this->GetY());
-        }
+       $this->purchaseFooter();
     }
 
     function AddContentPage($stockIn_Id, $pMode, $dueDate, $crrntDt , $distributorBill,$distributorId,$Products, $StockInDetails, $adminId, $ItemUnit) {
@@ -200,8 +118,8 @@ class PDF extends FPDF
        }///....end page badge...///
 
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(12, -10, 'SL.', 0, 0, 'L');
-        $this->Cell(30, -10, 'Item', 0, 0, 'L');
+        $this->Cell(10, -10, 'SL.', 0, 0, 'L');
+        $this->Cell(33, -10, 'Item', 0, 0, 'L');
         $this->Cell(22, -10, 'Batch', 0, 0, 'L');
         $this->Cell(16, -10, 'Exp.', 0, 0, 'L');
         $this->Cell(14, -10, 'QTY', 0, 0, 'L');
@@ -211,11 +129,13 @@ class PDF extends FPDF
         $this->Cell(16, -10, 'Disc', 0, 0, 'L');
         $this->Cell(16, -10, 'GST', 0, 0, 'L');
         $this->Cell(16, -10, 'Amount', 0, 1, 'R');
-        $this->Ln(10);
-        $this->SetDrawColor(108, 117, 125);
+        $this->Ln(8.1);
+        // $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
 
         $slno = 1;
+        $rowsPerPage = 8; // Maximum rows per page
+        $rowCounter = 0;
         $itemBillNo    = $distributorBill;
         $distributorId = $distributorId;
         $totalGst   = 0;
@@ -263,6 +183,33 @@ class PDF extends FPDF
             $billAmnt       = $billAmnt + $Amount;
             $cGst           = $sGst = number_format($totalGst / 2, 2);
 
+            ///...row count for 8 row per page.../// 
+            if ($rowCounter >= $rowsPerPage) {
+
+                ///....show first page total amount...////
+                $this->SetFont('Arial', 'B', 8);
+                $this->Cell(170, 10, 'Net Amount :', 0, 0, 'R');
+                $this->SetFont('Arial', '', 8);
+                $this->Cell(21, 10, '' .$amount, 0, 1, 'R');
+
+                // Add new page if rowCounter reaches rowsPerPage
+                $this->AddPage();
+                $this->Ln(10);
+                $this->SetFont('Arial', '', 10);
+
+                $rowCounter = 0; // Reset row counter for new page
+
+                 ///....add paid badge...///
+               if($this->paidAmount){
+                   $imageX = 50; // X position with left space
+                   $imageY = 70;
+                   $imageWidth = 100; // Adjusted width with spaces
+                   $imageHeight = 60; // Height of the image
+                  $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
+                }///....end page badge...///
+            }
+
+
             if ($slno > 1) {
                 $this->SetDrawColor(183, 182, 182); // Set color for the dotted line
                 $dotWidth = 0.5; // Width of each dot
@@ -282,29 +229,32 @@ class PDF extends FPDF
                 }
             }
 
-            $this->Ln(2);
+            $this->Ln(1);
             $this->SetFont('Arial', '', 8);
            
-            $this->Cell(-5, 5, $slno, 0, 0, 'L');
+            $this->Cell(-6, 4, $slno, 0, 0, 'L');
             $yBefore = $this->GetY();
             $this->SetY($yBefore); // Reset Y to avoid new line issues
             $this->SetX($this->GetX() + 10); // Move X to the next position
-            $this->MultiCell(35, 4, "$pname\n$pQTY $itemUnitName", 0, 'L');
+            $this->MultiCell(32, 3.3, "$pname | $pQTY $itemUnitName", 0, 'L');
             $this->SetY($yBefore); // Reset Y to avoid new line issues
-            $this->SetX($this->GetX() + 42); // Move X to the next position
-            $this->Cell(22, 5, $batchNo, 0, 0, 'L');
-            $this->Cell(16, 5, $ExpDate, 0, 0, 'L');
-            $this->Cell(14, 5, $qty, 0, 0, 'L');
-            $this->Cell(14, 5, $FreeQty, 0, 0, 'L');
-            $this->Cell(18, 5, $Mrp, 0, 0, 'L');
-            $this->Cell(16, 5, $Ptr, 0, 0, 'L');
-            $this->Cell(16, 5, $discPercent.'%', 0, 0, 'L');
-            $this->Cell(16, 5, $gstPercent.'%', 0, 0, 'L');
-            $this->Cell(16, 5, $Amount, 0, 1, 'R');
+            $this->SetX($this->GetX() + 43); // Move X to the next position
 
-            $this->Ln(8);
+            $this->Cell(22, 4, $batchNo, 0, 0, 'L');
+            $this->Cell(16, 4, $ExpDate, 0, 0, 'L');
+            $this->Cell(14, 4, $qty, 0, 0, 'L');
+            $this->Cell(14, 4, $FreeQty, 0, 0, 'L');
+            $this->Cell(18, 4, $Mrp, 0, 0, 'L');
+            $this->Cell(16, 4, $Ptr, 0, 0, 'L');
+            $this->Cell(16, 4, $discPercent.'%', 0, 0, 'L');
+            $this->Cell(16, 4, $gstPercent.'%', 0, 0, 'L');
+            $this->Cell(16, 4, $Amount, 0, 1, 'R');
+
+            $this->Ln(5.8);
+            $amount  = $amount + $Amount;
 
         $slno++;
+        $rowCounter++;
         }
 
     }    
@@ -338,7 +288,7 @@ class PDF extends FPDF
         $cGst           = $sGst = number_format($totalGst / 2, 2);
     }
 
-    $pdf = new PDF($pharmacyName, $pharmacyContact, $cGst, $totalGst, $totalMrp, $billAmnt);
+    $pdf = new PDF($pharmacyName, $pharmacyContact,$distContact,$distEmail, $cGst, $totalGst, $totalMrp, $billAmnt, $distributorName);
     $pdf->AliasNbPages();
     $pdf->AddContentPage($stockIn_Id, $pMode, $dueDate, $crrntDt , $distributorBill,$distributorId,$Products, $StockInDetails, $adminId,$ItemUnit);
     $pdf->AddLastPage();
