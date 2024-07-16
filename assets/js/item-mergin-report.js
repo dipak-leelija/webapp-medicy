@@ -311,7 +311,7 @@ function itemMerginReportShow(reportData) {
         totalSalesAmountLabel.innerHTML = totalSalesAmount.toFixed(2);
         totalPurchaseAmountLable.innerHTML = totalPurchaseAmount.toFixed(2);
         netGstAmountLable.innerHTML = totalNetGst.toFixed(2);
-        totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount);
+        totalProfitAmount = parseFloat(totalSalesAmount) - parseFloat(totalPurchaseAmount) - parseFloat(totalNetGst);
         totalProfitParcent = (parseFloat(totalProfitAmount) * 100) / parseFloat(totalPurchaseAmount);
         totalProfitAmountLable.innerHTML = totalProfitAmount.toFixed(2) + ' (' + totalProfitParcent.toFixed(2) + '%)';
 
