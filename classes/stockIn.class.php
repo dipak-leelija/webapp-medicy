@@ -655,6 +655,71 @@ class StockIn
 
 
 
+    // reprt function 1
+    function purchaseOnPaymentMode($filterOn, $startDate, $endDate, $admin)
+    {
+        try {
+            $data = array();
+
+            // Base query
+            $selectQuery = "SELECT
+                                si.bill_date AS bill_date,
+                                si.due_date AS due_date,
+                                DATE(si.added_on) AS added_on,
+                                si.distributor_bill AS bill_no,
+                                d.name AS dist_name,
+                                si.items AS total_items,
+                                si.amount AS amount,
+                                si.gst AS gst_amount
+                            FROM 
+                                stock_in si
+                            JOIN
+                                distributor d ON d.id = si.distributor_id 
+                            WHERE
+                                DATE(si.added_on) BETWEEN ? AND ?
+                                AND si.admin_id = ?";
+
+            // Add condition for payment type filter
+            $additionNlaQuery1 = " AND si.payment_mode = 'Credit'";
+
+            // Append additional query condition based on filter
+            if ($filterOn == 1) {
+                $selectQuery .= $additionNlaQuery1;
+            }
+            
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt === false) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+
+            // Bind parameters
+            $stmt->bind_param("sss", $startDate, $endDate, $admin);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnData = ['status' => '1', 'data' => $data];
+            } else {
+                $returnData = ['status' => '0', 'data' => []];
+            }
+
+            // Close the statement
+            $stmt->close();
+            return json_encode($returnData);
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
     /// ===================== ///////////////// delete query \\\\\\\\\\\\\\ =====================
 
     function deleteStock($id)

@@ -152,11 +152,9 @@ function filterSearch(){
     gstPurchaseReportSearch(dataArray);
 }
 
+
 // item mergin data search function (ajax call)
 function gstPurchaseReportSearch(array){
-
-    // console.log(array);
-
     let arryString = JSON.stringify(array);
     let salesDataReport = `ajax/gstPurchaseReport.ajax.php?dataArray=${arryString}`;
     xmlhttp.open("GET", salesDataReport, false);

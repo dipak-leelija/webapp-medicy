@@ -19,7 +19,6 @@ $Distributor = new Distributor;
 $stockInData = $StockIn->showStockIn($adminId);
 $distributorList = json_decode($Distributor->showDistributor($adminId));
 
-
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +32,7 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Reports</title>
+    <title>Credit Transaction</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -76,7 +75,7 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Purchase Report</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Credit Transactio  Report</li>
                                 </ol>
                             </nav>
                         </div>
@@ -111,30 +110,30 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
                                 <select class="focus-out cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterReportType(this)">
                                     <option value="" disabled selected>Report Type</option>
                                     <option value="P">Purchase</option>
-                                    <option value="PR">Purchase Return</option>
+                                    <option value="S">Sales</option>
                                 </select>
-                                <label class="d-none" id="selected-report-type"></label>
+                                <label class="d-none" id="reprt-on"></label>
                             </div>
 
                             <!-- filter purchase type -->
-                            <div class="col-md-2 bg-white me-3 selectDiv">
+                            <!-- <div class="col-md-2 bg-white me-3 selectDiv">
                                 <select class="focus-out cvx-inp1 border-0 p-1 w-100" name="p-type" id="p-type" onchange="filterPurchaseType(this)">
                                     <option value="" disabled selected>Purchase Type</option>
                                     <option value="WG">With GST</option>
                                     <option value="NG">Without GST</option>
                                 </select>
                                 <label class="d-none" id="selected-purchse-type"></label>
-                            </div>
+                            </div> -->
 
                             <!-- find button on filter -->
                             <div class="col-md-2 searchFilterDiv">
-                                <button type="button" id="search-filter" name="search-filter" class="focus-out btn btn-primary text-center btn-sm" onclick="filterSearch()">
+                                <button type="button" id="search-filter" name="search-filter" class="focus-out btn btn-primary text-center btn-sm" onclick="searchReport()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <table class="table" id="gst-purchase-purchasereturn-table">
+                        <table class="table" id="credit-transaction-report-table">
                             <!-- dynamic table gose hear -->
                         </table>
 
@@ -190,7 +189,7 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
     <script src="<?= PLUGIN_PATH ?>report-export-script/pdf-download-script/jspdf.plugin.autotable.min.js"></script>
 
     <!-- custom script for report filter -->
-    <script src="<?php echo JS_PATH; ?>purchase-report-filter.js"></script>
+    <script src="<?php echo JS_PATH; ?>credit-transaction-report.js"></script>
 </body>
 
 </html>

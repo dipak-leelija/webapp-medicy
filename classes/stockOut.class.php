@@ -1534,6 +1534,68 @@ class StockOut
     }
 
 
+    // stock out on payment mode report function 
+    function salesOnPaymentMode($filterOn, $startDate, $endDate, $admin)
+    {
+        try {
+            $data = array();
+
+            // Base query
+            $selectQuery = "SELECT 
+                                so.invoice_id AS bill_no,
+                                so.bill_date AS bill_date,
+                                DATE(so.added_on) AS added_on,
+                                CASE 
+                                    WHEN so.customer_id = 'Cash Sales' THEN 'Cash Sales'
+                                    ELSE pd.name
+                                END AS patient_name,
+                                so.items AS total_items,
+                                so.amount AS amount,
+                                so.gst AS gst_amount
+                            FROM 
+                                stock_out so
+                            LEFT JOIN
+                                patient_details pd ON pd.patient_id = so.customer_id 
+                            WHERE
+                                DATE(so.added_on) BETWEEN ? AND ?
+                                AND so.admin_id = ?";
+
+            // Add condition for payment type filter
+            $additionNlaQuery1 = " AND so.payment_mode = 'Credit'";
+
+            // Append additional query condition based on filter
+            if ($filterOn == 1) {
+                $selectQuery .= $additionNlaQuery1;
+            }
+            
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt === false) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+
+            // Bind parameters
+            $stmt->bind_param("sss", $startDate, $endDate, $admin);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $returnData = ['status' => '1', 'data' => $data];
+            } else {
+                $returnData = ['status' => '0', 'data' => []];
+            }
+
+            // Close the statement
+            $stmt->close();
+            return json_encode($returnData);
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
 
 
 
