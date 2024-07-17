@@ -143,9 +143,10 @@ class PDF extends FPDF {
     private $LabBillDetails;
     private $SubTests;
     private $healthCareLogo;
+    private $healthCarePhno, $healthCareApntbkNo, $healthCareEmail;
 
     // Constructor with parameters
-    function __construct($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests, $healthCareLogo) {
+    function __construct($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests, $healthCareLogo,$healthCarePhno, $healthCareApntbkNo, $healthCareEmail) {
         parent::__construct();
         $this->billId = $billId;
         $this->billingDate = $billingDate;
@@ -157,6 +158,9 @@ class PDF extends FPDF {
         $this->LabBillDetails = $LabBillDetails;
         $this->SubTests = $SubTests;
         $this->healthCareLogo = $healthCareLogo;
+        $this->healthCarePhno = $healthCarePhno;
+        $this->healthCareApntbkNo = $healthCareApntbkNo;
+        $this->healthCareEmail = $healthCareEmail;
     }
 
     function Header() {
@@ -166,7 +170,7 @@ class PDF extends FPDF {
 
             //.. healthCareLogo...///
             $logoX = 10;
-            $logoY = 14;
+            $logoY = 8;
             $logoWidth = 20;
             $logoHeight = 20;
             if (!empty($this->healthCareLogo)) {
@@ -179,33 +183,70 @@ class PDF extends FPDF {
             $this->Cell(90, 8, $healthCareName, 0, 1, 'L'); // Centered text
 
             // Address
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', '', 9);
             $address = "$healthCareAddress1, $healthCareAddress2\n$healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo";
+            
+
             $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
-            $this->MultiCell(90, 5, $address, 0, 'L');
+            $this->MultiCell(90, 4.5, $address, 0, 'L');
 
             ///...Invoice Info
-            $this->SetY(22); // Reset Y position
-            $this->SetX(-40); // Align to the right
+            $this->SetY(12); // Reset Y position
+            $this->SetX(-49.9); // Align to the right
             // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 17);
-            // $this->Ln(0);
-            $this->MultiCell(80, 5, " Invoice: \n #$billId\n" . (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
+            // $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY()-2, $this->GetX(), $this->GetY() + 16);
+
+            $this->SetFont('Arial', 'B', 10);
+            $this->cell(80, 1, ' Invoice:', 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->MultiCell(80, 4.2, " \n Bill Id: #$billId\n Bill Date : ". (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
+
             // Patient Info
-            $this->Ln(2);
-            $this->SetDrawColor(108, 117, 125);
+            $this->Ln(4.8);
+            // $this->SetDrawColor(108, 117, 125);
+            $this->SetFillColor(236, 236, 236);
+            $this->Rect(10, $this->GetY(), 190.1, 9, 'F');
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->SetY($this->GetY() + 2);
-            $this->MultiCell(0, 5, "Patient: $patientName, Age: $patientAge\nM: $patientPhno, Test date: " .     formatDateTime($testDate), 0, 'L');
+            // Set font for "Patient Info:"
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(20, 5, 'Patient Info:', 0, 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(30, 5, $patientName, 0, 1, 'L');
+            $this->SetY($this->GetY()-5);
+            $this->SetX(60);
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(8, 5, 'Age : ', 0, 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(0, 5, $patientAge, 0, 1, 'L');
+            $this->SetY($this->GetY());
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(5, 4, 'M:', 0, 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(0, 4, $patientPhno, 0, 1, 'L');
+            $this->SetY($this->GetY()-4);
+            $this->SetX(35);
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(18, 4, 'Test Date : ', 0, 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(0, 4, formatDateTime($testDate), 0, 1, 'L');
             // Doctor Info
-            $this->SetY($this->GetY() - 10); // Move Y position up to align with patient info
-            $this->SetX(-80); // Align to the right
-            $this->MultiCell(70, 5, "Referred Doctor: $doctorName\n" . ($doctorReg != NULL ? "Reg: $doctorReg"     : "Reg: N/A"), 0, 'R');
-            $this->Ln(1);
-            $this->SetDrawColor(108, 117, 125);
+            $this->SetY($this->GetY()-9); // Move Y position up to align with patient info
+            $this->SetX(-84); // Align to the right
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(38, 5, "Referred Doctor : ", 0, 0, 'R');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(30, 5, $doctorName, 0, 1, 'L');
+            $this->SetY($this->GetY()); // Move Y position up to align with patient info
+            $this->SetX(-80); 
+            if($doctorReg != NULL){
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(38, 4, "Reg : ", 0, 0, 'R');
+            $this->SetFont('Arial', '', 9);
+            $this->Cell(0, 4, $doctorReg, 0, 1, 'L');
+            }
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(10);
+            $this->Ln(8);
         }
     }
 
@@ -215,40 +256,60 @@ class PDF extends FPDF {
         if ($this->isLastPage) { /// this line only show the footer last page 
 
             $pageHeight = $this->GetPageHeight();
-            $middleY = $pageHeight / 2;
+            $middleY = ($pageHeight / 2)-30.1;
             $this->SetY($middleY);
-            $this->SetLineWidth(0.4);
-            $this->SetDrawColor(108, 117, 125);
+            // $this->SetLineWidth(0.4);
+            $this->SetDrawColor(0, 0, 0);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(4);
+            $this->Ln(1);
 
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(110, 5, 'Total Amount:', 0, 0, 'R');
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(111, 5, 'Total Amount :', 0, 0, 'R');
+            $this->SetFont('Arial', '', 9);
             $this->Cell(80, 5, ' ' . number_format(floatval($this->subTotal), 2), 0, 1, 'R');
 
             if (isset($_GET['billId'])) {
-                $this->SetFont('Arial', 'B', 10);
-                $this->Cell(110, 5, 'Less Amount:', 0, 0, 'R');
-                $this->SetFont('Arial', '', 10);
+                $this->SetFont('Arial', 'B', 9);
+                $this->Cell(111, 5, 'Less Amount :', 0, 0, 'R');
+                $this->SetFont('Arial', '', 9);
                 $this->Cell(80, 5, ' ' . number_format(floatval($this->discountAmount), 2), 0, 1, 'R');
             }
 
             if ($this->dueAmount != NULL && $this->dueAmount > 0) {
-                $this->SetFont('Arial', 'B', 10);
-                $this->Cell(110, 5, 'Due Amount:', 0, 0, 'R');
-                $this->SetFont('Arial', '', 10);
-                $this->Cell(80, 5, ' ' . number_format(floatval($this->dueAmount), 2), 0, 1, 'R');
+                $this->SetFont('Arial', 'B', 9);
+                $this->Cell(110, 5, 'Due Amount :', 0, 0, 'R');
+                $this->SetFont('Arial', '', 9);
+                $this->Cell(81, 5, ' ' . number_format(floatval($this->dueAmount), 2), 0, 1, 'R');
             }
 
-            $this->SetFont('Arial', 'B', 10);
-            $this->Cell(110, 5, 'Paid Amount:', 0, 0, 'R');
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', 'B', 9);
+            $this->Cell(111, 5, 'Paid Amount :', 0, 0, 'R');
+            // $this->SetFont('Arial', '', 9);
             $this->Cell(80, 5, ' ' . number_format(floatval($this->paidAmount), 2), 0, 1, 'R');
 
-            $this->Ln(4);
-            $this->SetDrawColor(108, 117, 125);
+            $this->Ln(1);
+            // $this->SetDrawColor(0, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(2.5);
+
+            $phoneIcon = '../assets/plugins/pdfprint/icon/phone.png';
+            $emailIcon = '../assets/plugins/pdfprint/icon/email.png';
+            $this->SetFont('Arial', '', 8);
+            $startX = $this->GetX();
+            $startY = $this->GetY();
+            $this->Image($phoneIcon, $startX, $startY - 2, 4); // Adjust position and size as needed
+            if(!empty($this->healthCareEmail)){
+            $this->Image($emailIcon, $startX + 38, $startY -2, 3.5);
+            }
+            $address = " " . $this->healthCarePhno . "," . $this->healthCareApntbkNo . ",          ".$this->healthCareEmail.",  Print Time: " . date('Y-m-d H:i:s');
+            $textX = $startX + 3;
+            if (empty($this->healthCareEmail)) {
+                $address = " " . $this->healthCarePhno . "," . $this->healthCareApntbkNo . ",  Print Time: " . date('Y-m-d H:i:s');
+            }
+            $this->SetXY($textX, $startY);
+            // Output the address text
+            $this->SetFont('Arial', 'B', 8);
+            $this->MultiCell(0, 0, $address, 0, 'L');
         }
     }
 
@@ -256,10 +317,10 @@ class PDF extends FPDF {
         $this->AddPage();
         ///....add paid badge...///
         if( $this->paidAmount){
-            $imageX = 50; // X position with left space
-            $imageY = 70;
-            $imageWidth = 100; // Adjusted width with spaces
-            $imageHeight = 60; // Height of the image
+            $imageX = 70; // X position with left space
+            $imageY = 55;
+            $imageWidth = 80; // Adjusted width with spaces
+            $imageHeight = 45; // Height of the image
            $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
        }///....end page badge...///
 
@@ -267,10 +328,10 @@ class PDF extends FPDF {
         $this->Cell(20, -10, 'SL. NO.', 0, 0, 'L');
         $this->Cell(80, -10, 'Description', 0, 0, 'L');
         $this->Cell(30, -10, 'Price', 0, 0, 'L');
-        $this->Cell(30, -10, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(31, -10, 'Disc (%)', 0, 0, 'L');
         $this->Cell(30, -10, 'Amount', 0, 1, 'R');
-        $this->Ln(10);
-        $this->SetDrawColor(108, 117, 125);
+        $this->Ln(8);
+        // $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
 
         ///...Bill Details...///
@@ -284,24 +345,25 @@ class PDF extends FPDF {
             if ($rowCounter >= $rowsPerPage) {
 
                 ///....show first page total amount...////
-                $this->SetFont('Arial', 'B', 10);
-                $this->Cell(170, 10, 'Total Amount:', 0, 0, 'R');
-                $this->SetFont('Arial', '', 10);
+                $this->Ln(-2);
+                $this->SetFont('Arial', 'B', 8);
+                $this->Cell(170, 10, 'Total Amount :', 0, 0, 'R');
+                $this->SetFont('Arial', '', 9);
                 $this->Cell(20, 10, '' .$amount, 0, 1, 'R');
 
                 // Add new page if rowCounter reaches rowsPerPage
                 $this->AddPage();
                 $this->Ln(10);
-                $this->SetFont('Arial', '', 10);
+                $this->SetFont('Arial', '', 8);
 
                 $rowCounter = 0; // Reset row counter for new page
 
                  ///....add paid badge...///
                if($this->paidAmount){
-                   $imageX = 50; // X position with left space
-                   $imageY = 70;
-                   $imageWidth = 100; // Adjusted width with spaces
-                   $imageHeight = 60; // Height of the image
+                   $imageX = 70; // X position with left space
+                   $imageY = 55;
+                   $imageWidth = 80; // Adjusted width with spaces
+                   $imageHeight = 45; // Height of the image
                   $this->Image('../assets/images/paid-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
                 }///....end page badge...///
             }
@@ -334,12 +396,12 @@ class PDF extends FPDF {
                         $drawDot = !$drawDot; // Switch drawing state for next dot
                     }
                 }//...end dotted row...///
-                
-                $this->Cell(20, 10, $slno, 0, 0, 'L');
-                $this->Cell(80, 10, $testName, 0, 0, 'L');
-                $this->Cell(30, 10, $testPrice, 0, 0, 'L');
-                $this->Cell(30, 10, $testDisc, 0, 0, 'L');
-                $this->Cell(30, 10, $testAmount, 0, 1, 'R');
+                $this->SetFont('Arial', '', 9);
+                $this->Cell(20, 8, $slno, 0, 0, 'L');
+                $this->Cell(80, 8, $testName, 0, 0, 'L');
+                $this->Cell(30, 8, $testPrice, 0, 0, 'L');
+                $this->Cell(31, 8, $testDisc, 0, 0, 'L');
+                $this->Cell(30, 8, $testAmount, 0, 1, 'R');
                 $amount  = $amount + $testAmount;
                 $slno++;
                 $this->subTotal += $testAmount;
@@ -370,13 +432,15 @@ class PDF extends FPDF {
     }
     // exit;
 
-    $pdf = new PDF($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests,$healthCareLogo);
+    $pdf = new PDF($billId, $billingDate, $billDate, $subTotal, $discountAmount, $dueAmount, $paidAmount, $LabBillDetails, $SubTests,$healthCareLogo,$healthCarePhno, $healthCareApntbkNo, $healthCareEmail);
+
     $pdf->AliasNbPages();
     $pdf->AddContentPage();
     $pdf->AddLastPage();
+    // $pdf->AddJs($printScript);
     ob_clean();
     $pdf->Output();
-    exit;
+    // exit;
 // }
 ?>
 
@@ -571,7 +635,7 @@ class PDF extends FPDF {
             <form method="post">
                 <button class="btn btn-primary shadow mx-2" type="submit" name="printPDF">Print PDF</button>
             </form>
-        </div>
+        </div> 
     </div>
 </body>
 <script src="<?php echo JS_PATH ?>/bootstrap-js-5/bootstrap.js"></script>
