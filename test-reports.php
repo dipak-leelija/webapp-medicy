@@ -10,6 +10,8 @@ require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'utility.class.php';
+
 
 
 
@@ -82,12 +84,11 @@ $LabReport  = new LabReport;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Report ID</th>
-                                            <!-- <th>Bill ID</th> -->
-                                            <th>Patient ID</th>
+                                            <th>Bill ID</th>
                                             <th>Admin ID</th>
                                             <th>Date</th>
                                             <th class="text-center">View</th>
@@ -99,16 +100,16 @@ $LabReport  = new LabReport;
                                         $labreportfetch = json_decode($labreportfetch, true);
                                         if ($labreportfetch) {
                                             foreach ($labreportfetch as $entry) {
-                                                $billId    = $entry['bill_id'];
-                                                $patientId    = $entry['patient_id'];
-                                                $adminId = $entry['admin_id'];
-                                                $date = $entry['added_on'];
+                                                $reportId   = $entry['id'];
+                                                $billId     = $entry['bill_id'];
+                                                $adminId    = $entry['admin_id'];
+                                                $date       = $entry['added_on'];
                                         ?>
                                                 <tr class="appointment-row">
+                                                    <td><?= $reportId ?></td>
                                                     <td><?= $billId ?></td>
-                                                    <td><?= $patientId ?></td>
                                                     <td><?= $adminId ?></td>
-                                                    <td><?= $date ?></td>
+                                                    <td><?= formatDateTime($date, '-') ?></td>
                                                     <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $billId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                 </tr>
                                         <?php

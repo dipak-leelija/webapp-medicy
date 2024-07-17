@@ -8,92 +8,108 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
+
 
 require_once CLASS_DIR . 'utility.class.php';
 
 
 if (isset($_GET['bill-id'])) {
-    $billId  = $_GET['bill-id'];
+    $testBillId  = $_GET['bill-id'];
 } else {
     header('Location: ' . URL);
     exit;
 }
 
-$SubTests           = new SubTests;
-$LabReport          = new LabReport();
 $LabBilling         = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
+$Pathology          = new Pathology;
+$PathologyReport    = new PathologyReport;
+$LabReport          = new LabReport();
 
-$labBillingData     = json_decode($LabBilling->labBillDisplayById($billId));
+$labBillingData     = json_decode($LabBilling->labBillDisplayById($testBillId));
 if (!$labBillingData->status) {
     $resErrMsg = $labBillingData->message;
 } else {
 
 
-    $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($billId)); //labBillingDetails
+    $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
     $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
-    $billId             = $labBillingData->data->bill_id;
-    $patientId          = $labBillingData->data->patient_id;
+    // $testBillId         = $labBillingData->data->bill_id;
+    // $patientId          = $labBillingData->data->patient_id;
 
 
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        $exists = $LabReport->checkBill($billId);
-        if ($exists) {
+        $parameterData =  array_combine($_POST['params'], $_POST['values']);
+        // print_r($parameterData);
 
-            $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
-            if ($cheackUpdate['status']) {
-                $testIds    = $_POST['testId'];
-                $testValue  = $_POST['values'];
-                $unitValues = $_POST['unitValues'];
+        $reportResponse = $PathologyReport->addTestReport($testBillId, $ADMINID, NOW);
+        $reportResponse = json_decode($reportResponse);
+        if ($reportResponse->status) {
+            $addedReportId = $reportResponse->reportid;
 
-                if (is_array($testValue)) {
-                    $deleted = $LabReport->deleteLabReportDetails($billId);
-                    if ($deleted) {
-                        foreach ($testValue as $index => $value) {
-                            $unitValue = $unitValues[$index];
-                            $testId = $testIds[$index];
-
-                            $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
-                            if($addresponse == false){
-                                echo 'Something is wrong!'; exit;
-                            }
-                        }
-                        header('Location: lab-report.php?bill_id=' . base64_encode($billId));
-                        exit;
-                    }
-                }
-            }
-        } else {
-            $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $ADMINID);
-            $reportId       = $addedeReport['insert_id'];
-            $reportStatus   = $addedeReport['result'];
-
-            if ($reportStatus) {
-                $testIds    = $_POST['testId'];
-                $testValue  = $_POST['values'];
-                $unitValues = $_POST['unitValues'];
-                if (is_array($testValue))
-                    foreach ($testValue as $index => $value) {
-                        $unitValue = $unitValues[$index];
-                        $testId = $testIds[$index];
-
-                        $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-                        if (!$labReportAdd) {
-                            $errMsg = "Something is wrong with the value : {$unitValue}";
-                            break;
-                        }
-                    }
-            }
-
-            if ($labReportAdd) {
-                header('Location: lab-report.php?bill_id=' . base64_encode($billId));
-                exit;
+            foreach ($parameterData as $parameter => $value) {
+                $PathologyReport->addReportDetails($addedReportId, $parameter, $value);
             }
         }
+
+        // if ($exists) {
+
+            // $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
+            // if ($cheackUpdate['status']) {
+            //     $testIds    = $_POST['testId'];
+            //     $testValue  = $_POST['values'];
+            //     $unitValues = $_POST['unitValues'];
+
+            //     if (is_array($testValue)) {
+            //         $deleted = $LabReport->deleteLabReportDetails($billId);
+            //         if ($deleted) {
+            //             foreach ($testValue as $index => $value) {
+            //                 $unitValue = $unitValues[$index];
+            //                 $testId = $testIds[$index];
+
+            //                 $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
+            //                 if ($addresponse == false) {
+            //                     echo 'Something is wrong!';
+            //                     exit;
+            //                 }
+            //             }
+            //             header('Location: lab-report.php?bill_id=' . base64_encode($billId));
+            //             exit;
+            //         }
+            //     }
+            // }
+        // } else {
+            // $addedeReport = $LabReport->labReportAdd($testBillId, $patientId, NOW, $ADMINID);
+            // $reportId       = $addedeReport['insert_id'];
+            // $reportStatus   = $addedeReport['result'];
+
+            // if ($reportStatus) {
+            //     $testIds    = $_POST['testId'];
+            //     $testValue  = $_POST['values'];
+            //     $unitValues = $_POST['unitValues'];
+            //     if (is_array($testValue))
+            //         foreach ($testValue as $index => $value) {
+            //             $unitValue = $unitValues[$index];
+            //             $testId = $testIds[$index];
+
+            //             $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+            //             if (!$labReportAdd) {
+            //                 $errMsg = "Something is wrong with the value : {$unitValue}";
+            //                 break;
+            //             }
+            //         }
+            // }
+
+            // if ($labReportAdd) {
+            //     header('Location: lab-report.php?bill_id=' . base64_encode($testBillId));
+            //     exit;
+            // }
+        // }
     }
 }
 
@@ -121,6 +137,16 @@ if (!$labBillingData->status) {
 
     <!-- Sweet Alert Link  -->
     <script src="<?php echo JS_PATH ?>/sweetAlert.min.js"></script>
+
+    <!-- Ignore these -->
+    <!-- <link rel="stylesheet" href="<?= PLUGIN_PATH ?>choices/assets/styles/base.min.css" /> -->
+    <!-- End ignore these -->
+
+    <!-- Choices includes -->
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" />
+    <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.min.js"></script>
+    <!-- <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script> -->
+
 
 </head>
 
@@ -163,87 +189,60 @@ if (!$labBillingData->status) {
                                     </button>
                                 </div>
                             <?php } ?>
-                            <form method="POST" action="">
-                                <div class="card-body">
-                                    <?php
-                                    $showpatient = json_decode($showpatient);
-                                    if ($showpatient !== null) {
-                                        $patientName = isset($showpatient->name)   ? $showpatient->name   : 'N/A';
-                                        $patientAge  = isset($showpatient->age)    ? $showpatient->age    : 'N/A';
-                                        $patientSex  = isset($showpatient->gender) ? $showpatient->gender : 'N/A';
-                                    }
-                                    $testDate = $labBillingData->data->test_date;
-                                    ?>
-                                    <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
-                                        <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
-                                        <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
-                                        <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
-                                        <h6><b>Test Date:</b> <?= formatDateTime($testDate, '/') ?></h6>
-                                    </div>
+                            <div class="card-body">
+                                <?php
+                                $showpatient = json_decode($showpatient);
+                                if ($showpatient !== null) {
+                                    $patientName = isset($showpatient->name)   ? $showpatient->name   : 'N/A';
+                                    $patientAge  = isset($showpatient->age)    ? $showpatient->age    : 'N/A';
+                                    $patientSex  = isset($showpatient->gender) ? $showpatient->gender : 'N/A';
+                                }
+                                $testDate = $labBillingData->data->test_date;
+                                ?>
+                                <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
+                                    <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
+                                    <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
+                                    <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
+                                    <h6><b>Test Date:</b> <?= formatDateTime($testDate, '/') ?></h6>
+                                </div>
 
-                                    <hr class="sidebar-divider">
+                                <hr class="sidebar-divider">
+                                <div>
 
                                     <div>
-                                        <?php
-                                        $unitCounts = array();
-                                        foreach ($labBillingDetails->data as $index => $test) {
-                                            $testId = $test->test_id;
-                                            $showTestName = json_decode($SubTests->subTestById($testId));
+                                        <label for="choices-multiple-remove-button">Select Tests</label>
+                                        <select class="form-control text-dark" name="choices-multiple-remove-button" id="select-test" placeholder="Select Test" multiple>
+                                            <?php
+                                            foreach ($labBillingDetails->data as $index => $test) {
+                                                $testId = $test->test_id;
+                                                $showTestName = $Pathology->showTestById($testId);
 
-                                            $testId         = $showTestName->id;
-                                            $subTestName    = $showTestName->sub_test_name;
-                                            $unitNames      = $showTestName->unit;
-
-                                            echo "<div class='shadow-sm mb-4 py-2'>";
-                                            echo "<div class='d-flex justify-content-between px-3'>";
-                                            echo "<div>$subTestName</div>";
-                                            echo "<div>";
-
-                                            if (!empty($unitNames)) {
-                                                $unitValues = explode(',', $unitNames); // Split the unitNames by comma and store them in an array
-                                                $unitValues = array_map('trim', $unitValues); // Trim to remove any leading or trailing whitespace
-
-                                                foreach ($unitValues as $unitValue) {
-                                                    if (!isset($unitCounts[$unitValue])) {
-                                                        $unitCounts[$unitValue] = 0;
-                                                    }
-                                                    $unitCounts[$unitValue]++;
-
-                                                    // Generate input boxes based on the count of unit values
-                                                    for ($i = 0; $i < $unitCounts[$unitValue]; $i++) {
-                                                        echo "<div class='d-flex justify-content-start align-items-baseline'>";
-                                                        echo "<input type='text' class='lab-val-inp' name='values[]' required >";
-                                                        echo "<label>$unitValue</label>";
-                                                        echo "<input type='hidden' name='unitValues[]' value='$unitValue'>";
-                                                        echo "<input type='hidden' name='testId[]' value='$testId'>";
-                                                        echo "</div>";
-                                                    }
-                                                }
+                                                echo "<option value='{$showTestName['id']}'>{$showTestName['name']}</option>";
                                             }
-
-                                            echo "</div>";
-                                            echo "</div>";
-                                            echo "</div>";
-                                        }
-                                        ?>
-
+                                            ?>
+                                        </select>
                                     </div>
-                                    <div class="d-flex justify-content-end">
-                                        <button type="submit" id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
-                                    </div>
-                            </form>
+                                    <form method="POST" action="">
+
+                                        <div class="mt-2" id="testReportBody"></div>
+
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+                <!-- /.container-fluid -->
 
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
 
         </div>
-        <!-- End of Main Content -->
-
-    </div>
-    <!-- End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -255,9 +254,72 @@ if (!$labBillingData->status) {
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
 
+
+
+    <!-- ================================== -->
+    <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH; ?>sb-admin-2.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            var choice = new Choices(
+                "#select-test", {
+                    allowHTML: true,
+                    removeItemButton: true,
+                }
+            );
+            let previousValues = choice.getValue(true);
+
+            document.getElementById('select-test').addEventListener('change', function(event) {
+                const currentValues = choice.getValue(true);
+                console.log("Previous value:", previousValues);
+                console.log("Current value:", currentValues);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "components/TestReportBody.inc.php", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Handle success
+                        // console.log("Response:", xhr.responseText);
+                        document.getElementById('testReportBody').innerHTML = xhr.responseText;
+                        // You can update the DOM or do other actions with the response data
+                    } else {
+                        // Handle error
+                        console.error("Error:", xhr.statusText);
+                        alert("An error occurred: " + xhr.statusText);
+                    }
+                };
+
+                xhr.onerror = function() {
+                    // Handle error
+                    console.error("Request failed");
+                    alert("An error occurred during the transaction");
+                };
+
+                xhr.send("testId=" + encodeURIComponent(currentValues));
+            });
+
+
+        });
+
+
+        const toggleParameter = (element) => {
+            const parentElement = element.closest('#parameter');
+            if (parentElement) {
+                console.log(parentElement);
+                // Add your toggle logic here, for example, hiding the parent element
+                parentElement.style.opacity = parentElement.style.opacity === '0.3' ? '' : '0.3';
+                console.log(parentElement.style.opacity);
+            }
+        }
+    </script>
 </body>
 
 </html>
