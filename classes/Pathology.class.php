@@ -182,7 +182,6 @@ class Pathology{
     function showTestList()
     {
         try {
-            $data = [];
             $selectTest = "SELECT * FROM `test_list`";
             $testQuery = $this->conn->query($selectTest);
             while ($result = $testQuery->fetch_array()) {
@@ -194,6 +193,15 @@ class Pathology{
         }
     } // end showSubTests function
 
+    function showTestById($testId)
+    {
+        $selectTestById = "SELECT * FROM test_list WHERE `id` = '$testId'";
+        $subTestQuery = $this->conn->query($selectTestById);
+        while ($result = $subTestQuery->fetch_assoc()) {
+            $data = $result;
+        }
+        return $data;
+    } // end showLabTypesById function
 
     function showTestByCat($catId)
     {
@@ -219,4 +227,33 @@ class Pathology{
         }
     }
 
+    /********************************************************************************************
+    *                                      Test List Table                                     *
+    ********************************************************************************************/
+
+    function showParametersByTest($testId)
+    {
+        try {
+            $query = "SELECT * FROM `test_parameters` WHERE `test_id` = '$testId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = [];
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    
 } //end of LabTypes Class

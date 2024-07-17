@@ -21,21 +21,7 @@ class LabReport
     }
 
 
-    function checkBill($billId)
-    {
-        $checkSql = "SELECT COUNT(*) FROM lab_report WHERE bill_id = ?";
-        $stmt = $this->conn->prepare($checkSql);
-        $stmt->bind_param("s", $billId);
-        $stmt->execute();
-        $stmt->bind_result($count);
-        $stmt->fetch();
-        $stmt->close();
-        if ($count > 0) {
-            return True;
-        } else {
-            return False;
-        }
-    }
+    
 
 
     function labReportUpdate($billId, $patientId, $dateTime, $adminId)
@@ -119,9 +105,9 @@ class LabReport
         try {
             $datas = array();
             if (!empty($adminId)) {
-                $sql = "SELECT * FROM `lab_report` WHERE `admin_id` = '$adminId'";
+                $sql = "SELECT * FROM `test_report` WHERE `admin_id` = '$adminId'";
             } else {
-                $sql = "SELECT * FROM `lab_report`";
+                $sql = "SELECT * FROM `test_report`";
             }
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {

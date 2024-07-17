@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
+require_once CLASS_DIR . 'utility.class.php';
+
 
 
 
@@ -283,7 +285,7 @@ if ($labBillDisplay->status) {
                                     <table class="table table-sm table-bordered" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Invoice ID</th>
+                                                <th>Invoice</th>
                                                 <th>Test Date</th>
                                                 <th>Test</th>
                                                 <th>Refered By</th>
@@ -312,14 +314,6 @@ if ($labBillDisplay->status) {
                                                     }
 
                                                     $test = count($billDetails);
-                                                    
-                                                    // foreach ($billDetails as $rowBillDetails) {
-                                                                                                    
-                                                    //     $subTestId = $rowBillDetails->test_id;
-
-                                                    //     $showSubTest = $SubTests->showSubTestsId($subTestId);
-                                                        
-                                                    // }
 
 
                                                     $docId = $referdDoc;
@@ -327,9 +321,7 @@ if ($labBillDisplay->status) {
                                                         $showDoctor = $Doctors->showDoctorNameById($docId);
                                                         $showDoctor = json_decode($showDoctor);
                                                         if ($showDoctor->status == 1) {
-                                                            foreach ($showDoctor->data as $rowDoctor) {
-                                                                $docName = $rowDoctor->doctor_name;
-                                                            }
+                                                            $docName = $showDoctor->data->doctor_name;
                                                         }
 
                                                     } else {
@@ -347,8 +339,8 @@ if ($labBillDisplay->status) {
                                                         echo 'style="background-color:white";';
                                                     }
                                                     echo '>
-                                                        <td>' . $billId . '</td>
-                                                        <td>' . $testDate . '</td>
+                                                        <td>#' . $billId . '</td>
+                                                        <td>' . formatDateTime($testDate) . '</td>
                                                         <td>'.$test.'</td>
                                                         <td>' . $docName . '</td>
                                                         <td>Rs. ' . $paidAmount . '</td>
@@ -390,15 +382,11 @@ if ($labBillDisplay->status) {
                     </div>
                     <!--/end Test Appointments -->
 
-
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-
-
-
 
         </div>
         <!-- End of Content Wrapper -->
@@ -406,6 +394,7 @@ if ($labBillDisplay->status) {
     </div>
     <!-- End of Page Wrapper -->
 
+<<<<<<< HEAD
     <!-- Scroll to Top Button-->
     <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -429,13 +418,15 @@ if ($labBillDisplay->status) {
     </div> -->
     <!-- end Lab ptient selection Modal -->
 
+=======
+>>>>>>> 51275a6b7a6f0ac48f48a7e3ebd41fa209e9118b
 
     <!-- Bill View Modal -->
     <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Invoice Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

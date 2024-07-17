@@ -5,15 +5,16 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 $billId = $_GET['billId'];
 
 $LabBilling         = new LabBilling;
 $LabBillDetails     = new LabBillDetails;
-$SubTests           = new SubTests;
+$Pathology          = new Pathology;
 $Patients           = new Patients;
 $Doctors            = new Doctors;
 
@@ -84,9 +85,7 @@ $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
             $showDoctor = $Doctors->showDoctorNameById($docId);
             $showDoctor = json_decode($showDoctor);
             if ($showDoctor->status == 1) {
-                foreach ($showDoctor->data as $rowDoctor) {
-                    $doctorName = $rowDoctor->doctor_name;
-                }
+                $doctorName = $showDoctor->data->doctor_name;
             }
         } else {
             $doctorName = $docId;
@@ -100,7 +99,7 @@ $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
             </div>
             <div class="col-sm-4">
                 <h6><b>Refered By:</b> <?php echo $doctorName; ?></h6>
-                <h6><b>Test Date:</b> <?php echo $testDate; ?></h6>
+                <h6><b>Test Date:</b> <?= formatDateTime($testDate); ?></h6>
 
             </div>
             <div class="col-sm-4">
@@ -119,7 +118,7 @@ $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
 
                 </div>
 
-                <h6><b>Bill Date:</b> <?php echo $billDate; ?></h6>
+                <h6><b>Bill Date:</b> <?= formatDateTime($billDate, '-', True); ?></h6>
             </div>
 
         </div>
@@ -148,10 +147,8 @@ $labBil      = json_decode($LabBilling->labBillDisplayById($billId));
                 $discOnTest = $rowbillDetails->percentage_of_discount_on_test;
                 $amount     = $rowbillDetails->price_after_discount;
 
-                $subTest = $SubTests->showSubTestsId($subTestId);
-                foreach ($subTest as $rowsubTest) {
-                    $testName = $rowsubTest['sub_test_name'];
-                }
+                $subTest = $Pathology->showTestById($subTestId);
+                $testName = $subTest['name'];
 
                 echo '<tr>
                         <th scope="row">' . $slno . '</th>

@@ -27,9 +27,9 @@ $testData = [];
 $labReportDetailbyId = json_decode($labReportDetailbyId);
 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
     foreach ($labReportDetailbyId as $report) {
-        $testIds[] = $report->test_id;
+        $testIds[]  = $report->test_id;
         $testData[] = $report->test_value;
-        $reportId = $report->report_id;
+        $reportId   = $report->report_id;
     }
 }
 
@@ -37,7 +37,7 @@ $findPatienttId = $LabReport->labReportbyReportId($reportId);
 $findPatienttId = json_decode($findPatienttId, true);
 if ($findPatienttId !== null) {
     $patient_id = $findPatienttId['patient_id'];
-    $billId = $findPatienttId['bill_id'];
+    $billId     = $findPatienttId['bill_id'];
 }
 
 $labBillingDetails = json_decode($LabBilling->labBillDisplayById($billId))->data;
@@ -46,10 +46,10 @@ $testDate = $labBillingDetails->test_date;
 $patientDatafetch = $LabReport->patientDatafetch($patient_id);
 $patientDatafetch = json_decode($patientDatafetch, true);
 if ($patientDatafetch !== null) {
-    $name = isset($patientDatafetch['name']) ? $patientDatafetch['name'] : 'N/A';
+    $name       = isset($patientDatafetch['name']) ? $patientDatafetch['name'] : 'N/A';
     $patient_id = isset($patientDatafetch['patient_id']) ? $patientDatafetch['patient_id'] : 'N/A';
-    $age = isset($patientDatafetch['age']) ? $patientDatafetch['age'] : 'N/A';
-    $gender = isset($patientDatafetch['gender']) ? $patientDatafetch['gender'] : 'N/A';
+    $age        = isset($patientDatafetch['age']) ? $patientDatafetch['age'] : 'N/A';
+    $gender     = isset($patientDatafetch['gender']) ? $patientDatafetch['gender'] : 'N/A';
 }
 
 // Include FPDF library

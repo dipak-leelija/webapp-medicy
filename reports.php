@@ -97,7 +97,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingThree">
                                                 <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                                    <i class="fas fa-percent" style="color: #3ED6CB;margin-right:8px"></i>Margin Report
+                                                    <i class="fas fa-percent" style="color: #009999;margin-right:8px"></i>Margin Report
                                                 </button>
                                             </h2>
                                             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
@@ -116,7 +116,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingFour">
                                                 <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                                    <i class="fas fa-box fa-fw fa-solid" style="color: #00ace6;margin-right:8px"></i>Stock Reports
+                                                    <i class="fas fa-box fa-fw fa-solid" style="color: #1affb2;margin-right:8px"></i>Stock Reports
                                                 </button>
                                             </h2>
                                             <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
@@ -137,11 +137,24 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="flush-headingFive">
-                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                                                    Inventory Report
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                                                    <i class="fas fa-list" style="color: #ff4da6;margin-right:8px"></i> Other Transaction Report
                                                 </button>
                                             </h2>
                                             <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <a href="credit-transaction-report.php">Credit Transactional Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingSix">
+                                                <button class="focus-out accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                                                    Inventory Report
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
                                                     <a href="">Inventory Report</a>
                                                 </div>
