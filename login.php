@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div> -->
 
             <div class="form-group">
-                <input type="text" class=" med-input" name="username" id="username" value="<?php echo htmlspecialchars($enteredUsername); ?>" required>
+                <input type="text" class=" med-input" name="username" id="username" value="<?php echo htmlspecialchars($enteredUsername); ?>" required autocomplete="off">
                 <label class="med-label" for="username">Username</label>
             </div>
 

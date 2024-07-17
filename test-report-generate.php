@@ -244,7 +244,7 @@ if (!$labBillingData->status) {
 
     </div>
     <!-- End of Content Wrapper -->
-
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     </div>
     <!-- End of Page Wrapper -->
 

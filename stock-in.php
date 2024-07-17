@@ -202,7 +202,7 @@ $todayYr = date("y");
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
             <!-- End of Footer -->
 
         </div>
@@ -210,6 +210,7 @@ $todayYr = date("y");
 
     </div>
     <!-- End of Page Wrapper -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Distributor Add Modal -->
     <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

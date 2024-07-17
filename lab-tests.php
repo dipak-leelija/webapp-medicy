@@ -257,7 +257,7 @@ if ($testCategories->status) {
     <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
-
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Category Edit Modal -->
     <div class="modal fade" id="addTestDataModel" tabindex="-1" aria-labelledby="addTestDataModelLabel" aria-hidden="true">
