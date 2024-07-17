@@ -227,4 +227,33 @@ class Pathology{
         }
     }
 
+    /********************************************************************************************
+    *                                      Test List Table                                     *
+    ********************************************************************************************/
+
+    function showParametersByTest($testId)
+    {
+        try {
+            $query = "SELECT * FROM `test_parameters` WHERE `test_id` = '$testId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = [];
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    
 } //end of LabTypes Class
