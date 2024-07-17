@@ -123,7 +123,7 @@ function purchaseAnalysisDataSearch(array){
     report = JSON.parse(report);
     // console.log(report);
     if(report.status == '1'){
-        reportShow(report.data);
+        purchaseAnalysisReportShow(report.data);
     }else{
         itemMarginTable.innerHTML = '';
         alert('no data found');
@@ -131,7 +131,15 @@ function purchaseAnalysisDataSearch(array){
 }
 
 
-function reportShow(reportData) {
+
+
+
+
+function purchaseAnalysisReportShow(reportData) {
+    // Pagination page constants
+    const rowsPerPage = 25;  // Assuming you want to show 1 row per page
+    let currentPage = 1;
+
     // Clear the table and other elements
     itemMarginTable.innerHTML = '';
     document.getElementById('download-checking').innerHTML = '1';
@@ -234,7 +242,180 @@ function reportShow(reportData) {
 
     // Append the table body to the table
     itemMarginTable.appendChild(tbody);
+
+    // Create pagination controls
+    function createPaginationControls(totalRows, page) {
+        const paginationControls = document.getElementById('pagination-controls');
+        paginationControls.innerHTML = ''; // Clear previous controls
+
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        if (totalPages > 1) {
+            const paginationWrapper = document.createElement('div');
+            paginationWrapper.className = 'd-flex align-items-center justify-content-center';
+
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.innerHTML = '&#8592;'; // Left arrow
+            prevButton.disabled = page === 1;
+            prevButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            prevButton.addEventListener('click', () => {
+                currentPage--;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(prevButton);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageNumber = document.createElement('span');
+                if (i === 1 || i === 2 || (i >= page - 1 && i <= page + 1) || i === totalPages) {
+                    pageNumber.textContent = i;
+                    pageNumber.className = `mx-1 ${i === page ? 'fw-bold text-primary' : 'text-skyblue'}`;
+                    pageNumber.style.cursor = 'pointer';
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable(reportData, currentPage);
+                    });
+                    paginationWrapper.appendChild(pageNumber);
+                } else if (i === page - 2 || i === page + 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'mx-1 text-skyblue';
+                    paginationWrapper.appendChild(ellipsis);
+                }
+            }
+
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.innerHTML = '&#8594;'; // Right arrow
+            nextButton.disabled = page === totalPages;
+            nextButton.className = 'btn btn-link text-decoration-none text-skyblue';
+            nextButton.addEventListener('click', () => {
+                currentPage++;
+                renderTable(reportData, currentPage);
+            });
+            paginationWrapper.appendChild(nextButton);
+
+            // Show page number of n format
+            const pageInfo = document.createElement('div');
+            pageInfo.className = 'mx-3 text-skyblue';
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            paginationWrapper.appendChild(pageInfo);
+
+            paginationControls.appendChild(paginationWrapper);
+        }
+    }
+
+    // Render table and controls
+    function renderTable(data, page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = data.slice(start, end);
+
+        // Clear previous table content
+        itemMarginTable.innerHTML = '';
+
+        // Create table headers
+        const thead = document.createElement('thead');
+
+        // Add main column headers row
+        const tr = document.createElement('tr');
+        header.forEach((headerText, index) => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            th.style.fontWeight = 'bold'; // Make the header bold
+            // Right align specific headers
+            if (index >= 4 && index <= 10) {
+                th.style.textAlign = 'right';
+            }
+            tr.appendChild(th);
+        });
+        thead.appendChild(tr);
+
+        // Append the header row to the table head
+        itemMarginTable.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+
+        // Populate the table with report data
+        paginatedData.forEach(data => {
+            const row = document.createElement('tr');
+
+            const addedOnCell = document.createElement('td');
+            addedOnCell.textContent = data.bill_date || ''; // Add bill date data
+            row.appendChild(addedOnCell);
+
+            const billNoCell = document.createElement('td');
+            billNoCell.textContent = data.bill_no || ''; // Add bill number data
+            row.appendChild(billNoCell);
+
+            const distNameCell = document.createElement('td');
+            distNameCell.textContent = data.dist_name || ''; // Add distributor name data
+            row.appendChild(distNameCell);
+
+            const itemNameCell = document.createElement('td');
+            itemNameCell.textContent = data.item_name || ''; // Add item name data
+            row.appendChild(itemNameCell);
+
+            const itemQtyCell = document.createElement('td');
+            itemQtyCell.textContent = data.qty || ''; // Add quantity data
+            itemQtyCell.style.textAlign = 'right'; // Right align the text
+            row.appendChild(itemQtyCell);
+
+            const itemMrpCell = document.createElement('td');
+            itemMrpCell.textContent = parseFloat(data.mrp).toFixed(2); // Format to 2 decimal places
+            itemMrpCell.style.textAlign = 'right'; // Right align the text
+            row.appendChild(itemMrpCell);
+
+            const itemPtrCell = document.createElement('td');
+            itemPtrCell.textContent = parseFloat(data.ptr).toFixed(2); // Format to 2 decimal places
+            itemPtrCell.style.textAlign = 'right'; // Right align the text
+            row.appendChild(itemPtrCell);
+
+            const itemMerginCell = document.createElement('td');
+            itemMerginCell.textContent = parseFloat(data.margin).toFixed(2); // Format to 2 decimal places
+            itemMerginCell.style.textAlign = 'right'; // Right align the text
+            row.appendChild(itemMerginCell);
+
+            const itemMerginDiff = document.createElement('td');
+            const marginDiffValue = parseFloat(data.margin_diff).toFixed(2);
+            itemMerginDiff.textContent = marginDiffValue + ' %'; // Format to 2 decimal places
+            itemMerginDiff.style.textAlign = 'right'; // Right align the text
+            if (marginDiffValue < 0) {
+                itemMerginDiff.style.color = 'red'; // Set text color to red for negative values
+            }
+            row.appendChild(itemMerginDiff);
+
+            const itemMerginDiffAmount = document.createElement('td');
+            const marginDiffAmountValue = parseFloat(data.margin_diff_amount).toFixed(2);
+            itemMerginDiffAmount.textContent = marginDiffAmountValue; // Format to 2 decimal places
+            itemMerginDiffAmount.style.textAlign = 'right'; // Right align the text
+            if (marginDiffAmountValue < 0) {
+                itemMerginDiffAmount.style.color = 'red'; // Set text color to red for negative values
+            }
+            row.appendChild(itemMerginDiffAmount);
+
+            const itemAvgMargin = document.createElement('td');
+            itemAvgMargin.textContent = parseFloat(data.avg_margin).toFixed(2); // Format to 2 decimal places
+            itemAvgMargin.style.textAlign = 'right'; // Right align the text
+            row.appendChild(itemAvgMargin);
+
+            tbody.appendChild(row);
+        });
+
+        // Append the table body to the table
+        itemMarginTable.appendChild(tbody);
+
+        // Create and update pagination controls
+        createPaginationControls(reportData.length, currentPage);
+    }
+
+    // Initial render
+    renderTable(reportData, currentPage);
 }
+
+
 
 
 

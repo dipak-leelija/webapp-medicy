@@ -611,7 +611,7 @@ class SalesReturn
                         JOIN 
                             manufacturer m ON p.manufacturer_id = m.id
                         JOIN 
-                            product_type pt ON pt.id = p.type
+                            product_type pt ON pt.name = p.type
                         LEFT JOIN 
                             admin adm ON sr.added_by = adm.admin_id
                         LEFT JOIN 

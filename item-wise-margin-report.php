@@ -165,7 +165,7 @@ $Utility     = new Utility;
                         </table>
 
                         <div class="col-md-12 text-center">
-                            <div id="pagination"></div>
+                            <div id="pagination-controls" class="pagination-container"></div>
                         </div>
 
                     </div>

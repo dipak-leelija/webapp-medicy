@@ -92,9 +92,7 @@ if ($_SESSION['ADMIN']) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
@@ -127,8 +125,7 @@ if ($_SESSION['ADMIN']) {
                         <div class="col-md-9 pt-2 pl-4">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="reports.php"
-                                            class="text-decoration-none">Reports</a></li>
+                                    <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Sales Summery</li>
                                 </ol>
                             </nav>
@@ -141,8 +138,7 @@ if ($_SESSION['ADMIN']) {
                                 </button> -->
                             </div>
                             <div class="col-sm-8 bg-info bg-opacity-10">
-                                <select class="focus-out p-1 w-100 text-primary bg-transparent" id="download-file-type"
-                                    name="download-file-type" onchange="selectDownloadType(this)">
+                                <select class="focus-out p-1 w-100 text-primary bg-transparent" id="download-file-type" name="download-file-type" onchange="selectDownloadType(this)">
                                     <option value='' disabled selected>Download</option>
                                     <option value='exl'>Download Excel</option>
                                     <option value='csv'>Download CSV File</option>
@@ -156,8 +152,7 @@ if ($_SESSION['ADMIN']) {
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
                             <!-- filter range -->
                             <div class="col-md-2 bg-white me-3 selectDiv">
-                                <select class="focus-out border-0 rounded p-1 w-100" name="day-filter" id="day-filter"
-                                    onchange="dayFilter(this)">
+                                <select class="focus-out border-0 rounded p-1 w-100" name="day-filter" id="day-filter" onchange="dayFilter(this)">
                                     <option value="0" selected>Day Wise</option>
                                     <option value="1">Week Wise</option>
                                     <option value="2">Month Wise</option>
@@ -167,8 +162,7 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- filter date range -->
                             <div class="col-md-2 bg-white me-3 selectDiv" id="date-range-select-div">
-                                <select class="focus-out border-0 p-1 w-100" name="date-range" id="date-filter"
-                                    onchange="dateRangeFilter(this)" required>
+                                <select class="focus-out border-0 p-1 w-100" name="date-range" id="date-filter" onchange="dateRangeFilter(this)" required>
                                     <option value="" disabled selected>Select Date Range</option>
                                     <option value="T">Today</option>
                                     <option value="Y">Yesterday</option>
@@ -184,19 +178,15 @@ if ($_SESSION['ADMIN']) {
 
                             <div class="d-none col-md-2 bg-white me-3 selectDiv" id="inputed-date-range-div">
                                 <div class="input-group w-100">
-                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range"
-                                        id="inputed-date-range" style="outline: none;" />
+                                    <input class="cvx-inp border-0 w-100" type="text" name="inputed-date-range" id="inputed-date-range" style="outline: none;" />
 
-                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append"
-                                        id="date-reset" style="margin-left: -23px;padding-right:0px" type="button"
-                                        onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
+                                    <button class="btn btn-sm btn-outline-none shadow-none input-group-append" id="date-reset" style="margin-left: -23px;padding-right:0px" type="button" onclick="dateRangeReset(this.id)"><i class="fas fa-calendar"></i></button>
                                 </div>
                             </div>
 
                             <!-- filter on category -->
                             <div class="col-md-2 bg-white me-3 selectDiv" id="category-filter-div">
-                                <select class="focus-out border-0 p-1 w-100" name="category-filter" id="category-filter"
-                                    onchange="categoryFilterSelect(this)">
+                                <select class="focus-out border-0 p-1 w-100" name="category-filter" id="category-filter" onchange="categoryFilterSelect(this)">
                                     <option value="" disabled selected>Filter By</option>
                                     <option value="ICAT">Item Category</option>
                                     <option value="PM">Payment Mode</option>
@@ -207,17 +197,12 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- product category list -->
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="prod-category-select-div">
-                                <button
-                                    class="focus-out btn dropdown-toggle bg-white w-100 p-1 border-0 overflow-hidden"
-                                    type="button" id="prod-category" name="prod-category" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button class="focus-out btn dropdown-toggle bg-white w-100 p-1 border-0 overflow-hidden" type="button" id="prod-category" name="prod-category" data-bs-toggle="dropdown" aria-expanded="false">
                                     Select Item Category
                                 </button>
-                                <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow w-75 fs-6"
-                                    aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu item-category-select-checkbox-menu allow-focus border-0 shadow w-75 fs-6" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="ac-chkBx"
-                                                value="AC" onclick="toggleCheckboxes1(this)"> All Category</label>
+                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="ac-chkBx" value="AC" onclick="toggleCheckboxes1(this)"> All Category</label>
                                     </li>
                                     <?php
                                     if (!empty($prodCategoryData)) {
@@ -235,39 +220,32 @@ if ($_SESSION['ADMIN']) {
                             <!-- filter payment mode -->
 
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="payment-mode-div">
-                                <button class="focus-out btn btn-default dropdown-toggle p-1 w-100 overflow-hidden"
-                                    type="button" id="payment-mode" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="focus-out btn btn-default dropdown-toggle p-1 w-100 overflow-hidden" type="button" id="payment-mode" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="caret" id="payment-mode-select-span">Select Payment Mode</span>
                                 </button>
-                                <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow"
-                                    aria-labelledby="payment-mode">
+                                <ul class="dropdown-menu payment-mode-checkbox-menu allow-focus border-0 shadow" aria-labelledby="payment-mode">
                                     <li>
-                                        <label class="m-0"><input class="activeCheckedBox" id="apm-chkBx"
-                                                type="checkbox" value="APM" onclick="toggleCheckboxes2(this)"> All
+                                        <label class="m-0"><input class="activeCheckedBox" id="apm-chkBx" type="checkbox" value="APM" onclick="toggleCheckboxes2(this)"> All
                                             Payment Mode</label>
                                     </li>
 
                                     <li>
-                                        <label class="m-0"><input id="csh-chkBx" type="checkbox" value="Cash"
-                                                onclick="toggleCheckboxes2(this)"> Cash</label>
+                                        <label class="m-0"><input id="csh-chkBx" type="checkbox" value="Cash" onclick="toggleCheckboxes2(this)"> Cash</label>
                                     </li>
 
                                     <li>
                                         <label class="m-0">
-                                            <input id="crdt-chkBx" type="checkbox" value="Credit"
-                                                onclick="toggleCheckboxes2(this)"> Credit
+                                            <input id="crdt-chkBx" type="checkbox" value="Credit" onclick="toggleCheckboxes2(this)"> Credit
                                         </label>
                                     </li>
                                     <li>
                                         <label class="m-0">
-                                            <input id="upi-chkBx" type="checkbox" value="UPI"
-                                                onclick="toggleCheckboxes2(this)"> UPI
+                                            <input id="upi-chkBx" type="checkbox" value="UPI" onclick="toggleCheckboxes2(this)"> UPI
                                         </label>
                                     </li>
                                     <li>
                                         <label class="m-0">
-                                            <input id="crd-chkBx" type="checkbox" value="Card"
-                                                onclick="toggleCheckboxes2(this)"> Card
+                                            <input id="crd-chkBx" type="checkbox" value="Card" onclick="toggleCheckboxes2(this)"> Card
                                         </label>
                                     </li>
                                     <label class="d-none" id="filter-by-payment-mode-val"></label>
@@ -277,22 +255,16 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- filter on staff -->
                             <div class="dropdown d-none col-md-2 bg-white me-3 selectDiv" id="staff-filter-div">
-                                <button class="focus-out btn btn-default dropdown-toggle p-1 w-100 overflow-hidden"
-                                    type="button" id="staff-filter" name="staff-filter" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button class="focus-out btn btn-default dropdown-toggle p-1 w-100 overflow-hidden" type="button" id="staff-filter" name="staff-filter" data-bs-toggle="dropdown" aria-expanded="false">
                                     Select Staff
                                 </button>
-                                <ul class="dropdown-menu staff-list-checkbox-menu allow-focus border-0 shadow"
-                                    aria-labelledby="dropdownMenu1">
+                                <ul class="dropdown-menu staff-list-checkbox-menu allow-focus border-0 shadow" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox"
-                                                id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)"> All
+                                        <label class="m-0"><input class="activeCheckedBox" type="checkbox" id="stf-chkBx" value="AS" onclick="toggleCheckboxes3(this)"> All
                                             Staff</label>
                                     </li>
                                     <li>
-                                        <label class="m-0"><input type="checkbox" id="adm-chkBx"
-                                                value="<?= $adminId; ?>" name="<?= $adminName; ?>"
-                                                onclick="toggleCheckboxes3(this)"><?= $adminName; ?> (admin)</label>
+                                        <label class="m-0"><input type="checkbox" id="adm-chkBx" value="<?= $adminId; ?>" name="<?= $adminName; ?>" onclick="toggleCheckboxes3(this)"><?= $adminName; ?> (admin)</label>
                                     </li>
                                     <?php
                                     if (!empty($employeeDetails)) {
@@ -301,8 +273,7 @@ if ($_SESSION['ADMIN']) {
                                         }
                                     }
                                     ?>
-                                    <label class="d-none"
-                                        id="all-stuff-name-data"><?php echo $allEmpNameString; ?></label>
+                                    <label class="d-none" id="all-stuff-name-data"><?php echo $allEmpNameString; ?></label>
                                     <label class="d-none" id="all-stuff-id-data"><?php echo $allUserIdString; ?></label>
 
                                     <label class="d-none" id="filter-by-staff-name"></label>
@@ -313,8 +284,7 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- additional filter  -->
                             <div class="dropdown d-none col-md-2 me-3 bg-white selectDiv" id="report-filter-div">
-                                <select class="focus-out border-0 p-1 w-100" name="sales-report-on" id="sales-report-on"
-                                    onchange="filterReportOn(this)">
+                                <select class="focus-out border-0 p-1 w-100" name="sales-report-on" id="sales-report-on" onchange="filterReportOn(this)">
                                     <option value="" selected>Select Report Filter</option>
                                     <option value="TS">Total Sales (&#8377)</option>
                                     <option value="TM">Total Margin (&#8377)</option>
@@ -327,24 +297,19 @@ if ($_SESSION['ADMIN']) {
 
                             <!-- find button on filter -->
                             <div class="col-md-1 searchFilterDiv" id="search-btn-div">
-                                <button type="button" id="search-filter" name="find-report"
-                                    class="focus-out btn btn-primary btn-sm text-center" onclick="salesSummerySearch()">
+                                <button type="button" id="search-filter" name="find-report" class="focus-out btn btn-primary btn-sm text-center" onclick="salesSummerySearch()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
 
                             <!-- search filter sidebar -->
-                            <button class="focus-out btn btn-primary btn-sm text-center" id="search-filter"
-                                type="button" data-bs-toggle="offcanvas" name="find-report"
-                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="width: 2rem;">
+                            <button class="focus-out btn btn-primary btn-sm text-center" id="search-filter" type="button" data-bs-toggle="offcanvas" name="find-report" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="width: 2rem;">
                                 <i class="fas fa-filter"></i>
                             </button>
-                            <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="offcanvasRight"
-                                aria-labelledby="offcanvasRightLabel">
+                            <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                                 <div class="offcanvas-header bg-info text-white">
                                     <h5 class="offcanvas-title" id="offcanvasRightLabel">Search Filter</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                        aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body mt-5">
                                     <div class="form-check ms-4">
@@ -367,13 +332,11 @@ if ($_SESSION['ADMIN']) {
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>Strat Date</label>
-                                            <input type="date" id="from-date" name="from-date"
-                                                onchange="selectStartDate(this)">
+                                            <input type="date" id="from-date" name="from-date" onchange="selectStartDate(this)">
                                         </div>
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>End Date</label>
-                                            <input type="date" id="to-date" name="to-date"
-                                                onchange="selectEndDate(this)">
+                                            <input type="date" id="to-date" name="to-date" onchange="selectEndDate(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -382,29 +345,14 @@ if ($_SESSION['ADMIN']) {
                             </div>
                         </div>
 
-                        <!-- <div class="row d-flex">
-                            <!-- extra filter div --
-                            <label class="d-none" id="extra-filter-check">0</label>
-                            <label class="d-none" id="selected-additional-fiter"></label>
-                            <div class="col-md-5 p-2 ml-5" id="extraFilterDiv" style="display: none;">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value=""
-                                        id="bill-date-checked-check-box" onclick="filterCheck1(this)">
-                                    <label class="form-check-label" for="bill-date-checked-check-box">
-                                        Show Bill Date
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
-
 
                         <!-- report table start -->
                         <table class="table" id="report-table">
                             <!-- dynamic table gose hear -->
 
                         </table>
-                        <div class="col-md-12 text-center">
-                            <div id="pagination"></div>
+                        <div class="col-md-12 text-right">
+                            <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>
 
                     </div>
@@ -455,18 +403,18 @@ if ($_SESSION['ADMIN']) {
 
     <!-- checkbox checked or unchecked  -->
     <script>
-    function toggleCheckboxes(source) {
-        const checkboxes = document.querySelectorAll('.checkbox-menu input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            if (!checkbox.disabled) {
-                checkbox.checked = source.checked;
-            }
-        });
+        function toggleCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('.checkbox-menu input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.disabled) {
+                    checkbox.checked = source.checked;
+                }
+            });
 
-        if (source.value == 'AC') {
-            document.getElementById('prod-category').innerHTML = 'All Category';
+            if (source.value == 'AC') {
+                document.getElementById('prod-category').innerHTML = 'All Category';
+            }
         }
-    }
     </script>
 </body>
 
