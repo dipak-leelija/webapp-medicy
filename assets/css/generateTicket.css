@@ -12,6 +12,7 @@
     transition: transform 0.3s ease;
 }
 .g-ticketBtn:hover{
+    background-color:var(--blue);
     transform:scale(1.1);
 }
 
