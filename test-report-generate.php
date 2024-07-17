@@ -1,16 +1,14 @@
 <?php
 
-use function PHPSTORM_META\type;
-
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'report-generate.class.php';
+// require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'PathologyReport.class.php';
-
+require_once CLASS_DIR . 'patients.class.php';
 
 require_once CLASS_DIR . 'utility.class.php';
 
@@ -26,16 +24,27 @@ $LabBilling         = new LabBilling();
 $LabBillDetails     = new LabBillDetails();
 $Pathology          = new Pathology;
 $PathologyReport    = new PathologyReport;
-$LabReport          = new LabReport();
+// $LabReport          = new LabReport();
+$Patients           = new Patients;
 
 $labBillingData     = json_decode($LabBilling->labBillDisplayById($testBillId));
 if (!$labBillingData->status) {
     $resErrMsg = $labBillingData->message;
 } else {
 
+    $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
+    // print_r($reportDetails);
+    foreach ($reportDetails as $eachParam) {
+        $details = json_decode($Pathology->showTestByParameter($eachParam));
+        if($details->status){
+            $existingTests[] = $details->data->test_id;
+        }
+    }
+    $existingTests = array_unique($existingTests);
 
     $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
-    $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
+    // $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
+    $showpatient        = $Patients->patientsDisplayByPId($labBillingData->data->patient_id);
     // $testBillId         = $labBillingData->data->bill_id;
     // $patientId          = $labBillingData->data->patient_id;
 
@@ -125,7 +134,7 @@ if (!$labBillingData->status) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Lab Report Generate</title>
+    <title>Generate Lab Report </title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -138,14 +147,9 @@ if (!$labBillingData->status) {
     <!-- Sweet Alert Link  -->
     <script src="<?php echo JS_PATH ?>/sweetAlert.min.js"></script>
 
-    <!-- Ignore these -->
-    <!-- <link rel="stylesheet" href="<?= PLUGIN_PATH ?>choices/assets/styles/base.min.css" /> -->
-    <!-- End ignore these -->
-
     <!-- Choices includes -->
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" />
     <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.min.js"></script>
-    <!-- <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script> -->
 
 
 </head>
@@ -216,8 +220,12 @@ if (!$labBillingData->status) {
                                             foreach ($labBillingDetails->data as $index => $test) {
                                                 $testId = $test->test_id;
                                                 $showTestName = $Pathology->showTestById($testId);
+                                                
+                                                $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
+                                                $msg = in_array($showTestName['id'], $existingTests) ? 'Report Generated' : '' ;
 
-                                                echo "<option value='{$showTestName['id']}'>{$showTestName['name']}</option>";
+
+                                                echo "<option value='{$showTestName['id']}' $disabled >{$showTestName['name']} - $msg</option>";
                                             }
                                             ?>
                                         </select>

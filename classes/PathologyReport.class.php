@@ -6,7 +6,7 @@ class PathologyReport
 
     /********************************************************************************************
      *                                      Test Report Table                                   *
-    ********************************************************************************************/
+     ********************************************************************************************/
 
     function addTestReport($bill_id, $adminId, $added_on = NOW)
     {
@@ -37,6 +37,29 @@ class PathologyReport
         }
     }
 
+    function getReportParamsByBill($billId)
+    {
+        try {
+            $sql = "SELECT id FROM `test_report` WHERE `bill_id`= $billId";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $reports[] = $result->id;
+            }
+            foreach ($reports as $eachReport) {
+                $response =  $this->reportDetails($eachReport);
+                if ($response) {
+                    foreach ($response as $eachRes) {
+                        $existingParams[] = $eachRes['param_id'];
+                    }
+                }
+            }
+            return $existingParams;
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 
     // function checkTestBill($billId)
     // {
@@ -56,10 +79,11 @@ class PathologyReport
 
 
     /********************************************************************************************
-    *                                  Test Report Details Table                                *
-    ********************************************************************************************/
-    
-    function addReportDetails($reportId, $param_id, $param_value){
+     *                                  Test Report Details Table                                *
+     ********************************************************************************************/
+
+    function addReportDetails($reportId, $param_id, $param_value)
+    {
         try {
             $addQuery = "INSERT INTO `test_report_details` (`report_id`, `param_id`, `param_value`) VALUES (?, ?, ?)";
             $stmt = $this->conn->prepare($addQuery);
@@ -70,7 +94,7 @@ class PathologyReport
 
             $stmt->bind_param('sss', $reportId, $param_id, $param_value);
             $stmt->execute();
-            
+
             if ($stmt->affected_rows > 0) {
                 $response = ['status' => true, 'message' => 'success',];
             } else {
@@ -82,6 +106,21 @@ class PathologyReport
         } catch (Exception $e) {
             return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
-    }	
+    }
 
+    function reportDetails($reportId)
+    {
+        try {
+            $datas = null;
+            $sql = "SELECT * FROM `test_report_details` where `report_id`=$reportId";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_assoc()) {
+                $datas[] = $result;
+            }
+            $dataset = $datas;
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
