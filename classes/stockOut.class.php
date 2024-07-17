@@ -1549,6 +1549,10 @@ class StockOut
                                     WHEN so.customer_id = 'Cash Sales' THEN 'Cash Sales'
                                     ELSE pd.name
                                 END AS patient_name,
+                                CASE 
+                                    WHEN so.customer_id = 'Cash Sales' THEN 'Cash Sales'
+                                    ELSE pd.phno
+                                END AS patient_contact,
                                 so.items AS total_items,
                                 so.amount AS amount,
                                 so.gst AS gst_amount

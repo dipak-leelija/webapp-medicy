@@ -75,7 +75,7 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="reports.php" class="text-decoration-none">Reports</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Credit Transactio  Report</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Credit Transactio Report</li>
                                 </ol>
                             </nav>
                         </div>
@@ -130,6 +130,17 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
                                 <button type="button" id="search-filter" name="search-filter" class="focus-out btn btn-primary text-center btn-sm" onclick="searchReport()">
                                     Go <i class="fas fa-arrow-right"></i>
                                 </button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" id="over-all-credit-amount">
+                            <div class="d-none col-sm-12 text-end" id="need-to-pay-div">
+                                <label for="" class="mt-1 fw-bold text-danger">Need To Pay</label><br>
+                                <label for="" id="need-to-pay-label" class="text-danger"></label>&nbsp;<i class="fas fa-arrow-up text-danger"></i>
+                            </div>
+                            <div class="d-none col-sm-12 text-end" id="need-to-collect-div">
+                                <label for="" class="mt-1 fw-bold text-info">Need To Collect</label><br>
+                                <label for="" id="need-to-collect-label" class="text-info"></label>&nbsp;<i class="fas fa-arrow-down text-info"></i>
                             </div>
                         </div>
 

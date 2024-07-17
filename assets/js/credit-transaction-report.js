@@ -6,6 +6,14 @@ const endDate = document.getElementById('selected-end-date');
 const reportGenerationDateTime = document.getElementById('report-generation-date-time-holder');
 const reportOn = document.getElementById('reprt-on');
 
+// labels
+const needToCollectLabel = document.getElementById('need-to-pay-label');
+const needToPayLabel = document.getElementById('need-to-collect-label');
+
+// divs
+const needToPayDiv = document.getElementById('need-to-pay-div');
+const needToCollectDiv = document.getElementById('need-to-collect-div');
+
 // uses data holder
 const downloadType = document.getElementById('download-file-type');
 const healthCareName = document.getElementById('healthcare-name');
@@ -21,12 +29,12 @@ $(function() {
     }
 
     let dateRanges = {
-        '30 Days': [moment().subtract(29, 'days'), moment()],
-        '45 Days': [moment().subtract(44, 'days'), moment()],
-        '60 Days': [moment().subtract(59, 'days'), moment()],
-        '90 Days': [moment().subtract(89, 'days'), moment()],
-        '120 Days': [moment().subtract(119, 'days'), moment()],
-        '180 Days': [moment().subtract(179, 'days'), moment()]
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'Last 45 Days': [moment().subtract(44, 'days'), moment()],
+        'Last 60 Days': [moment().subtract(59, 'days'), moment()],
+        'Last 90 Days': [moment().subtract(89, 'days'), moment()],
+        'Last 120 Days': [moment().subtract(119, 'days'), moment()],
+        'Last 180 Days': [moment().subtract(179, 'days'), moment()]
     };
 
     let startDate = moment().subtract(29, 'days');
@@ -195,9 +203,13 @@ function creditTransactionReportShow(reportDataArray){
     // Define headers based on filter values
     let header = [];
     if (reportOn.innerHTML == 'P') {
+        needToPayDiv.classList.remove('d-none');
+        needToCollectDiv.classList.add('d-none');
         header = ['Sl No', 'Distributor Name', 'Bill Id', 'Bill Date', 'Due Date', 'Added On', 'Items Count', 'Amount'];
     } else if (reportOn.innerHTML == 'S') {
-        header = ['Sl No', 'Customer Name', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
+        needToCollectDiv.classList.remove('d-none');
+        needToPayDiv.classList.add('d-none');
+        header = ['Sl No', 'Customer Name', 'Contact Number', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
     }
 
     // Function to render table
@@ -221,7 +233,7 @@ function creditTransactionReportShow(reportDataArray){
             if (index >= header.length - 2) {
                 th.style.textAlign = 'right';
             }
-            
+
             tr.appendChild(th);
         });
         thead.appendChild(tr);
@@ -232,6 +244,8 @@ function creditTransactionReportShow(reportDataArray){
         // Create table body
         const tbody = document.createElement('tbody');
         let slNo = start; // Adjust slNo based on pagination
+        let totalAmount = '';
+
         paginatedData.forEach(data => {
             slNo++;
             const row = document.createElement('tr');
@@ -250,8 +264,15 @@ function creditTransactionReportShow(reportDataArray){
                 row.appendChild(patientCell);
             }
 
+            if(reportOn.innerHTML == 'S'){
+                const patientContactCell = document.createElement('td');
+                patientContactCell.textContent = data.patient_contact || ''; // Add bill date data
+                // patientContactCell.style.textAlign = 'right';
+                row.appendChild(patientContactCell);   
+            }
+
             const billNoCell = document.createElement('td');
-            billNoCell.textContent = data.bill_no || ''; // Add bill number data
+            billNoCell.textContent = '#'+data.bill_no || ''; // Add bill number data
             row.appendChild(billNoCell);     
 
             const billDateCell = document.createElement('td');
@@ -278,8 +299,16 @@ function creditTransactionReportShow(reportDataArray){
             amountCell.style.textAlign = 'right';
             row.appendChild(amountCell);
 
+            totalAmount += data.amount;
+
             tbody.appendChild(row);
         });
+
+        if(reportOn.innerHTML == 'P'){
+            needToCollectLabel.innerHTML = totalAmount;
+        }else if(reportOn.innerHTML == 'S'){
+            needToPayLabel.innerHTML = totalAmount;
+        }
 
         // Append the table body to the table
         creditTransactionDetaisTable.appendChild(tbody);
