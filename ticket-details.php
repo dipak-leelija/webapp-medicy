@@ -249,7 +249,7 @@ if ($pagination->status == 1) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
             <!-- End of Footer -->
 
         </div>
@@ -258,9 +258,10 @@ if ($pagination->status == 1) {
     </div>
     <!-- End of Page Wrapper -->
 
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
 
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>

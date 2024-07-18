@@ -364,9 +364,10 @@ if ($allAppointments->status) {
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     <!-- Select Appointment Type Modal  -->
     <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog centered" role="document">

@@ -250,8 +250,16 @@ if (!$labBillingData->status) {
             <!-- End of Main Content -->
 
         </div>
+<<<<<<< HEAD
+        <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+=======
         <!-- End of Content Wrapper -->
 
+>>>>>>> 51275a6b7a6f0ac48f48a7e3ebd41fa209e9118b
     </div>
     <!-- End of Page Wrapper -->
 

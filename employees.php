@@ -303,7 +303,7 @@ if (isset($_POST['add-emp']) == true) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
             <!-- End of Footer -->
 
         </div>
@@ -335,9 +335,10 @@ if (isset($_POST['add-emp']) == true) {
     <!-- Emp Edit and View Modal End -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>

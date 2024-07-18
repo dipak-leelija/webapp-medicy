@@ -53,6 +53,11 @@
   top: -6px;
   color: var(--blue);
 }
+.med-input:-webkit-autofill + .med-label,
+.med-input:focus + .med-label,
+.med-input:not(:placeholder-shown) + .med-label{
+  top: -6px;
+}
 
 .form-asterisk {
   background-color: inherit;

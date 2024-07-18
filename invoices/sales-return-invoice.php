@@ -63,6 +63,7 @@ if ($customerId != 'Cash Sales') {
     $patientName = $patient->name;
     $patientPhno = $patient->phno;
     $patientAge  = $patient->age;
+    $patientEmail= $patient->email;
 
     // $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'><small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p><p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>"";
 } else {
@@ -108,9 +109,10 @@ class PDF extends FPDF
     private $refundAmount;
     private $slno;
     private $isLastPage;
+    private $patientEmail;
 
     // Constructor with parameters
-    function __construct($invoiceId, $refundMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt,  $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $refundAmount) {
+    function __construct($invoiceId, $refundMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt,  $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $refundAmount,$patientEmail) {
         parent::__construct();
 
         $this->invoiceId = $invoiceId;
@@ -132,6 +134,7 @@ class PDF extends FPDF
         $this->healthCareApntbkNo = $healthCareApntbkNo;
         $this->gstinData = $gstinData;
         $this->refundAmount = $refundAmount;
+        $this->patientEmail = $patientEmail;
     }
 
     function Header() {
@@ -141,7 +144,7 @@ class PDF extends FPDF
 
             //.. healthCareLogo...///
             $logoX = 10;
-            $logoY = 12;
+            $logoY = 6;
             $logoWidth = 20;
             $logoHeight = 20;
             if (!empty($this->healthCareLogo)) {
@@ -150,30 +153,33 @@ class PDF extends FPDF
 
             ///....Title (Healthcare Name)...///
             $this->SetFont('Arial', 'B', 16);
-            $this->SetXY($logoX + $logoWidth + 5, $logoY); // Position next to the logo
-            $this->Cell(90, 8, $healthCareName, 0, 1, 'L'); // Centered text
+            $this->SetXY($logoX + $logoWidth + 3, $logoY); // Position next to the logo
+            $healthCareName = strtoupper($this->healthCareName);
+            $this->Cell(150, 8, $healthCareName, 0, 1, 'L'); // Centered text
 
             // Address
-            $this->SetFont('Arial', '', 10);
-            $address = "$healthCareAddress1, $healthCareAddress2\n$healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo\nGST ID : $gstinData";
+            $this->SetFont('Arial', '', 9);
+            $address = "$healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin\nM: $healthCarePhno, $healthCareApntbkNo\nGST ID : $gstinData";
             
-            $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
-            $this->MultiCell(90, 5, $address, 0, 'L');
+            $this->SetXY($logoX + $logoWidth + 3, $logoY + 8); // Position below the title
+            $this->MultiCell(120, 4.2, $address, 0, 'L');
 
             ///...Invoice Info
-            $this->SetY(20); // Reset Y position
-            $this->SetX(-50); // Align to the right
+            $this->SetY(11); // Reset Y position
+            $this->SetX(-51); // Align to the right
             // Draw vertical line
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 20);
+            // $this->SetLineWidth(0.4);
+            // $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY() -2, $this->GetX(), $this->GetY() + 15);
             $this->SetFont('Arial', 'B', 10);
-            $this->cell(80, 0, ' Invoice:', 0, 'L');
-            $this->SetFont('Arial', '', 10);
-            $this->MultiCell(80, 5, " \n Bill Id: #$invoiceId\n Payment: $refundMode\n Date: $this->billDate", 0, 'L');
-
-            $this->SetDrawColor(108, 117, 125);
+            $this->cell(80, -2, ' Invoice:', 0, 'L');
+            $this->SetFont('Arial', '', 9);
+            $this->MultiCell(80, 4.2, " \n Bill Id: #$invoiceId\n Payment: $refundMode\n Date: $this->billDate", 0, 'L');
+            $this->Ln(1.6);
+            // $this->SetDrawColor(108, 117, 125);
+            // $this->SetLineWidth(0.4);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(10);
+            $this->Ln(9);
         }
     }
 
@@ -182,50 +188,72 @@ class PDF extends FPDF
         if ($this->isLastPage) { /// this line only show the footer last page 
 
             $pageHeight = $this->GetPageHeight();
-            $middleY = $pageHeight / 2;
+            $middleY = ($pageHeight / 2)-2;
             $this->SetY($middleY);
-            $this->SetLineWidth(0.4);
-            $this->SetDrawColor(108, 117, 125);
+            // $this->SetLineWidth(0.4);
+            // $this->SetDrawColor(0, 0, 0);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
-            $this->Ln(1);
+            // $this->Ln(1);
 
            // Set the font for the footer content
-           $this->SetFont('Arial', '', 10);
+           $this->SetFont('Arial', '', 8);
 
             // Patient Info
-            $this->SetY($this->GetY() + 2); // Add some padding
+            $this->SetY($this->GetY() + 1); // Add some padding
             $startX = 10;
             $currentY = $this->GetY();
 
             $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
+            $this->SetFont('Arial', 'B', 9);
             $this->Cell(30, 5, 'Patient: ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', '', 9);
             $this->Cell(30, 5, $this->patientName, 0, 'L');
             $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
+            $this->SetFont('Arial', 'B', 9);
             $this->Cell(30, 5, 'Contact: ', 0, 0, 'L');
-            $this->SetFont('Arial', '', 10);
+            $this->SetFont('Arial', '', 9);
             $this->Cell(30, 5, $this->patientPhno, 0, 1, 'L');
 
              // Draw vertical line
-            $this->SetY(149); // Reset Y position
-            $this->SetX(98); // Align to the right
-            $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 15);
+            $this->SetY(147.5); // Reset Y position
+            $this->SetX(96); // Align to the right
+            // $this->SetLineWidth(0.4);
+            // $this->SetDrawColor(108, 117, 125);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), $this->GetY() + 10);
 
             //..Amount Calculation
             $startX = 140;
             $this->SetY($currentY); // Reset Y position to top of the section
             $this->SetX($startX);
-            $this->SetFont('Arial', 'B', 10);
+            $this->SetFont('Arial', 'B', 9);
             $this->Cell(30, 5, 'Total Refund', 0, 0, 'R');
-            $this->SetFont('Arial', '', 10);
-            $this->Cell(30, 5, ': ' . $this->refundAmount, 0, 1, 'R');
+            // $this->SetFont('Arial', '', 8);
+            $this->Cell(31.4, 5, ': ' . $this->refundAmount, 0, 1, 'R');
             
-            $this->Ln(8);
-            $this->SetDrawColor(108, 117, 125);
+            $this->Ln(6.2);
+            // $this->SetLineWidth(0.4);
+            // $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(2.5);
+
+            $phoneIcon = '../assets/plugins/pdfprint/icon/phone.png';
+            $emailIcon = '../assets/plugins/pdfprint/icon/email.png';
+            $this->SetFont('Arial', '', 8);
+            $startX = $this->GetX();
+            $startY = $this->GetY();
+            $this->Image($phoneIcon, $startX, $startY - 2, 4); // Adjust position and size as needed
+            if(!empty($this->patientEmail)){
+            $this->Image($emailIcon, $startX + 38, $startY -2, 3.5);
+            }
+            $address = " " . $this->healthCarePhno . "," . $this->healthCareApntbkNo . ",          ".$this->patientEmail.",  Print Time: " . date('Y-m-d H:i:s');
+            $textX = $startX + 3;
+            if (empty($this->patientEmail)) {
+                $address = " " . $this->healthCarePhno . "," . $this->healthCareApntbkNo . ",  Print Time: " . date('Y-m-d H:i:s');
+            }
+            $this->SetXY($textX, $startY);
+            // Output the address text
+            $this->SetFont('Arial', 'B', 8);
+            $this->MultiCell(0, 0, $address, 0, 'L');
         }
     }
 
@@ -236,31 +264,31 @@ class PDF extends FPDF
         if ($this->$refundMode != 'Credit') {
             $imageX = 80; // X position with left space
             $imageY = 70;
-            $imageWidth = 50; // Adjusted width with spaces
-            $imageHeight = 50; // Height of the image
+            $imageWidth = 45; // Adjusted width with spaces
+            $imageHeight = 45; // Height of the image
             $this->Image('../assets/images/refund-seal.png', $imageX, $imageY, $imageWidth, $imageHeight);
         }///....end page badge...///
     
         $this->SetFont('Arial', 'B', 9);
-        $this->Cell(14, -10, 'SL. NO.', 0, 0, 'L');
-        $this->Cell(30, -10, 'Name', 0, 0, 'L');
-        $this->Cell(15, -10, 'Manuf.', 0, 0, 'L');
-        $this->Cell(20, -10, 'Batch', 0, 0, 'L');
-        $this->Cell(13, -10, 'Exp.', 0, 0, 'L');
-        $this->Cell(14, -10, 'Unit.', 0, 0, 'L');
-        $this->Cell(14, -10, 'Buy Qty', 0, 0, 'L');
-        $this->Cell(13, -10, 'Ret.Qty', 0, 0, 'L');
-        $this->Cell(13, -10, 'Rate', 0, 0, 'L');
-        $this->Cell(15, -10, 'Disc (%)', 0, 0, 'L');
-        $this->Cell(14, -10, 'GST(%)', 0, 0, 'L');
-        $this->Cell(16, -10, 'Amount', 0, 1, 'R');
-        $this->Ln(10);
-        $this->SetDrawColor(108, 117, 125);
+        $this->Cell(12, -11, 'SL.', 0, 0, 'L');
+        $this->Cell(32, -11, 'Name', 0, 0, 'L');
+        $this->Cell(15, -11, 'Manuf.', 0, 0, 'L');
+        $this->Cell(20, -11, 'Batch', 0, 0, 'L');
+        $this->Cell(13, -11, 'Exp.', 0, 0, 'L');
+        $this->Cell(14, -11, 'Unit.', 0, 0, 'L');
+        $this->Cell(14, -11, 'Buy Qty', 0, 0, 'L');
+        $this->Cell(13, -11, 'Ret.Qty', 0, 0, 'L');
+        $this->Cell(13, -11, 'Rate', 0, 0, 'L');
+        $this->Cell(15, -11, 'Disc (%)', 0, 0, 'L');
+        $this->Cell(14, -11, 'GST(%)', 0, 0, 'L');
+        $this->Cell(16, -11, 'Amount', 0, 1, 'R');
+        $this->Ln(8.1);
+        // $this->SetDrawColor(108, 117, 125);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
         $this->Ln(2);
 
         $slno = 1;
-        $rowsPerPage = 8; // Maximum rows per page
+        $rowsPerPage = 7; // Maximum rows per page
         $rowCounter = 0;
         foreach($salesReturnDetails as $detail){
             
@@ -326,7 +354,7 @@ class PDF extends FPDF
                         }///....end page badge...///
                     }
 
-        $this->SetFont('Arial', '', 9);  
+        $this->SetFont('Arial', '', 8);  
         
         if ($slno > 1) {
             $this->SetDrawColor(183, 182, 182); // Set color for the dotted line
@@ -346,28 +374,28 @@ class PDF extends FPDF
                 $drawDot = !$drawDot; // Switch drawing state for next dot
             }
         }
-        $this->Cell(14, 5, $slno, 0, 0, 'L');
+        $this->Cell(12, 5, $slno, 0, 0, 'L');
 
         $productName = $product->name;
         if (strlen($productName) > 15) {
-            $productName = substr($productName, 0, 15) . "\n" . substr($productName, 15);
+            $productName = substr($productName, 0, 15) . "" . substr($productName, 15);
         }
         $x = $this->GetX();
         $y = $this->GetY(2);
         // $this->Ln(2);
-        $this->MultiCell(30, 5, $productName, 0, 'L');
-        $this->SetXY($x + 30, $y-2);
+        $this->MultiCell(32, 4, $productName, 0, 'L');
+        $this->SetXY($x + 32, $y-2);
         // $this->Cell(28, 10, $product->name, 0, 0, 'L');
-        $this->Cell(15, 10, $manufacturerName, 0, 0, 'L');
-        $this->Cell(20, 10, $detail['batch_no'], 0, 0, 'L');
-        $this->Cell(13, 10, $detail['exp'], 0, 0, 'L');
-        $this->Cell(16, 10, $detail['weatage'], 0, 0, 'L');
-        $this->Cell(12, 10, $purchasedQty, 0, 0, 'L');
-        $this->Cell(12, 10, $detail['return_qty'], 0, 0, 'L');
-        $this->Cell(14, 10, $detail['ptr'], 0, 0, 'L');
-        $this->Cell(15, 10, $detail['disc'], 0, 0, 'L');
-        $this->Cell(15, 10, $detail['gst'], 0, 0, 'L');
-        $this->Cell(14, 10, $detail['refund_amount'], 0, 1, 'R');
+        $this->Cell(15, 8, $manufacturerName, 0, 0, 'L');
+        $this->Cell(20, 8, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(13, 8, $detail['exp'], 0, 0, 'L');
+        $this->Cell(16, 8, $detail['weatage'], 0, 0, 'L');
+        $this->Cell(12, 8, $purchasedQty, 0, 0, 'L');
+        $this->Cell(13, 8, $detail['return_qty'], 0, 0, 'L');
+        $this->Cell(14, 8, $detail['ptr'], 0, 0, 'L');
+        $this->Cell(15, 8, $detail['disc'], 0, 0, 'L');
+        $this->Cell(15, 8, $detail['gst'], 0, 0, 'L');
+        $this->Cell(14, 8, $detail['refund_amount'], 0, 1, 'R');
 
         $amount  = $amount + $detail['amount'];
         $slno++;
@@ -402,7 +430,7 @@ class PDF extends FPDF
     }
 
     // exit;
-    $pdf = new PDF($invoiceId, $refundMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt,  $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $refundAmount);
+    $pdf = new PDF($invoiceId, $refundMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt,  $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $refundAmount,$patientEmail);
 
     $pdf->AliasNbPages();
     $pdf->AddContentPage($salesReturnDetails, $Products, $Manufacturer, $ItemUnit, $PackagingUnits,$StockOut);

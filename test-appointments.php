@@ -394,6 +394,32 @@ if ($labBillDisplay->status) {
     </div>
     <!-- End of Page Wrapper -->
 
+<<<<<<< HEAD
+    <!-- Scroll to Top Button-->
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+
+    <!-- Lab ptient selection Modal -->
+    <!-- <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-around align-items-center py-5">
+                    <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a>
+                    OR
+                    <a class="btn btn-primary mx-4" href="lab-patient-selection.php">Returning Patient</a>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- end Lab ptient selection Modal -->
+
+=======
+>>>>>>> 51275a6b7a6f0ac48f48a7e3ebd41fa209e9118b
 
     <!-- Bill View Modal -->
     <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
