@@ -28,22 +28,21 @@ $payment = '';
 
 if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['paymentMode'])) {
 
-    if(isset($_GET['search'])){
+    if (isset($_GET['search'])) {
         $searchVal = $match = $_GET['search'];
     }
-    
-    if(isset($_GET['dateFilterStart'])){
+
+    if (isset($_GET['dateFilterStart'])) {
         $startDate = $_GET['dateFilterStart'];
         $endDate = $_GET['dateFilterEnd'];
     }
 
-    if(isset($_GET['paymentMode'])){
+    if (isset($_GET['paymentMode'])) {
         $payment = $_GET['paymentMode'];
     }
 
     $soldItems = json_decode($StockOut->stockOutSearch($searchVal, $startDate, $endDate, $payment, $adminId));
     $soldItems = $soldItems->data;
-
 } else {
     $soldItems = $StockOut->stockOutDisplay(strval($adminId));
 }
@@ -254,13 +253,13 @@ if (!empty($soldItems)) {
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $invoice . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $patientName . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $billDate . "</td>
-                                                        <td onclick='viewBills(" . $invoice . ")'>" . $soldItem->items. "</td>
+                                                        <td onclick='viewBills(" . $invoice . ")'>" . $soldItem->items . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $billAmount . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $paymentMode, $creditIcon . "</td>
                                                         <td>
                                                         <a class='ml-2' href='update-sales.php?id=" . url_enc($invoice) . "'><i class='fas fa-edit'></i></a>
                                                         
-                                                        <a class='ml-2' href='". URL."invoices/sales-invoice.php?id=".url_enc($invoice) . "'><i class='fas fa-print'></i></a>
+                                                        <a class='ml-2' onclick='openPrint(this.href); return false;' href='" . URL . "invoices/print.php?name=sales&id=" . url_enc($invoice) . "'><i class='fas fa-print'></i></a>
 
                                                         <a class='ml-2' data-id=" . $invoice . "><i class='fab fa-whatsapp'></i></i></a>
 
@@ -347,7 +346,12 @@ if (!empty($soldItems)) {
                 '<iframe width="99%" height="340px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
+    </script>
 
+    <script>
+        function openPrint(url) {
+            window.open(url, '_blank', 'width=500,height=600');
+        }
     </script>
 
 </body>

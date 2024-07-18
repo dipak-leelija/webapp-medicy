@@ -100,13 +100,9 @@ body {
   padding-bottom: 10px;
 }
 
-/* .report-area  small{
-  font-weight: 200;
-} */
-
-.subtestHead{
-  display: flex;
-  justify-content: space-between;
+.subtestHead p{
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 .footer-info {
   margin-top: 6px;
