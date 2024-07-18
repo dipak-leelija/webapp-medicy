@@ -37,6 +37,59 @@ class PathologyReport
         }
     }
 
+    function testReportById($report_id)
+    {
+        try {
+            $sql = "SELECT * FROM `test_report` WHERE `id` = '$report_id'";
+            $query = $this->conn->query($sql);
+            $result = $query->fetch_assoc();
+            $data = $result;
+            $data['details'] = $this->reportDetails($report_id);
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+    function testReportFetch($adminId = "")
+    {
+        try {
+            $datas = array();
+            if (!empty($adminId)) {
+                $sql = "SELECT * FROM `test_report` WHERE `admin_id` = '$adminId'";
+            } else {
+                $sql = "SELECT * FROM `test_report`";
+            }
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas[] = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+    function labReportbyReportId($reportId)
+    {
+        try {
+            $datas = null;
+            $sql = "SELECT * FROM `test_report` where `bill_id`='$reportId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     function getReportParamsByBill($billId)
     {
         try {
@@ -54,7 +107,6 @@ class PathologyReport
                 }
             }
             return $existingParams;
-
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -105,6 +157,24 @@ class PathologyReport
             return json_encode($response);
         } catch (Exception $e) {
             return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
+
+
+    // lab report data fetch by Id
+    function labReportDetailbyId($reportId)
+    {
+        try {
+            $datas = array();
+            $sql = "SELECT * FROM `test_report_details` where `report_id`= '$reportId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas[] = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 

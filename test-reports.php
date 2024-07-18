@@ -9,14 +9,16 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
-require_once CLASS_DIR . 'report-generate.class.php';
+// require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 
 
 
-$Patients   = new Patients;
-$LabReport  = new LabReport;
+$Patients        = new Patients;
+$PathologyReport = new PathologyReport;
+// $LabReport  = new LabReport;
 
 // $labreportfetch = $LabReport->labreportfetch();
 // echo $labreportfetch;
@@ -96,7 +98,7 @@ $LabReport  = new LabReport;
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $labreportfetch = $LabReport->labreportfetch($adminId);
+                                        $labreportfetch = $PathologyReport->testReportFetch($adminId);
                                         $labreportfetch = json_decode($labreportfetch, true);
                                         if ($labreportfetch) {
                                             foreach ($labreportfetch as $entry) {
@@ -110,7 +112,7 @@ $LabReport  = new LabReport;
                                                     <td><?= $billId ?></td>
                                                     <td><?= $adminId ?></td>
                                                     <td><?= formatDateTime($date, '-') ?></td>
-                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $billId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                 </tr>
                                         <?php
 
