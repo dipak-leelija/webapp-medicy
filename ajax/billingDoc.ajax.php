@@ -12,21 +12,9 @@ $showDoctor = $Doctors->showDoctorNameById($docId);
 $showDoctor = json_decode($showDoctor);
 
 if ($showDoctor->status == 1) {
-    foreach ($showDoctor->data as $rowDoctor) {
-        $doctorName = $rowDoctor->doctor_name;
-        echo $doctorName;
-    }
+    echo $showDoctor->data->doctor_name;
 } else {
-    echo "No data found";
+    echo "Not Found!";
 }
-
-// if($showDoctor != 0 ){
-//     foreach($showDoctor as $rowDoctor){
-//         $doctorName = $rowDoctor['doctor_name'];
-//         echo $doctorName;
-    
-//     }
-// }
-
 
 ?>
