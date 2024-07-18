@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
+// $billId = url_dec($_GET['id']);
 
 //  INSTANTIATING CLASS
 $LabBilling         = new LabBilling();
@@ -23,10 +24,10 @@ $Doctors            = new Doctors();
 $Patients           = new Patients();
 $Utility            = new Utility;
 
-if (isset($_GET['bill_id']) || isset($_GET['billId'])):
+if (isset($_GET['id']) || isset($_GET['billId'])):
 
-    if (isset($_GET['bill_id'])) {
-        $billId = url_dec($_GET['bill_id']);
+    if (isset($_GET['id'])) {
+        $billId = url_dec($_GET['id']);
     }
 
     if (isset($_GET['billId'])) {
@@ -395,7 +396,7 @@ class PDF extends FPDF
 
 }
 
-if (isset($_POST['printPDF'])) {
+// if (isset($_POST['printPDF'])) {
 
 $healthCare   = json_decode($HealthCare->showHealthCare($ADMINID));
 if ($healthCare->status === 1) {
@@ -411,11 +412,11 @@ if ($healthCare->status === 1) {
 // exit;
 
 $pdf = new PDF($billId, $billDate, $totalAmount, $dicountAmount, $dueAmount, $paidAmount, $LabBillDetails, $Pathology, $healthCareLogo,$healthCarePhno, $healthCareApntbkNo,  $healthCareEmail);
-// $pdf->AliasNbPages();
+$pdf->AliasNbPages();
 $pdf->AddContentPage();
 $pdf->AddLastPage();
-// ob_clean();
+ob_clean();
 $pdf->Output();
-// exit;
-}
+exit;
+// }
 ?>

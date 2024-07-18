@@ -348,7 +348,8 @@ if ($labBillDisplay->status) {
                                                         <td>
                                                         <a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                                         <a class="text-primary text-center" title="Print" href="invoices/lab-invoice.php?bill_id=' .url_enc($billId) . '"><i class="fas fa-print"></i></a>
+                                                         <a class="text-primary text-center" title="Print"
+                                                          onclick="openPrint(this.href); return false;" href="' . URL . 'invoices/print.php?name=lab_invoice&id=' . url_enc($billId) . '"><i class="fas fa-print"></i></a>
 
                                                         <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                         <a class="text-primary text-center" title="Report" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
@@ -476,17 +477,6 @@ if ($labBillDisplay->status) {
                     }
                 });
         }
-
-
-
-        function printInvoice(billId) {
-            console.log('click');
-    var url = 'invoices/lab-invoice.php?bill_id=' + billId;
-    var printWindow = window.open(url, 'PrintWindow', 'width=800,height=600');
-    printWindow.addEventListener('load', function() {
-        printWindow.print();
-    }, true);
-}
         /*
         const returnFilter = (t) => {
 
@@ -541,6 +531,8 @@ if ($labBillDisplay->status) {
                 alert('Please Enter Minimum 3 Character!');
             }
         }*/
+
+        // <a class="text-primary text-center" title="Print" href="invoices/lab-invoice.php?bill_id=' .url_enc($billId) . '"><i class="fas fa-print"></i></a>
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -548,7 +540,11 @@ if ($labBillDisplay->status) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
-
+    <script>
+        function openPrint(url) {
+            window.open(url, '_blank', 'width=1500,height=800');
+        }
+    </script>
 
 </body>
 
