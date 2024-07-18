@@ -95,14 +95,14 @@ $Utility     = new Utility;
                     <div class="shadow rounded" style="min-height: 70vh;">
                         <div class="row reportNavbar mx-0 rounded d-flex justify-content-start align-items-center">
 
-                            <div class="col-md-2 bg-white me-3 selectDiv">
-                                <div class="form-check">
+                            <div class="d-flex justify-content-between col-md-2 bg-white me-3 selectDiv p-1 w-25">
+                                <div class="form-check m-0">
                                     <input class="form-check-input" type="radio" name="dateRangeType" id="dateRangeED" value="ED" onchange="filterOnDateRangeType(this)">
                                     <label class="form-check-label" for="dateRangeED">
                                         Expired Items Data
                                     </label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check m-0">
                                     <input class="form-check-input" type="radio" name="dateRangeType" id="dateRangeEG" value="EG" onchange="filterOnDateRangeType(this)">
                                     <label class="form-check-label" for="dateRangeEG">
                                         Expiring Items Data
