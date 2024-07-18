@@ -278,6 +278,61 @@ class Pathology{
             return ['status' => false, 'message' => $e->getMessage()];
         }
     }
-
     
+
+    /********************************************************************************************
+    *                                   test_standard_range Table                               *
+    ********************************************************************************************/
+
+
+    function showParameterById($range_id)
+    {
+        try {
+            $query = "SELECT * FROM `test_standard_range` WHERE `id` = '$range_id'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+
+    function showRangeByParameter($paramId)
+    {
+        try {
+            $query = "SELECT * FROM `test_standard_range` WHERE `parameter_id` = '$paramId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            $data = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+
+
 } //end of LabTypes Class

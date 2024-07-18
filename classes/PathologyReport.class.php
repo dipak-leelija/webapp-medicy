@@ -95,22 +95,30 @@ class PathologyReport
         try {
             $sql = "SELECT id FROM `test_report` WHERE `bill_id`= $billId";
             $query = $this->conn->query($sql);
+
+            $reports = [];
             while ($result = $query->fetch_object()) {
                 $reports[] = $result->id;
             }
-            foreach ($reports as $eachReport) {
-                $response =  $this->reportDetails($eachReport);
-                if ($response) {
-                    foreach ($response as $eachRes) {
-                        $existingParams[] = $eachRes['param_id'];
+
+            $existingParams = [];
+            if (!empty($reports)) {
+                foreach ($reports as $eachReport) {
+                    $response = $this->reportDetails($eachReport);
+                    if ($response) {
+                        foreach ($response as $eachRes) {
+                            $existingParams[] = $eachRes['param_id'];
+                        }
                     }
                 }
             }
+
             return $existingParams;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
+
 
 
     // function checkTestBill($billId)

@@ -33,14 +33,17 @@ if (!$labBillingData->status) {
 } else {
 
     $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
-    // print_r($reportDetails);
-    foreach ($reportDetails as $eachParam) {
-        $details = json_decode($Pathology->showTestByParameter($eachParam));
-        if($details->status){
-            $existingTests[] = $details->data->test_id;
+    if (!empty($reportDetails)) {
+        foreach ($reportDetails as $eachParam) {
+            $details = json_decode($Pathology->showTestByParameter($eachParam));
+            if($details->status){
+                $existingTests[] = $details->data->test_id;
+            }
         }
+        $existingTests = array_unique($existingTests);
+    }else {
+        $existingTests = [];
     }
-    $existingTests = array_unique($existingTests);
 
     $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
     // $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
@@ -222,10 +225,10 @@ if (!$labBillingData->status) {
                                                 $showTestName = $Pathology->showTestById($testId);
                                                 
                                                 $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
-                                                $msg = in_array($showTestName['id'], $existingTests) ? 'Report Generated' : '' ;
+                                                $msg = in_array($showTestName['id'], $existingTests) ? '- Report Generated' : '' ;
 
 
-                                                echo "<option value='{$showTestName['id']}' $disabled >{$showTestName['name']} - $msg</option>";
+                                                echo "<option value='{$showTestName['id']}' $disabled >{$showTestName['name']} $msg</option>";
                                             }
                                             ?>
                                         </select>
