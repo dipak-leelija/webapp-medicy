@@ -332,7 +332,8 @@ if (!empty($soldItems)) {
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?= JS_PATH ?>pharmacy-stockIn-stokOut-searchFilter.js"></script>
-
+    <!-- new tab for invoice print  -->
+    <script src="<?php echo JS_PATH ?>/main.js"></script>
 
     <script>
         $(function() {
@@ -347,13 +348,6 @@ if (!empty($soldItems)) {
                 url + '"></iframe>');
         }
     </script>
-
-    <script>
-        function openPrint(url) {
-            window.open(url, '_blank', 'width=1500,height=800');
-        }
-    </script>
-
 </body>
 
 </html>

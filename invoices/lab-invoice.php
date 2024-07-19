@@ -156,22 +156,22 @@ class PDF extends FPDF
             
 
             $this->SetXY($logoX + $logoWidth + 5, $logoY + 8); // Position below the title
-            $this->MultiCell(90, 4.5, $address, 0, 'L');
+            $this->MultiCell(90, 4.2, $address, 0, 'L');
 
             ///...Invoice Info
             $this->SetY(12); // Reset Y position
             $this->SetX(-49.9); // Align to the right
             // Draw vertical line
             // $this->SetDrawColor(108, 117, 125);
-            $this->Line($this->GetX(), $this->GetY()-2, $this->GetX(), $this->GetY() + 16);
+            $this->Line($this->GetX(), $this->GetY()-2, $this->GetX(), $this->GetY() + 14);
 
             $this->SetFont('Arial', 'B', 10);
-            $this->cell(80, 1, ' Invoice:', 0, 'L');
+            $this->cell(80, -1, ' Invoice:', 0, 'L');
             $this->SetFont('Arial', '', 9);
-            $this->MultiCell(80, 4.2, " \n Bill Id: #$billId\n Bill Date : ". (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
+            $this->MultiCell(80, 4.2, " \n #$billId\n Bill Date : ". (isset($billingDate) && !empty($billingDate) ? formatDateTime( $billingDate) : formatDateTime( $billDate)), 0, 'L');
 
             // Patient Info
-            $this->Ln(4.8);
+            $this->Ln(5.2);
             // $this->SetDrawColor(108, 117, 125);
             $this->SetFillColor(236, 236, 236);
             $this->Rect(10, $this->GetY(), 190.1, 9, 'F');
@@ -199,25 +199,26 @@ class PDF extends FPDF
             $this->SetFont('Arial', '', 9);
             $this->Cell(0, 4, formatDateTime($testDate), 0, 1, 'L');
             // Doctor Info
-            $this->SetY($this->GetY()-9); // Move Y position up to align with patient info
+            $this->SetY($this->GetY()-8.5); // Move Y position up to align with patient info
             $this->SetX(-84); // Align to the right
             $this->SetFont('Arial', 'B', 9);
-            $this->Cell(38, 5, "Referred Doctor : ", 0, 0, 'R');
+            $this->Cell(38, 4, "Referred Doctor : ", 0, 0, 'R');
             $this->SetFont('Arial', '', 9);
-            $this->Cell(30, 5, $doctorName, 0, 1, 'L');
-            $this->SetY($this->GetY()); // Move Y position up to align with patient info
+            $this->Cell(30, 4, $doctorName, 0, 1, 'L');
+            $this->SetY($this->GetY()+1); // Move Y position up to align with patient info
             $this->SetX(-80); 
             if($doctorReg != NULL){
             $this->SetFont('Arial', 'B', 9);
-            $this->Cell(34, 4, "Reg : ", 0, 0, 'R');
+            $this->Cell(34, 3, "Registration No : ", 0, 0, 'R');
             $this->SetFont('Arial', '', 9);
-            $this->Cell(0, 4, $doctorReg, 0, 1, 'L');
+            $this->Cell(0, 3, $doctorReg, 0, 1, 'L');
             }else{
                 $this->SetFont('Arial', 'B', 9);
-                $this->Cell(34, 4, "Reg : ", 0, 0, 'R');
+                $this->Cell(34, 3, "Registration No : ", 0, 0, 'R');
                 $this->SetFont('Arial', '', 9);
-                $this->Cell(0, 4, 'N/A', 0, 1, 'L');
+                $this->Cell(0, 3, 'N/A', 0, 1, 'L');
             }
+            $this->Ln(0.8);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(8);
         }
@@ -325,7 +326,7 @@ class PDF extends FPDF
                 $this->SetFont('Arial', 'B', 8);
                 $this->Cell(170, 10, 'Total Amount :', 0, 0, 'R');
                 $this->SetFont('Arial', '', 9);
-                $this->Cell(20, 10, '' .$amount, 0, 1, 'R');
+                $this->Cell(21, 10, '' .$amount, 0, 1, 'R');
 
                 // Add new page if rowCounter reaches rowsPerPage
                 $this->AddPage();
