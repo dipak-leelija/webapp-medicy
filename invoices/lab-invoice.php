@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
+// $billId = url_dec($_GET['id']);
 
 //  INSTANTIATING CLASS
 $LabBilling         = new LabBilling();
@@ -23,10 +24,10 @@ $Doctors            = new Doctors();
 $Patients           = new Patients();
 $Utility            = new Utility;
 
-if (isset($_GET['bill_id']) || isset($_GET['billId'])):
+if (isset($_GET['id']) || isset($_GET['billId'])):
 
-    if (isset($_GET['bill_id'])) {
-        $billId = url_dec($_GET['bill_id']);
+    if (isset($_GET['id'])) {
+        $billId = url_dec($_GET['id']);
     }
 
     if (isset($_GET['billId'])) {
@@ -208,9 +209,14 @@ class PDF extends FPDF
             $this->SetX(-80); 
             if($doctorReg != NULL){
             $this->SetFont('Arial', 'B', 9);
-            $this->Cell(38, 4, "Reg : ", 0, 0, 'R');
+            $this->Cell(34, 4, "Reg : ", 0, 0, 'R');
             $this->SetFont('Arial', '', 9);
             $this->Cell(0, 4, $doctorReg, 0, 1, 'L');
+            }else{
+                $this->SetFont('Arial', 'B', 9);
+                $this->Cell(34, 4, "Reg : ", 0, 0, 'R');
+                $this->SetFont('Arial', '', 9);
+                $this->Cell(0, 4, 'N/A', 0, 1, 'L');
             }
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(8);
@@ -308,6 +314,7 @@ class PDF extends FPDF
         $slno = 1;
         $rowsPerPage = 8; // Maximum rows per page
         $rowCounter = 0;
+        $amount=0;
         $billDetails = json_decode($this->LabBillDetails->billDetailsById($this->billId))->data;
 
         foreach ($billDetails as $rowDetails) {
@@ -413,200 +420,3 @@ $pdf->Output();
 exit;
 // }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $healthCareName ?> - #<?= $billId ?></title>
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/receipts.css">
-</head>
-
-
-<body>
-    <div class="custom-container">
-        <div class="custom-body <?= $payable == $paidAmount ? "paid-bg" : ''; ?>">
-            <!-- <div class="custom-body paid-bg"> -->
-            <div class="card-body ">
-                <div class="row mt-2">
-                    <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px; position: absolute;" src="<?= $healthCareLogo ?>" alt="Medicy">
-                    </div>
-                    <div class="col-sm-8 ps-4">
-                        <h4 class="text-start mb-1"><?php echo $healthCareName; ?></h4>
-                        <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 ?></small>
-                        </p>
-                        <p class='' style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareCity . ', ' . $healthCarePin; ?></small>
-                        </p>
-                        <p class="text-start" style="margin-top: -5px; margin-bottom: 2px;">
-                            <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
-                        </p>
-
-                    </div>
-                    <div class="col-sm-3 invoice-info">
-                        <p class="my-0">Invoice</p>
-                        <p>#<?php echo $billId; ?></p>
-                        <!-- <p><?= formatDateTime($billingDate) ?></p> -->
-                        <p>
-                            <?php
-                            if (isset($billingDate) && !empty($billingDate)) {
-                                echo formatDateTime($billingDate);
-                            } else {
-                                echo formatDateTime($billDate);
-                            }
-                            ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <hr class="mb-0 mt-1" style="opacity: .4;">
-            <div class="row my-1">
-                <div class="col-sm-6 my-0">
-                    <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
-                            <?php echo $patientName . ', <b>Age:</b> ' . $patientAge; ?></small></p>
-                    <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>M:</b>
-                            <?php echo $patientPhno;
-                            echo ', <b>Test date:</b> ' . formatDateTime($testDate); ?></small></p>
-                </div>
-                <div class="col-sm-6 my-0">
-                    <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered Doctor:</b>
-                            <?php echo $doctorName; ?></small></p>
-                    <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php if ($doctorReg != NULL) {
-                                    echo '<b>Reg:</b> ' . $doctorReg;
-                                } ?></small>
-                    </p>
-                </div>
-
-            </div>
-            <hr class="my-0" style="opacity: .4;">
-            <div class="row py-1">
-                <div class="col-sm-2 ps-4">
-                    <small><b>SL. NO.</b></small>
-                </div>
-                <div class="col-sm-4">
-                    <small><b>Description</b></small>
-                </div>
-                <div class="col-sm-2">
-                    <small><b>Price (₹)</b></small>
-                </div>
-                <div class="col-sm-2">
-                    <small><b>Disc (%)</b></small>
-                </div>
-                <div class="col-sm-2 text-end">
-                    <small><b>Amount (₹)</b></small>
-                </div>
-            </div>
-            <hr class="my-0" style="opacity:0.4">
-
-            <div class="row">
-                <?php
-                $slno = 1;
-                $subTotal = floatval(00.00);
-
-                $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
-                $billDetails = $billDetails->data;
-
-                foreach ($billDetails as $rowDetails) {
-                    $subTestId = $rowDetails->test_id;
-                    $testAmount = $rowDetails->price_after_discount;
-                    $testDisc  = $rowDetails->percentage_of_discount_on_test;
-
-                    if ($subTestId != '') {
-                        $showSubTest = $Pathology->showTestById($subTestId);
-                        $testName = $showSubTest['name'];
-                        $testPrice = $showSubTest['price'];
-
-                        if ($slno > 1) {
-                            echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 4px 10px; align-items: center;">';
-                        }
-
-                        echo '
-                                <div class="col-sm-2 ps-4 my-0">
-                                            <small>' . $slno . '</small>
-                                        </div>
-                                        <div class="col-sm-4 my-0">
-                                            <small>' . $testName . '</small>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <small>' . $testPrice . '</small>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <small>' . $testDisc . '</small>
-                                        </div>
-                                        <div class="col-sm-2 text-end my-0">
-                                            <small>' . $testAmount . '</small>
-                                        </div>';
-                        $slno++;
-                        $subTotal = floatval($subTotal + $testAmount);
-                    }
-                }
-                ?>
-
-            </div>
-
-            <div class="footer">
-                <hr calss="my-0" style="opacity: 0.3;">
-                <div class="row">
-                    <!-- table total calculation -->
-                    <div class="col-sm-8 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Total Amount:</b></small></p>
-                    </div>
-                    <div class="col-sm-4 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹ <?php echo floatval($subTotal); ?></small></b>
-                        </p>
-                    </div>
-                    <?= isset($_GET['billId']) ?
-                        '<div class="col-sm-8 mb-1 text-end">
-                            <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Less Amount:</b></small></p>
-                        </div>
-                        <div class="col-sm-4 mb-1 text-end">
-                            <p style="margin-top: -5px; margin-bottom: 0px;">
-                                <small><b>₹ ' . $dicountAmount . '</b></small>
-                            </p>
-                        </div>' : '';
-
-                    echo ($dueAmount != NULL && $dueAmount > 0) ?
-                        '<div class="col-sm-8 mb-1 text-end">
-                            <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Due Amount:</b></small></p>
-                        </div>
-                        <div class="col-sm-4 mb-1 text-end">
-                            <p style="margin-top: -5px; margin-bottom: 0px;">
-                                <small><b>₹ ' . $dueAmount . '</b></small>
-                            </p>
-                        </div>' : '';
-                    ?>
-                    <div class="col-sm-8 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small><b>Paid Amount:</b></small></p>
-                    </div>
-                    <div class="col-sm-4 mb-1 text-end">
-                        <p style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><b>₹ <?php echo floatval($paidAmount); ?></small></b>
-                        </p>
-                    </div>
-                    <!--/end table total calculation -->
-                </div>
-                <hr class="mt-0" style="opacity: 0.3;">
-            </div>
-        </div>
-        <div class="justify-content-center print-sec d-flex my-5">
-            <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
-            <a class="btn btn-primary shadow mx-2" href="../test-appointments.php">Go Back</a>
-            <!--onclick="history.back()"-->
-            <!-- <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button> -->
-            <form method="post">
-                <button class="btn btn-primary shadow mx-2" type="submit" name="printPDF">Print PDF</button>
-            </form>
-        </div> 
-    </div>
-</body>
-<script src="<?php echo JS_PATH ?>/bootstrap-js-5/bootstrap.js"></script>
-
-</html>

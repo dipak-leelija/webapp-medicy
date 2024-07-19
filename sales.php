@@ -350,7 +350,7 @@ if (!empty($soldItems)) {
 
     <script>
         function openPrint(url) {
-            window.open(url, '_blank', 'width=500,height=600');
+            window.open(url, '_blank', 'width=1500,height=800');
         }
     </script>
 
