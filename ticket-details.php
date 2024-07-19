@@ -117,14 +117,16 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => '',
-                'description' => 'New Quantity Unit Add'
+                'description' => $requestDataItem->message,
+                'status'      => $requestDataItem->status,
             ];
         }elseif ($requestType['tableName'] == 'Generate Ticket') {
             $allRequestResult[] = [
                 'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => '',
-                'description' => 'New Quantity Unit Add'
+                'description' => $requestDataItem->description,
+                'status'      => $requestDataItem->status,
             ];
         }else {
             $allRequestResult[] = [
@@ -225,6 +227,7 @@ if ($pagination->status == 1) {
                                         $resultItems = $result->items;
                                         $count = 0;
                                         foreach ($resultItems as $resItems) {
+                                            // print_r($resItems);
                                             $count++;
                                             if ($resItems->tableName != null) {
                                                 $tableName = $resItems->tableName;
@@ -244,7 +247,13 @@ if ($pagination->status == 1) {
                                                 $description = '';
                                             }
 
-                                            $status = 'Request Pending';
+                                            if (property_exists($resItems, 'status')) {
+                                                $status = $resItems->status;
+                                            }else{
+                                                $status = 'Request Pending';
+                                            }
+
+                                            
 
                                             echo '<tr>
                                                         <td>' . $resItems->id . '</td>
