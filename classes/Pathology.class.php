@@ -182,7 +182,6 @@ class Pathology{
     function showTestList()
     {
         try {
-            $data = [];
             $selectTest = "SELECT * FROM `test_list`";
             $testQuery = $this->conn->query($selectTest);
             while ($result = $testQuery->fetch_array()) {
@@ -194,6 +193,15 @@ class Pathology{
         }
     } // end showSubTests function
 
+    function showTestById($testId)
+    {
+        $selectTestById = "SELECT * FROM test_list WHERE `id` = '$testId'";
+        $subTestQuery = $this->conn->query($selectTestById);
+        while ($result = $subTestQuery->fetch_assoc()) {
+            $data = $result;
+        }
+        return $data;
+    } // end showLabTypesById function
 
     function showTestByCat($catId)
     {
@@ -218,5 +226,113 @@ class Pathology{
             return ['status' => false, 'message' => $e->getMessage()];
         }
     }
+
+    /********************************************************************************************
+    *                                     Test Parameters Table                                 *
+    ********************************************************************************************/
+
+    function showParametersByTest($testId)
+    {
+        try {
+            $query = "SELECT * FROM `test_parameters` WHERE `test_id` = '$testId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = [];
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+
+    function showTestByParameter($paramId)
+    {
+        try {
+            $query = "SELECT * FROM `test_parameters` WHERE `id` = '$paramId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+    
+
+    /********************************************************************************************
+    *                                   test_standard_range Table                               *
+    ********************************************************************************************/
+
+
+    function showParameterById($range_id)
+    {
+        try {
+            $query = "SELECT * FROM `test_standard_range` WHERE `id` = '$range_id'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+
+    function showRangeByParameter($paramId)
+    {
+        try {
+            $query = "SELECT * FROM `test_standard_range` WHERE `parameter_id` = '$paramId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            $data = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+
 
 } //end of LabTypes Class

@@ -62,6 +62,7 @@ if ($customerId != 'Cash Sales') {
     $patientName = $patient->name;
     $patientPhno = $patient->phno;
     $patientAge  = $patient->age;
+    $patientEmail= $patient->email;
 
     // $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'><small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p><p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>"";
 } else {
@@ -110,9 +111,10 @@ class PDF extends FPDF
     private $REFFBY;
     private $slno;
     private $isLastPage;
+    private $patientEmail;
 
     // Constructor with parameters
-    function __construct($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby) {
+    function __construct($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby, $patientEmail) {
         parent::__construct();
 
         $this->invoiceId        = $invoiceId;
@@ -134,6 +136,7 @@ class PDF extends FPDF
         $this->healthCareApntbkNo = $healthCareApntbkNo;
         $this->gstinData        = $gstinData;
         $this->REFFBY           = $reffby;
+        $this->patientEmail     = $patientEmail;
     }
 
     //page header
@@ -159,18 +162,20 @@ class PDF extends FPDF
        }///....end page badge...///
 
         $this->SetFont('Arial', 'B', 9);
+        // $this->SetFillColor(108, 117, 125);
         $this->Cell(10, -14, 'SL.', 0, 0, 'L');
-        $this->Cell(40, -14, 'Name', 0, 0, 'L');
+        $this->Cell(41, -14, 'Name', 0, 0, 'L');
         $this->Cell(18, -14, 'Manuf.', 0, 0, 'L');
-        $this->Cell(20, -14, 'Batch', 0, 0, 'L');
+        $this->Cell(22, -14, 'Batch', 0, 0, 'L');
         $this->Cell(16, -14, 'Exp.', 0, 0, 'L');
         $this->Cell(16, -14, 'QTY', 0, 0, 'L');
         $this->Cell(18, -14, 'MRP', 0, 0, 'L');
         $this->Cell(16, -14, 'Disc (%)', 0, 0, 'L');
         $this->Cell(16, -14, 'GST(%)', 0, 0, 'L');
         $this->Cell(18, -14, 'Amount', 0, 1, 'R');
-        $this->Ln(10);
-        $this->SetDrawColor(108, 117, 125);
+        $this->Ln(8.8);
+        // $this->SetDrawColor(108, 117, 125);
+        // $this->SetLineWidth(0.1);
         $this->Line(10, $this->GetY(), 200, $this->GetY()); // Draw line
 
         $slno = 1;
@@ -250,16 +255,16 @@ class PDF extends FPDF
             }
         }
 
-        $this->Cell(10, 8, $slno, 0, 0, 'L');
-        $this->Cell(40, 8, substr($detail['item_name'], 0, 25), 0, 0, 'L');
-        $this->Cell(18, 8, $manufacturerName, 0, 0, 'L');
-        $this->Cell(21, 8, $detail['batch_no'], 0, 0, 'L');
-        $this->Cell(16, 8, $detail['exp_date'], 0, 0, 'L');
-        $this->Cell(15, 8, $detail['qty'], 0, 0, 'L');
-        $this->Cell(18, 8, $detail['mrp'], 0, 0, 'L');
-        $this->Cell(16, 8, $detail['discount'], 0, 0, 'L');
-        $this->Cell(16, 8, $detail['gst'], 0, 0, 'L');
-        $this->Cell(18, 8, $detail['amount'], 0, 1, 'R');
+        $this->Cell(10, 7, $slno, 0, 0, 'L');
+        $this->Cell(41, 7, substr($detail['item_name'], 0, 25), 0, 0, 'L');
+        $this->Cell(18, 7, $manufacturerName, 0, 0, 'L');
+        $this->Cell(22, 7, $detail['batch_no'], 0, 0, 'L');
+        $this->Cell(16, 7, $detail['exp_date'], 0, 0, 'L');
+        $this->Cell(15, 7, $detail['qty'], 0, 0, 'L');
+        $this->Cell(19, 7, $detail['mrp'], 0, 0, 'L');
+        $this->Cell(16, 7, $detail['discount'], 0, 0, 'L');
+        $this->Cell(16, 7, $detail['gst'], 0, 0, 'L');
+        $this->Cell(18, 7, $detail['amount'], 0, 1, 'R');
 
         $amount  = $amount + $detail['amount'];
         // $this->Ln(1); // Move to next line
@@ -298,7 +303,7 @@ class PDF extends FPDF
     }
 
     // exit;
-    $pdf = new PDF($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby);
+    $pdf = new PDF($invoiceId, $pMode, $billDate, $patientName, $patientAge, $patientPhno, $totalGSt, $totalMrp, $billAmout, $healthCareLogo, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCarePin, $healthCarePhno, $healthCareApntbkNo, $gstinData, $reffby,$patientEmail);
 
     $pdf->AliasNbPages();
     $pdf->AddContentPage($details,$billDate, $pMode, $Products, $Manufacturer);

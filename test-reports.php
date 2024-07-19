@@ -9,12 +9,16 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
-require_once CLASS_DIR . 'report-generate.class.php';
+// require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 
 
-$Patients   = new Patients;
-$LabReport  = new LabReport;
+
+$Patients        = new Patients;
+$PathologyReport = new PathologyReport;
+// $LabReport  = new LabReport;
 
 // $labreportfetch = $LabReport->labreportfetch();
 // echo $labreportfetch;
@@ -82,12 +86,11 @@ $LabReport  = new LabReport;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Report ID</th>
-                                            <!-- <th>Bill ID</th> -->
-                                            <th>Patient ID</th>
+                                            <th>Bill ID</th>
                                             <th>Admin ID</th>
                                             <th>Date</th>
                                             <th class="text-center">View</th>
@@ -95,21 +98,21 @@ $LabReport  = new LabReport;
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $labreportfetch = $LabReport->labreportfetch($adminId);
+                                        $labreportfetch = $PathologyReport->testReportFetch($adminId);
                                         $labreportfetch = json_decode($labreportfetch, true);
                                         if ($labreportfetch) {
                                             foreach ($labreportfetch as $entry) {
-                                                $billId    = $entry['bill_id'];
-                                                $patientId    = $entry['patient_id'];
-                                                $adminId = $entry['admin_id'];
-                                                $date = $entry['added_on'];
+                                                $reportId   = $entry['id'];
+                                                $billId     = $entry['bill_id'];
+                                                $adminId    = $entry['admin_id'];
+                                                $date       = $entry['added_on'];
                                         ?>
                                                 <tr class="appointment-row">
+                                                    <td><?= $reportId ?></td>
                                                     <td><?= $billId ?></td>
-                                                    <td><?= $patientId ?></td>
                                                     <td><?= $adminId ?></td>
-                                                    <td><?= $date ?></td>
-                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $billId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                    <td><?= formatDateTime($date, '-') ?></td>
+                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                 </tr>
                                         <?php
 
@@ -130,7 +133,7 @@ $LabReport  = new LabReport;
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
             <!-- End of Footer -->
 
         </div>
@@ -140,9 +143,11 @@ $LabReport  = new LabReport;
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>;
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>

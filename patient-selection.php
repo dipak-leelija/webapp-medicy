@@ -194,12 +194,13 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center">
+            <!-- <div class="d-flex justify-content-center">
                 <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            </div>
+            </div> -->
 
         </div>
     </div>
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     <!-- Page Wrapper end -->
 
     <!-- Footer -->

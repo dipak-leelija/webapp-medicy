@@ -7,26 +7,26 @@ require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'Pathology.class.php';
 require_once CLASS_DIR.'labAppointments.class.php';
 
 //Classes Initilized
 $appointments    = new Appointments();
 $Patients        = new Patients();
 $LabAppointments = new LabAppointments();
-$SubTests        = new SubTests();
-$Doctors         = new Doctors();
+$Pathology       = new Pathology;
+$Doctors         = new Doctors;
 
 //Function Initilized
 $showDoctors    = $Doctors->showDoctors($adminId);
-$showSubTests   = $SubTests->showSubTests();
+$showSubTests   = $Pathology->showTestList();
 
 
 if (isset($_SESSION['appointment-data'])) {
     $data = $_SESSION['appointment-data'];
 
     $patientId          = $data['patientId'];
-    $testDate    = $data['appointmentDate'];
+    $testDate           = $data['appointmentDate'];
     $patientName        = $data['patientName'];
     $patientGurdianName = $data['patientGurdianName'];
     $patientEmail       = $data['patientEmail'];
@@ -234,7 +234,7 @@ if(isset($_POST['bill-proceed'])){
                                             <?php
                                                 foreach ($showSubTests as $rowSubTests) {
                                                     $subTestId   = $rowSubTests['id'];
-                                                    $subTestName = $rowSubTests['sub_test_name'];
+                                                    $subTestName = $rowSubTests['name'];
                                                     echo'<option value='.$subTestId.'>'. $subTestName.'</option>';
                                                 }
                                                 ?>

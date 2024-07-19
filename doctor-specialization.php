@@ -158,7 +158,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
             <!-- End of Footer -->
 
         </div>
@@ -168,9 +168,10 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- View & Edit Doctor Category Modal -->
     <div class="modal fade docCatModal" tabindex="-1" role="dialog" aria-labelledby="docCatModalLabel" aria-hidden="true">

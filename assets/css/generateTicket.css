@@ -1,0 +1,21 @@
+@import './main.css';
+.g-ticketBtn{
+    width: 40px;
+    height: 40px;
+    right: 15px;
+    bottom: 22px;
+    position: fixed;
+    z-index: 1;
+    background-color:var(--blue);
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: larger;
+    outline: none !important;
+    border: none !important;
+    transition: transform 0.3s ease;
+}
+.g-ticketBtn:hover{
+    background-color:var(--blue);
+    transform:scale(1.1);
+}
+

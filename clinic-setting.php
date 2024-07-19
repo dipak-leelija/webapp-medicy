@@ -201,9 +201,9 @@ if ($bills->status) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <div class="d-flex justify-content-center">
+            <!-- <div class="d-flex justify-content-center">
                 <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            </div>
+            </div> -->
             <!-- End of Footer -->
 
         </div>
@@ -213,9 +213,10 @@ if ($bills->status) {
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
 
     <script>
