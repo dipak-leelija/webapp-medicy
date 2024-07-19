@@ -10,10 +10,6 @@ $subTestId = $_GET['subtest_id'];
 $Pathology = new Pathology();
 $testsDetails = $Pathology->showTestById($subTestId);
 
-foreach($testsDetails as $rowsSubTest){
-    $testPrice = $rowsSubTest['price'];
-    echo $testPrice;
-}
-
+echo $testsDetails['price'];
 
 ?>

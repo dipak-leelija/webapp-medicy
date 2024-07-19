@@ -36,13 +36,8 @@ if (is_object($testReportResponse) && !empty($testReportResponse)) {
         }
     }
     $testIds = array_unique($testIds);
-    // foreach ($testIds as $eachTestId) {
-    //     $testResponse = $Pathology->showTestById($eachTestId);
-    //     $testnames[] = $testResponse['name'];
-    // }
 
-    // $testnames = array_unique($testnames);
-
+    // Geting The Bill Details
     $billDetails = json_decode($LabBilling->labBillDisplayById($billId));
     if ($billDetails->status) {
         $billDetails = $billDetails->data;
@@ -52,6 +47,7 @@ if (is_object($testReportResponse) && !empty($testReportResponse)) {
         $refered_doctor = $billDetails->refered_doctor;
     }
 
+    // Getting Patients Details
     $patientDatafetch = $Patients->patientsDisplayByPId($patient_id);
     $patientDatafetch = json_decode($patientDatafetch, true);
     if ($patientDatafetch !== null) {
@@ -70,215 +66,239 @@ if (is_object($testReportResponse) && !empty($testReportResponse)) {
 // Include FPDF library
 require('assets/plugins/pdfprint/fpdf/fpdf.php');
 
-// class PDF extends FPDF
-// {
-//     var $isLastPage = false;
-//     var $paramsValues = [];
+class PDF extends FPDF
+{
+    var $isLastPage = false;
+    var $paramsValues = [];
 
-//     function setTestData($data)
-//     {
-//         $this->testData = $data;
-//     }
-//     ///.....for gradient color....///
-//     function Gradient($x, $y, $w, $h, $startColor, $endColor, $startPercentage = 1, $direction = 'horizontal')
-//     {
-//         list($r1, $g1, $b1) = $startColor;
-//         list($r2, $g2, $b2) = $endColor;
+    private $testData;
 
-//         for ($i = 0; $i <= 100; $i++) {
-//             if ($i / 100 >= (1 - $startPercentage)) {
-//                 $r = $r1 + ($r2 - $r1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
-//                 $g = $g1 + ($g2 - $g1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
-//                 $b = $b1 + ($b2 - $b1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
-//             } else {
-//                 $r = $r1;
-//                 $g = $g1;
-//                 $b = $b1;
-//             }
-//             $this->SetFillColor($r, $g, $b);
+    function setTestData($data)
+    {
+        $this->testData = $data;
+    }
+    ///.....for gradient color....///
+    function Gradient($x, $y, $w, $h, $startColor, $endColor, $startPercentage = 1, $direction = 'horizontal')
+    {
+        list($r1, $g1, $b1) = $startColor;
+        list($r2, $g2, $b2) = $endColor;
 
-//             if ($direction == 'horizontal') {
-//                 $this->Rect($x + $i * ($w / 100), $y, $w / 100, $h, 'F');
-//             } else {
-//                 $this->Rect($x, $y + $i * ($h / 100), $w, $h / 100, 'F');
-//             }
-//         }
-//     } ///...end gradient color....///
+        for ($i = 0; $i <= 100; $i++) {
+            if ($i / 100 >= (1 - $startPercentage)) {
+                $r = $r1 + ($r2 - $r1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
+                $g = $g1 + ($g2 - $g1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
+                $b = $b1 + ($b2 - $b1) * (($i / 100 - (1 - $startPercentage)) / $startPercentage);
+            } else {
+                $r = $r1;
+                $g = $g1;
+                $b = $b1;
+            }
+            $this->SetFillColor($r, $g, $b);
 
-//     //.....Header Star....//
-//     function Header()
-//     {
-//         global $healthCareName, $name, $patient_id, $age, $gender, $testDate;
+            if ($direction == 'horizontal') {
+                $this->Rect($x + $i * ($w / 100), $y, $w / 100, $h, 'F');
+            } else {
+                $this->Rect($x, $y + $i * ($h / 100), $w, $h / 100, 'F');
+            }
+        }
+    } ///...end gradient color....///
 
-//         if ($this->PageNo() == 1) {
+    //.....Header Star....//
+    function Header()
+    {
+        global $healthCareName, $name, $patient_id, $age, $gender, $testDate;
 
-//             $leftSpace = 3; // Left side space in mm
-//             $rightSpace = -6; // Right side space in mm
-//             // Calculate positions
-//             $imageX = $leftSpace; // X position with left space
-//             $imageY = 3; // Y position
-//             $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
-//             $imageHeight = 18; // Height of the image
-//             $this->Image('./assets/images/top-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
-//             $this->Ln(2);
-//             $this->SetFont('Arial', 'B', 25);
-//             $this->SetTextColor(24, 54, 151);
-//             $this->Cell(186, 14, $healthCareName, 0, 1, 'R');
-//             $this->SetFont('Arial', '', 12);
-//             $this->Gradient($this->GetPageWidth() / 2, 24, $this->GetPageWidth() / 2 - 10, 8, [255, 255, 255], [24, 54, 151], 1, 'horizontal');
-//             $this->SetY(20);
-//             $this->SetTextColor(255, 255, 255);
-//             $this->Cell(0, 16, 'DIAGNOSTIC & POLYCLINIC', 0, 1, 'R');
-//             $this->SetFont('Arial', '', 10);
-//             $this->SetTextColor(24, 54, 151);
-//             $this->Cell(0, 2, 'Daulatabad, Murshidabad, (W.B.), Pin -742302, Mobile:8695494415/9064390598, Website:www.medicy.in', 0, 1, 'R');
-//             $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
-//             $this->SetDrawColor(24, 54, 151);
-//             $this->Line(28.3, 40, 200, 40);
-//             $this->Ln(8);
-//             $this->SetFont('Arial', 'B', 10);
-//             $this->SetTextColor(0, 0, 0);
-//             $this->Cell(0, 5, "Patient's Name: $name", 0, 0, 'L');
-//             $this->Cell(0, 5, "Age: $age   Sex: $gender", 0, 1, 'R');
-//             $this->Cell(0, 5, "Patient ID: $patient_id", 0, 0, 'L');
-//             $this->Cell(0, 5, 'Collection Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
-//             $this->Cell(0, 5, 'Place of collection: LAB', 0, 0, 'L');
-//             $this->Cell(0, 5, 'Reporting Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
-//             $this->Cell(0, 5, 'Ref. by: DR. SELF', 0, 0, 'L');
-//             $this->Ln(5);
-//             $this->SetDrawColor(0, 0, 0);
-//             $this->Line(10, $this->GetY(), 200, $this->GetY());
-//             $this->Ln(2);
-//         }
-//     } //.....Header end....//
+        if ($this->PageNo() == 1) {
 
-//     //....footer start....//
-//     function Footer()
-//     {
-//         if ($this->isLastPage) {
-//             $this->SetY(-55);
-//             $this->SetFont('Arial', '', 10);
-//             $this->MultiCell(0, 5, 'Reference values are obtained from the literature provided with reagent kit.', 0, 'C');
-//             $this->Line(10, $this->GetY(), 200, $this->GetY());
-//             $this->Ln(2);
-//             $this->SetFont('Arial', 'B', 12);
-//             $this->Cell(0, 10, '***END OF REPORT***', 0, 1, 'C');
-//             $this->Ln(2);
-//             $this->SetFont('Arial', 'I', 10);
-//             $this->SetTextColor(24, 54, 151);
-//             $this->Cell(60, 5, 'A Health Care Unit for :-', 4, 0, 'L');
-//             $this->SetTextColor(0, 0, 0);
-//             $this->Cell(60, 5, 'Verified by :', 8, 0, 'R');
-//             $this->SetFont('Arial', 'B', 10);
-//             $this->Cell(70, 5, 'DR. S.BISWAS', 0, 1, 'R');
-//             $this->SetFont('Arial', '', 10);
-//             $this->SetTextColor(24, 54, 151);
-//             $this->Cell(60, 5, 'Advance Assay, USG & ECHO, Colour Doppler,', 0, 0, 'L');
-//             $this->Cell(60, 5, '', 0, 0, 'C');
-//             $this->SetTextColor(0, 0, 0);
-//             $this->Cell(70, 5, 'Consultant Pathologist(MD)', 0, 1, 'R');
-//             $this->SetTextColor(24, 54, 151);
-//             $this->Cell(60, 5, 'Digital X-Ray, Special X-Ray, OPG, ECG & Eye.', 0, 0, 'L');
-//             $this->Cell(60, 5, '', 0, 0, 'C');
-//             $this->SetTextColor(0, 0, 0);
-//             $this->Cell(70, 5, 'Reg. No: 59304 (WBMC)', 0, 1, 'R');
+            $leftSpace = 3; // Left side space in mm
+            $rightSpace = -6; // Right side space in mm
+            // Calculate positions
+            $imageX = $leftSpace; // X position with left space
+            $imageY = 3; // Y position
+            $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
+            $imageHeight = 18; // Height of the image
+            $this->Image('./assets/images/top-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
+            $this->Ln(2);
+            $this->SetFont('Arial', 'B', 25);
+            $this->SetTextColor(24, 54, 151);
+            $this->Cell(186, 14, $healthCareName, 0, 1, 'R');
+            $this->SetFont('Arial', '', 12);
+            $this->Gradient($this->GetPageWidth() / 2, 24, $this->GetPageWidth() / 2 - 10, 8, [255, 255, 255], [24, 54, 151], 1, 'horizontal');
+            $this->SetY(20);
+            $this->SetTextColor(255, 255, 255);
+            $this->Cell(0, 16, 'DIAGNOSTIC & POLYCLINIC', 0, 1, 'R');
+            $this->SetFont('Arial', '', 10);
+            $this->SetTextColor(24, 54, 151);
+            $this->Cell(0, 2, 'Daulatabad, Murshidabad, (W.B.), Pin -742302, Mobile:8695494415/9064390598, Website:www.medicy.in', 0, 1, 'R');
+            $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
+            $this->SetDrawColor(24, 54, 151);
+            $this->Line(28.3, 40, 200, 40);
+            $this->Ln(8);
+            $this->SetFont('Arial', 'B', 10);
+            $this->SetTextColor(0, 0, 0);
+            $this->Cell(0, 5, "Patient's Name: $name", 0, 0, 'L');
+            $this->Cell(0, 5, "Age: $age   Sex: $gender", 0, 1, 'R');
+            $this->Cell(0, 5, "Patient ID: $patient_id", 0, 0, 'L');
+            $this->Cell(0, 5, 'Collection Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
+            $this->Cell(0, 5, 'Place of collection: LAB', 0, 0, 'L');
+            $this->Cell(0, 5, 'Reporting Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
+            $this->Cell(0, 5, 'Ref. by: DR. SELF', 0, 0, 'L');
+            $this->Ln(5);
+            $this->SetDrawColor(0, 0, 0);
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(2);
+        }
+    } //.....Header end....//
 
-//             // Define left and right side spacing
-//             $leftSpace = 3; // Left side space in mm
-//             $rightSpace = -6; // Right side space in mm
-//             $imageX = $leftSpace; // X position with left space
-//             $imageY = 276; // Y position
-//             $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
-//             $imageHeight = 18; // Height of the image
+    //....footer start....//
+    function Footer()
+    {
+        if ($this->isLastPage) {
+            $this->SetY(-55);
+            $this->SetFont('Arial', '', 10);
+            $this->MultiCell(0, 5, 'Reference values are obtained from the literature provided with reagent kit.', 0, 'C');
+            $this->Line(10, $this->GetY(), 200, $this->GetY());
+            $this->Ln(2);
+            $this->SetFont('Arial', 'B', 12);
+            $this->Cell(0, 10, '***END OF REPORT***', 0, 1, 'C');
+            $this->Ln(2);
+            $this->SetFont('Arial', 'I', 10);
+            $this->SetTextColor(24, 54, 151);
+            $this->Cell(60, 5, 'A Health Care Unit for :-', 4, 0, 'L');
+            $this->SetTextColor(0, 0, 0);
+            $this->Cell(60, 5, 'Verified by :', 8, 0, 'R');
+            $this->SetFont('Arial', 'B', 10);
+            $this->Cell(70, 5, 'DR. S.BISWAS', 0, 1, 'R');
+            $this->SetFont('Arial', '', 10);
+            $this->SetTextColor(24, 54, 151);
+            $this->Cell(60, 5, 'Advance Assay, USG & ECHO, Colour Doppler,', 0, 0, 'L');
+            $this->Cell(60, 5, '', 0, 0, 'C');
+            $this->SetTextColor(0, 0, 0);
+            $this->Cell(70, 5, 'Consultant Pathologist(MD)', 0, 1, 'R');
+            $this->SetTextColor(24, 54, 151);
+            $this->Cell(60, 5, 'Digital X-Ray, Special X-Ray, OPG, ECG & Eye.', 0, 0, 'L');
+            $this->Cell(60, 5, '', 0, 0, 'C');
+            $this->SetTextColor(0, 0, 0);
+            $this->Cell(70, 5, 'Reg. No: 59304 (WBMC)', 0, 1, 'R');
 
-//             $this->Image('./assets/images/bottom-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
-//             $textY = $imageY + $imageHeight + -10; // Adjust Y position as needed
-//             $this->SetY($textY);
-//             $this->SetFont('Arial', 'I', 7);
-//             $this->SetTextColor(255, 255, 255);
-//             $cellWidth = 180 - ($leftSpace + $rightSpace);
-//             $this->Cell($cellWidth, 3, '*The result may be correlation clinically', 0, 1, 'R');
-//             $this->Cell($cellWidth, 3, '*Patient identification not verified', 0, 1, 'R');
-//             $this->Cell($cellWidth, 3, '*This report is not valid for medico legal purpose', 0, 1, 'R');
-//         }
-//     } //....footer end....//
+            // Define left and right side spacing
+            $leftSpace = 3; // Left side space in mm
+            $rightSpace = -6; // Right side space in mm
+            $imageX = $leftSpace; // X position with left space
+            $imageY = 276; // Y position
+            $imageWidth = 200 - ($leftSpace + $rightSpace); // Adjusted width with spaces
+            $imageHeight = 18; // Height of the image
 
-//     //.....Main test content start....//
-//     function AddContentPage()
-//     {
-//         $this->AddPage("", "A4");
-//         $this->SetFont('Arial', 'B', 12);
-//         $this->Cell(0, 8, 'REPORT OF LIVER FUNCTION TEST', 0, 1, 'C');
-//         $lineWidth = 200 * 0.4;
-//         $lineX = (208 - $lineWidth) / 2;
-//         $this->Line($lineX, $this->GetY(), $lineX + $lineWidth, $this->GetY());
-//         $this->Ln(10);
+            $this->Image('./assets/images/bottom-wave.jpg', $imageX, $imageY, $imageWidth, $imageHeight);
+            $textY = $imageY + $imageHeight + -10; // Adjust Y position as needed
+            $this->SetY($textY);
+            $this->SetFont('Arial', 'I', 7);
+            $this->SetTextColor(255, 255, 255);
+            $cellWidth = 180 - ($leftSpace + $rightSpace);
+            $this->Cell($cellWidth, 3, '*The result may be correlation clinically', 0, 1, 'R');
+            $this->Cell($cellWidth, 3, '*Patient identification not verified', 0, 1, 'R');
+            $this->Cell($cellWidth, 3, '*This report is not valid for medico legal purpose', 0, 1, 'R');
+        }
+    } //....footer end....//
 
+    //.....Main test content start....//
+    function AddContentPage()
+    {
+        foreach ($this->testData as $test) {
+            
+            $this->AddPage("", "A4");
+            $this->SetFont('Arial', 'B', 12);
+            $this->Cell(0, 8, "REPORT OF {$test['test-name']} TEST", 0, 1, 'C');
+            $lineWidth = 200 * 0.4;
+            $lineX = (208 - $lineWidth) / 2;
+            $this->Line($lineX, $this->GetY(), $lineX + $lineWidth, $this->GetY());
+            $this->Ln(10);
 
-//         foreach ($this->testData as $test) {
-//             $this->SetFont('Arial', 'B', 10);
-//             $this->Cell(50, 5, $test['name'], 0, 0, 'C');
-//             $this->SetFont('Arial', 'B', 10);
-//             $this->Cell(115, 5, ': ' . $test['value'], 0, 1, 'R');
-//             $this->SetFont('Arial', '', 8);
-//             $this->Cell(62, 5, $test['ageGroup'], 0, 1, 'C');
-//             $this->Cell(48, 5, $test['unit'], 0, 1, 'C');
-//             // $this->Cell(0, 5, $test['description'], 0, 1);
-//             // $this->Cell(90, 5, 'Lorem ipsum dolor 12h - 76gh', 0, 1);
-//             $this->Ln(5);
-//         }
-//         $this->Ln(2);
-//     }
-//     //.....Main test content end....//
+            foreach ($test['parameters'] as $eachParam) {
 
-//     //....footer set last page...//
-//     function AddLastPage()
-//     {
-//         $this->isLastPage = true;
-//     } //footer end..///
+                $this->SetFont('Arial', 'B', 10);
+                $this->Cell(50, 5, $eachParam['param-name'], 0, 0, 'C');
+                $this->SetFont('Arial', 'B', 10);
+                $this->Cell(115, 5, ': ' . $eachParam['param-value'], 0, 1, 'R');
+                $this->SetFont('Arial', '', 8);
+                $this->Cell(0, 5, str_replace("<br>", "\n", $eachParam['child-range']), 0, 1, 'C');
+                $this->Cell(48, 5, $eachParam['unit'], 0, 1, 'C');
+                // $this->Cell(0, 5, $test['description'], 0, 1);
+                // $this->Cell(90, 5, 'Lorem ipsum dolor 12h - 76gh', 0, 1);
+                $this->Ln(5);
+            }
+        }
+        $this->Ln(2);
+    }
+    //.....Main test content end....//
 
-//     ///....for date time format...///
-//     function formatDateTime($date, $separator)
-//     {
-//         return date("d{$separator}m{$separator}Y", strtotime($date));
-//     } //...end format...//
-// }
+    //....footer set last page...//
+    function AddLastPage()
+    {
+        $this->isLastPage = true;
+    } //footer end..///
+
+    ///....for date time format...///
+    function formatDateTime($date, $separator)
+    {
+        return date("d{$separator}m{$separator}Y", strtotime($date));
+    } //...end format...//
+}
 
 // if (isset($_POST['printPDF'])) {
 
-//     ///...for getting dynamic data...///
-//     $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
-//     $labReportDetailbyId = json_decode($labReportDetailbyId, true);
 
-//     $paramsValues = [];
-//     if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
-//         foreach ($labReportDetailbyId as $report) {
-//             $testId = $report['test_id'];
-//             $testValue = $report['test_value'];
-//             $patientTest = $SubTests->subTestById($testId);
-//             $decodedData = json_decode($patientTest, true);
-//             if ($decodedData !== null) {
-//                 $paramsValues[] = [
-//                     'name' => $decodedData['sub_test_name'],
-//                     'value' => $testValue,
-//                     'description' => $decodedData['test_dsc'],
-//                     'ageGroup' => $decodedData['age_group'],
-//                     'unit' => $decodedData['unit'],
 
-//                 ];
-//             }
-//         }
-//     } ///....dynamic data end...///
+$allTests = [];
 
-//     $pdf = new PDF();
+foreach ($testIds as $eachTestId) :
+    $testResponse = $Pathology->showTestById($eachTestId);
 
-//     $pdf->AliasNbPages();
-//     $pdf->setTestData($paramsValues);
-//     $pdf->AddContentPage();
-//     $pdf->AddLastPage();
-//     ob_clean();
-//     $pdf->Output();
-//     exit;
+    $testArray = [
+        'test-name' => $testResponse['name'],
+        'parameters' => []
+    ];
+
+    foreach ($reportDetails as $eachParam) {
+        $param_id     = $eachParam->param_id;
+        $param_value  = $eachParam->param_value;
+        $paramDetails = json_decode($Pathology->showTestByParameter($param_id));
+        if ($paramDetails->status) {
+            $paramname      = $paramDetails->data->name;
+            $matchTestId    = $paramDetails->data->test_id;
+            $unit           = $paramDetails->data->unit;
+            if ($matchTestId === $eachTestId) {
+                $rangeDetails = json_decode($Pathology->showRangeByParameter($param_id));
+                if ($rangeDetails->status) {
+                    $rangeDetails = $rangeDetails->data;
+                    $childRange = $rangeDetails->child;
+                    $adultRange = $rangeDetails->adult;
+
+                    $testArray['parameters'][] = [
+                        'param-name' => $paramname,
+                        'param-value' => $param_value,
+                        'unit' => $unit,
+                        'child-range' => $childRange,
+                        'adult-range' => $adultRange,
+                        'general-range' => $paramname,
+                    ];
+                }
+            }
+        }
+    }
+
+    $allTests[] = $testArray;
+endforeach;
+
+$pdf = new PDF();
+
+$pdf->AliasNbPages();
+$pdf->setTestData($allTests);
+$pdf->AddContentPage();
+$pdf->AddLastPage();
+// ob_clean();
+// $pdf->Output();
+// exit;
 // }
 ?>
 
@@ -351,7 +371,7 @@ require('assets/plugins/pdfprint/fpdf/fpdf.php');
                             $unit           = $paramDetails->data->unit;
                             if ($matchTestId === $eachTestId) {
                                 $rangeDetails = json_decode($Pathology->showRangeByParameter($param_id));
-                                if ($rangeDetails->status){
+                                if ($rangeDetails->status) {
                                     $rangeDetails = $rangeDetails->data;
                                     $childRange = $rangeDetails->child;
                                     $adultRange = $rangeDetails->adult;
@@ -367,7 +387,7 @@ require('assets/plugins/pdfprint/fpdf/fpdf.php');
 
                                         </div>
                                     </td>
-                                    <td><b><?= $param_value .' '.$unit?></b></td>
+                                    <td><b><?= $param_value . ' ' . $unit ?></b></td>
                                 </tr>
                     <?php
                             }
