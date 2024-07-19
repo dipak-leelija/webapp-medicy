@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?php echo CSS_PATH; ?>generateTicket.css">
 </head>
 <body>
-    <a href="" type="button" class="btn g-ticketBtn text-white" data-toggle="tooltip" data-placement="top" title="Generate Ticket">
+    <a href="ticket-query-generator.php" type="button" class="btn g-ticketBtn text-white" data-toggle="tooltip" data-placement="top" title="Generate Ticket">
         ?
     </a>
 </body>

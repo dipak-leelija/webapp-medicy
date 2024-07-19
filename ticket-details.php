@@ -31,7 +31,9 @@ $requestTypes = [
     'distributor'          => ['tableName' => 'Distributer Add', 'data'      => []],
     'manufacturer'         => ['tableName' => 'manufacturer Add', 'data'     => []],
     'packaging_type'       => ['tableName' => 'packaging Add', 'data'        => []],
-    'quantity_unit'        => ['tableName' => 'quantity add', 'data'         => []]
+    'quantity_unit'        => ['tableName' => 'quantity add', 'data'         => []],
+    'query_request'        => ['tableName' => 'Generate Quarry', 'data'      => []],
+    'ticket_request'       => ['tableName' => 'Generate Ticket', 'data'      => []]
 ];
 
 // print_r($requestTypes);
@@ -53,7 +55,6 @@ function getInitials($string)
 
 foreach ($requestTypes as $table => &$requestType) {
 
-    // print_r($table);
 
     $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
     // print_r($requestData);
@@ -64,10 +65,10 @@ foreach ($requestTypes as $table => &$requestType) {
         $requestType['data'] = [];
     }
 
-    // print_r($requestType);
+    // print_r($requestType['tableName']);
 
     foreach ($requestType['data'] as $requestDataItem) {
-        // print_r($requestType);
+        // print_r($requestDataItem);
 
         if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
@@ -111,7 +112,21 @@ foreach ($requestTypes as $table => &$requestType) {
                 'name'        => $requestDataItem->short_name,
                 'description' => 'New Quantity Unit Add'
             ];
-        } else {
+        } elseif ($requestType['tableName'] == 'Generate Quarry') {
+            $allRequestResult[] = [
+                'id'          => $requestDataItem->ticket_no,
+                'tableName'   => $requestType['tableName'],
+                'name'        => '',
+                'description' => 'New Quantity Unit Add'
+            ];
+        }elseif ($requestType['tableName'] == 'Generate Ticket') {
+            $allRequestResult[] = [
+                'id'          => $requestDataItem->ticket_no,
+                'tableName'   => $requestType['tableName'],
+                'name'        => '',
+                'description' => 'New Quantity Unit Add'
+            ];
+        }else {
             $allRequestResult[] = [
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
@@ -120,6 +135,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'description' => 'New' . ' ' . $requestType['tableName']
             ];
         }
+            
     }
 }
 
@@ -271,7 +287,7 @@ if ($pagination->status == 1) {
     <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a> -->
-    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+    <!-- <?php include ROOT_COMPONENT . 'generateTicket.php'; ?> -->
 
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
