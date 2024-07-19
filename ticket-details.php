@@ -34,6 +34,23 @@ $requestTypes = [
     'quantity_unit'        => ['tableName' => 'quantity add', 'data'         => []]
 ];
 
+// print_r($requestTypes);
+
+
+// string splitter function
+function getInitials($string)
+{
+    $words = explode(' ', $string);
+    $initials = '';
+    foreach ($words as $word) {
+        if (!empty($word)) {
+            $initials .= strtoupper($word[0]);
+        }
+    }
+    return $initials;
+}
+
+
 foreach ($requestTypes as $table => &$requestType) {
 
     // print_r($table);
@@ -47,47 +64,56 @@ foreach ($requestTypes as $table => &$requestType) {
         $requestType['data'] = [];
     }
 
+    // print_r($requestType);
 
     foreach ($requestType['data'] as $requestDataItem) {
         // print_r($requestType);
+
         if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'description' => $requestDataItem->req_dsc
             ];
         } elseif ($requestType['tableName'] == 'Distributor Request') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'Manufacturer Request') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'Packtype Request') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'packaging Add') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
                 'description' => 'New Packaging Unit Add'
             ];
         } elseif ($requestType['tableName'] == 'quantity add') {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->short_name,
                 'description' => 'New Quantity Unit Add'
             ];
         } else {
             $allRequestResult[] = [
+                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
@@ -97,12 +123,6 @@ foreach ($requestTypes as $table => &$requestType) {
     }
 }
 
-
-// print_r($allRequestResult);
-
-
-// $allRequestResult = array_merge($prodReqObjData, $distReqObjData);
-// $allRequestResult = array_merge($allRequestResult, $manufReqObjData);
 
 $pagination = json_decode($Pagination->arrayPagination($allRequestResult));
 
@@ -125,7 +145,6 @@ if ($pagination->status == 1) {
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -136,7 +155,6 @@ if ($pagination->status == 1) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -145,8 +163,6 @@ if ($pagination->status == 1) {
     <!-- Custom styles for this page -->
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-
-
 </head>
 
 <body id="page-top">
@@ -172,21 +188,18 @@ if ($pagination->status == 1) {
                 <div class="container-fluid">
 
                     <div class="card-body shadow">
-                        <div class="card-header w-50 py-3 justify-content-between">
-                            <!-- <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
-                                <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
-                            </div> -->
-
+                        <div class="card-header w-100 py-3 d-flex justify-content-end">
+                            <a href="ticket-query-generator.php" class="btn btn-primary" id="button-addon">Generate Request</a>
                         </div>
 
                         <div class="table-responsive">
                             <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th class="col-1">Ticket Id</th>
                                         <th class="col-2">Category</th>
                                         <th class="col-3">Item Name</th>
-                                        <th class="col-6">Description</th>
+                                        <th class="col-5">Description</th>
                                         <th class="col-1">Status</th>
                                     </tr>
                                 </thead>
@@ -197,13 +210,11 @@ if ($pagination->status == 1) {
                                         $count = 0;
                                         foreach ($resultItems as $resItems) {
                                             $count++;
-                                            // print_r($resItems);
                                             if ($resItems->tableName != null) {
                                                 $tableName = $resItems->tableName;
                                             } else {
                                                 $tableName = '';
                                             }
-                                            // echo $count;
 
                                             if ($resItems->name != null) {
                                                 $itemName = $resItems->name;
@@ -220,6 +231,7 @@ if ($pagination->status == 1) {
                                             $status = 'Request Pending';
 
                                             echo '<tr>
+                                                        <td>' . $resItems->id . '</td>
                                                         <td>' . $tableName . '</td>
                                                         <td>' . $itemName . '</td>
                                                         <td>' . $description . '</td>
@@ -231,9 +243,7 @@ if ($pagination->status == 1) {
                                                  <td valign="top" colspan="6" class="dataTables_empty" style="text-align: center;">Ticket Not Found</td>
                                               </tr>';
                                     }
-                                    // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                     ?>
-
                                 </tbody>
                             </table>
                         </div>
@@ -248,12 +258,8 @@ if ($pagination->status == 1) {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
         </div>
-        <!--End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -261,7 +267,6 @@ if ($pagination->status == 1) {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
 
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>

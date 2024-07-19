@@ -3731,7 +3731,26 @@ class Utility
 
 		return $dateRange;
 	}
+
+
+
+
+	// request or query ticket number generator
+	function ticketNumberGenerator()
+	{
+		$currentDateTime = date('siymdh');
+
+		$microtime = microtime(true);
+
+		$milliseconds = sprintf("%03d", ($microtime - floor($microtime)) * 1000);
+
+		return $currentDateTime . $milliseconds;
+	}
 } //eoc
+
+
+
+
 
 
 
@@ -3800,3 +3819,7 @@ function formatDateTime($datetimeString, $dateDivider = '-', $showTime = False, 
 	// Concatenate the formatted date and time
 	return $datestring;
 }
+
+
+
+

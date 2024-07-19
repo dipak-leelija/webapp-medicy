@@ -391,14 +391,14 @@ class Request
 
             if ($newDistributer) {
                 if ($tableName == 'quantity_unit') {
-                    $requestQuery = "SELECT $name,$newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
+                    $requestQuery = "SELECT id, $name,$newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 } elseif ($tableName == 'packaging_type') {
-                    $requestQuery = "SELECT $name, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
+                    $requestQuery = "SELECT id, $name, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 } else {
-                    $requestQuery = "SELECT $name, $description, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
+                    $requestQuery = "SELECT id, $name, $description, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 }
             } else {
-                $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
+                $requestQuery = "SELECT id, $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
             }
 
 
@@ -492,5 +492,61 @@ class Request
             return json_encode(['status' => '0', 'message' => $e->getMessage()]);
         }
     }
+
+
+
+
+    // ====================== ticket request =====================
+    function addNewTicketRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
+    {
+        // echo $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time;
+        try {
+            $addQuery = "INSERT INTO `ticket_request`(`ticket_no`, `email`, `phone`, `name`, `description`, `document`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($addQuery);
+            if (!$stmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("ssissssss", $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time);
+
+            if ($stmt->execute()) {
+                $insertId = $this->conn->insert_id;
+                $stmt->close();
+                return json_encode(['status' => true, 'insert_id' => $insertId]);
+            } else {
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+
+    // ====================== query request ======================
+    function addNewQueryRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
+    {
+        try {
+            $addQuery = "INSERT INTO `query_request`(`ticket_no`, `email`, `contact`, `name`, `message`, `attachment`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($addQuery);
+            if (!$stmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("ssissssss", $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time);
+
+            if ($stmt->execute()) {
+                $insertId = $this->conn->insert_id;
+                $stmt->close();
+                return json_encode(['status' => true, 'insert_id' => $insertId]);
+            } else {
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
 
 }

@@ -115,6 +115,8 @@ session_start();
 
 	define("PROD_IMG", 							ROOT_DIR.'images/product-image/');
 
+	define("TICKET_DOCUMENT_DIR", 					ROOT_DIR.'images/ticket-documents/');
+	const TICKET_DOCUMEN_PATH				= 	URL.'images/ticket-documents/';
 	// define("USR_ORGS_IMG_PATH", 				ROOT_DIR.'assets/images/orgs/');
 	
 
