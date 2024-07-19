@@ -196,7 +196,6 @@ if(isset($_POST['bill-proceed'])){
                                         <select id="docList" class="form-control" name="patientDoctor"
                                             onChange="getDoc()" required>
                                             <option disabled selected>Select</option>
-                                            <option value="">New Doctor</option>
                                             <option value="Self">By Self</option>
 
                                             <?php

@@ -8,7 +8,8 @@ require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'patients.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
+// require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 
@@ -16,7 +17,8 @@ require_once CLASS_DIR . 'labBillDetails.class.php';
 //Classes Initilized
 $appointments    = new Appointments();
 $Patients        = new Patients();
-$SubTests        = new SubTests();
+$Pathology       = new Pathology;
+// $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
@@ -24,7 +26,8 @@ $LabBillDetails  = new LabBillDetails();
 
 //Function Initilized
 $showDoctors    = json_decode($Doctors->showDoctors($adminId));
-$showSubTests   = $SubTests->showSubTests();
+$showSubTests   = $Pathology->showTestList();
+
 
 if (isset($_GET['invoice'])) {
 
@@ -58,9 +61,7 @@ if (is_numeric($refDoc)) {
   $docDetails = $Doctors->showDoctorNameById($refDoc);
   $docDetails = json_decode($docDetails);
   if ($docDetails->status == 1) {
-    foreach ($docDetails->data as $rowDoctor) {
-      $existsDoctorName = $rowDoctor->doctor_name;
-    }
+    $existsDoctorName = $docDetails->data->doctor_name;
   }
 } else {
   $existsDoctorName = $refDoc;
@@ -178,9 +179,7 @@ if (is_numeric($refDoc)) {
                       <option disabled selected>Select Test</option>
                       <?php
                       foreach ($showSubTests as $rowSubTests) {
-                        $subTestId   = $rowSubTests['id'];
-                        $subTestName = $rowSubTests['sub_test_name'];
-                        echo '<option value=' . $subTestId . '>' . $subTestName . '</option>';
+                        echo '<option value=' . $rowSubTests['id'] . '>' . $rowSubTests['name'] . '</option>';
                       }
                       ?>
                     </select>
@@ -256,8 +255,7 @@ if (is_numeric($refDoc)) {
                       foreach ($subTests as $rowsubTests) {
 
                         $subTestId = $rowsubTests['test_id'];
-                        $subTest = $SubTests->showSubTestsId($rowsubTests['test_id']);
-                        // print_r($subTestName);
+                        $subTest = $Pathology->showTestById($subTestId);
 
                         $subTestPrice = $rowsubTests['test_price'];
                         $disc         = $rowsubTests['percentage_of_discount_on_test'];
@@ -270,7 +268,7 @@ if (is_numeric($refDoc)) {
                                             <p class='my-0 py-0'>" . $count . "</p>
                                         </div>
                                         <div class='form-group col-sm-4 mb-2 mt-0'>
-                                            <p class='my-0 py-0 '>" . $subTest[0][1] . "</p>
+                                            <p class='my-0 py-0 '>" . $subTest['name'] . "</p>
                                             <input type='text' name='testId[]' value='" . $subTestId . "' hidden>
                                         </div>
                                         <div class='form-group col-sm-2 mb-2 py-0'>

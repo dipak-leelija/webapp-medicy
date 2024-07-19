@@ -1,48 +1,55 @@
 body {
-    background-color: #f0f2f5;
+  background-color: #f0f2f5;
 }
 
-.login-wrapper{
-    min-height: 100vh;
+.login-wrapper {
+  min-height: 100vh;
 }
 form {
-    width: 30%;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    background-color: #fff;
+  width: 30%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #fff;
 }
 
 .field-icon {
-    float: right;
-    margin-left: -25px;
-    margin-top: -25px;
-    position: relative;
-    z-index: 2;
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Ensuring specificity and compatibility with different browsers */
+input:-webkit-autofill,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important; /* Ensures text color is readable */
 }
 
 @media (min-width: 260px) and (max-width: 767.98px) {
-    form {
-        width: 78%;
-    }
+  form {
+    width: 78%;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
-    form {
-        width: 45%;
-    }
+  form {
+    width: 45%;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-    form {
-        width: 35%;
-    }
+  form {
+    width: 35%;
+  }
 }
 
 @media (min-width: 1200px) {
-    form {
-        width: 30%;
-    }
+  form {
+    width: 30%;
+  }
 }
-
 
 /* .form-group {
     position: relative;

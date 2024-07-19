@@ -8,13 +8,6 @@ require_once CLASS_DIR.'Pathology.class.php';
 $subTestId = $_GET['subtest_id'];
 
 $Pathology = new Pathology();
-$showSubTestsId = $Pathology->showTestById($subTestId);
-
-foreach($showSubTestsId as $rowsSubTest){
-    $subTestName = $rowsSubTest['name'];
-    echo $subTestName;
-
-}
-
-
+$showSubTest = $Pathology->showTestById($subTestId);
+echo $showSubTest['name'];
 ?>

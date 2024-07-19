@@ -131,9 +131,9 @@ function getBill() {
   jQuery("#lists").append(
     '<div id="box-id-' +
       count +
-      '" class="row justify-content-between text-left my-0 py-0"><div class="form-group col-sm-2 flex-column my-0 py-0 d-flex"><p class="my-0 py-0">' +
+      '" class="row justify-content-between text-left my-0 py-0"><div class="form-group col-sm-1 flex-column my-0 py-0 d-flex"><p class="my-0 py-0">' +
       count +
-      '</p></div><div class="form-group col-sm-3 flex-column mb-0 mt-0 d-flex"><p class="my-0 py-0 ">' +
+      '</p></div><div class="form-group col-sm-4 flex-column mb-0 mt-0 d-flex"><p class="my-0 py-0 ">' +
       testName +
       '</p><input type="text" name="testId[]" value="' +
       testId +

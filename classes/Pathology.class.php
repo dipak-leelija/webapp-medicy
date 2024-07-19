@@ -184,7 +184,7 @@ class Pathology{
         try {
             $selectTest = "SELECT * FROM `test_list`";
             $testQuery = $this->conn->query($selectTest);
-            while ($result = $testQuery->fetch_array()) {
+            while ($result = $testQuery->fetch_assoc()) {
                 $data[] = $result;
             }
             return $data;
