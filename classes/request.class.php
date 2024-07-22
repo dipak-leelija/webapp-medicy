@@ -351,6 +351,65 @@ class Request
 
 
 
+    function deleteRequest($prodId)
+    {
+        try {
+            $sql = "DELETE FROM product_request WHERE `product_id` = ?";
+            $statement = $this->conn->prepare($sql);
+
+            if ($statement) {
+                $statement->bind_param("s", $prodId);
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                if ($statement->affected_rows > 0) {
+                    return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+                }
+            } else {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+    function deleteProductOnTable($prodId, $table)
+    {
+        try {
+            $sql = "DELETE FROM $table WHERE `product_id` = ?";
+            $statement = $this->conn->prepare($sql);
+
+            if (!$statement) {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+
+            $statement->bind_param("s", $prodId);
+            $statement->execute();
+
+            if ($statement->affected_rows > 0) {
+                return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+
+
+
     /*
     function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '', $newDistributer = '')
     {
@@ -444,8 +503,12 @@ class Request
         } catch (Exception $e) {
             return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
-    }
-*/
+    } */
+
+
+
+
+
 
     function fetchRequestDataByTableName($tableName, $adminId)
     {
@@ -580,8 +643,7 @@ class Request
                     $requestQuery = "SELECT * FROM $tableName WHERE `status`='ACTIVE'";
                 } elseif ($tableName == 'ticket_request') {
                     $requestQuery = "SELECT * FROM $tableName WHERE `status`='ACTIVE'";
-                } 
-                else {
+                } else {
                     $requestQuery = "SELECT * FROM $tableName";
                 }
             } else {
@@ -624,22 +686,23 @@ class Request
 
 
     // ======================== DATA FETCH QUERY ========================
-    function fetchDataByTableName($data, $table) {
+    function fetchDataByTableName($data, $table)
+    {
         try {
-        
+
             $fetchQuery = "SELECT * FROM $table WHERE ticket_no = ?";
-    
+
             $requestStmt = $this->conn->prepare($fetchQuery);
-        
+
             if (!$requestStmt) {
                 throw new Exception("Error preparing statement: " . $this->conn->error);
             }
-            $requestStmt->bind_param('s', $data); 
+            $requestStmt->bind_param('s', $data);
             $requestStmt->execute();
             $result = $requestStmt->get_result();
-            
+
             $responseData = [];
-            
+
             if ($result->num_rows > 0) {
                 while ($res = $result->fetch_object()) {
                     $responseData = $res;
@@ -654,13 +717,14 @@ class Request
             return json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
-    
-    
+
+
 
 
 
     // =========== add data to response tabel (ticket / query response table) ============
-    function addResponseToTicketQueryTable($tableName, $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus) {
+    function addResponseToTicketQueryTable($tableName, $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus)
+    {
         try {
             if ($tableName == 'Generate Quarry') {
                 $table = 'query_response';
@@ -689,18 +753,18 @@ class Request
                 $col10 = 'added_on';
                 $col11 = 'view_status';
             }
-    
+
             $addQuery = "INSERT INTO $table($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+
             $stmt = $this->conn->prepare($addQuery);
-    
+
             if ($stmt === false) {
                 throw new Exception('Prepare statement failed: ' . $this->conn->error);
             }
-    
+
             // Adjust the types according to your database schema, here it's assumed that $addedOn is a string
             $stmt->bind_param("isssssssssi", $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus);
-    
+
             if (!$stmt->execute()) {
                 throw new Exception('Execute statement failed: ' . $stmt->error);
             }
@@ -710,89 +774,33 @@ class Request
             return $e->getMessage();
         }
     }
-    
+
 
 
 
     // =========================== update query/table data ==================================
-    function updateStatusByTableName($table, $id, $status) {
+    function updateStatusByTableName($table, $id, $status)
+    {
         try {
             $updateQuery = "UPDATE `$table` SET `status` = ? WHERE `id` = ?";
-            
+
             $stmt = $this->conn->prepare($updateQuery);
-    
+
             if ($stmt === false) {
                 throw new Exception('Prepare statement failed: ' . $this->conn->error);
             }
-    
+
             $stmt->bind_param("si", $status, $id);
-    
+
             if (!$stmt->execute()) {
                 throw new Exception('Execute statement failed: ' . $stmt->error);
             }
-    
+
             $stmt->close();
-    
+
             return json_encode(['status' => true, 'message' => 'Status updated successfully']);
         } catch (Exception $e) {
             return json_encode(['status' => false, 'message' => $e->getMessage()]);
-        }
-    }
-    
-
-
-
-
-
-    function deleteRequest($prodId)
-    {
-        try {
-            $sql = "DELETE FROM product_request WHERE `product_id` = ?";
-            $statement = $this->conn->prepare($sql);
-
-            if ($statement) {
-                $statement->bind_param("s", $prodId);
-                $statement->execute();
-
-                $result = $statement->get_result();
-
-                if ($statement->affected_rows > 0) {
-                    return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
-                } else {
-                    return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
-                }
-            } else {
-                throw new Exception("Error preparing delete statement: " . $this->conn->error);
-            }
-        } catch (Exception $e) {
-            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
-        }
-    }
-
-
-
-
-
-    function deleteProductOnTable($prodId, $table)
-    {
-        try {
-            $sql = "DELETE FROM $table WHERE `product_id` = ?";
-            $statement = $this->conn->prepare($sql);
-
-            if (!$statement) {
-                throw new Exception("Error preparing delete statement: " . $this->conn->error);
-            }
-
-            $statement->bind_param("s", $prodId);
-            $statement->execute();
-
-            if ($statement->affected_rows > 0) {
-                return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
-            } else {
-                return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
-            }
-        } catch (Exception $e) {
-            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
         }
     }
 
@@ -826,6 +834,9 @@ class Request
     }
 
 
+
+
+
     // ====================== query request ======================
     function addNewQueryRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
     {
@@ -850,4 +861,35 @@ class Request
             return json_encode(['status' => false, 'error' => $e->getMessage()]);
         }
     }
+
+
+
+
+
+
+    function adminResponseCheck($table) {
+        try {
+            
+            $selectQuery = "SELECT * FROM $table WHERE `status`=1 AND `view_status`=1";
+            
+            $result = $this->conn->query($selectQuery);
+            
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    
 }
+
+
+
+

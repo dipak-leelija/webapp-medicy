@@ -213,11 +213,12 @@ if ($pagination->status == 1) {
                             <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="col-1">Ticket Id</th>
-                                        <th class="col-2">Category</th>
-                                        <th class="col-3">Item Name</th>
-                                        <th class="col-5">Description</th>
-                                        <th class="col-1">Status</th>
+                                        <th>Ticket Id</th>
+                                        <th>Category</th>
+                                        <th>Item Name</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -258,6 +259,7 @@ if ($pagination->status == 1) {
                                                         <td>' . $resItems->id . '</td>
                                                         <td>' . $tableName . '</td>
                                                         <td>' . $itemName . '</td>
+                                                        <td>' . '' . '</td>
                                                         <td>' . $description . '</td>
                                                         <td style="color: red;">' . $status . '</td>
                                                     </tr>';
