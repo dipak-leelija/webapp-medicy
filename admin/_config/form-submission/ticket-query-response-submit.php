@@ -24,12 +24,13 @@ if (isset($_POST['ticket-query-response-submit'])) {
     $response = $_POST['query-responce'];
     $queryCreater = $_POST['msg-sender'];
     $adminId = $_POST['user-id'];
+    $status = 1;
     $viewStatus = 1;
 
     $emailId = $_POST['email'];
     $contactNo = $_POST['contact-no'];
 
-    $addResponse = $Request->addResponseToTicketQueryTable($tableName, $reqNo, $ticketNo, $title, $message, $document, $response, $queryCreater, $adminId, NOW, $viewStatus);
+    $addResponse = $Request->addResponseToTicketQueryTable($tableName, $reqNo, $ticketNo, $title, $message, $document, $response, $queryCreater, $adminId, $status, NOW, $viewStatus);
 
     $response = json_decode($addResponse);
 

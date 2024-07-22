@@ -24,13 +24,12 @@ $tableName = $_GET['table'];
 
 
 if ($tableName == 'Generate Quarry') {
-    $tabel = 'query_request';
+    $table = 'query_request';
 } elseif ($tableName == 'Generate Ticket') {
-    $tabel = 'ticket_request';
+    $table = 'ticket_request';
 }
 
-
-$queryDetails = json_decode($Request->fetchDataByTableName($token, $tabel));
+$queryDetails = json_decode($Request->fetchDataByTableName($token, $table));
 $tableData = $queryDetails->data;
 // print_r($tableData);
 
@@ -40,7 +39,16 @@ $username = $adminData->data->fname . ' ' . $adminData->data->lname;
 
 /// dcument detaisl
 $filePath = TICKET_DOCUMEN_PATH;
-$fileName = $tableData->attachment;
+if($table == 'query_request'){
+    $fileName = $tableData->attachment;
+    $message = $tableData->message;
+    $contact = $tableData->contact;
+}else if($table == 'ticket_request'){
+    $fileName = $tableData->document;
+    $message = $tableData->description;
+    $contact = $tableData->phone;
+}
+
 $fullFilePath = $filePath . $fileName;
 $fileType = pathinfo($fullFilePath, PATHINFO_EXTENSION);
 
@@ -140,14 +148,14 @@ $fileType = pathinfo($fullFilePath, PATHINFO_EXTENSION);
                                             <label class="med-label" style="margin-left:10px;" for="msg-title">Title</label>
                                         </div>
                                         <div class="col-md-6 form-group">
-                                            <input type="text" class="med-input" id="contact-no" name="contact-no" value="<?= $tableData->contact ?>" required readonly>
+                                            <input type="text" class="med-input" id="contact-no" name="contact-no" value="<?= $contact ?>" required readonly>
                                             <label class="med-label" style="margin-left:10px;" for="contact-no">Contact No</label>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-12 form-group">
-                                            <textarea class="med-input form-control" name="message" id="message" style="max-height: 105px; min-height: 105px;" required readonly><?= $tableData->message ?></textarea>
+                                            <textarea class="med-input form-control" name="message" id="message" style="max-height: 105px; min-height: 105px;" required readonly><?= $message ?></textarea>
                                             <label class="med-label" style="margin-left: 10px;" for="message">Description</label>
                                         </div>
                                     </div>
@@ -179,7 +187,7 @@ $fileType = pathinfo($fullFilePath, PATHINFO_EXTENSION);
                                     <!-- <div class="col-md-12 form-group card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 18rem; position: relative;">
                                     </div> -->
                                     <label class="med-label mt-n4" style="margin-left: 10px;" for="document">Document</label>
-                                    <input type="text" class="d-none med-input" id="document-data" name="document-data" value="<?= $tableData->attachment ?>" required readonly>
+                                    <input type="text" class="d-none med-input" id="document-data" name="document-data" value="<?= $fileName ?>" required readonly>
                                 </div>
                             </div>
                             <hr class="my-2">

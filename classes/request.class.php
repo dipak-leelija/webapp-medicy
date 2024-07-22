@@ -581,9 +581,9 @@ class Request
                 } elseif ($tableName == 'ticket_request') {
                     $requestQuery = "SELECT * FROM $tableName WHERE `status`='ACTIVE'";
                 } 
-                // else {
-                //     $requestQuery = "SELECT * FROM $tableName";
-                // }
+                else {
+                    $requestQuery = "SELECT * FROM $tableName";
+                }
             } else {
                 throw new Exception("Invalid table name specified.");
             }
@@ -660,7 +660,7 @@ class Request
 
 
     // =========== add data to response tabel (ticket / query response table) ============
-    function addResponseToTicketQueryTable($tableName, $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $addedOn, $viewStatus) {
+    function addResponseToTicketQueryTable($tableName, $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus) {
         try {
             if ($tableName == 'Generate Quarry') {
                 $table = 'query_response';
@@ -699,7 +699,7 @@ class Request
             }
     
             // Adjust the types according to your database schema, here it's assumed that $addedOn is a string
-            $stmt->bind_param("isssssssssi", $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $col9, $addedOn, $viewStatus);
+            $stmt->bind_param("isssssssssi", $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus);
     
             if (!$stmt->execute()) {
                 throw new Exception('Execute statement failed: ' . $stmt->error);
@@ -741,7 +741,7 @@ class Request
     
 
 
-    
+
 
 
     function deleteRequest($prodId)

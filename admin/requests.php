@@ -54,9 +54,7 @@ function getInitials($string)
 
 foreach ($requestTypes as $table => &$requestType) {
 
-    // print_r($table);
     $requestData = json_decode($Request->fetchAllRequestDataByTableName($table));
-    // print_r($requestData);
 
     if ($requestData->status) {
         $requestType['data'] = $requestData->data;
@@ -206,6 +204,7 @@ if ($pagination->status == 1) {
                                     <tr>
                                         <th class="col-1">Ticket Id</th>
                                         <th class="col-2">Category</th>
+                                        <th class="col-2">Title</th>
                                         <th class="col-3">Item Name</th>
                                         <th class="col-5">Description</th>
                                         <th class="col-1">Check</th>
@@ -239,7 +238,11 @@ if ($pagination->status == 1) {
                                             }
 
                                             if ($resItems->tableName == 'Generate Quarry' || $resItems->tableName == 'Generate Ticket') {
-                                                $link = "<a href='view-query-ticket.php?tokenNo=$resItems->id&table=$tableName'>View</a>";
+                                                if($resItems->status == 'ACTIVE'){
+                                                    $link = "<a href='view-query-ticket.php?tokenNo=$resItems->id&table=$tableName'>View</a>";
+                                                }else{
+                                                    $link = '';
+                                                }
                                             }else{
                                                 $link = '';
                                             }
@@ -248,6 +251,7 @@ if ($pagination->status == 1) {
                                             echo '<tr>
                                                         <td>' . $resItems->id . '</td>
                                                         <td>' . $tableName . '</td>
+                                                        <td>' . '' . '</td>
                                                         <td>' . $itemName . '</td>
                                                         <td>' . $description . '</td>
                                                         <td style="color: red;">' . $link . '</td>

@@ -9,7 +9,9 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 
 if (isset($_GET['response'])) {
     $response = url_dec($_GET['response']);
+    // echo $response;
     $message = url_dec($_GET['message']);
+    // echo $message;
 }
 
 /* ============================ End ============================ */
@@ -26,43 +28,43 @@ if (isset($_GET['response'])) {
     <title>Medicy Health Care Lab Test Bill</title>
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <!-- Include SweetAlert2 CSS -->
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 </head>
 
-
 <body>
-<?php if ($response) : ?>
+    <?php if (isset($response)) : ?>
+        <script src="<?= JS_PATH ?>sweetalert2/sweetalert2@11.cdn.js"></script>
         <script>
             Swal.fire({
-                text: $message,
+                text: "<?= $message ?>",
                 icon: "success",
                 showCancelButton: false,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "<?php echo ADM_URL ?>requests.php";
+                    window.location.href = "<?= ADM_URL ?>requests.php";
                 }
             });
         </script>
     <?php elseif ($alert === false) : ?>
+        <script src="<?= JS_PATH ?>sweetalert2/sweetalert2@11.cdn.js"></script>
         <script>
             Swal.fire({
-                text: $message,
+                text: "<?= $message ?>",
                 icon: "error",
                 showCancelButton: false,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "<?php echo ADM_URL ?>requests.php";
+                    window.location.href = "<?= ADM_URL ?>requests.php";
                 }
             });
         </script>
     <?php endif; ?>
-</body>
 
+</body>
 
 </html>
