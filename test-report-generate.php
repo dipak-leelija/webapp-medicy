@@ -289,10 +289,7 @@ if (!$labBillingData->status) {
 
             document.getElementById('select-test').addEventListener('change', function(event) {
                 const currentValues = choice.getValue(true);
-                const billId = '<?= $testBillId?>'; // replace 'your_bill_id_here' with the actual billId
-    
-                console.log("Previous value:", previousValues);
-                console.log("Current value:", currentValues);
+                const billId = '<?= $testBillId ?>'; // replace 'your_bill_id_here' with the actual billId
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "components/TestReportBody.inc.php", true);
@@ -319,6 +316,100 @@ if (!$labBillingData->status) {
                 // xhr.send("testId=" + encodeURIComponent(currentValues));
                 xhr.send("testId=" + encodeURIComponent(currentValues) + "&billId=" + encodeURIComponent(billId));
             });
+
+
+            // document.getElementById('select-test').addEventListener('change', function(event) {
+            //     const currentValues = choice.getValue(true);
+
+            //     var xhr = new XMLHttpRequest();
+            //     xhr.open('POST', "ajax/TestReportConditions.ajax.php", true);
+            //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            //     xhr.onload = function() {
+            //         if (xhr.status === 200) {
+            //             // Handle success
+            //             // console.log(JSON.parse(xhr.responseText));
+
+            //             var choice = new Choices(
+            //                 "#select-test", {
+            //                     allowHTML: true,
+            //                     removeItemButton: true,
+            //                 }
+            //             );
+
+            //             // Disable options based on specific condition
+            //             const items = choice.store.getChoices();
+
+            //             items.forEach(function(item) {
+            //                 // if (item.value === 'option2') {
+            //                 //     choices.disable(item);
+            //                 // }
+            //                 console.log(item.value);
+            //             });
+            //         } else {
+            //             // Handle error
+            //             console.error("Error:", xhr.statusText);
+            //             alert("An error occurred: " + xhr.statusText);
+            //         }
+            //     };
+
+            //     xhr.onerror = function() {
+            //         // Handle error
+            //         console.error("Request failed");
+            //         alert("An error occurred during the transaction");
+            //     };
+
+            //     // xhr.send("testId=" + encodeURIComponent(currentValues));
+            //     xhr.send("testId=" + encodeURIComponent(currentValues));
+            // });
+
+
+            document.getElementById('select-test').addEventListener('change', function(event) {
+                const currentValues = choice.getValue(true);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "ajax/TestReportConditions.ajax.php", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Handle success
+                        if (xhr.responseText) {
+                            const response = JSON.parse(xhr.responseText);
+                            const items = choice._store.activeChoices; // Use the correct internal method
+
+                            items.forEach(function(item) {
+
+                                if (!response.includes(Number(item.value))) {
+                                    // console.log(item)
+                                    const itemElement = document.querySelector(`#choices--select-test-item-choice-${item.id}`);
+                                    itemElement.classList.remove('choices__item--selectable');
+                                    itemElement.classList.remove('is-highlighted');
+                                    itemElement.classList.add('choices__item--disabled');
+                                    item.disabled = true
+                                    item.active = false
+                                    itemElement.innerText = `${item.label}  ---  Multiple Department's Report Can not generate at the same time`;
+                                }
+
+                            });
+                        }
+
+                    } else {
+                        // Handle error
+                        console.error("Error:", xhr.statusText);
+                        alert("An error occurred: " + xhr.statusText);
+                    }
+                };
+
+                xhr.onerror = function() {
+                    // Handle error
+                    console.error("Request failed");
+                    alert("An error occurred during the transaction");
+                };
+
+                xhr.send("testId=" + encodeURIComponent(currentValues));
+            });
+
 
 
         });
