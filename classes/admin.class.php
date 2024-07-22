@@ -55,7 +55,7 @@ class Admin {
             if ($res->num_rows > 0) {
                 $data = array();
                 while ($result = $res->fetch_object()) {
-                    $adminData[] = $result;
+                    $adminData = $result;
                 }
                 $stmt->close();
                 return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$adminData]);

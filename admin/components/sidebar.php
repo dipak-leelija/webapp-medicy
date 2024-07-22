@@ -114,14 +114,19 @@
 
 
         <!-- Products -->
-        <li class="nav-item <?php if ($page ==  "products" || $page ==  "add-new-product" || $page ==  "product-request-lsit") {
-                                echo "active";
-                            } ?>">
-            <a active class="nav-link <?php if ($page !=  "sales") {
-                                            echo "collapsed";
-                                        } ?>" href="#" data-toggle="collapse" data-target="#productsManagement" aria-expanded="<?php if ($page ==  "products" || $page ==  "add-new-product" || $page ==  "product-request-lsit") {
-                                                                                                                                                                                echo "true";
-                                                                                                                                                                            } ?>" aria-controls="productsManagement">
+        <li class="nav-item 
+            <?php
+            if ($page ==  "products" || $page ==  "add-new-product" || $page == "product-request-lsit") {
+                echo "active";
+            }
+            ?>">
+            <a active class="nav-link 
+            <?php
+            if ($page !=  "sales") {
+                echo "collapsed";
+            } ?>" href="#" data-toggle="collapse" data-target="#productsManagement" aria-expanded="<?php if ($page ==  "products" || $page ==  "add-new-product" || $page ==  "product-request-lsit") {
+                                                                                                        echo "true";
+                                                                                                    } ?>" aria-controls="productsManagement">
                 <i class="fas fa-pills"></i>
                 <span>Products</span>
             </a>
@@ -152,8 +157,8 @@
             <a class="nav-link <?php if ($page !=  "distributor") {
                                     echo "collapsed";
                                 } ?>" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="<?php if ($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit" || $page ==  "item-unit") {
-                                                                                                                                                                                echo "true";
-                                                                                                                                                                            } ?>" aria-controls="collapseUtilities">
+                                                                                                                            echo "true";
+                                                                                                                        } ?>" aria-controls="collapseUtilities">
                 <i class="fas fa-shopping-basket"></i>
                 <span>Purchase Master</span>
             </a>
@@ -193,31 +198,41 @@
         </div>
 
 
-        <!-- Products -->
+        <!-- subcriptions & plans -->
         <li class="nav-item <?= $page ==  "subscriptions" || $page ==  "plans" ? "active" : ''; ?>">
-            <a active class="nav-link <?= $page !=  "subscriptions" ? "collapsed" : ''?>" href="#" data-toggle="collapse" data-target="#subscriptionManagement" aria-expanded="<?= ($page ==  "subscriptions" || $page ==  "plans" ) ? "true" : '' ?>" aria-controls="subscriptionManagement">
+            <a active class="nav-link <?= $page !=  "subscriptions" ? "collapsed" : '' ?>" href="#" data-toggle="collapse" data-target="#subscriptionManagement" aria-expanded="<?= ($page ==  "subscriptions" || $page ==  "plans") ? "true" : '' ?>" aria-controls="subscriptionManagement">
                 <i class="fas fa-pills"></i>
                 <span>Subscriptions</span>
             </a>
-            <div id="subscriptionManagement" class="collapse <?= ($page ==  "subscriptions" ||  $page ==  "plans") ? "show" : '' ; ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div id="subscriptionManagement" class="collapse <?= ($page ==  "subscriptions" ||  $page ==  "plans") ? "show" : ''; ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= $page ==  "subscriptions" ? "active" : ''; ?>" href="subscriptions.php">Subscriptions </a>
                     <a class="collapse-item <?= $page ==  "plans" ? "active" : ''; ?>" href="plans.php">Plans</a>
                 </div>
             </div>
         </li>
-        <!--/end Products Menu  -->
+        <!--/end subscription Menu  <i class="fas fa-ticket-alt"></i> -->
 
 
-        <!-- Sidebar Toggler (Sidebar) -->
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
 
-        <div class="text-center d-none d-md-inline">
-
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Service
         </div>
 
+        <li class="nav-item <?= $page ==  "requests" ? "active" : '' ?>">
+            <a class="nav-link" href="requests.php">
+                <i class="fas fa-ticket-alt"></i>
+                <span>All Tickets</span></a>
+        </li>
 
+
+
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
 
     </ul>
 
