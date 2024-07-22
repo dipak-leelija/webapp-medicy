@@ -12,7 +12,7 @@ require_once CLASS_DIR . 'pagination.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
-
+// print_r([$_SESSION]);
 $page = "products";
 
 //Intitilizing Doctor class for fetching doctors

@@ -31,8 +31,9 @@ class Request
 
 
 
-    function 
-    addOldProductRequest($oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $unitid, $packegingUnit, $manufid, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status, $oldProdFlag){
+    function
+    addOldProductRequest($oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $unitid, $packegingUnit, $manufid, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status, $oldProdFlag)
+    {
         try {
 
             // echo $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $description, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag;
@@ -151,7 +152,8 @@ class Request
 
 
 
-    function selectProductData($prodId){
+    function selectProductData($prodId)
+    {
         $resultData = array();
 
         try {
@@ -282,7 +284,8 @@ class Request
 
 
 
-    function editUpdateProductRequest($productId, $prodName, $composition1, $composition2, $prodCategory,   $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description,     $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId){
+    function editUpdateProductRequest($productId, $prodName, $composition1, $composition2, $prodCategory,   $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description,     $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId)
+    {
         try {
             $updateProdRequest = "UPDATE product_request SET `name` = ?, `comp_1` = ?, `comp_2` = ?, `type`     = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?,  `gst` = ?,     `hsno_number` = ?, `req_dsc` = ?, `requested_by` = ?, `requested_on` = ?, `prod_req_status` = ?,    `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
 
@@ -306,7 +309,6 @@ class Request
             } else {
                 return json_encode(['status' => '0', 'data' => 'fail']);
             }
-
         } catch (Exception $e) {
             return json_encode(['status' => '0', 'data' => $e->getMessage()]);
         }
@@ -349,7 +351,66 @@ class Request
 
 
 
-/*
+    function deleteRequest($prodId)
+    {
+        try {
+            $sql = "DELETE FROM product_request WHERE `product_id` = ?";
+            $statement = $this->conn->prepare($sql);
+
+            if ($statement) {
+                $statement->bind_param("s", $prodId);
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                if ($statement->affected_rows > 0) {
+                    return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+                }
+            } else {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+    function deleteProductOnTable($prodId, $table)
+    {
+        try {
+            $sql = "DELETE FROM $table WHERE `product_id` = ?";
+            $statement = $this->conn->prepare($sql);
+
+            if (!$statement) {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+
+            $statement->bind_param("s", $prodId);
+            $statement->execute();
+
+            if ($statement->affected_rows > 0) {
+                return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+
+
+
+    /*
     function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '', $newDistributer = '')
     {
         try {
@@ -442,119 +503,304 @@ class Request
         } catch (Exception $e) {
             return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
-    }
-*/
-
-function fetchRequestDataByTableName($tableName, $adminId)
-{
-    try {
-        $queries = [
-            'product_request' => ['id','name', 'req_dsc', 'prod_req_status'],
-            'distributor_request' => ['id','name', 'req_dsc', 'status'],
-            'manufacturer_request' => ['id','name', 'req_dsc', 'status'],
-            'packtype_request' => ['id','unit_name', 'req_dsc', 'status'],
-            'distributor' => ['id','name', 'dsc', 'status', 'new'],
-            'manufacturer' => ['id','name', 'dsc', 'status', 'new'],
-            'packaging_type' => ['id','unit_name', 'status', 'new'],
-            'quantity_unit' => ['id','short_name', 'new'],
-            'query_request' => ['ticket_no', 'message', 'status'],
-            'ticket_request' => ['ticket_no', 'description', 'status']
-        ];
-
-        if (!array_key_exists($tableName, $queries)) {
-            throw new Exception("Invalid table name: " . $tableName);
-        }
-
-        $columns = $queries[$tableName];
-        $selectColumns = implode(", ", $columns);
-
-        $condition = ($tableName === 'quantity_unit' || $tableName === 'packaging_type' || in_array('new', $columns)) ? "AND new = 1" : "";
-
-        $requestQuery = "SELECT $selectColumns FROM $tableName WHERE admin_id = ? $condition";
-
-        $requestStmt = $this->conn->prepare($requestQuery);
-        if (!$requestStmt) {
-            throw new Exception("Error preparing SQL query: " . $this->conn->error);
-        }
-
-        $requestStmt->bind_param("s", $adminId);
-        if (!$requestStmt->execute()) {
-            throw new Exception("Error executing query: " . $requestStmt->error);
-        }
-
-        $requestResult = $requestStmt->get_result();
-        if (!$requestResult) {
-            throw new Exception("Error fetching result: " . $this->conn->error);
-        }
-
-        if ($requestResult->num_rows > 0) {
-            $requestResultData = [];
-            while ($row = $requestResult->fetch_assoc()) {
-                $requestResultData[] = $row;
-            }
-            return json_encode(['status' => '1', 'data' => $requestResultData]);
-        } else {
-            return json_encode(['status' => '0', 'data' => 'No data found.']);
-        }
-    } catch (Exception $e) {
-        return json_encode(['status' => '0', 'error' => $e->getMessage()]);
-    }
-}
+    } */
 
 
 
 
 
 
-
-
-    function deleteRequest($prodId)
+    function fetchRequestDataByTableName($tableName, $adminId)
     {
         try {
-            $sql = "DELETE FROM product_request WHERE `product_id` = ?";
-            $statement = $this->conn->prepare($sql);
+            $queries = [
+                'product_request' => ['id', 'name', 'req_dsc', 'prod_req_status'],
+                'distributor_request' => ['id', 'name', 'req_dsc', 'status'],
+                'manufacturer_request' => ['id', 'name', 'req_dsc', 'status'],
+                'packtype_request' => ['id', 'unit_name', 'req_dsc', 'status'],
+                'distributor' => ['id', 'name', 'dsc', 'status', 'new'],
+                'manufacturer' => ['id', 'name', 'dsc', 'status', 'new'],
+                'packaging_type' => ['id', 'unit_name', 'status', 'new'],
+                'quantity_unit' => ['id', 'short_name', 'new'],
+                'query_request' => ['ticket_no', 'message', 'status'],
+                'ticket_request' => ['ticket_no', 'description', 'status']
+            ];
 
-            if ($statement) {
-                $statement->bind_param("s", $prodId);
-                $statement->execute();
+            if (!array_key_exists($tableName, $queries)) {
+                throw new Exception("Invalid table name: " . $tableName);
+            }
 
-                $result = $statement->get_result();
+            $columns = $queries[$tableName];
+            $selectColumns = implode(", ", $columns);
 
-                if ($statement->affected_rows > 0) {
-                    return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
-                } else {
-                    return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+            $condition = ($tableName === 'quantity_unit' || $tableName === 'packaging_type' || in_array('new', $columns)) ? "AND new = 1" : "";
+
+            $requestQuery = "SELECT $selectColumns FROM $tableName WHERE admin_id = ? $condition";
+
+            $requestStmt = $this->conn->prepare($requestQuery);
+            if (!$requestStmt) {
+                throw new Exception("Error preparing SQL query: " . $this->conn->error);
+            }
+
+            $requestStmt->bind_param("s", $adminId);
+            if (!$requestStmt->execute()) {
+                throw new Exception("Error executing query: " . $requestStmt->error);
+            }
+
+            $requestResult = $requestStmt->get_result();
+            if (!$requestResult) {
+                throw new Exception("Error fetching result: " . $this->conn->error);
+            }
+
+            if ($requestResult->num_rows > 0) {
+                $requestResultData = [];
+                while ($row = $requestResult->fetch_assoc()) {
+                    $requestResultData[] = $row;
                 }
+                return json_encode(['status' => '1', 'data' => $requestResultData]);
             } else {
-                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+                return json_encode(['status' => '0', 'data' => 'No data found.']);
             }
         } catch (Exception $e) {
-            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
     }
 
 
 
 
-    function deleteProductOnTable($prodId, $table){
-        try {
-            $sql = "DELETE FROM $table WHERE `product_id` = ?";
-            $statement = $this->conn->prepare($sql);
 
-            if (!$statement) {
-                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+    ///// ======= for super admin view ===========
+    function fetchAllRequestDataByTableName($tableName)
+    {
+        try {
+            $newDistributer = false;
+            $name = '';
+            $description = '';
+            $statusColumn = '';
+
+            switch ($tableName) {
+                case 'product_request':
+                    $name = 'name';
+                    $description = 'req_dsc';
+                    $statusColumn = 'prod_req_status';
+                    break;
+                case 'distributor_request':
+                    $name = 'name';
+                    $description = 'req_dsc';
+                    $statusColumn = 'status';
+                    break;
+                case 'manufacturer_request':
+                    $name = 'name';
+                    $description = 'req_dsc';
+                    $statusColumn = 'status';
+                    break;
+                case 'packtype_request':
+                    $name = 'unit_name';
+                    $description = 'req_dsc';
+                    $statusColumn = 'status';
+                    break;
+                case 'distributor':
+                    $name = 'name';
+                    $description = 'dsc';
+                    $statusColumn = 'status';
+                    $newDistributer = true;
+                    break;
+                case 'manufacturer':
+                    $name = 'name';
+                    $description = 'dsc';
+                    $statusColumn = 'status';
+                    $newDistributer = true;
+                    break;
+                case 'packaging_type':
+                    $name = 'unit_name';
+                    $description = 'Add New Packaging Unit';
+                    $statusColumn = 'status';
+                    $newDistributer = true;
+                    break;
+                case 'quantity_unit':
+                    $name = 'short_name';
+                    $newDistributer = true;
+                    break;
+                case 'query_request':
+                    $name = true;
+                    break;
+                case 'ticket_request':
+                    $name = true;
+                    break;
             }
 
-            $statement->bind_param("s", $prodId);
-            $statement->execute();
-
-            if ($statement->affected_rows > 0) {
-                return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+            if ($newDistributer) {
+                if ($tableName == 'quantity_unit') {
+                    $requestQuery = "SELECT id, $name, new FROM $tableName WHERE new = 1";
+                } elseif ($tableName == 'packaging_type') {
+                    $requestQuery = "SELECT id, $name, $statusColumn, new FROM $tableName WHERE new = 1";
+                } else {
+                    $requestQuery = "SELECT id, $name, $description, $statusColumn, new FROM $tableName WHERE new = 1";
+                }
+            } elseif ($name) {
+                if ($tableName == 'query_request') {
+                    $requestQuery = "SELECT * FROM $tableName WHERE `status`='ACTIVE'";
+                } elseif ($tableName == 'ticket_request') {
+                    $requestQuery = "SELECT * FROM $tableName WHERE `status`='ACTIVE'";
+                } else {
+                    $requestQuery = "SELECT * FROM $tableName";
+                }
             } else {
-                return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+                throw new Exception("Invalid table name specified.");
+            }
+
+            $requestStmt = $this->conn->prepare($requestQuery);
+
+            if (!$requestStmt) {
+                throw new Exception("Error preparing SQL query: " . $this->conn->error);
+            }
+
+            if (!$requestStmt->execute()) {
+                throw new Exception("Error executing product request query: " . $requestStmt->error);
+            }
+
+            $requestResult = $requestStmt->get_result();
+
+            if (!$requestResult) {
+                throw new Exception("Error fetching product request result: " . $this->conn->error);
+            }
+
+            if ($requestResult->num_rows > 0) {
+                $requestResultData = array();
+                while ($row = $requestResult->fetch_assoc()) {
+                    $requestResultData[] = $row;
+                }
+                return json_encode(['status' => '1', 'data' => $requestResultData]);
+            } else {
+                return json_encode(['status' => '0', 'data' => 'No data found.']);
             }
         } catch (Exception $e) {
-            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+
+    // ======================== DATA FETCH QUERY ========================
+    function fetchDataByTableName($data, $table)
+    {
+        try {
+
+            $fetchQuery = "SELECT * FROM $table WHERE ticket_no = ?";
+
+            $requestStmt = $this->conn->prepare($fetchQuery);
+
+            if (!$requestStmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+            $requestStmt->bind_param('s', $data);
+            $requestStmt->execute();
+            $result = $requestStmt->get_result();
+
+            $responseData = [];
+
+            if ($result->num_rows > 0) {
+                while ($res = $result->fetch_object()) {
+                    $responseData = $res;
+                }
+                $requestStmt->close();
+                return json_encode(['status' => true, 'data' => $responseData]);
+            } else {
+                $requestStmt->close();
+                return json_encode(['status' => false, 'data' => []]);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+    // =========== add data to response tabel (ticket / query response table) ============
+    function addResponseToTicketQueryTable($tableName, $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus)
+    {
+        try {
+            if ($tableName == 'Generate Quarry') {
+                $table = 'query_response';
+                $col1 = 'query_id';
+                $col2 = 'ticket_no';
+                $col3 = 'title';
+                $col4 = 'message';
+                $col5 = 'attachment';
+                $col6 = 'response';
+                $col7 = 'query_creater';
+                $col8 = 'sender';
+                $col9 = 'status';
+                $col10 = 'added_on';
+                $col11 = 'view_status';
+            } else if ($tableName == 'Generate Ticket') {
+                $table = 'ticket_response';
+                $col1 = 'ticket_id';
+                $col2 = 'ticket_no';
+                $col3 = 'title';
+                $col4 = 'description';
+                $col5 = 'attachment';
+                $col6 = 'response';
+                $col7 = 'request_creater';
+                $col8 = 'sender';
+                $col9 = 'status';
+                $col10 = 'added_on';
+                $col11 = 'view_status';
+            }
+
+            $addQuery = "INSERT INTO $table($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($addQuery);
+
+            if ($stmt === false) {
+                throw new Exception('Prepare statement failed: ' . $this->conn->error);
+            }
+
+            // Adjust the types according to your database schema, here it's assumed that $addedOn is a string
+            $stmt->bind_param("isssssssssi", $requestId, $ticketNo, $queryTitle, $queryMessage, $document, $response, $requestCreater, $sender, $status, $addedOn, $viewStatus);
+
+            if (!$stmt->execute()) {
+                throw new Exception('Execute statement failed: ' . $stmt->error);
+            }
+            return json_encode(['status' => true, 'rowId' => $stmt->insert_id]);
+            $stmt->close();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+
+    // =========================== update query/table data ==================================
+    function updateStatusByTableName($table, $id, $status)
+    {
+        try {
+            $updateQuery = "UPDATE `$table` SET `status` = ? WHERE `id` = ?";
+
+            $stmt = $this->conn->prepare($updateQuery);
+
+            if ($stmt === false) {
+                throw new Exception('Prepare statement failed: ' . $this->conn->error);
+            }
+
+            $stmt->bind_param("si", $status, $id);
+
+            if (!$stmt->execute()) {
+                throw new Exception('Execute statement failed: ' . $stmt->error);
+            }
+
+            $stmt->close();
+
+            return json_encode(['status' => true, 'message' => 'Status updated successfully']);
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -588,6 +834,9 @@ function fetchRequestDataByTableName($tableName, $adminId)
     }
 
 
+
+
+
     // ====================== query request ======================
     function addNewQueryRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
     {
@@ -614,4 +863,33 @@ function fetchRequestDataByTableName($tableName, $adminId)
     }
 
 
+
+
+
+
+    function adminResponseCheck($table) {
+        try {
+            
+            $selectQuery = "SELECT * FROM $table WHERE `status`=1 AND `view_status`=1";
+            
+            $result = $this->conn->query($selectQuery);
+            
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                return json_encode(['status' => true, 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    
 }
+
+
+
+
