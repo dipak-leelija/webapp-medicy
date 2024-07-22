@@ -142,6 +142,41 @@ class Plan
         }
     }
 
+    function getAllPlans($planId){
+        try {
+            // Prepare the SQL query with placeholders for the parameters
+            $query = "SELECT * FROM plans WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            if ($stmt) {
+                // Bind the parameters to the placeholders
+                $stmt->bind_param("i", $planId);
+                // Execute the statement
+                if ($stmt->execute()) {
+                    // Fetch the result set as an associative array
+                    $result = $stmt->get_result();
+                    $plans = array();
+                    while ($res = $result->fetch_object()) {
+                        $plans[] =$res;
+                    }
+                    $stmt->close();
+                    return json_encode(['status' => 1, 'plans' => $plans]);
+                    } else {
+                        $stmt->close();
+                        return json_encode(['status' => 1, 'msg' => 'No plans found with
+                        the given ID']);
+                        }
+                        } else {
+                            return json_encode(['status' => 0, 'msg' => 'Failed to prepare
+                            query']);
+                            }
+                            } catch (Exception $e) {
+                                // Handle any exceptions that may occur during the database operation
+                                error_log("Error getting plans: " . $e->getMessage());
+                                return json_encode(['status' => 0, 'msg' => "Error: " .
+                                $e->getMessage()]);
+                                }
+    }
+
 
     /************************************************************************************************************
      *                                                                                                          *
