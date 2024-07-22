@@ -32,18 +32,18 @@ if (!$labBillingData->status) {
     $resErrMsg = $labBillingData->message;
 } else {
 
-    $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
-    if (!empty($reportDetails)) {
-        foreach ($reportDetails as $eachParam) {
-            $details = json_decode($Pathology->showTestByParameter($eachParam));
-            if($details->status){
-                $existingTests[] = $details->data->test_id;
-            }
-        }
-        $existingTests = array_unique($existingTests);
-    }else {
-        $existingTests = [];
-    }
+    // $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
+    // if (!empty($reportDetails)) {
+    //     foreach ($reportDetails as $eachParam) {
+    //         $details = json_decode($Pathology->showTestByParameter($eachParam));
+    //         if($details->status){
+    //             $existingTests[] = $details->data->test_id;
+    //         }
+    //     }
+    //     $existingTests = array_unique($existingTests);
+    // }else {
+    //     $existingTests = [];
+    // }
 
     $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
     // $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
@@ -71,56 +71,56 @@ if (!$labBillingData->status) {
 
         // if ($exists) {
 
-            // $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
-            // if ($cheackUpdate['status']) {
-            //     $testIds    = $_POST['testId'];
-            //     $testValue  = $_POST['values'];
-            //     $unitValues = $_POST['unitValues'];
+        // $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
+        // if ($cheackUpdate['status']) {
+        //     $testIds    = $_POST['testId'];
+        //     $testValue  = $_POST['values'];
+        //     $unitValues = $_POST['unitValues'];
 
-            //     if (is_array($testValue)) {
-            //         $deleted = $LabReport->deleteLabReportDetails($billId);
-            //         if ($deleted) {
-            //             foreach ($testValue as $index => $value) {
-            //                 $unitValue = $unitValues[$index];
-            //                 $testId = $testIds[$index];
+        //     if (is_array($testValue)) {
+        //         $deleted = $LabReport->deleteLabReportDetails($billId);
+        //         if ($deleted) {
+        //             foreach ($testValue as $index => $value) {
+        //                 $unitValue = $unitValues[$index];
+        //                 $testId = $testIds[$index];
 
-            //                 $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
-            //                 if ($addresponse == false) {
-            //                     echo 'Something is wrong!';
-            //                     exit;
-            //                 }
-            //             }
-            //             header('Location: lab-report.php?bill_id=' . base64_encode($billId));
-            //             exit;
-            //         }
-            //     }
-            // }
+        //                 $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
+        //                 if ($addresponse == false) {
+        //                     echo 'Something is wrong!';
+        //                     exit;
+        //                 }
+        //             }
+        //             header('Location: lab-report.php?bill_id=' . base64_encode($billId));
+        //             exit;
+        //         }
+        //     }
+        // }
         // } else {
-            // $addedeReport = $LabReport->labReportAdd($testBillId, $patientId, NOW, $ADMINID);
-            // $reportId       = $addedeReport['insert_id'];
-            // $reportStatus   = $addedeReport['result'];
+        // $addedeReport = $LabReport->labReportAdd($testBillId, $patientId, NOW, $ADMINID);
+        // $reportId       = $addedeReport['insert_id'];
+        // $reportStatus   = $addedeReport['result'];
 
-            // if ($reportStatus) {
-            //     $testIds    = $_POST['testId'];
-            //     $testValue  = $_POST['values'];
-            //     $unitValues = $_POST['unitValues'];
-            //     if (is_array($testValue))
-            //         foreach ($testValue as $index => $value) {
-            //             $unitValue = $unitValues[$index];
-            //             $testId = $testIds[$index];
+        // if ($reportStatus) {
+        //     $testIds    = $_POST['testId'];
+        //     $testValue  = $_POST['values'];
+        //     $unitValues = $_POST['unitValues'];
+        //     if (is_array($testValue))
+        //         foreach ($testValue as $index => $value) {
+        //             $unitValue = $unitValues[$index];
+        //             $testId = $testIds[$index];
 
-            //             $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-            //             if (!$labReportAdd) {
-            //                 $errMsg = "Something is wrong with the value : {$unitValue}";
-            //                 break;
-            //             }
-            //         }
-            // }
+        //             $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+        //             if (!$labReportAdd) {
+        //                 $errMsg = "Something is wrong with the value : {$unitValue}";
+        //                 break;
+        //             }
+        //         }
+        // }
 
-            // if ($labReportAdd) {
-            //     header('Location: lab-report.php?bill_id=' . base64_encode($testBillId));
-            //     exit;
-            // }
+        // if ($labReportAdd) {
+        //     header('Location: lab-report.php?bill_id=' . base64_encode($testBillId));
+        //     exit;
+        // }
         // }
     }
 }
@@ -223,12 +223,12 @@ if (!$labBillingData->status) {
                                             foreach ($labBillingDetails->data as $index => $test) {
                                                 $testId = $test->test_id;
                                                 $showTestName = $Pathology->showTestById($testId);
-                                                
-                                                $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
-                                                $msg = in_array($showTestName['id'], $existingTests) ? '- Report Generated' : '' ;
+
+                                                // $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
+                                                // $msg = in_array($showTestName['id'], $existingTests) ? '- Report Generated' : '' ;
 
 
-                                                echo "<option value='{$showTestName['id']}' $disabled >{$showTestName['name']} $msg</option>";
+                                                echo "<option value='{$showTestName['id']}' >{$showTestName['name']}</option>";
                                             }
                                             ?>
                                         </select>
@@ -289,6 +289,8 @@ if (!$labBillingData->status) {
 
             document.getElementById('select-test').addEventListener('change', function(event) {
                 const currentValues = choice.getValue(true);
+                const billId = '<?= $testBillId?>'; // replace 'your_bill_id_here' with the actual billId
+    
                 console.log("Previous value:", previousValues);
                 console.log("Current value:", currentValues);
 
@@ -299,7 +301,6 @@ if (!$labBillingData->status) {
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         // Handle success
-                        // console.log("Response:", xhr.responseText);
                         document.getElementById('testReportBody').innerHTML = xhr.responseText;
                         // You can update the DOM or do other actions with the response data
                     } else {
@@ -315,7 +316,8 @@ if (!$labBillingData->status) {
                     alert("An error occurred during the transaction");
                 };
 
-                xhr.send("testId=" + encodeURIComponent(currentValues));
+                // xhr.send("testId=" + encodeURIComponent(currentValues));
+                xhr.send("testId=" + encodeURIComponent(currentValues) + "&billId=" + encodeURIComponent(billId));
             });
 
 
