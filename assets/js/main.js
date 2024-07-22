@@ -174,3 +174,9 @@ showPassButtons.forEach((button) => {
 //     });
 
 // })(jQuery);
+
+
+///open a new tab for invoice print///
+const openPrint=(url)=> {
+    window.open(url, '_blank', 'width=1500,height=800');
+}

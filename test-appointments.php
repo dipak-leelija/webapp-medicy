@@ -540,11 +540,8 @@ if ($labBillDisplay->status) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
-    <script>
-        function openPrint(url) {
-            window.open(url, '_blank', 'width=1500,height=800');
-        }
-    </script>
+    <!-- new tab for invoice print  -->
+    <script src="<?php echo JS_PATH ?>/main.js"></script>
 
 </body>
 
