@@ -144,8 +144,10 @@ if (!$labBillingData->status) {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>/lab-section.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/borders.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/spaces.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
     <script src="<?php echo JS_PATH ?>/sweetAlert.min.js"></script>
@@ -235,9 +237,13 @@ if (!$labBillingData->status) {
                                     </div>
                                     <form method="POST" action="">
 
-                                        <div class="mt-2" id="testReportBody"></div>
+                                        <div class="mt-2" id="testReportBody">
+                                            <div class="border-1p border-muted border-dashed bg-light text-secondary min-h-100 mt-5 py-5">
+                                                <h5 class="text-center"> Select a Test from Dropdown to Generate Report</h5>
+                                            </div>
+                                        </div>
 
-                                        <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end mt-3">
                                             <button type="submit" id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
                                         </div>
                                     </form>

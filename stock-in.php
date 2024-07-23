@@ -73,7 +73,7 @@ $todayYr = date("y");
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="<?= CSS_PATH ?>pharmacist-sb-admin-2.min.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css">
 
