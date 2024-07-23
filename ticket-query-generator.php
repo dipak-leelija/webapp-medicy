@@ -84,7 +84,9 @@ if ($_SESSION['ADMIN']) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -97,7 +99,7 @@ if ($_SESSION['ADMIN']) {
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
     <style>
-        /*  */
+    /*  */
     </style>
 
 </head>
@@ -124,118 +126,211 @@ if ($_SESSION['ADMIN']) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="card-body">
-                        <div class=" d-flex justify-content-center align-items-center">
-                            <div class=" shadow bg-white rounded  profile">
-
-                                <div>
-                                    <!-- Nav tabs -->
-                                    <ul class="nav nav-tabs row" role="tablist">
-                                        <li class="nav-item col-6">
-                                            <a class="nav-link active" data-toggle="tab" href="#home">Rais Ticket</a>
-                                        </li>
-                                        <li class="nav-item col-6">
-                                            <a class="nav-link" data-toggle="tab" href="#menu1">Add Request / Query</a>
-                                        </li>
-                                    </ul>
-
-                                    <!-- Tab panes -->
-                                    <div class="tab-content">
-                                        <!-- tab 1 -->
-                                        <div id="home" class="tab-pane active">
-                                            <form action="_config\form-submission\ticket-query-submit.php" enctype="multipart/form-data" method="post" id="ticket-form">
-                                                <div class="col-12 d-flex mt-5">
-                                                    <div class="col-md-7">
-                                                        <div class="d-none col-md-12 form-group">
-                                                            <input type="text" class="med-input" id="current-usr1" name="current-usr1" maxlength="20" value="<?= $name; ?>" required readonly>
-                                                        </div>
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="text" class=" med-input" id="email1" name="email1" maxlength="100" value="<?= $email; ?>" required>
-                                                            <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
-                                                        </div>
-
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number1" name="mobile-number1" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
-                                                            <label class="med-label" for="mobile-number">Contact
-                                                                Number</label>
-                                                        </div>
-
-                                                        <div class="col-md-12 form-group">
-                                                            <textarea class="med-input" placeholder="" name="ticket-description1" id="ticket-description1" style="height: 105px;" required></textarea>
-                                                            <label class="med-label" style="margin-left:10px;" for="address">Description</label>
-                                                        </div>
+                        <div class=" d-flex justify-content-between align-items-center">
+                            <div class="col-6">
+                                <div class=" d-flex">
+                                    <div class="col-4 d-flex flex-wrap">
+                                        <div class="bg-gray">A</div>
+                                        <div class="bg-gray">B</div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="">For Support</div>
+                                        <div class="col-12 d-flex mt-5">
+                                            <div class="col-md-12">
+                                                <div class="d-flex">
+                                                    <div class="col-md-6 form-group">
+                                                        <input type="text" class="med-input" id="current-usr2"
+                                                            name="current-usr2" maxlength="20" required>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="name">Name</label>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <div class="col-md-12 form-group card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 14rem; position: relative;">
-                                                            <div class="col-sm-11 card med-card" id="document-show-1"></div>
-                                                        </div>
-                                                        <label class="med-label mt-n4 text-primary" style="margin-left:10px;" for="address">Document</label>
-                                                        <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
-                                                        <input type="file" class="d-none" name="fileInput1" id="fileInput1" onchange="takeInputFile(this, 'document-show-1')" required>
+
+                                                    <div class="col-md-6 form-group">
+                                                        <input type="text" class=" med-input" id="email2" name="email2"
+                                                            maxlength="100" value="" required>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="emial">Email id</label>
                                                     </div>
                                                 </div>
+                                                <div class="d-flex">
+                                                    <div class="col-md-6 form-group">
+                                                        <input type="number" class=" med-input" id="mobile-number2"
+                                                            name="mobile-number2" maxlength="10" max="9999999999"
+                                                            value="" required>
+                                                        <label class="med-label" for="mobile-number">Contact
+                                                            Number</label>
+                                                    </div>
 
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary" type="submit" name="ticket-submit" id="ticket-submit" /*onclick="requestSubmit(this)"*/>Rais Ticket</button>
+
+                                                    <div class="col-md-6 form-group">
+                                                        <textarea class="med-input" placeholder=""
+                                                            name="ticket-description2" id="ticket-description2"
+                                                            style="height: 45px;" required></textarea>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="address">Description</label>
+                                                    </div>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
-                                        <!-- tab 2 -->
-                                        <div id="menu1" class="tab-pane fade">
-                                            <form action="_config\form-submission\ticket-query-submit.php" enctype="multipart/form-data" method="post" id="query-form">
-                                                <div class="col-12 d-flex mt-5">
-                                                    <div class="col-md-7">
-                                                        <div class="d-none col-md-12 form-group">
-                                                            <input type="text" class="med-input" id="current-usr2" name="current-usr2" maxlength="20" value="<?= $name; ?>" required readonly>
-                                                        </div>
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="text" class=" med-input" id="email2" name="email2" maxlength="100" value="<?= $email; ?>" required>
-                                                            <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
-                                                        </div>
-
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number2" name="mobile-number2" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
-                                                            <label class="med-label" for="mobile-number">Contact
-                                                                Number</label>
-                                                        </div>
-
-                                                        <div class="col-md-12 form-group">
-                                                            <textarea class="med-input" placeholder="" name="ticket-description2" id="ticket-description2" style="height: 105px;" required></textarea>
-                                                            <label class="med-label" style="margin-left:10px;" for="address">Description</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <div class="col-md-12 form-group card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 14rem; position: relative;">
-                                                            <div class="col-sm-11 card med-card" id="document-show-2"></div>
-                                                        </div>
-                                                        <label class="med-label mt-n4" style="margin-left: 10px;" for="address">Document</label>
-                                                        <i class="fas fa-upload text-primary" id="upload-document2" style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;" onclick="document.getElementById('fileInput2').click();"></i>
-                                                        <input type="file" class="d-none" name="fileInput2" id="fileInput2" onchange="takeInputFile(this, 'document-show-2')" required>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-2 d-flex justify-content-end">
-                                                    <button type="submit" name="query-submit" id="query-submit" class="btn btn-sm btn-primary" /*onclick="requestSubmit(this)"*/>Add Query</button>
-                                                </div>
-                                            </form>
+                                        <div class="mt-2 d-flex justify-content-end">
+                                            <button type="submit" name="query-submit" id="query-submit"
+                                                class="btn btn-sm btn-primary">Contact</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- <div></div> -->
+                        
+                        <div class="col-6 shadow bg-white rounded  profile">
+
+                            <div>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs row" role="tablist">
+                                    <li class="nav-item col-6">
+                                        <a class="nav-link active" data-toggle="tab" href="#home">Rais Ticket</a>
+                                    </li>
+                                    <li class="nav-item col-6">
+                                        <a class="nav-link" data-toggle="tab" href="#menu1">Add Request / Query</a>
+                                    </li>
+
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <!-- tab 1 -->
+                                    <div id="home" class="tab-pane active">
+                                        <form action="_config\form-submission\ticket-query-submit.php"
+                                            enctype="multipart/form-data" method="post" id="ticket-form">
+                                            <div class="col-12 d-flex mt-5">
+                                                <div class="col-md-7">
+                                                    <div class="d-none col-md-12 form-group">
+                                                        <input type="text" class="med-input" id="current-usr1"
+                                                            name="current-usr1" maxlength="20" value="<?= $name; ?>"
+                                                            required readonly>
+                                                    </div>
+                                                    <div class="col-md-12 form-group">
+                                                        <input type="text" class=" med-input" id="email1" name="email1"
+                                                            maxlength="100" value="<?= $email; ?>" required>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="emial">Email id</label>
+                                                    </div>
+
+                                                    <div class="col-md-12 form-group">
+                                                        <input type="number" class=" med-input" id="mobile-number1"
+                                                            name="mobile-number1" maxlength="10" max="9999999999"
+                                                            value="<?= $phone; ?>" required>
+                                                        <label class="med-label" for="mobile-number">Contact
+                                                            Number</label>
+                                                    </div>
+
+                                                    <div class="col-md-12 form-group">
+                                                        <textarea class="med-input" placeholder=""
+                                                            name="ticket-description1" id="ticket-description1"
+                                                            style="height: 105px;" required></textarea>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="address">Description</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="col-md-12 form-group card med-card"
+                                                        style="border: 1px solid #ced4da; padding: 1rem; height: 14rem; position: relative;">
+                                                        <div class="col-sm-11 card med-card" id="document-show-1">
+                                                        </div>
+                                                    </div>
+                                                    <label class="med-label mt-n4 text-primary"
+                                                        style="margin-left:10px;" for="address">Document</label>
+                                                    <i class="fas fa-upload text-primary" id="upload-document1"
+                                                        style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;"
+                                                        onclick="document.getElementById('fileInput1').click();"></i>
+                                                    <input type="file" class="d-none" name="fileInput1" id="fileInput1"
+                                                        onchange="takeInputFile(this, 'document-show-1')" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-end">
+                                                <button class="btn btn-sm btn-primary" type="submit"
+                                                    name="ticket-submit" id="ticket-submit"
+                                                    /*onclick="requestSubmit(this)" * />Rais Ticket</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- tab 2 -->
+                                    <div id="menu1" class="tab-pane fade">
+                                        <form action="_config\form-submission\ticket-query-submit.php"
+                                            enctype="multipart/form-data" method="post" id="query-form">
+                                            <div class="col-12 d-flex mt-5">
+                                                <div class="col-md-7">
+                                                    <div class="d-none col-md-12 form-group">
+                                                        <input type="text" class="med-input" id="current-usr2"
+                                                            name="current-usr2" maxlength="20" value="<?= $name; ?>"
+                                                            required readonly>
+                                                    </div>
+                                                    <div class="col-md-12 form-group">
+                                                        <input type="text" class=" med-input" id="email2" name="email2"
+                                                            maxlength="100" value="<?= $email; ?>" required>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="emial">Email id</label>
+                                                    </div>
+
+                                                    <div class="col-md-12 form-group">
+                                                        <input type="number" class=" med-input" id="mobile-number2"
+                                                            name="mobile-number2" maxlength="10" max="9999999999"
+                                                            value="<?= $phone; ?>" required>
+                                                        <label class="med-label" for="mobile-number">Contact
+                                                            Number</label>
+                                                    </div>
+
+                                                    <div class="col-md-12 form-group">
+                                                        <textarea class="med-input" placeholder=""
+                                                            name="ticket-description2" id="ticket-description2"
+                                                            style="height: 105px;" required></textarea>
+                                                        <label class="med-label" style="margin-left:10px;"
+                                                            for="address">Description</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="col-md-12 form-group card med-card"
+                                                        style="border: 1px solid #ced4da; padding: 1rem; height: 14rem; position: relative;">
+                                                        <div class="col-sm-11 card med-card" id="document-show-2">
+                                                        </div>
+                                                    </div>
+                                                    <label class="med-label mt-n4" style="margin-left: 10px;"
+                                                        for="address">Document</label>
+                                                    <i class="fas fa-upload text-primary" id="upload-document2"
+                                                        style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;"
+                                                        onclick="document.getElementById('fileInput2').click();"></i>
+                                                    <input type="file" class="d-none" name="fileInput2" id="fileInput2"
+                                                        onchange="takeInputFile(this, 'document-show-2')" required>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 d-flex justify-content-end">
+                                                <button type="submit" name="query-submit" id="query-submit"
+                                                    class="btn btn-sm btn-primary" /*onclick="requestSubmit(this)"
+                                                    * />Add Query</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <!-- End of Main Content -->
+
         </div>
-        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
-    </a>
+    </a> -->
 
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
