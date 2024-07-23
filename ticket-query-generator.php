@@ -33,13 +33,12 @@ if ($_SESSION['ADMIN']) {
     if ($adminDetails->status) {
         $adminData = $adminDetails->data;
 
-        foreach ($adminData as $adminData) {
-            $firstName  = $adminData->fname;
-            $lastName   = $adminData->lname;
-            $userName   = $adminData->username;
-            $email      = $adminData->email;
-            $phone      = $adminData->mobile_no;
-        }
+        $firstName  = $adminData->fname;
+        $lastName   = $adminData->lname;
+        $userName   = $adminData->username;
+        $email      = $adminData->email;
+        $phone      = $adminData->mobile_no;
+        
     }
 
     $name = $firstName.' '.$lastName;

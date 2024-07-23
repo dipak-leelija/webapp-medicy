@@ -32,18 +32,18 @@ if (!$labBillingData->status) {
     $resErrMsg = $labBillingData->message;
 } else {
 
-    $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
-    if (!empty($reportDetails)) {
-        foreach ($reportDetails as $eachParam) {
-            $details = json_decode($Pathology->showTestByParameter($eachParam));
-            if($details->status){
-                $existingTests[] = $details->data->test_id;
-            }
-        }
-        $existingTests = array_unique($existingTests);
-    }else {
-        $existingTests = [];
-    }
+    // $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
+    // if (!empty($reportDetails)) {
+    //     foreach ($reportDetails as $eachParam) {
+    //         $details = json_decode($Pathology->showTestByParameter($eachParam));
+    //         if($details->status){
+    //             $existingTests[] = $details->data->test_id;
+    //         }
+    //     }
+    //     $existingTests = array_unique($existingTests);
+    // }else {
+    //     $existingTests = [];
+    // }
 
     $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
     // $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
@@ -71,56 +71,56 @@ if (!$labBillingData->status) {
 
         // if ($exists) {
 
-            // $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
-            // if ($cheackUpdate['status']) {
-            //     $testIds    = $_POST['testId'];
-            //     $testValue  = $_POST['values'];
-            //     $unitValues = $_POST['unitValues'];
+        // $cheackUpdate = $LabReport->labReportUpdate($billId, $patientId, NOW, $ADMINID);
+        // if ($cheackUpdate['status']) {
+        //     $testIds    = $_POST['testId'];
+        //     $testValue  = $_POST['values'];
+        //     $unitValues = $_POST['unitValues'];
 
-            //     if (is_array($testValue)) {
-            //         $deleted = $LabReport->deleteLabReportDetails($billId);
-            //         if ($deleted) {
-            //             foreach ($testValue as $index => $value) {
-            //                 $unitValue = $unitValues[$index];
-            //                 $testId = $testIds[$index];
+        //     if (is_array($testValue)) {
+        //         $deleted = $LabReport->deleteLabReportDetails($billId);
+        //         if ($deleted) {
+        //             foreach ($testValue as $index => $value) {
+        //                 $unitValue = $unitValues[$index];
+        //                 $testId = $testIds[$index];
 
-            //                 $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
-            //                 if ($addresponse == false) {
-            //                     echo 'Something is wrong!';
-            //                     exit;
-            //                 }
-            //             }
-            //             header('Location: lab-report.php?bill_id=' . base64_encode($billId));
-            //             exit;
-            //         }
-            //     }
-            // }
+        //                 $addresponse = $LabReport->labReportDetailsUpdate($value, $unitValue, $testId, $billId);
+        //                 if ($addresponse == false) {
+        //                     echo 'Something is wrong!';
+        //                     exit;
+        //                 }
+        //             }
+        //             header('Location: lab-report.php?bill_id=' . base64_encode($billId));
+        //             exit;
+        //         }
+        //     }
+        // }
         // } else {
-            // $addedeReport = $LabReport->labReportAdd($testBillId, $patientId, NOW, $ADMINID);
-            // $reportId       = $addedeReport['insert_id'];
-            // $reportStatus   = $addedeReport['result'];
+        // $addedeReport = $LabReport->labReportAdd($testBillId, $patientId, NOW, $ADMINID);
+        // $reportId       = $addedeReport['insert_id'];
+        // $reportStatus   = $addedeReport['result'];
 
-            // if ($reportStatus) {
-            //     $testIds    = $_POST['testId'];
-            //     $testValue  = $_POST['values'];
-            //     $unitValues = $_POST['unitValues'];
-            //     if (is_array($testValue))
-            //         foreach ($testValue as $index => $value) {
-            //             $unitValue = $unitValues[$index];
-            //             $testId = $testIds[$index];
+        // if ($reportStatus) {
+        //     $testIds    = $_POST['testId'];
+        //     $testValue  = $_POST['values'];
+        //     $unitValues = $_POST['unitValues'];
+        //     if (is_array($testValue))
+        //         foreach ($testValue as $index => $value) {
+        //             $unitValue = $unitValues[$index];
+        //             $testId = $testIds[$index];
 
-            //             $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
-            //             if (!$labReportAdd) {
-            //                 $errMsg = "Something is wrong with the value : {$unitValue}";
-            //                 break;
-            //             }
-            //         }
-            // }
+        //             $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+        //             if (!$labReportAdd) {
+        //                 $errMsg = "Something is wrong with the value : {$unitValue}";
+        //                 break;
+        //             }
+        //         }
+        // }
 
-            // if ($labReportAdd) {
-            //     header('Location: lab-report.php?bill_id=' . base64_encode($testBillId));
-            //     exit;
-            // }
+        // if ($labReportAdd) {
+        //     header('Location: lab-report.php?bill_id=' . base64_encode($testBillId));
+        //     exit;
+        // }
         // }
     }
 }
@@ -223,12 +223,12 @@ if (!$labBillingData->status) {
                                             foreach ($labBillingDetails->data as $index => $test) {
                                                 $testId = $test->test_id;
                                                 $showTestName = $Pathology->showTestById($testId);
-                                                
-                                                $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
-                                                $msg = in_array($showTestName['id'], $existingTests) ? '- Report Generated' : '' ;
+
+                                                // $disabled = in_array($showTestName['id'], $existingTests) ? 'disabled' : '' ;
+                                                // $msg = in_array($showTestName['id'], $existingTests) ? '- Report Generated' : '' ;
 
 
-                                                echo "<option value='{$showTestName['id']}' $disabled >{$showTestName['name']} $msg</option>";
+                                                echo "<option value='{$showTestName['id']}' >{$showTestName['name']}</option>";
                                             }
                                             ?>
                                         </select>
@@ -289,8 +289,7 @@ if (!$labBillingData->status) {
 
             document.getElementById('select-test').addEventListener('change', function(event) {
                 const currentValues = choice.getValue(true);
-                console.log("Previous value:", previousValues);
-                console.log("Current value:", currentValues);
+                const billId = '<?= $testBillId ?>'; // replace 'your_bill_id_here' with the actual billId
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "components/TestReportBody.inc.php", true);
@@ -299,7 +298,6 @@ if (!$labBillingData->status) {
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         // Handle success
-                        // console.log("Response:", xhr.responseText);
                         document.getElementById('testReportBody').innerHTML = xhr.responseText;
                         // You can update the DOM or do other actions with the response data
                     } else {
@@ -315,8 +313,78 @@ if (!$labBillingData->status) {
                     alert("An error occurred during the transaction");
                 };
 
+                // xhr.send("testId=" + encodeURIComponent(currentValues));
+                xhr.send("testId=" + encodeURIComponent(currentValues) + "&billId=" + encodeURIComponent(billId));
+            });
+
+
+            document.getElementById('select-test').addEventListener('change', function(event) {
+                const currentValues = choice.getValue(true);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "ajax/TestReportConditions.ajax.php", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Handle success
+                        if (xhr.responseText) {
+                            const response = JSON.parse(xhr.responseText);
+                            const items = choice._store.activeChoices; // Use the correct internal method
+
+                            items.forEach(function(item) {
+
+                                if (!response.includes(Number(item.value))) {
+                                    // console.log(item)
+                                    const itemElement = document.querySelector(`#choices--select-test-item-choice-${item.id}`);
+                                    itemElement.classList.remove('choices__item--selectable');
+                                    itemElement.classList.remove('is-highlighted');
+                                    itemElement.classList.add('choices__item--disabled');
+                                    item.disabled = true
+                                    // item.active = false
+                                    itemElement.innerText = `${item.label}  ---  Multiple Department's Report Can not generate at the same time`;
+                                }
+
+                            });
+                        } else {
+
+                            const items = choice._store.activeChoices; // Use the correct internal method
+
+                            items.forEach(function(item) {
+                                const itemElement = document.querySelector(`#choices--select-test-item-choice-${item.id}`);
+
+                                if (item.disabled) {
+                                    item.disabled = false
+                                }
+                                if (!item.active) {
+                                    item.active = true
+                                }
+
+                                itemElement.innerText = item.label
+
+                                itemElement.classList.add('choices__item--selectable');
+                                itemElement.classList.add('is-highlighted');
+                                itemElement.classList.remove('choices__item--disabled');
+                            });
+
+                        }
+
+                    } else {
+                        // Handle error
+                        console.error("Error:", xhr.statusText);
+                        alert("An error occurred: " + xhr.statusText);
+                    }
+                };
+
+                xhr.onerror = function() {
+                    // Handle error
+                    console.error("Request failed");
+                    alert("An error occurred during the transaction");
+                };
+
                 xhr.send("testId=" + encodeURIComponent(currentValues));
             });
+
 
 
         });
