@@ -11,6 +11,9 @@ switch ($name) {
     case 'lab_invoice':
         $url = "lab-invoice.php?id=$id";
         break;
+    case 'report':
+        $url = "../test-report-show.php?id=$id";
+        break;    
     default:
         # code...
         break;

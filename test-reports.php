@@ -112,7 +112,10 @@ $PathologyReport = new PathologyReport;
                                                     <td><?= $billId ?></td>
                                                     <td><?= $adminId ?></td>
                                                     <td><?= formatDateTime($date, '-') ?></td>
-                                                    <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center">
+                                                        <!-- <a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a> -->
+                                                        <a title="show" onclick="openPrint(this.href); return false;" href="invoices/print.php?name=report&id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                    </td>
                                                 </tr>
                                         <?php
 
@@ -163,7 +166,7 @@ $PathologyReport = new PathologyReport;
     <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
     <!-- Page level custom scripts -->
     <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
-
+    <script src="<?php echo JS_PATH ?>/main.js"></script>
 </body>
 
 </html>
