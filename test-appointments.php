@@ -127,7 +127,7 @@ if ($labBillDisplay->status) {
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>

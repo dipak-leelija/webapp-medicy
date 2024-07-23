@@ -29,7 +29,7 @@ $Utility        = new Utility;
     <title>Medicy Health Care - Admin OTP VERIFICATION ON Registration</title>
 
     <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 

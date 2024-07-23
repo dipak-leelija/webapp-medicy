@@ -72,7 +72,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
     <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!--Custom CSS -->
     <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
