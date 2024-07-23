@@ -318,52 +318,6 @@ if (!$labBillingData->status) {
             });
 
 
-            // document.getElementById('select-test').addEventListener('change', function(event) {
-            //     const currentValues = choice.getValue(true);
-
-            //     var xhr = new XMLHttpRequest();
-            //     xhr.open('POST', "ajax/TestReportConditions.ajax.php", true);
-            //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            //     xhr.onload = function() {
-            //         if (xhr.status === 200) {
-            //             // Handle success
-            //             // console.log(JSON.parse(xhr.responseText));
-
-            //             var choice = new Choices(
-            //                 "#select-test", {
-            //                     allowHTML: true,
-            //                     removeItemButton: true,
-            //                 }
-            //             );
-
-            //             // Disable options based on specific condition
-            //             const items = choice.store.getChoices();
-
-            //             items.forEach(function(item) {
-            //                 // if (item.value === 'option2') {
-            //                 //     choices.disable(item);
-            //                 // }
-            //                 console.log(item.value);
-            //             });
-            //         } else {
-            //             // Handle error
-            //             console.error("Error:", xhr.statusText);
-            //             alert("An error occurred: " + xhr.statusText);
-            //         }
-            //     };
-
-            //     xhr.onerror = function() {
-            //         // Handle error
-            //         console.error("Request failed");
-            //         alert("An error occurred during the transaction");
-            //     };
-
-            //     // xhr.send("testId=" + encodeURIComponent(currentValues));
-            //     xhr.send("testId=" + encodeURIComponent(currentValues));
-            // });
-
-
             document.getElementById('select-test').addEventListener('change', function(event) {
                 const currentValues = choice.getValue(true);
 
@@ -387,11 +341,32 @@ if (!$labBillingData->status) {
                                     itemElement.classList.remove('is-highlighted');
                                     itemElement.classList.add('choices__item--disabled');
                                     item.disabled = true
-                                    item.active = false
+                                    // item.active = false
                                     itemElement.innerText = `${item.label}  ---  Multiple Department's Report Can not generate at the same time`;
                                 }
 
                             });
+                        } else {
+
+                            const items = choice._store.activeChoices; // Use the correct internal method
+
+                            items.forEach(function(item) {
+                                const itemElement = document.querySelector(`#choices--select-test-item-choice-${item.id}`);
+
+                                if (item.disabled) {
+                                    item.disabled = false
+                                }
+                                if (!item.active) {
+                                    item.active = true
+                                }
+
+                                itemElement.innerText = item.label
+
+                                itemElement.classList.add('choices__item--selectable');
+                                itemElement.classList.add('is-highlighted');
+                                itemElement.classList.remove('choices__item--disabled');
+                            });
+
                         }
 
                     } else {
