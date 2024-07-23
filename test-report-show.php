@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'subscription.class.php';
+require_once CLASS_DIR . 'plan.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 $reportId = $_GET['id'];
@@ -22,6 +24,9 @@ $PathologyReport = new PathologyReport;
 $Patients        = new Patients();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
+$Doctors         = new Doctors();
+$Subscription   = new Subscription;
+$Plan           = new Plan;
 
 $testReportResponse = json_decode($PathologyReport->testReportById($reportId));
 
@@ -47,6 +52,17 @@ if (is_object($testReportResponse) && !empty($testReportResponse)) {
         $refered_doctor = $billDetails->refered_doctor;
     }
 
+    // get doctor information 
+
+    if (is_numeric($refered_doctor)) {
+        $showDoctor = $Doctors->showDoctorNameById($refered_doctor);
+        $showDoctor = json_decode($showDoctor);
+        if ($showDoctor->status == 1) {
+                $doctorName = $showDoctor->data->doctor_name;
+                $doctorReg = $showDoctor->data->doctor_reg_no;
+        }
+    } 
+
     // Getting Patients Details
     $patientDatafetch = $Patients->patientsDisplayByPId($patient_id);
     $patientDatafetch = json_decode($patientDatafetch, true);
@@ -58,8 +74,20 @@ if (is_object($testReportResponse) && !empty($testReportResponse)) {
     }
 }
 
-
-
+// for getting plan name 
+$bills = json_decode($Subscription->getSubscription($adminId));
+if ($bills->status) {
+    $allBills = $bills->data;
+    foreach($allBills as $planId){
+        $planId = $planId->plan;
+        // print_r($planId);
+    }
+}
+$plans = json_decode($Plan->getAllPlans($planId));
+if($plans->status){
+    $Plan = $plans->plans[0];
+    $PlanName = $Plan->section;
+}/// end getting plan name 
 
 
 
@@ -106,9 +134,10 @@ class PDF extends FPDF
     //.....Header Star....//
     function Header()
     {
-        global $healthCareName, $name, $patient_id, $age, $gender, $testDate;
+        global $healthCareName, $name, $patient_id, $age, $gender, $testDate, $healthCareAddress1, 
+        $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCareState, $healthCarePin , $healthCarePhno,$healthCareApntbkNo, $doctorName, $PlanName ;
 
-        if ($this->PageNo() == 1) {
+        // if ($this->PageNo() == 1) {
 
             $leftSpace = 3; // Left side space in mm
             $rightSpace = -6; // Right side space in mm
@@ -126,15 +155,54 @@ class PDF extends FPDF
             $this->Gradient($this->GetPageWidth() / 2, 24, $this->GetPageWidth() / 2 - 10, 8, [255, 255, 255], [24, 54, 151], 1, 'horizontal');
             $this->SetY(20);
             $this->SetTextColor(255, 255, 255);
-            $this->Cell(0, 16, 'DIAGNOSTIC & POLYCLINIC', 0, 1, 'R');
+            $this->Cell(0, 16, $PlanName , 0, 1, 'R');
             $this->SetFont('Arial', '', 10);
             $this->SetTextColor(24, 54, 151);
-            $this->Cell(0, 2, 'Daulatabad, Murshidabad, (W.B.), Pin -742302, Mobile:8695494415/9064390598, Website:www.medicy.in', 0, 1, 'R');
-            $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
-            $this->SetDrawColor(24, 54, 151);
-            $this->Line(28.3, 40, 200, 40);
+            // $website = './assets/plugins/pdfprint/icon/internet.png';
+            $phoneIcon = './assets/plugins/pdfprint/icon/contact.png';
+            // $this->Image($phoneIcon, 0, 0, 3.5, 3.5);
+            // $this->Image($website, 158.5, 35, 3.5, 3.5);
+            // $stateWords = explode(' ', $healthCareState);
+            // $healthCareStateAbbr = '';
+            // foreach ($stateWords as $word) {
+            //     $healthCareStateAbbr .= strtoupper($word[0]);
+            // }
+            // $this->Cell(20, 2, $healthCareAddress1 . $healthCareAddress2.','.$healthCareCity .','.$healthCareDist.',('.    $healthCareStateAbbr.'),'.$healthCarePin.',   '.$healthCarePhno.'/'.$healthCareApntbkNo, 0, 1, 'L');
+            // $this->setX(27);
+            $fixedWidth = 178; // Adjust the width as needed
+            $left = 27;
+            $right = 12;
+            $pageWidth = $this->GetPageWidth();
+            $availableWidth = $pageWidth - $left - $right;
+    
+            $addressText = $healthCareAddress1.$healthCareAddress2.','.$healthCareCity .','.$healthCareDist.','.  $healthCareState.','.$healthCarePin.',  '.$healthCarePhno.'/'.$healthCareApntbkNo;
+            if($this->GetStringWidth($addressText) > 178){
+                $this->setY(33.3);
+                $this->setX(25);
+
+                $this->Image($phoneIcon,160, 37.5, 3.5, 3.5);
+                $this->MultiCell($fixedWidth, 4, $addressText, 0, 'R');
+                $this->Image('./assets/images/report-heart.jpg', 2, 35.5, 26, 0);
+                $this->SetDrawColor(24, 54, 151);
+                $currentY = $this->GetY();
+                $this->Line(28.3, $currentY + 1, 200, $currentY + 1); 
+            }else{
+                $this->setX(33);
+                $this->Cell($availableWidth, 2, $addressText, 0,0, 'R');
+
+                $this->Image($phoneIcon,163.8, 35, 3.5, 3.5);
+                $this->MultiCell($fixedWidth, 4, $addressText, 0, 'R');
+
+                $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
+                $this->SetDrawColor(24, 54, 151);
+                $this->Line(28.3, 40, 200, 40);
+            }
+            
+            // $this->Image('./assets/images/report-heart.jpg', 2, 33.2, 26, 0);
+            // $this->SetDrawColor(24, 54, 151);
+            // $this->Line(28.3, 40, 200, 40);
             $this->Ln(8);
-            $this->SetFont('Arial', 'B', 10);
+            $this->SetFont('Arial', '', 10);
             $this->SetTextColor(0, 0, 0);
             $this->Cell(0, 5, "Patient's Name: $name", 0, 0, 'L');
             $this->Cell(0, 5, "Age: $age   Sex: $gender", 0, 1, 'R');
@@ -142,18 +210,19 @@ class PDF extends FPDF
             $this->Cell(0, 5, 'Collection Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
             $this->Cell(0, 5, 'Place of collection: LAB', 0, 0, 'L');
             $this->Cell(0, 5, 'Reporting Date: ' . $this->formatDateTime($testDate, '/'), 0, 1, 'R');
-            $this->Cell(0, 5, 'Ref. by: DR. SELF', 0, 0, 'L');
+            $this->Cell(0, 5, 'Ref. by: '.$doctorName, 0, 0, 'L');
             $this->Ln(5);
             $this->SetDrawColor(0, 0, 0);
             $this->Line(10, $this->GetY(), 200, $this->GetY());
             $this->Ln(2);
-        }
+        // }
     } //.....Header end....//
 
     //....footer start....//
     function Footer()
     {
-        if ($this->isLastPage) {
+        global $doctorName, $doctorReg;
+        // if ($this->isLastPage) {
             $this->SetY(-55);
             $this->SetFont('Arial', '', 10);
             $this->MultiCell(0, 5, 'Reference values are obtained from the literature provided with reagent kit.', 0, 'C');
@@ -168,7 +237,7 @@ class PDF extends FPDF
             $this->SetTextColor(0, 0, 0);
             $this->Cell(60, 5, 'Verified by :', 8, 0, 'R');
             $this->SetFont('Arial', 'B', 10);
-            $this->Cell(70, 5, 'DR. S.BISWAS', 0, 1, 'R');
+            $this->Cell(70, 5, $doctorName, 0, 1, 'R');
             $this->SetFont('Arial', '', 10);
             $this->SetTextColor(24, 54, 151);
             $this->Cell(60, 5, 'Advance Assay, USG & ECHO, Colour Doppler,', 0, 0, 'L');
@@ -179,7 +248,7 @@ class PDF extends FPDF
             $this->Cell(60, 5, 'Digital X-Ray, Special X-Ray, OPG, ECG & Eye.', 0, 0, 'L');
             $this->Cell(60, 5, '', 0, 0, 'C');
             $this->SetTextColor(0, 0, 0);
-            $this->Cell(70, 5, 'Reg. No: 59304 (WBMC)', 0, 1, 'R');
+            $this->Cell(70, 5, 'Reg. No: '.$doctorReg, 0, 1, 'R');
 
             // Define left and right side spacing
             $leftSpace = 3; // Left side space in mm
@@ -198,7 +267,7 @@ class PDF extends FPDF
             $this->Cell($cellWidth, 3, '*The result may be correlation clinically', 0, 1, 'R');
             $this->Cell($cellWidth, 3, '*Patient identification not verified', 0, 1, 'R');
             $this->Cell($cellWidth, 3, '*This report is not valid for medico legal purpose', 0, 1, 'R');
-        }
+        // }
     } //....footer end....//
 
     //.....Main test content start....//
@@ -214,18 +283,56 @@ class PDF extends FPDF
             $this->Line($lineX, $this->GetY(), $lineX + $lineWidth, $this->GetY());
             $this->Ln(10);
 
+            // $parameterCount = 0;
+            $heightThreshold = 240;
             foreach ($test['parameters'] as $eachParam) {
 
+                // if ($parameterCount > 0 && $parameterCount % 4 == 0) {
+                //     $this->AddPage("", "A4");
+                //     $this->Ln(10);
+                // } 
+
+                $currentY = $this->GetY();
+                $paramHeight = 5 + (count(explode('<br>', $eachParam['child-range'])) * 5) + 10 + (count(explode('<br>', $eachParam['adult-range'])) * 5) + 10; // Rough estimation
+                if ($currentY + $paramHeight > $heightThreshold) {
+                    // $this->Line($lineX, $heightThreshold, $lineX + $lineWidth, $heightThreshold);
+                    $this->AddPage("", "A4");
+                    $this->Ln(10); // Add some space at the top of the new page
+                }
+
+                $this->setX(20);
+                $this->SetFont('Arial', 'B', 10.5);
+                $this->Cell(50, 5, $eachParam['param-name'], 0, 0, 'L');
                 $this->SetFont('Arial', 'B', 10);
-                $this->Cell(50, 5, $eachParam['param-name'], 0, 0, 'C');
-                $this->SetFont('Arial', 'B', 10);
-                $this->Cell(115, 5, ': ' . $eachParam['param-value'], 0, 1, 'R');
-                $this->SetFont('Arial', '', 8);
-                $this->Cell(0, 5, str_replace("<br>", "\n", $eachParam['child-range']), 0, 1, 'C');
-                $this->Cell(48, 5, $eachParam['unit'], 0, 1, 'C');
-                // $this->Cell(0, 5, $test['description'], 0, 1);
-                // $this->Cell(90, 5, 'Lorem ipsum dolor 12h - 76gh', 0, 1);
+                $this->setX(160);
+                $this->Cell(15, 5, ': ' . $eachParam['param-value'] ." ". $eachParam['unit'], 0, 1, 'L');
+                $this->setX(20);
+                $this->SetFont('Arial', 'B', 8.2);
+                $this->Cell(50,5, 'For Child',0,0,'L');
+                $width = 165;
                 $this->Ln(5);
+                $this->SetFont('Arial', '', 8);
+                $childRanges = explode('<br>',$eachParam['child-range']);
+                foreach ($childRanges as $range) {
+                    $this->setX(20);
+                    $this->MultiCell($width, 2, $range, 0, 'L');
+                }
+                // $this->Ln(-1);
+                $this->setX(20);
+                $this->SetFont('Arial', 'B', 8.2);
+                $this->Cell(50,5, 'For Adult',0,0,'L');
+                $this->SetFont('Arial', '', 8);
+                $this->Ln(5);
+                // $this->Cell(0, 5, ($eachParam['adult-range']), 0, 1, 'C');
+                $adultRanges = explode('<br>',$eachParam['adult-range']);
+                foreach ($adultRanges as $range) {
+                    $this->setX(20);
+                    $this->MultiCell($width, 2, $range, 0, 'L');
+                }
+                // $this->Cell(48, 5, $eachParam['unit'], 0, 1, 'C');
+                // $this->Cell(0, 5, $test['description'], 0, 1);
+                $this->Ln(3);
+                // $parameterCount++;
             }
         }
         $this->Ln(2);
@@ -296,8 +403,8 @@ $pdf->AliasNbPages();
 $pdf->setTestData($allTests);
 $pdf->AddContentPage();
 $pdf->AddLastPage();
-// ob_clean();
-// $pdf->Output();
+ob_clean();
+$pdf->Output();
 // exit;
 // }
 ?>
@@ -324,7 +431,7 @@ $pdf->AddLastPage();
                 <h1 class='lab-name'><?= $healthCareName ?></h1>
             </div>
             <div class="lab-tag">
-                <span>DIAGNOSTIC & POLYCLINIC</span>
+                <span><?= $PlanName ?></span>
             </div>
             <div class="lab-address">
                 <p>Daulatabad, Murshidabad,(W.B.),Pin -742302, M:8695494415/9064390598, www.medicy.in</p>

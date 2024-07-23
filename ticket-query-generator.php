@@ -38,10 +38,9 @@ if ($_SESSION['ADMIN']) {
         $userName   = $adminData->username;
         $email      = $adminData->email;
         $phone      = $adminData->mobile_no;
-        
     }
 
-    $name = $firstName.' '.$lastName;
+    $name = $firstName . ' ' . $lastName;
 } else {
     $currentUserId = $employeeId;
     $employeeDetails = json_decode($employees->employeeDetails($employeeId, $adminId));
@@ -148,20 +147,31 @@ if ($_SESSION['ADMIN']) {
                                                         <div class="d-none col-md-12 form-group">
                                                             <input type="text" class="med-input" id="current-usr1" name="current-usr1" maxlength="20" value="<?= $name; ?>" required readonly>
                                                         </div>
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="text" class=" med-input" id="email1" name="email1" maxlength="100" value="<?= $email; ?>" required>
-                                                            <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
+                                                        <div class="row d-flex">
+                                                            <div class="col-md-6 form-group">
+                                                                <input type="text" class=" med-input" id="email1" name="email1" maxlength="100" value="<?= $email; ?>" required>
+                                                                <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
+                                                            </div>
+
+                                                            <div class="col-md-6 form-group">
+                                                                <input type="number" class=" med-input" id="mobile-number1" name="mobile-number1" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
+                                                                <label class="med-label" for="mobile-number">Contact
+                                                                    Number</label>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number1" name="mobile-number1" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
-                                                            <label class="med-label" for="mobile-number">Contact
-                                                                Number</label>
+                                                        <div class="row">
+                                                            <div class="col-md-12 form-group">
+                                                                <input type="text" class=" med-input" id="title1" name="title1" required>
+                                                                <label class="med-label" style="margin-left:10px;" for="title1">Message Title</label>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-12 form-group">
-                                                            <textarea class="med-input" placeholder="" name="ticket-description1" id="ticket-description1" style="height: 105px;" required></textarea>
-                                                            <label class="med-label" style="margin-left:10px;" for="address">Description</label>
+                                                        <div class="row">
+                                                            <div class="col-md-12 form-group">
+                                                                <textarea class="med-input" placeholder="" name="ticket-description1" id="ticket-description1" style="height: 105px;" required></textarea>
+                                                                <label class="med-label" style="margin-left:10px;" for="address">Description</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
@@ -175,7 +185,7 @@ if ($_SESSION['ADMIN']) {
                                                 </div>
 
                                                 <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary" type="submit" name="ticket-submit" id="ticket-submit" /*onclick="requestSubmit(this)"*/>Rais Ticket</button>
+                                                    <button class="btn btn-sm btn-primary" type="submit" name="ticket-submit" id="ticket-submit" /*onclick="requestSubmit(this)" * />Rais Ticket</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -187,20 +197,30 @@ if ($_SESSION['ADMIN']) {
                                                         <div class="d-none col-md-12 form-group">
                                                             <input type="text" class="med-input" id="current-usr2" name="current-usr2" maxlength="20" value="<?= $name; ?>" required readonly>
                                                         </div>
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="text" class=" med-input" id="email2" name="email2" maxlength="100" value="<?= $email; ?>" required>
-                                                            <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
+                                                        <div class="row d-flex">
+                                                            <div class="col-md-6 form-group">
+                                                                <input type="text" class=" med-input" id="email2" name="email2" maxlength="100" value="<?= $email; ?>" required>
+                                                                <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
+                                                            </div>
+
+                                                            <div class="col-md-6 form-group">
+                                                                <input type="number" class=" med-input" id="mobile-number2" name="mobile-number2" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
+                                                                <label class="med-label" for="mobile-number">Contact
+                                                                    Number</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-group">
+                                                                <input type="text" class=" med-input" id="title2" name="title2" required>
+                                                                <label class="med-label" style="margin-left:10px;" for="title2">Message Title</label>
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col-md-12 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number2" name="mobile-number2" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
-                                                            <label class="med-label" for="mobile-number">Contact
-                                                                Number</label>
-                                                        </div>
-
-                                                        <div class="col-md-12 form-group">
-                                                            <textarea class="med-input" placeholder="" name="ticket-description2" id="ticket-description2" style="height: 105px;" required></textarea>
-                                                            <label class="med-label" style="margin-left:10px;" for="address">Description</label>
+                                                        <div class="row">
+                                                            <div class="col-md-12 form-group">
+                                                                <textarea class="med-input" placeholder="" name="ticket-description2" id="ticket-description2" style="height: 105px;" required></textarea>
+                                                                <label class="med-label" style="margin-left:10px;" for="address">Description</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
@@ -213,7 +233,7 @@ if ($_SESSION['ADMIN']) {
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 d-flex justify-content-end">
-                                                    <button type="submit" name="query-submit" id="query-submit" class="btn btn-sm btn-primary" /*onclick="requestSubmit(this)"*/>Add Query</button>
+                                                    <button type="submit" name="query-submit" id="query-submit" class="btn btn-sm btn-primary" /*onclick="requestSubmit(this)" * />Add Query</button>
                                                 </div>
                                             </form>
                                         </div>
