@@ -40,7 +40,7 @@ trait PrintComponents
             $this->SetFont('Arial', 'B', 10);
             $this->cell(80, -2, ' Invoice', 0, 'L');
             $this->SetFont('Arial', '', 9);
-            $this->MultiCell(80, 4.2, "\n Bill Id: #" . $this->invoiceId . "\n Payment: " . $this->pMode . "\n Date: " . $this->billDate, 0, 'L');
+            $this->MultiCell(80, 4.2, "\n #" . $this->invoiceId . "\n Payment: " . $this->pMode . "\n Date: " . $this->billDate, 0, 'L');
             $this->Ln(1.8);
 
             // $this->SetDrawColor(108, 117, 125);
@@ -130,7 +130,7 @@ trait PrintComponents
             }
             // $this->SetY($currentY+2); // Reset Y position to top of the section
             $this->SetX($startX);
-            $this->Cell(20, 5, 'MRP :', 0, 0, 'R');
+            $this->Cell(20, 5, 'Total :', 0, 0, 'R');
             $this->Cell(41, 5, ' ' . $this->TOTALMRP, 0, 1, 'R');
 
             $savedName = $this->TOTALMRP - $this->BILLAMOUT > 0 ? 'You Saved  :' : '';
@@ -303,7 +303,7 @@ trait PrintComponents
          $startX = 140;
          $this->SetY($currentY); // Reset Y position to top of the section
          $this->SetX($startX);
-         $this->Cell(20, 5, 'MRP :', 0, 0, 'R');
+         $this->Cell(20, 5, 'Total :', 0, 0, 'R');
          $this->Cell(41, 5, '' . $this->totalMrp, 0, 1, 'R');
          $this->SetX($startX);
          $this->SetFont('Arial', '', 9);
@@ -311,7 +311,7 @@ trait PrintComponents
          $this->Cell(33, 5, '' . ($this->totalMrp - $this->billAmnt), 0, 1, 'R');
          $this->SetX($startX);
          $this->SetFont('Arial', 'B', 9);
-         $this->Cell(30, 5, 'Net Amoun :', 0, 0, 'R');
+         $this->Cell(30, 5, 'Net Amount :', 0, 0, 'R');
          $this->Cell(31, 5, '' . $this->billAmnt, 0, 1, 'R');
          
          $this->Ln(0.1);
@@ -395,7 +395,7 @@ trait PrintComponents
             $this->SetFont('Arial', 'B', 10);
             $this->cell(45, -1, ' Return Bill', 0, 'L');
             $this->SetFont('Arial', '', 8);
-            $this->MultiCell(45, 4, "\n Return ID : #$stockReturnId\n Refund Mode : $refundMode\n Return Date : $returnDate", 0, 'L');
+            $this->MultiCell(45, 4, "\n #$stockReturnId\n Refund Mode : $refundMode\n Return Date : $returnDate", 0, 'L');
             $this->Ln(1.6);
             // $this->SetDrawColor(108, 117, 125);
             $this->Line(10, $this->GetY(), 200, $this->GetY());

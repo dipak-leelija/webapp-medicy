@@ -174,7 +174,7 @@ class PDF extends FPDF
             $this->SetFont('Arial', 'B', 10);
             $this->cell(80, -2, ' Invoice:', 0, 'L');
             $this->SetFont('Arial', '', 9);
-            $this->MultiCell(80, 4.2, " \n Bill Id: #$invoiceId\n Payment: $refundMode\n Date: $this->billDate", 0, 'L');
+            $this->MultiCell(80, 4.2, " \n #$invoiceId\n Payment: $refundMode\n Date: $this->billDate", 0, 'L');
             $this->Ln(1.6);
             // $this->SetDrawColor(108, 117, 125);
             // $this->SetLineWidth(0.4);
