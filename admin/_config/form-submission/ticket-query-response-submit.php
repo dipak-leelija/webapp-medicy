@@ -34,6 +34,7 @@ if (isset($_POST['ticket-query-response-submit'])) {
 
     $response = json_decode($addResponse);
 
+
     if($response->status){
         $status = 'INACTIVE';
         if($tableName == 'Generate Quarry'){
@@ -43,12 +44,13 @@ if (isset($_POST['ticket-query-response-submit'])) {
             $table = 'ticket_request';
         }
 
-        $updateMasterTable = $Request->updateStatusByTableName($table, $reqNo, $status);
+        $updateMasterTable = $Request->updateStatusByTableName($table, $reqNo, $status, NOW);
         
         $updateStatus = json_decode($updateMasterTable);
+        
     }
     
-    if($updateStatus->status){
+    if($response->status && $updateStatus->status){
         $redirectUrl = ADM_URL . "ticket-query-response.php?response=" . url_enc(1)."&message=".url_enc($updateStatus->message);
         header("Location: " . $redirectUrl);
     }else{

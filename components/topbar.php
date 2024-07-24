@@ -1,5 +1,6 @@
 <?php
 require_once CLASS_DIR . 'request.class.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 $Request = new Request;
@@ -7,31 +8,22 @@ $Request = new Request;
 
 $allRequestResult = [];
 
-$requestTypes = [
-    'query_request' => ['tableName' => 'ticket_response', 'data' => []],
-    'ticket_request' => ['tableName' => 'query_response', 'data' => []]
-];
-
+$tables = ['query_response','ticket_response'];
+    
 $responceData = [];
 $badgeCounter = 0;
-foreach ($requestTypes as $type => &$requestType) {
-
-    $checkResponse = json_decode($Request->adminResponseCheck($requestType['tableName']));
-
-    if ($checkResponse->status) {
-        $badgeCounter++;
-        array_push($responceData, $checkResponse->data);
+foreach ($tables as $tableName) {
+    $checkResponse = $Request->adminResponseCheck($tableName);
+    if ($checkResponse['status']) {
+        $responce = $checkResponse['data'];
+        for ($i = 0; $i < count($responce); $i++) {
+            $responceData[] = $responce[$i];
+            $badgeCounter++;
+        }
     }
 }
 
-
-
-
-// foreach($requestType as $dataArray){
-//     print_r($dataArray);
-// }
-
-
+// print_r($responceData);
 
 ?>
 
@@ -88,8 +80,6 @@ foreach ($requestTypes as $type => &$requestType) {
             </div>
         </li>
 
-
-
         <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,13 +93,13 @@ foreach ($requestTypes as $type => &$requestType) {
                     Alerts Center
                 </h6>
                 <?php
-
                 for ($i = 0; $i < count($responceData); $i++) {
-                    $addedOn = $responceData[$i]->added_on;
-                    $messageTitle = $responceData[$i]->title;
-                    $messageData = $responceData[$i]->response;
+                    $addedOn = $responceData[$i]['added_on'];
+                    $messageTitle = $responceData[$i]['title'];
+                    $messageData = $responceData[$i]['response'];
+                    $ticketNo = url_enc($responceData[$i]['ticket_no']);
 
-                    echo '<div class="dropdown-item d-flex align-items-center" href="" onclick="updateResponseTable()">
+                    echo '<div class="dropdown-item d-flex align-items-center" id='.$responceData[$i]["ticket_no"].' data-ticket='.$ticketNo.' onclick="updateResponseTable(this)" style="cursor: pointer;">
                             <div class="mr-3">
                                 <div class="icon-circle bg-primary">
                                     <i class="fas fa-file-alt text-white"></i>
@@ -117,41 +107,15 @@ foreach ($requestTypes as $type => &$requestType) {
                             </div>
                             <div>
                                 <div class="small text-gray-500">' . date('F j, Y', strtotime($addedOn)) . '</div>
-                                <span class="font-weight-bold">' . $messageTitle . '</span></br>
-                                <span class="">' . $messageData . '</span>
-                            </div>
+                                    <span class="font-weight-bold">' . $messageTitle . '</span><br>
+                                    <span>' . $messageData . '</span>
+                                </div>
                             </div>';
                 }
                 ?>
-                <!-- 
-                 
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-success">
-                            <i class="fas fa-donate text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">December 7, 2019</div>
-                        $290.29 has been deposited into your account!
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-warning">
-                            <i class="fas fa-exclamation-triangle text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">December 2, 2019</div>
-                        Spending Alert: We've noticed unusually high spending for your account.
-                    </div>
-                </a> -->
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
             </div>
         </li>
-
-
 
         <!-- Nav Item - Messages -->
         <li class="nav-item dropdown no-arrow mx-1">
@@ -289,8 +253,24 @@ foreach ($requestTypes as $type => &$requestType) {
     </div>
 </div>
 
+
+<!-- script contorl onclick alert notification -->
 <script>
-    function updateResponseTable() {
-        console.log('update table');
+function updateResponseTable(element) {
+
+    let ticketNo = element.getAttribute('data-ticket');
+    const xhr = new XMLHttpRequest();
+    let alertContorl = `ajax/alertControl.ajax.php?ticket=${ticketNo}`;
+    xhr.open("GET", alertContorl, false);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(null);
+    let report = xhr.responseText;
+    // console.log(report);
+    if(report){
+        let url = `<?= URL ?>ticket-response-check.php?ticket=` + ticketNo;
+        window.location.href = url;
+    }else{
+        alert('Server Problem!');
     }
+}
 </script>

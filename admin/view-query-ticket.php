@@ -44,9 +44,9 @@ if($table == 'query_request'){
     $message = $tableData->message;
     $contact = $tableData->contact;
 }else if($table == 'ticket_request'){
-    $fileName = $tableData->document;
-    $message = $tableData->description;
-    $contact = $tableData->phone;
+    $fileName = $tableData->attachment;
+    $message = $tableData->message;
+    $contact = $tableData->contact;
 }
 
 $fullFilePath = $filePath . $fileName;
