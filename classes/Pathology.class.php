@@ -1,6 +1,7 @@
 <?php
 
-class Pathology{
+class Pathology
+{
 
     use DatabaseConnection;
 
@@ -53,10 +54,9 @@ class Pathology{
                     $data[] = $result;
                 }
                 return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
-            }else{
+            } else {
                 return json_encode(['status' => 0]);
             }
-
         } catch (Exception $e) {
             $e->getMessage();
         }
@@ -80,12 +80,11 @@ class Pathology{
                     while ($resultData = $result->fetch_array()) {
                         $data[] = $resultData;
                     }
-                    return json_encode(['status' =>1, 'data' => $data]);
-                }else{
-                    return json_encode(['status' =>0]);
+                    return json_encode(['status' => 1, 'data' => $data]);
+                } else {
+                    return json_encode(['status' => 0]);
                 }
                 $stmt->close();
-                
             } else {
                 throw new Exception("Failed to prepare statement");
             }
@@ -141,29 +140,29 @@ class Pathology{
 
             // $imgdelete = $this->deleteFile($delTestTypeId, 'id', 'image', 'tests_types', LABTEST_IMG_DIR);
             // if ($imgdelete) {
-                $deletelabType = "DELETE FROM `tests_types` WHERE `id` = ?";
+            $deletelabType = "DELETE FROM `tests_types` WHERE `id` = ?";
 
-                $stmt = $this->conn->prepare($deletelabType);
+            $stmt = $this->conn->prepare($deletelabType);
 
-                if ($stmt === false) {
-                    throw new Exception('Statement preparation failed: ' . $this->conn->error);
-                }
+            if ($stmt === false) {
+                throw new Exception('Statement preparation failed: ' . $this->conn->error);
+            }
 
-                $stmt->bind_param("i", $delTestTypeId);
+            $stmt->bind_param("i", $delTestTypeId);
 
-                $stmt->execute();
+            $stmt->execute();
 
-                if ($stmt->error) {
-                    throw new Exception('Statement execution failed: ' . $stmt->error);
-                }
+            if ($stmt->error) {
+                throw new Exception('Statement execution failed: ' . $stmt->error);
+            }
 
-                if ($stmt->affected_rows > 0) {
-                    return json_encode(['status' => true, 'message' => 'success']);
-                } else {
-                    return json_encode(['status' => false, 'message' => 'Image Deleted But Details Not Deleted!']);
-                }
+            if ($stmt->affected_rows > 0) {
+                return json_encode(['status' => true, 'message' => 'success']);
+            } else {
+                return json_encode(['status' => false, 'message' => 'Image Deleted But Details Not Deleted!']);
+            }
 
-                $stmt->close();
+            $stmt->close();
             // } else {
             //     return json_encode(['status' => false, 'message' => 'Image Not Deleted!']);
             // }
@@ -173,12 +172,12 @@ class Pathology{
         }
     } // end deleteLabTypes function
 
-    
+
     /********************************************************************************************
      *                                      Test List Table                                     *
      ********************************************************************************************/
 
-     
+
     function showTestList()
     {
         try {
@@ -228,8 +227,8 @@ class Pathology{
     }
 
     /********************************************************************************************
-    *                                     Test Parameters Table                                 *
-    ********************************************************************************************/
+     *                                     Test Parameters Table                                 *
+     ********************************************************************************************/
 
     function showParametersByTest($testId)
     {
@@ -278,11 +277,32 @@ class Pathology{
             return ['status' => false, 'message' => $e->getMessage()];
         }
     }
-    
+
+    function testIdByParameter($paramId)
+    {
+        try {
+            $query = "SELECT test_id FROM `test_parameters` WHERE `id` = '$paramId'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc();
+                return json_encode(['status' => true, 'message' => 'Data retrieved successfully', 'data' => $data]);
+            } else {
+                return json_encode(['status' => false, 'message' => 'No data found']);
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
 
     /********************************************************************************************
-    *                                   test_standard_range Table                               *
-    ********************************************************************************************/
+     *                                   test_standard_range Table                               *
+     ********************************************************************************************/
 
 
     function showParameterById($range_id)
@@ -332,7 +352,4 @@ class Pathology{
             return ['status' => false, 'message' => $e->getMessage()];
         }
     }
-
-
-
 } //end of LabTypes Class

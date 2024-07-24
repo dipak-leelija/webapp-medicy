@@ -8,7 +8,8 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
@@ -21,9 +22,10 @@ require_once CLASS_DIR . 'utility.class.php';
 
 // $LabAppointments = new LabAppointments();
 $Patients        = new Patients();
-$SubTests        = new SubTests();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
+$PathologyReport = new PathologyReport;
+$Pathology       = new Pathology;
 $Doctors         = new Doctors();
 $Employees       = new Employees;
 $Pagination      = new Pagination;
@@ -318,6 +320,36 @@ if ($labBillDisplay->status) {
                                                     } else {
                                                         $docName = $referdDoc;
                                                     }
+
+
+                                                    /* Geeting the status of report acording to bill number */
+                                                    $testIds = [];
+                                                    $statusResponse = $PathologyReport->reportStatus($billId);
+                                                    if($statusResponse['status']){
+                                                        foreach ($statusResponse['data'] as $eachId) {
+                                                            $paramRes = $Pathology->testIdByParameter($eachId);
+                                                            $paramRes = json_decode($paramRes);
+                                                            
+                                                            if ($paramRes->status) {
+                                                                // print_r($paramRes->data->test_id);
+                                                                $testIds[] = $paramRes->data->test_id;
+                                                            }
+                                                        }
+                                                    }
+                                                    $completeTestNos = count(array_unique($testIds));
+
+                                                    /* Prepareing The Status of Report Acording to Bill */
+                                                    if ($completeTestNos === $test) {
+                                                        $starusIcon = '<i class="far fa-check-circle text-primary"></i>';
+                                                    }elseif ($completeTestNos > 0 &&  $completeTestNos < $test) {
+                                                        $starusIcon = '<i class="fas fa-hourglass-half text-warning"></i>';
+                                                    }else {
+                                                        $starusIcon = '<i class="far fa-times-circle text-danger"></i>';
+                                                    }
+                                                    /*---------------------------------------------------------*/
+
+
+
                                                     echo '<tr ';
 
                                                     if ($status == "Credit") {
@@ -335,11 +367,7 @@ if ($labBillDisplay->status) {
                                                         <td>' . $test . '</td>
                                                         <td>' . $docName . '</td>
                                                         <td>' . $paidAmount . '</td>
-                                                        <td> 
-                                                            <i class="far fa-times-circle"></i>
-                                                            <i class="fas fa-hourglass-half"></i>
-                                                            <i class="far fa-check-circle"></i>
-                                                        </td>
+                                                        <td>' . $starusIcon . '</td>
                                                         <td></td>
                                                         <td>
 

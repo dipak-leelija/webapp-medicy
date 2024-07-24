@@ -37,6 +37,44 @@ class PathologyReport
         }
     }
 
+    function reportStatus($billId)
+    {
+        try {
+            $query1 = "SELECT id FROM test_report WHERE bill_id = $billId";
+            $stmt = $this->conn->prepare($query1);
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $reportIds[] = $row['id'];
+                    }
+                    // print_r($reportIds);
+                    foreach ($reportIds as $eachReport) {
+                        $reportDetails = $this->labReportDetailbyId($eachReport);
+                        $reportDetails = json_decode($reportDetails);
+                        foreach ($reportDetails as $eachDetail) {
+                            $params[] = $eachDetail->param_id;
+                        }
+                    }
+                    // print_r($params);
+                    $returnData = ['status' => true, 'message' => 'success', 'data' => $params];
+                } else {
+                    $returnData = ['status' => false, 'message' => 'No data found'];
+                }
+                $stmt->close();
+
+                return $returnData;
+            } else {
+                throw new Exception('Statement prepare exception');
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+
+        }
+    }
+
     function testReportById($report_id)
     {
         try {
