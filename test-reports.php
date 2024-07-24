@@ -9,23 +9,11 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
-// require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'PathologyReport.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
-
-
-
 $Patients        = new Patients;
 $PathologyReport = new PathologyReport;
-// $LabReport  = new LabReport;
-
-// $labreportfetch = $LabReport->labreportfetch();
-// echo $labreportfetch;
-// $labreportfetch = json_decode($labreportfetch, true);
-// foreach($labreportfetch as $fetch){
-//     echo $billId = $fetch['bill_id'];
-// }
 
 ?>
 <!DOCTYPE html>
@@ -79,7 +67,7 @@ $PathologyReport = new PathologyReport;
                     </div>
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow-sm mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Report</h6>
                             <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
@@ -90,9 +78,11 @@ $PathologyReport = new PathologyReport;
                                     <thead>
                                         <tr>
                                             <th>Report ID</th>
-                                            <th>Bill ID</th>
+                                            <th>Invoice</th>
+                                            <th>Patient Name</th>
                                             <th>Admin ID</th>
                                             <th>Date</th>
+                                            <th>Prepared By</th>
                                             <th class="text-center">View</th>
                                         </tr>
                                     </thead>
@@ -109,9 +99,11 @@ $PathologyReport = new PathologyReport;
                                         ?>
                                                 <tr class="appointment-row">
                                                     <td><?= $reportId ?></td>
-                                                    <td><?= $billId ?></td>
+                                                    <td> <a href="<?=URL ?>test-appointments.php?&search=<?= $billId ?>">#<?= $billId ?></a></td>
+                                                    <td></td>
                                                     <td><?= $adminId ?></td>
                                                     <td><?= formatDateTime($date, '-') ?></td>
+                                                    <td></td>
                                                     <td class="text-center">
                                                         <!-- <a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a> -->
                                                         <a title="show" onclick="openPrint(this.href); return false;" href="invoices/print.php?name=report&id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
