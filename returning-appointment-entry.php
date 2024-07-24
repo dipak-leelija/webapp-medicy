@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet" />
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet" />
 
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">

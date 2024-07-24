@@ -70,7 +70,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!--Custom CSS -->
     <!-- <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet"> -->

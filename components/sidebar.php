@@ -30,6 +30,8 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
+
+        <!-- ==================================== OPD AREA START ==================================== -->
         <?php
         if ($userRole == 2 || $userRole == 'ADMIN') : ?>
 
@@ -46,11 +48,7 @@
                 </a>
             </li>
         <?php endif; ?>
-
-        <?php if ($userRole == 3 || $userRole == 'ADMIN') :
-            include ROOT_COMPONENT . '/sidebar/PathalogySidebar.php';
-        endif; ?>
-
+        <!-- ==================================== OPD AREA START ==================================== -->
         <?php if ($userRole == 2 || $userRole == 3 || $userRole == 'ADMIN') : ?>
 
             <!-- Nav Item - Doctors -->
@@ -75,17 +73,30 @@
                     <span>Patients</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
         <?php endif; ?>
 
+        <!-- ==================================== PATHALOGY AREA START ==================================== -->
+        <hr class="sidebar-divider d-none d-md-block">
+        <div class="sidebar-heading">Pathalogy Lab</div>
 
+        <?php if ($userRole == 3 || $userRole == 'ADMIN') :
+            include ROOT_COMPONENT . '/sidebar/PathalogySidebar.php';
+        endif; ?>
+        <!-- ==================================== PATHALOGY AREA END ==================================== -->
+
+
+        <!-- ==================================== PHARMACY AREA START ==================================== -->
         <?php if ($userRole == 1 || $userRole == 'ADMIN') : ?>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
             <!-- Heading -->
             <div class="sidebar-heading">Pharmacy</div>
             <?php include ROOT_COMPONENT . '/sidebar/PharmacySidebar.php'; ?>
 
         <?php endif; ?>
+        <!-- ==================================== PHARMACY AREA END ==================================== -->
 
 
         <?php if ($userRole == 'ADMIN') : ?>

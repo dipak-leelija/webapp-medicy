@@ -110,7 +110,7 @@ if ($testCategories->status) {
                     </div>
                     <div class="row flex-wrap-reverse" style="z-index: 999;">
 
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 booked_btn">
                                     <div class="row d-flex">
@@ -120,7 +120,7 @@ if ($testCategories->status) {
                                         <label class="d-none" for="" id="base-url-holder"></label>
                                         <label class="d-none" for="" id="srch-btn-controler">0</label>
                                         <div class="col-md-8 input-group d-flex justify-content-end">
-                                            <input class="cvx-inp w-75" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
+                                            <input class="cvx-inp w-50 px-3 rounded-left" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append" id="dataSearch-btnDiv">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>
@@ -152,9 +152,9 @@ if ($testCategories->status) {
                                                         <th></th>
                                                         <th>Category Name</th>
                                                         <th>Description</th>
-                                                        <th>Tests Nos</th>
+                                                        <th style="width:100px">Tests Nos</th>
                                                         <th>Status</th>
-                                                        <th class="text-center">Action</th>
+                                                        <th class="text-center pr-3">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="table-data">
@@ -197,7 +197,7 @@ if ($testCategories->status) {
                                                                     <i class="fas fa-eye" style="color: #4e73df;"></i>
                                                                 </a>
 
-                                                                <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?= $testCatId; ?>)" style="color: #4e73df;"></i>
+                                                                <!-- <i class="fas fa-edit cursor-pointer" data-bs-toggle='modal' data-bs-target="#testEditModal" onclick="LabCategoryEditModal(<?= $testCatId; ?>)" style="color: #4e73df;"></i> -->
 
                                                             </td>
                                                         </tr>
@@ -223,7 +223,7 @@ if ($testCategories->status) {
                         </div>
 
                         <!-- Add New Catagory Section -->
-                        <div class="col-12 col-md-4">
+                        <!-- <div class="col-12 col-md-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 booked_btn">
                                     <div class="row">
@@ -243,7 +243,7 @@ if ($testCategories->status) {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

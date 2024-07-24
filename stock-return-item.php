@@ -38,7 +38,7 @@ $showDistributor = $showDistributor->data;
     <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script>
 
     <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-return-item.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 

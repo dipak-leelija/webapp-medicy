@@ -79,14 +79,25 @@ if ($responseTestId != '') :
                         ?>
 
                     </div>
-<?php
+                <?php
                 } else {
-                    echo 'Parameter not exists in database!';
+                ?>
+                    <div class="border-1p border-primary border-dashed min-h-100 mt-5 py-5">
+                        <h5 class="text-center text-danger"> Parameter Not Avilable for <?= $subTestName ?> Test</h5>
+                        <div class="pt-3 text-center">
+                            <a href="tel:7699753019" class="btn btn-sm btn-success">Request to Add</a>
+                            <a href="<?= URL . 'ticket-query-generator.php' ?>" class="btn btn-sm btn-primary">Contact Now</a>
+                        </div>
+                    </div>
+<?php
                 }
             }
         }
     endif;
 
-else:
-    echo "Please Select a test to generate report";
+else :
+    echo '
+        <div class="border-1p border-muted border-dashed bg-light text-secondary min-h-100 mt-5 py-5">
+            <h5 class="text-center"> Select a Test from Dropdown to Generate Report</h5>
+        </div>';
 endif;

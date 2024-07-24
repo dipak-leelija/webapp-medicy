@@ -126,7 +126,7 @@ else {
     <title>Medicy Health Care - Admin Registration</title>
 
     <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">

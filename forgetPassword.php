@@ -149,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
