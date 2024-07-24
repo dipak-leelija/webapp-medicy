@@ -180,7 +180,7 @@ if ($_SESSION['ADMIN']) {
                                                         </div>
                                                         <label class="med-label mt-n4 text-primary" style="margin-left:10px;" for="address">Document</label>
                                                         <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
-                                                        <input type="file" class="d-none" name="fileInput1" id="fileInput1" onchange="takeInputFile(this, 'document-show-1')" required>
+                                                        <input type="file" class="d-none" name="fileInput1" id="fileInput1" onchange="takeInputFile(this, 'document-show-1')">
                                                     </div>
                                                 </div>
 
@@ -229,7 +229,7 @@ if ($_SESSION['ADMIN']) {
                                                         </div>
                                                         <label class="med-label mt-n4" style="margin-left: 10px;" for="address">Document</label>
                                                         <i class="fas fa-upload text-primary" id="upload-document2" style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;" onclick="document.getElementById('fileInput2').click();"></i>
-                                                        <input type="file" class="d-none" name="fileInput2" id="fileInput2" onchange="takeInputFile(this, 'document-show-2')" required>
+                                                        <input type="file" class="d-none" name="fileInput2" id="fileInput2" onchange="takeInputFile(this, 'document-show-2')">
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 d-flex justify-content-end">
