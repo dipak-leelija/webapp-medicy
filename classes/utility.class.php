@@ -33,8 +33,8 @@ class Utility
 				$stmt->close();
 				return '';
 			}
-		} catch (\Throwable $th) {
-			//throw $th;
+		} catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
 		}
 	}
 
