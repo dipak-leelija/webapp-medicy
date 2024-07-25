@@ -120,7 +120,7 @@ if ($testCategories->status) {
                                         <label class="d-none" for="" id="base-url-holder"></label>
                                         <label class="d-none" for="" id="srch-btn-controler">0</label>
                                         <div class="col-md-8 input-group d-flex justify-content-end">
-                                            <input class="cvx-inp w-50 px-3 rounded-left" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
+                                            <input class="cvx-inp w-50 px-3 rounded-left" type="text" placeholder="Search test..." name="search-test" id="search-test" style="outline: none;border: 1px solid #858796;" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append" id="dataSearch-btnDiv">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>

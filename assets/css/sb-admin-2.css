@@ -9132,11 +9132,12 @@ a:focus {
 
 .sidebar {
   width: 9rem;
-  max-height: 100vh;
-  height: fit-content;
-  position: sticky;
+  /* max-height: 100vh; */
+  /* height: fit-content; */
+  /* position: sticky; */
   top: 0;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* z-index: 1; */
 }
 
 .sidebar .nav-item {
@@ -9226,11 +9227,25 @@ a:focus {
 }
 
 .sidebar #sidebarToggle {
-  width: 2.5rem;
+  /* width: 2.5rem;
   height: 2.5rem;
   text-align: center;
   margin-bottom: 1rem;
-  cursor: pointer;
+  cursor: pointer; */
+
+  width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    position: fixed;
+    z-index: 2;
+    left: 12.8rem;
+    top: 1rem;
+}
+
+.sidebar #sidebarToggle.active {
+  left: 5.3rem;
 }
 
 .sidebar #sidebarToggle::after {
@@ -9350,8 +9365,18 @@ a:focus {
 }
 
 @media (min-width: 768px) {
-  .sidebar {
+  /* .sidebar {
     width: 17rem !important;
+  } */
+
+  .sidebar {
+    width: 17rem;
+    max-height: 100vh;
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    overflow-y:auto;
+    z-index: 1;
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -9411,7 +9436,8 @@ a:focus {
     text-align: left;
   }
   .sidebar.toggled {
-    overflow: auto;
+    /* overflow:unset;
+    height: 100vh; */
     width: 7rem !important;
   }
   .sidebar.toggled .nav-item .collapse {
@@ -9560,19 +9586,20 @@ a:focus {
 }
 
 .sidebar-dark #sidebarToggle {
-  background-color: rgba(255, 255, 255, 0.2);
+  /* background-color: rgba(255, 255, 255, 0.2); */
+  background-color: var(--blue)
 }
 
 .sidebar-dark #sidebarToggle::after {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255 255 255);
 }
 
-.sidebar-dark #sidebarToggle:hover {
+/* .sidebar-dark #sidebarToggle:hover {
   background-color: rgba(255, 255, 255, 0.25);
-}
+} */
 
 .sidebar-dark.toggled #sidebarToggle::after {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255 255 255);
 }
 
 .btn-circle {

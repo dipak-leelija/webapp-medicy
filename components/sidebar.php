@@ -20,6 +20,10 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
         <!-- Nav Item For Healthcare -->
         <li class="nav-item <?= $currentURL  ==  LOCAL_DIR ? "active" : ''; ?>">
             <a class="nav-link" href="<?= URL ?>">
@@ -58,9 +62,9 @@
                     <span>Doctors</span>
                 </a>
 
-                <div id="collapseDoctor" class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseDoctor"  class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item <?= $page ==  "doctors" ? "active" : ''; ?>" href="doctors.php">Doctors</a>
+                        <a class="collapse-item <?= $page ==  "doctors" || $page == "doctors" ? "active" : ''; ?>" href="doctors.php">Doctors</a>
                         <a class="collapse-item <?= $page ==  "doc-specialization"  || $page == "doctor-specialization" ? "active" : ''; ?>" href="doctor-specialization.php">Specializations</a>
                     </div>
                 </div>
@@ -110,8 +114,21 @@
         <?php endif; ?>
 
 
-        <div class="text-center d-none d-md-inline">
+        <!-- <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+        </div> -->
     </ul>
     <!-- End of Sidebar -->
+
+    
+<!-- ########################################################## -->
+<!-- sidebar toggle button  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var sidebarToggle = document.getElementById('sidebarToggle');
+
+    sidebarToggle.addEventListener('click', function() {
+        sidebarToggle.classList.toggle('active');
+    });
+});
+</script>
