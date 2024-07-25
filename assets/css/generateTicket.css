@@ -3,7 +3,7 @@
     height: 40px;
     right: 15px;
     bottom: 22px;
-    position: absolute;
+    position: fixed;
     z-index: 1;
     background-color:var(--blue) !important;
     border-radius: 50% !important;
