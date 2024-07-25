@@ -59,7 +59,7 @@ if (!$labBillingData->status) {
         $parameterData =  array_combine($_POST['params'], $_POST['values']);
         // print_r($parameterData);
 
-        $reportResponse = $PathologyReport->addTestReport($testBillId, $ADMINID, NOW);
+        $reportResponse = $PathologyReport->addTestReport($testBillId, $ADMINID, $ADDEDBY, NOW);
         $reportResponse = json_decode($reportResponse);
         if ($reportResponse->status) {
             $addedReportId = $reportResponse->reportid;

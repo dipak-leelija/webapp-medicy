@@ -29,10 +29,11 @@ $Pathology       = new Pathology;
 $Doctors         = new Doctors();
 $Employees       = new Employees;
 $Pagination      = new Pagination;
+$Utility         = new Utility;
 
 
 // ================ doctor detials ===================
-$DoctorsList = json_decode($Doctors->showDoctors($adminId));
+$DoctorsList = json_decode($Doctors->showDoctors($ADMINID));
 if (!empty($DoctorsList->data)) {
     $DoctorList = $DoctorsList->data;
 }
@@ -284,7 +285,7 @@ if ($labBillDisplay->status) {
                                                 <th>Refered By</th>
                                                 <th>Paid Amount</th>
                                                 <th>Status</th>
-                                                <th>Created By</th>
+                                                <th>Added By</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -298,6 +299,9 @@ if ($labBillDisplay->status) {
                                                     $testDate      = $rowlabBill->test_date;
                                                     $paidAmount    = $rowlabBill->paid_amount;
                                                     $status        = $rowlabBill->status;
+                                                    $addedBy       = $rowlabBill->added_by;
+
+                                                    $addedName = $Utility->getNameById($addedBy);
 
                                                     $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
 
@@ -368,7 +372,7 @@ if ($labBillDisplay->status) {
                                                         <td>' . $docName . '</td>
                                                         <td>' . $paidAmount . '</td>
                                                         <td>' . $starusIcon . '</td>
-                                                        <td></td>
+                                                        <td>' . $addedName . '</td>
                                                         <td>
 
                                                         <div class="dropdown">
@@ -387,16 +391,15 @@ if ($labBillDisplay->status) {
                                                                 Print Invoice
                                                                 </a>
 
-                                                                
-                                                                <span class="dropdown-item cursor-pointer" id="' . $billId . '" onclick="cancelBill(' . $billId . ')">
-                                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                                                Cancel Invoice
-                                                                </span>
-                                                        
                                                                 <a class="dropdown-item" href="test-report-generate.php?bill-id=' . $billId . '">
                                                                     <i class="fa fa-flask" aria-hidden="true"></i>
                                                                     Generate Report
                                                                 </a>
+
+                                                                <span class="dropdown-item cursor-pointer text-danger" id="' . $billId . '" onclick="cancelBill(' . $billId . ')">
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                                Cancel Invoice
+                                                                </span>
                                                         
                                                             </div>
                                                         </div>
