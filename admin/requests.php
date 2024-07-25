@@ -120,7 +120,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => '',
-                'description' => $requestDataItem->description,
+                'description' => $requestDataItem->message,
                 'status'      => $requestDataItem->status,
             ];
         }else {

@@ -8,7 +8,8 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
@@ -21,9 +22,10 @@ require_once CLASS_DIR . 'utility.class.php';
 
 // $LabAppointments = new LabAppointments();
 $Patients        = new Patients();
-$SubTests        = new SubTests();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
+$PathologyReport = new PathologyReport;
+$Pathology       = new Pathology;
 $Doctors         = new Doctors();
 $Employees       = new Employees;
 $Pagination      = new Pagination;
@@ -132,7 +134,7 @@ if ($labBillDisplay->status) {
     <!-- Sweet Alert Link  -->
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css">
 
 
 
@@ -159,15 +161,10 @@ if ($labBillDisplay->status) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="row" style="z-index: 999;">
-                        <div class="col-12">
-                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
-                        </div>
-                    </div>
+                    <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
 
                     <!-- Test Appointments -->
-                    <div class="card shadow mb-2">
-                        <!-- <div class="card-header py-3 justify-content-between"> -->
+                    <div class="card shadow-sm">
                         <div class="row d-flex">
                             <div class="col-md-5">
                                 <h6 class="mt-3 ml-4 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
@@ -272,17 +269,13 @@ if ($labBillDisplay->status) {
                             </div>
                         </div>
 
-                        <!-- </div> -->
-
-
-
                         <div class="card-body">
 
                             <?php
                             if ($totalItem > 0) {
                             ?>
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-bordered" width="100%" cellspacing="0">
+                                    <table class="table table-sm table-bordered table-hover table-striped text-center" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Invoice</th>
@@ -291,6 +284,7 @@ if ($labBillDisplay->status) {
                                                 <th>Refered By</th>
                                                 <th>Paid Amount</th>
                                                 <th>Status</th>
+                                                <th>Created By</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -306,10 +300,10 @@ if ($labBillDisplay->status) {
                                                     $status        = $rowlabBill->status;
 
                                                     $billDetails = json_decode($LabBillDetails->billDetailsById($billId));
-                                                    
-                                                    if($billDetails->status){
+
+                                                    if ($billDetails->status) {
                                                         $billDetails = $billDetails->data;
-                                                    }else{
+                                                    } else {
                                                         $billDetails = [];
                                                     }
 
@@ -323,10 +317,39 @@ if ($labBillDisplay->status) {
                                                         if ($showDoctor->status == 1) {
                                                             $docName = $showDoctor->data->doctor_name;
                                                         }
-
                                                     } else {
                                                         $docName = $referdDoc;
                                                     }
+
+
+                                                    /* Geeting the status of report acording to bill number */
+                                                    $testIds = [];
+                                                    $statusResponse = $PathologyReport->reportStatus($billId);
+                                                    if($statusResponse['status']){
+                                                        foreach ($statusResponse['data'] as $eachId) {
+                                                            $paramRes = $Pathology->testIdByParameter($eachId);
+                                                            $paramRes = json_decode($paramRes);
+                                                            
+                                                            if ($paramRes->status) {
+                                                                // print_r($paramRes->data->test_id);
+                                                                $testIds[] = $paramRes->data->test_id;
+                                                            }
+                                                        }
+                                                    }
+                                                    $completeTestNos = count(array_unique($testIds));
+
+                                                    /* Prepareing The Status of Report Acording to Bill */
+                                                    if ($completeTestNos === $test) {
+                                                        $starusIcon = '<i class="far fa-check-circle text-primary"></i>';
+                                                    }elseif ($completeTestNos > 0 &&  $completeTestNos < $test) {
+                                                        $starusIcon = '<i class="fas fa-hourglass-half text-warning"></i>';
+                                                    }else {
+                                                        $starusIcon = '<i class="far fa-times-circle text-danger"></i>';
+                                                    }
+                                                    /*---------------------------------------------------------*/
+
+
+
                                                     echo '<tr ';
 
                                                     if ($status == "Credit") {
@@ -341,37 +364,59 @@ if ($labBillDisplay->status) {
                                                     echo '>
                                                         <td>#' . $billId . '</td>
                                                         <td>' . formatDateTime($testDate) . '</td>
-                                                        <td>'.$test.'</td>
+                                                        <td>' . $test . '</td>
                                                         <td>' . $docName . '</td>
-                                                        <td>Rs. ' . $paidAmount . '</td>
-                                                        <td>' . $status . '</td>
+                                                        <td>' . $paidAmount . '</td>
+                                                        <td>' . $starusIcon . '</td>
+                                                        <td></td>
                                                         <td>
-                                                        <a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                                         <a class="text-primary text-center" title="Print"
-                                                          onclick="openPrint(this.href); return false;" href="' . URL . 'invoices/print.php?name=lab_invoice&id=' . url_enc($billId) . '"><i class="fas fa-print"></i></a>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-outline-primary rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-sliders-h"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <span class="dropdown-item cursor-pointer" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" >
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                View & Edit
+                                                                </span>
 
-                                                        <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                        <a class="text-primary text-center" title="Report" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
+                                                                
+                                                                <a class="dropdown-item" onclick="openPrint(this.href); return false;" href="' . URL . 'invoices/print.php?name=lab_invoice&id=' . url_enc($billId) . '">
+                                                                <i class="fas fa-print"></i>
+                                                                Print Invoice
+                                                                </a>
+
+                                                                
+                                                                <span class="dropdown-item cursor-pointer" id="' . $billId . '" onclick="cancelBill(' . $billId . ')">
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                                Cancel Invoice
+                                                                </span>
+                                                        
+                                                                <a class="dropdown-item" href="test-report-generate.php?bill-id=' . $billId . '">
+                                                                    <i class="fa fa-flask" aria-hidden="true"></i>
+                                                                    Generate Report
+                                                                </a>
+                                                        
+                                                            </div>
+                                                        </div>
                                                         </td>
                                                     </tr>';
-                                                    // }
                                                 }
                                             }
-                                            // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                             ?>
 
                                         </tbody>
                                     </table>
                                 </div>
                             <?php
-                            }else{
-                               echo '<div class="col-md-12  p-2 row p-2 d-flex justify-content-center" id="dtPickerDiv" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
+                            } else {
+                                echo '<div class="col-md-12  p-2 row p-2 d-flex justify-content-center" id="dtPickerDiv" style="position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                     <label class="text-danger font-weight-bold">No Data Found</label>
                                </div>';
                             }
-                            
-                            if($totalItem > 16){
+
+                            if ($totalItem > 16) {
                                 echo '<div class="d-flex justify-content-center">
                                 ' . $paginationHTML . '
                                 </div>';
@@ -395,7 +440,8 @@ if ($labBillDisplay->status) {
     </div>
     <!-- End of Page Wrapper -->
 
- <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+
     <!-- Bill View Modal -->
     <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">

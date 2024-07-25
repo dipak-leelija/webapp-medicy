@@ -49,7 +49,7 @@ $response = json_decode($responseString);
                 }
             });
         </script>
-    <?php elseif ($alert === false) : ?>
+    <?php elseif ($response->status == false) : ?>
         <script>
             Swal.fire({
                 text: "Error occurred",

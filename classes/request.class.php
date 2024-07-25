@@ -744,7 +744,7 @@ class Request
                 $col1 = 'ticket_id';
                 $col2 = 'ticket_no';
                 $col3 = 'title';
-                $col4 = 'description';
+                $col4 = 'message';
                 $col5 = 'attachment';
                 $col6 = 'response';
                 $col7 = 'request_creater';
@@ -779,10 +779,10 @@ class Request
 
 
     // =========================== update query/table data ==================================
-    function updateStatusByTableName($table, $id, $status)
+    function updateStatusByTableName($table, $id, $status, $updatedOn)
     {
         try {
-            $updateQuery = "UPDATE `$table` SET `status` = ? WHERE `id` = ?";
+            $updateQuery = "UPDATE `$table` SET `status` = ?, `updated_on` = ? WHERE `id` = ?";
 
             $stmt = $this->conn->prepare($updateQuery);
 
@@ -790,7 +790,7 @@ class Request
                 throw new Exception('Prepare statement failed: ' . $this->conn->error);
             }
 
-            $stmt->bind_param("si", $status, $id);
+            $stmt->bind_param("ssi", $status, $updatedOn, $id);
 
             if (!$stmt->execute()) {
                 throw new Exception('Execute statement failed: ' . $stmt->error);
@@ -807,26 +807,28 @@ class Request
 
 
 
+
     // ====================== ticket request =====================
-    function addNewTicketRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
+    function addNewTicketRequest($ticketNo, $email, $contact, $name, $title, $description, $document, $admin, $status, $time)
     {
         // echo $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time;
         try {
-            $addQuery = "INSERT INTO `ticket_request`(`ticket_no`, `email`, `phone`, `name`, `description`, `document`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $addQuery = "INSERT INTO `ticket_request`(`ticket_no`, `email`, `contact`, `name`, `title`, `message`, `attachment`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($addQuery);
             if (!$stmt) {
                 throw new Exception("Error preparing statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("ssissssss", $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time);
+            $stmt->bind_param("ssisssssss", $ticketNo, $email, $contact, $name, $title, $description, $document, $admin, $status, $time);
 
             if ($stmt->execute()) {
                 $insertId = $this->conn->insert_id;
                 $stmt->close();
-                return json_encode(['status' => true, 'insert_id' => $insertId]);
+                return json_encode(['status' => true, 'insert_id' => $insertId, 'message' => '']);
             } else {
-                throw new Exception("Error inserting data into the database: " . $stmt->error);
+                // throw new Exception("Error inserting data into the database: " . $stmt->error);
+                return json_encode(['status' => false, 'message' => $stmt->error]);
             }
         } catch (Exception $e) {
             return json_encode(['status' => false, 'error' => $e->getMessage()]);
@@ -838,24 +840,25 @@ class Request
 
 
     // ====================== query request ======================
-    function addNewQueryRequest($ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time)
+    function addNewQueryRequest($ticketNo, $email, $contact, $name, $title, $description, $document, $admin, $status, $time)
     {
         try {
-            $addQuery = "INSERT INTO `query_request`(`ticket_no`, `email`, `contact`, `name`, `message`, `attachment`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $addQuery = "INSERT INTO `query_request`(`ticket_no`, `email`, `contact`, `name`, `title`, `message`, `attachment`, `admin_id`, `status`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($addQuery);
             if (!$stmt) {
                 throw new Exception("Error preparing statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("ssissssss", $ticketNo, $email, $contact, $name, $description, $document, $admin, $status, $time);
+            $stmt->bind_param("ssisssssss", $ticketNo, $email, $contact, $name, $title, $description, $document, $admin, $status, $time);
 
             if ($stmt->execute()) {
                 $insertId = $this->conn->insert_id;
                 $stmt->close();
-                return json_encode(['status' => true, 'insert_id' => $insertId]);
+                return json_encode(['status' => true, 'insert_id' => $insertId, 'message' => '']);
             } else {
-                throw new Exception("Error inserting data into the database: " . $stmt->error);
+                // throw new Exception("Error inserting data into the database: " . $stmt->error);
+                return json_encode(['status' => false, 'message' => $stmt->error]);
             }
         } catch (Exception $e) {
             return json_encode(['status' => false, 'error' => $e->getMessage()]);
@@ -867,29 +870,175 @@ class Request
 
 
 
-    function adminResponseCheck($table) {
+    function adminResponseCheck($table)
+    {
         try {
-            
+
             $selectQuery = "SELECT * FROM $table WHERE `status`=1 AND `view_status`=1";
-            
+
             $result = $this->conn->query($selectQuery);
-            
+
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data = $row;
+                    $data[] = $row;
                 }
-                return json_encode(['status' => true, 'data' => $data]);
+                return ['status' => true, 'data' => $data];
             } else {
-                return json_encode(['status' => false, 'data' => '']);
+                return ['status' => false, 'data' => ''];
             }
         } catch (Exception $e) {
             return json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
-    
+
+
+
+
+
+
+    function editResponseCheck($ticket)
+    {
+        try {
+            $tables = ['ticket_response', 'query_response'];
+            $tableName = null;
+
+            for ($i = 0; $i < count($tables); $i++) {
+                $checkExistence = "SELECT id FROM `{$tables[$i]}` WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($checkExistence);
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $tableName = $tables[$i];
+                    break;
+                }
+            }
+
+            if ($tableName) {
+                $updateQuery = "UPDATE `$tableName` SET `view_status` = 0 WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($updateQuery);
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+
+                if ($stmt->affected_rows > 0) {
+                    echo true;
+                } else {
+                    echo "No rows updated";
+                }
+            } else {
+                echo "No matching table found";
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+
+
+
+    function selectFromTable($ticket)
+    {
+        try {
+            $tables = ['ticket_request', 'query_request'];
+            $tableName = null;
+            $data = [];
+            $status = false;
+
+            foreach ($tables as $table) {
+                $checkExistence = "SELECT id FROM `$table` WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($checkExistence);
+                if ($stmt === false) {
+                    throw new Exception('Prepare failed: ' . $this->conn->error);
+                }
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $tableName = $table;
+                    break;
+                }
+            }
+
+            if ($tableName) {
+                $updateQuery = "SELECT * FROM `$tableName` WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($updateQuery);
+                if ($stmt === false) {
+                    throw new Exception('Prepare failed: ' . $this->conn->error);
+                }
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $status = true;
+                    $data = $result->fetch_object();
+                }
+                $stmt->close();
+            } else {
+                $data = 'No table found!';
+            }
+
+            return json_encode(['status' => $status, 'data' => $data, 'table' => $tableName]);
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+    function selectFromResponseTable($ticket)
+    {
+        try {
+            $tables = ['ticket_response', 'query_response'];
+            $tableName = null;
+            $data = [];
+            $status = false;
+
+            foreach ($tables as $table) {
+                $checkExistence = "SELECT id FROM `$table` WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($checkExistence);
+                if ($stmt === false) {
+                    throw new Exception('Prepare failed: ' . $this->conn->error);
+                }
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $tableName = $table;
+                    break;
+                }
+            }
+
+            if ($tableName) {
+                $updateQuery = "SELECT * FROM `$tableName` WHERE `ticket_no` = ?";
+                $stmt = $this->conn->prepare($updateQuery);
+                if ($stmt === false) {
+                    throw new Exception('Prepare failed: ' . $this->conn->error);
+                }
+                $stmt->bind_param('s', $ticket);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $status = true;
+                    $data = $result->fetch_object();
+                }
+                $stmt->close();
+            } else {
+                $data = 'No table found!';
+            }
+
+            return json_encode(['status' => $status, 'data' => $data]);
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'error' => $e->getMessage()]);
+        }
+    }
 }
-
-
-
-

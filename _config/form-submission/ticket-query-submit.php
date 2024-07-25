@@ -23,12 +23,13 @@ if (isset($_POST['ticket-submit'])) {
     $user = $_POST['current-usr1'];
     $email = $_POST['email1'];
     $contact = $_POST['mobile-number1'];
+    $title = $_POST['title1'];
     $query = $_POST['ticket-description1'];
     $documentName           = $_FILES['fileInput1']['name'];
     $tempDocumentName       = $_FILES['fileInput1']['tmp_name'];
     $status = 'ACTIVE';
 
-    $submitTicket = $Request->addNewTicketRequest($uniqueNumber, $email, $contact, $user, $query, $documentName, $adminId, $status, NOW);
+    $submitTicket = $Request->addNewTicketRequest($uniqueNumber, $email, $contact, $user, $title, $query, $documentName, $adminId, $status, NOW);
 
     $respoce = json_decode($submitTicket);
 
@@ -37,6 +38,8 @@ if (isset($_POST['ticket-submit'])) {
         echo $documentFolder;
         move_uploaded_file($tempDocumentName, $documentFolder);
     }
+
+    // print_r($respoce);
     $redirectUrl = URL . "ticket-query-response.php?response=" . url_enc($submitTicket);
     header("Location: " . $redirectUrl);
 }
@@ -46,12 +49,13 @@ if (isset($_POST['query-submit'])) {
     $user = $_POST['current-usr2'];
     $email = $_POST['email2'];
     $contact = $_POST['mobile-number2'];
+    $title = $_POST['title2'];
     $query = $_POST['ticket-description2'];
     $documentName           = $_FILES['fileInput2']['name'];
     $tempDocumentName       = $_FILES['fileInput2']['tmp_name'];
     $status = 'ACTIVE';
 
-    $submitRequest = $Request->addNewQueryRequest($uniqueNumber, $email, $contact, $user, $query, $documentName, $adminId, $status, NOW);
+    $submitRequest = $Request->addNewQueryRequest($uniqueNumber, $email, $contact, $user, $title, $query, $documentName, $adminId, $status, NOW);
 
     $respoce = json_decode($submitRequest);
 
@@ -61,6 +65,37 @@ if (isset($_POST['query-submit'])) {
         move_uploaded_file($tempDocumentName, $documentFolder);
     }
 
+    // print_r($respoce);
     $redirectUrl = URL . "ticket-query-response.php?response=" . url_enc($submitRequest);
     header("Location: " . $redirectUrl);
+}
+
+
+
+
+
+if (isset($_POST['regenerate-query'])) {
+    $user = $_POST['current-usr'];
+    echo $user;
+    // $email = $_POST['email1'];
+    // $contact = $_POST['mobile-number1'];
+    // $title = $_POST['title1'];
+    // $query = $_POST['ticket-description1'];
+    // $documentName           = $_FILES['fileInput1']['name'];
+    // $tempDocumentName       = $_FILES['fileInput1']['tmp_name'];
+    // $status = 'ACTIVE';
+
+    // $submitTicket = $Request->addNewTicketRequest($uniqueNumber, $email, $contact, $user, $title, $query, $documentName, $adminId, $status, NOW);
+
+    // $respoce = json_decode($submitTicket);
+
+    // if ($respoce->status) {
+    //     $documentFolder     = TICKET_DOCUMENT_DIR . $documentName;
+    //     echo $documentFolder;
+    //     move_uploaded_file($tempDocumentName, $documentFolder);
+    // }
+
+    // // print_r($respoce);
+    // $redirectUrl = URL . "ticket-query-response.php?response=" . url_enc($submitTicket);
+    // header("Location: " . $redirectUrl);
 }
