@@ -8,23 +8,19 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'employee.class.php';
-require_once CLASS_DIR . 'admin.class.php';
-require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
-
+require_once CLASS_DIR . 'idsgeneration.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 $Utility    = new Utility;
 $employees  = new Employees();
-$desigRole = new Emproles();
+$desigRole  = new Emproles();
+$IdsGeneration = NEW IdsGeneration;
 
 $currentUrl = $Utility->currentUrl();
 
-$showEmployees = $employees->employeesDisplay($adminId);
+$showEmployees = $employees->employeesDisplay($ADMINID);
 $showDesignation = json_decode($desigRole->designationRoleCheckForLogin(), true);
-
-
-//Employee Class Initilzed
-// $employees = new Employees();
 
 if (isset($_POST['add-emp']) == true) {
 
@@ -41,7 +37,9 @@ if (isset($_POST['add-emp']) == true) {
 
     if ($empPass == $empCPass) {
         $wrongPasword = false;
-        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empContact, $empAddress, $empPass);
+        $empId = $IdsGeneration->empIdGenerate($HEALTHCARENAME);
+
+        $addEmployee = $employees->addEmp($empId, $ADMINID, $empUsername, $empName, $empRole, $empMail, $empContact, $empAddress, $empPass);
         // print_r($addEmployee);
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
@@ -159,7 +157,7 @@ if (isset($_POST['add-emp']) == true) {
                                             <th>Name</th>
                                             <th>Position</th>
                                             <th>Email</th>
-                                            <th>Start date</th>
+                                            <th>Last Update</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -167,18 +165,17 @@ if (isset($_POST['add-emp']) == true) {
                                     <tbody>
                                         <?php
 
-                                        //employeesDisplay function initilized to feth employees data
-                                        // $table = 'admin_id';
-                                        // $showEmployees = $employees->selectEmpByCol($table, $adminId);
-
                                         if (!empty($showEmployees)) {
 
                                             foreach ($showEmployees as $showEmployees) {
-                                                $empId = $showEmployees['emp_id'];
-                                                $empUsername = $showEmployees['emp_username'];
-                                                $empName = $showEmployees['emp_name'];
-                                                $empRoleId = $showEmployees['emp_role'];
-                                                $empRolData = json_decode($desigRole->designationRoleID($empRoleId), true);
+                                                $empId          = $showEmployees['emp_id'];
+                                                $empUsername    = $showEmployees['emp_username'];
+                                                $empMail        = $showEmployees['emp_email'];
+                                                $empName        = $showEmployees['emp_name'];
+                                                $empRoleId      = $showEmployees['emp_role'];
+                                                $lastUpdate     = $showEmployees['updated_on'];
+
+                                                $empRolData     = json_decode($desigRole->designationRoleID($empRoleId), true);
                                                 // print_r($empRolData);
 
                                                 if($empRolData['status']){
@@ -193,7 +190,6 @@ if (isset($_POST['add-emp']) == true) {
                                                     $empRole = '';
                                                 }
                                                 
-                                                $empMail = $showEmployees['emp_email'];
                                                 
                                                 echo '<tr>
                                                         <td>' . $empId . '</td>
@@ -201,7 +197,7 @@ if (isset($_POST['add-emp']) == true) {
                                                         <td>' . $empName . '</td>
                                                         <td>' . $empRole . '</td>
                                                         <td>' . $empMail . '</td>
-                                                        <td>2011/04/25</td>
+                                                        <td>' . formatDateTime($lastUpdate) .'</td>
                                                         <td>
                                                             <a class="text-primary" onclick="viewAndEdit(' . $empId . ')" title="Edit" data-toggle="modal" data-target="#empViewAndEditModal"><i class="fas fa-edit"></i></a>
     
