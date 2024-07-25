@@ -57,7 +57,7 @@
 
             <!-- Nav Item - Doctors -->
             <li class="nav-item <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "active" : ''; ?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
+                <a class="nav-link collapsed" id="doc" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
                     <i class="fas fa fa-users"></i>
                     <span>Doctors</span>
                 </a>
@@ -125,7 +125,20 @@
 <!-- sidebar toggle button  -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+    // var sidebar = document.querySelector('.sidebar');
     var sidebarToggle = document.getElementById('sidebarToggle');
+
+    // function updateSidebarWidth() {
+    //     var sidebarWidth = window.getComputedStyle(sidebar).width;
+    //     document.documentElement.style.setProperty('--sidebar-width', sidebarWidth);
+    // }
+
+    // // Initial update
+    // updateSidebarWidth();
+
+    // // Update on window resize
+    // window.addEventListener('resize', updateSidebarWidth);
+
 
     sidebarToggle.addEventListener('click', function() {
         sidebarToggle.classList.toggle('active');
