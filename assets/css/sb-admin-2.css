@@ -7,7 +7,9 @@
  @import './main.css';
 
 
-
+ :root {
+  --sidebar-width: 17rem;
+}
 
 body {
   margin: 0;
@@ -9233,21 +9235,46 @@ a:focus {
   margin-bottom: 1rem;
   cursor: pointer; */
 
-  width: 2.5rem;
+  /* width: 2.5rem;
     height: 2.5rem;
     text-align: center;
     margin-bottom: 1rem;
     cursor: pointer;
     position: fixed;
     z-index: 2;
-    left: 12.8rem;
-    top: 1rem;
+    left: calc(var(--sidebar-width) - 5rem);
+    top: 0.5rem; */
 }
 
 .sidebar #sidebarToggle.active {
   left: 5.3rem;
 }
-
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar #sidebarToggle {
+    width: 2.5rem;
+      height: 2.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      position: fixed;
+      z-index: 2;
+      left: calc(var(--sidebar-width) - 5.5rem);
+      top: 0.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .sidebar #sidebarToggle {
+    width: 2.5rem;
+      height: 2.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      position: fixed;
+      z-index: 2;
+      left: calc(var(--sidebar-width) - 4rem);
+      top: 0.5rem;
+  }
+}
 .sidebar #sidebarToggle::after {
   font-weight: 900;
   content: '\f104';
@@ -9370,7 +9397,7 @@ a:focus {
   } */
 
   .sidebar {
-    width: 17rem;
+    width: var(--sidebar-width);
     max-height: 100vh;
     height: fit-content;
     position: sticky;
@@ -9437,7 +9464,7 @@ a:focus {
   }
   .sidebar.toggled {
     /* overflow:unset;
-    height: 100vh; */
+    height: fit-content; */
     width: 7rem !important;
   }
   .sidebar.toggled .nav-item .collapse {
