@@ -10,10 +10,13 @@ require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'PathologyReport.class.php';
+require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 $Patients        = new Patients;
+$LabBilling      = new LabBilling;
 $PathologyReport = new PathologyReport;
+$Utility         = new Utility;
 
 ?>
 <!DOCTYPE html>
@@ -96,14 +99,21 @@ $PathologyReport = new PathologyReport;
                                                 $billId     = $entry['bill_id'];
                                                 $adminId    = $entry['admin_id'];
                                                 $date       = $entry['added_on'];
+                                                $createdBy  = $entry['created_by'];
+
+                                                $billResponse = json_decode($LabBilling->labBillDisplayById($billId));
+                                                if($billResponse->status){
+                                                    $patientId = $billResponse->data->patient_id;
+                                                    $patientName = $Patients->patientName($patientId);
+                                                }
                                         ?>
                                                 <tr class="appointment-row">
                                                     <td><?= $reportId ?></td>
                                                     <td> <a href="<?=URL ?>test-appointments.php?&search=<?= $billId ?>">#<?= $billId ?></a></td>
-                                                    <td></td>
+                                                    <td><?= $patientName ?></td>
                                                     <td><?= $adminId ?></td>
                                                     <td><?= formatDateTime($date, '-') ?></td>
-                                                    <td></td>
+                                                    <td><?= $Utility->getNameById($createdBy)?></td>
                                                     <td class="text-center">
                                                         <!-- <a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a> -->
                                                         <a title="show" onclick="openPrint(this.href); return false;" href="invoices/print.php?name=report&id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
