@@ -74,6 +74,7 @@ if ($labBills->status == 1) {
     <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH; ?>custom-dashboard.css">
+    <!-- <link rel="stylesheet" href="<?php echo CSS_PATH; ?>bootstrap 4/bootstrap.min.css"> -->
 
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
 

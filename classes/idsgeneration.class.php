@@ -1,21 +1,23 @@
 <?php
-class IdsGeneration{
+class IdsGeneration
+{
 
     use DatabaseConnection;
 
-    function generateOrderId() {
+    function generateOrderId()
+    {
         // Generate random number
         $randomNumber = mt_rand(1, 99999);
-    
+
         // Generate product ID with prefix "MED"
         $orderId = "MED" . str_pad($randomNumber, 9, "0", STR_PAD_LEFT);
-    
+
         // Check if product ID exists in the database
         $stmt = $this->conn->prepare("SELECT * FROM subscription WHERE order_id = ?");
         $stmt->bind_param("s", $orderId);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         // If product ID exists, generate a new one recursively
         if ($result->num_rows > 0) {
             // Generate a new product ID recursively
@@ -151,6 +153,27 @@ class IdsGeneration{
     }
 
 
+    function empIdGenerate($orgName)
+    {
+        // Split the string into words
+        $words = explode(' ', $orgName);
+
+        // Initialize an empty result string
+        $prefix = '';
+
+        // Loop through the first two words and get their first characters
+        for ($i = 0; $i < 2; $i++) {
+            if (isset($words[$i])) {
+                $prefix .= substr($words[$i], 0, 1);
+            }
+        }
+
+        // Generate a random number between 10000000 and 99999999
+        $randomNumber = mt_rand(10000000, 99999999);
+
+        return $prefix.$randomNumber;
+    }
+
     function concatId($half, $lastid)
     {
 
@@ -176,20 +199,11 @@ class IdsGeneration{
 
 
 
-    
 
 
 
-   
-
-
-
-    
-
-
-
-
-    function otpGgenerator(){
+    function otpGgenerator()
+    {
 
         $characters = '0123456789';
         $randomString = '';
@@ -218,7 +232,7 @@ class IdsGeneration{
         }
         return;
     }
-  
+
 
     function pharmecyInvoiceId()
     {
@@ -246,19 +260,20 @@ class IdsGeneration{
     }
 
 
-    function generateProductId() {
+    function generateProductId()
+    {
         // Generate random number
         $randomNumber = mt_rand(1, 999999999999);
-    
+
         // Generate product ID with prefix "PR"
         $productId = "PR" . str_pad($randomNumber, 12, "0", STR_PAD_LEFT);
-    
+
         // Check if product ID exists in the database
         $stmt = $this->conn->prepare("SELECT * FROM products WHERE product_id = ?");
         $stmt->bind_param("s", $productId);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         // If product ID exists, generate a new one recursively
         if ($result->num_rows > 0) {
             // Generate a new product ID recursively
@@ -273,23 +288,23 @@ class IdsGeneration{
     // public function generateLabBillId() {
     //     $query = "SELECT bill_id FROM lab_billing";
     //     $result = $this->conn->query($query);
-        
+
     //     $existingBillIds = [];
     //     if ($result->num_rows > 0) {
     //         while ($row = $result->fetch_assoc()) {
     //             $existingBillIds[] = $row['bill_id'];
     //         }
     //     }
-        
+
     //     $newBillId = 'ML' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);;
-        
+
     //     if (in_array($newBillId, $existingBillIds)) {
     //         $this->generateLabBillId();
     //     }else {
     //         return $newBillId;
     //     }
     // }
-    
+
 
 }
 

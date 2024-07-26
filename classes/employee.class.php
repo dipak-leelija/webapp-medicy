@@ -5,19 +5,19 @@ class Employees
 {
     use DatabaseConnection;
 
-    function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $empPass)
+    function addEmp($empId, $adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $empPass)
     {
         $password = pass_enc($empPass, EMP_PASS);
 
         try {
-            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (emp_id, admin_id, emp_username, emp_name, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
                 throw new Exception("Error preparing insert statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("sssssiss", $adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $password);
+            $stmt->bind_param("ssssssiss", $empId, $adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $password);
 
             if ($stmt->execute()) {
                 return ["result" => true];
@@ -65,13 +65,13 @@ class Employees
         $empData = array();
         
         if(!empty($adminId)){
-        $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email FROM employees WHERE `admin_id` = '$adminId'";
+        $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email,updated_on FROM employees WHERE `admin_id` = '$adminId'";
         }else{
             $selectEmp = "SELECT * FROM employees ";  
         }
         $empQuery = $this->conn->query($selectEmp);
 
-        while ($result = $empQuery->fetch_array()) {
+        while ($result = $empQuery->fetch_assoc()) {
             $empData[] = $result;
         }
 

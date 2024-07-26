@@ -8,17 +8,17 @@ class PathologyReport
      *                                      Test Report Table                                   *
      ********************************************************************************************/
 
-    function addTestReport($bill_id, $adminId, $added_on = NOW)
+    function addTestReport($bill_id, $adminId, $addedBy, $added_on = NOW)
     {
         try {
-            $addQuery = "INSERT INTO `test_report` (`bill_id`, `admin_id`, `added_on`) VALUES (?, ?, ?)";
+            $addQuery = "INSERT INTO `test_report` (`bill_id`, `admin_id`, `created_by`, `added_on`) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($addQuery);
 
             if ($stmt === false) {
                 throw new Exception('Prepare failed: ' . $this->conn->error);
             }
 
-            $stmt->bind_param('sss', $bill_id, $adminId, $added_on);
+            $stmt->bind_param('ssss', $bill_id, $adminId, $addedBy, $added_on);
 
             $result = $stmt->execute();
             if ($result) {
@@ -34,6 +34,44 @@ class PathologyReport
             return json_encode($response);
         } catch (Exception $e) {
             return json_encode(['status' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
+
+    function reportStatus($billId)
+    {
+        try {
+            $query1 = "SELECT id FROM test_report WHERE bill_id = $billId";
+            $stmt = $this->conn->prepare($query1);
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $reportIds[] = $row['id'];
+                    }
+                    // print_r($reportIds);
+                    foreach ($reportIds as $eachReport) {
+                        $reportDetails = $this->labReportDetailbyId($eachReport);
+                        $reportDetails = json_decode($reportDetails);
+                        foreach ($reportDetails as $eachDetail) {
+                            $params[] = $eachDetail->param_id;
+                        }
+                    }
+                    // print_r($params);
+                    $returnData = ['status' => true, 'message' => 'success', 'data' => $params];
+                } else {
+                    $returnData = ['status' => false, 'message' => 'No data found'];
+                }
+                $stmt->close();
+
+                return $returnData;
+            } else {
+                throw new Exception('Statement prepare exception');
+            }
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+
         }
     }
 

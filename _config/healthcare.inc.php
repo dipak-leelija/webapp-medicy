@@ -34,6 +34,8 @@ if ($healthCare->status === 1 ) {
 
     $healthCareId        = $healthCare->hospital_id;
     $healthCareName      = $healthCare->hospital_name;
+    $HEALTHCARENAME      = $healthCare->hospital_name;
+
 
     $form20Data          = $healthCare->form_20;
     $form21Data          = $healthCare->form_21;

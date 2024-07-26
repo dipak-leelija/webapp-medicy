@@ -4,6 +4,40 @@ class Utility
 {
 	use DatabaseConnection;
 
+	function getNameById($id)
+	{
+		try {
+			if (isAdminId($id)) {
+				$query = " SELECT fname,lname FROM `admin` WHERE `admin_id`= '$id' ";
+			} else {
+				$query = " SELECT emp_name FROM `employees` WHERE `emp_id`= '$id' ";
+			}
+			$stmt = $this->conn->prepare($query);
+			$stmt->execute();
+
+			$res = $stmt->get_result();
+
+			if ($res->num_rows > 0) {
+				while ($result = $res->fetch_assoc()) {
+					$name = $result;
+				}
+				if (isAdminId($id)) {
+					$fullName = $name['fname'] . ' ' . $name['lname'];
+				} else {
+					$fullName = $name['emp_name'];
+				}
+
+				$stmt->close();
+				return $fullName;
+			} else {
+				$stmt->close();
+				return '';
+			}
+		} catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+		}
+	}
+
 	##########################################################################################
 	#
 	#									Random Key
@@ -185,76 +219,76 @@ class Utility
 
 
 
-	function read_file_docx($filename)
-	{
+	// function read_file_docx($filename)
+	// {
 
-		$striped_content = '';
-		$content = '';
+	// 	$striped_content = '';
+	// 	$content = '';
 
-		if (!$filename || !file_exists($filename)) return false;
+	// 	if (!$filename || !file_exists($filename)) return false;
 
-		$zip = zip_open($filename);
+	// 	$zip = zip_open($filename);
 
-		if (!$zip || is_numeric($zip)) return false;
+	// 	if (!$zip || is_numeric($zip)) return false;
 
-		while ($zip_entry = zip_read($zip)) {
+	// 	while ($zip_entry = zip_read($zip)) {
 
-			if (zip_entry_open($zip, $zip_entry) == FALSE) continue;
+	// 		if (zip_entry_open($zip, $zip_entry) == FALSE) continue;
 
-			if (zip_entry_name($zip_entry) != "word/document.xml") continue;
+	// 		if (zip_entry_name($zip_entry) != "word/document.xml") continue;
 
-			$content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+	// 		$content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 
-			zip_entry_close($zip_entry);
-		} // end while
+	// 		zip_entry_close($zip_entry);
+	// 	} // end while
 
-		zip_close($zip);
+	// 	zip_close($zip);
 
-		//echo $content;
-		//echo "<hr>";
-		//file_put_contents('1.xml', $content);
+	// 	//echo $content;
+	// 	//echo "<hr>";
+	// 	//file_put_contents('1.xml', $content);
 
-		$content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
-		$content = str_replace('</w:r></w:p>', "\r\n", $content);
-		$striped_content = strip_tags($content);
+	// 	$content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
+	// 	$content = str_replace('</w:r></w:p>', "\r\n", $content);
+	// 	$striped_content = strip_tags($content);
 
-		return $striped_content;
-	}
+	// 	return $striped_content;
+	// }
 
 
 
-	function read_doc_file($filename)
-	{
-		if (file_exists($filename)) {
-			if (($fh = fopen($filename, 'r')) !== false) {
-				$headers = fread($fh, 0xA00);
+	// function read_doc_file($filename)
+	// {
+	// 	if (file_exists($filename)) {
+	// 		if (($fh = fopen($filename, 'r')) !== false) {
+	// 			$headers = fread($fh, 0xA00);
 
-				// 1 = (ord(n)*1) ; Document has from 0 to 255 characters
-				$n1 = (ord($headers[0x21C]) - 1);
+	// 			// 1 = (ord(n)*1) ; Document has from 0 to 255 characters
+	// 			$n1 = (ord($headers[0x21C]) - 1);
 
-				// 1 = ((ord(n)-8)*256) ; Document has from 256 to 63743 characters
-				$n2 = ((ord($headers[0x21D]) - 8) * 256);
+	// 			// 1 = ((ord(n)-8)*256) ; Document has from 256 to 63743 characters
+	// 			$n2 = ((ord($headers[0x21D]) - 8) * 256);
 
-				// 1 = ((ord(n)*256)*256) ; Document has from 63744 to 16775423 characters
-				$n3 = ((ord($headers[0x21E]) * 256) * 256);
+	// 			// 1 = ((ord(n)*256)*256) ; Document has from 63744 to 16775423 characters
+	// 			$n3 = ((ord($headers[0x21E]) * 256) * 256);
 
-				// 1 = (((ord(n)*256)*256)*256) ; Document has from 16775424 to 4294965504 characters
-				$n4 = (((ord($headers[0x21F]) * 256) * 256) * 256);
+	// 			// 1 = (((ord(n)*256)*256)*256) ; Document has from 16775424 to 4294965504 characters
+	// 			$n4 = (((ord($headers[0x21F]) * 256) * 256) * 256);
 
-				// Total length of text in the document
-				$textLength = ($n1 + $n2 + $n3 + $n4);
+	// 			// Total length of text in the document
+	// 			$textLength = ($n1 + $n2 + $n3 + $n4);
 
-				$extracted_plaintext = fread($fh, $textLength);
+	// 			$extracted_plaintext = fread($fh, $textLength);
 
-				// simple print character stream without new lines
-				//echo $extracted_plaintext;
+	// 			// simple print character stream without new lines
+	// 			//echo $extracted_plaintext;
 
-				// if you want to see your paragraphs in a new line, do this
-				return nl2br($extracted_plaintext);
-				// need more spacing after each paragraph use another nl2br
-			}
-		}
-	}
+	// 			// if you want to see your paragraphs in a new line, do this
+	// 			return nl2br($extracted_plaintext);
+	// 			// need more spacing after each paragraph use another nl2br
+	// 		}
+	// 	}
+	// }
 
 	/**
 	 *	This function will allow user to download a file with file name, located in different
@@ -271,55 +305,55 @@ class Utility
 	 *
 	 *	@return NULL
 	 */
-	function downloadFile($keyId, $keyCol, $fileCol, $path, $table)
-	{
-		$sql	= "SELECT " . $fileCol . " FROM " . $table . " WHERE " . $keyCol . " = '" . $keyId . "'";
+	// function downloadFile($keyId, $keyCol, $fileCol, $path, $table)
+	// {
+	// 	$sql	= "SELECT " . $fileCol . " FROM " . $table . " WHERE " . $keyCol . " = '" . $keyId . "'";
 
-		$query	= $this->conn->query($sql);
+	// 	$query	= $this->conn->query($sql);
 
-		if ($query->num_rows > 0) {
+	// 	if ($query->num_rows > 0) {
 
-			$result		= $query->fetch_array();
-			$fileVal	= $result[$fileCol];
+	// 		$result		= $query->fetch_array();
+	// 		$fileVal	= $result[$fileCol];
 
-			if ($path == '') {
-				$path = $fileVal;
-			} else {
-				$path = $path . $fileVal;
-			}
+	// 		if ($path == '') {
+	// 			$path = $fileVal;
+	// 		} else {
+	// 			$path = $path . $fileVal;
+	// 		}
 
-			ob_clean();
-			if (file_exists($path)) {
+	// 		ob_clean();
+	// 		if (file_exists($path)) {
 
-				// header("Content-Disposition: attachment; filename=". basename($fileVal));
-				// header("Content-Length: " . filesize($path));
-				// header("Content-Type: " . filetype($path));
+	// 			// header("Content-Disposition: attachment; filename=". basename($fileVal));
+	// 			// header("Content-Length: " . filesize($path));
+	// 			// header("Content-Type: " . filetype($path));
 
-				header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
-				header("Cache-Control: public"); // needed for internet explorer
-				header('Content-type: application/vnd.openxmlformats- officedocument.wordprocessingml.document');
-				header("Content-Transfer-Encoding: Binary");
-				header("Content-Length:" . filesize($path));
-				header("Content-Disposition: attachment; filename=" .  basename($fileVal));
-				readfile($path);
-				die();
+	// 			header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
+	// 			header("Cache-Control: public"); // needed for internet explorer
+	// 			header('Content-type: application/vnd.openxmlformats- officedocument.wordprocessingml.document');
+	// 			header("Content-Transfer-Encoding: Binary");
+	// 			header("Content-Length:" . filesize($path));
+	// 			header("Content-Disposition: attachment; filename=" .  basename($fileVal));
+	// 			readfile($path);
+	// 			die();
 
-				// readfile($path);
-				echo "<javascript>
-						document.write('Please wait, while download is in process.'); 
-						document.write('Closing window.');
-						this.window.close();
-					  </javascript>";
-			} else {
+	// 			// readfile($path);
+	// 			echo "<javascript>
+	// 					document.write('Please wait, while download is in process.'); 
+	// 					document.write('Closing window.');
+	// 					this.window.close();
+	// 				  </javascript>";
+	// 		} else {
 
-				echo "<javascript>document.write('No file found. Closing window.');
-					  this.window.close();</javascript>";
-			}
-		} else {
-			echo "<javascript>document.write('No file found. Closing window.');
-				 this.window.close();</javascript>";
-		}
-	} //eof
+	// 			echo "<javascript>document.write('No file found. Closing window.');
+	// 				  this.window.close();</javascript>";
+	// 		}
+	// 	} else {
+	// 		echo "<javascript>document.write('No file found. Closing window.');
+	// 			 this.window.close();</javascript>";
+	// 	}
+	// } //eof
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -329,229 +363,229 @@ class Utility
 	/**
 	 *	Generate unique file name before uploading in the server
 	 */
-	function getNewName($fileName, $fileIndex)
-	{
-		$newName = '';
+	// function getNewName($fileName, $fileIndex)
+	// {
+	// 	$newName = '';
 
-		//manipulate the file name
-		$timestamp 	= time();
-		$randNum 	= $this->randomkeys(8);
+	// 	//manipulate the file name
+	// 	$timestamp 	= time();
+	// 	$randNum 	= $this->randomkeys(8);
 
-		$file = explode('.', $fileName['name']);
-		$file_name = $file[0];
+	// 	$file = explode('.', $fileName['name']);
+	// 	$file_name = $file[0];
 
-		//counting the number of element in the array
-		$num = (int)count($file);
+	// 	//counting the number of element in the array
+	// 	$num = (int)count($file);
 
-		//getting the file extension, applicable specially when user puts 2 or 3 dots before the extension,
-		// like 1.jpg.jpg
-		$file_extension = $file[$num - 1];
+	// 	//getting the file extension, applicable specially when user puts 2 or 3 dots before the extension,
+	// 	// like 1.jpg.jpg
+	// 	$file_extension = $file[$num - 1];
 
-		if (strtolower($file_extension) == 'gif') {
-			$file_extension = 'jpg';
-		}
+	// 	if (strtolower($file_extension) == 'gif') {
+	// 		$file_extension = 'jpg';
+	// 	}
 
-		//generate unique file name
-		$newName = $fileIndex . "_" . $timestamp . "_" . $randNum . "." . $file_extension;
+	// 	//generate unique file name
+	// 	$newName = $fileIndex . "_" . $timestamp . "_" . $randNum . "." . $file_extension;
 
-		//return the value
-		return $newName;
-	} //eof
-
-
-	/**
-	 *	Generate unique file name before uploading in the server. This name will be generating 
-	 *	automatically, highly usable for SEO.
-	 */
-	function getNewName2($fileName, $fileIndex, $id, $name)
-	{
-		$newName = '';
-
-		//manipulate the file name
-		$timestamp 	= time();
-		$randNum 	= $this->randomkeys(5);
-
-		$file = explode('.', $fileName['name']);
-		$file_name = $file[0];
-
-		$type_arr = array(
-			"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
-			";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
-		);
-
-		$name	= str_replace($type_arr, "", $name);
-		$name	= str_replace(" ", "-", $name);
-
-		//counting the number of element in the array
-		$num = (int)count($file);
-
-
-		/*getting the file extension, applicable specially when user puts 2 or 3 dots before the
-		 extension, like 1.jpg.jpg*/
-		$file_extension = $file[$num - 1];
-		$file_extension = 'jpg';
-
-		//generate unique file name
-		if ($fileIndex != '') {
-			$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
-		} else {
-			$newName = $name . "-" . $id . "" . $randNum . "." . $file_extension;
-		}
-
-
-		//return the value
-		return $newName;
-	} //eof
+	// 	//return the value
+	// 	return $newName;
+	// } //eof
 
 
 	/**
 	 *	Generate unique file name before uploading in the server. This name will be generating 
 	 *	automatically, highly usable for SEO.
 	 */
-	function getNewName3($fileName, $fileIndex, $id, $name)
-	{
-		$newName = '';
+	// function getNewName2($fileName, $fileIndex, $id, $name)
+	// {
+	// 	$newName = '';
 
-		//manipulate the file name
-		$timestamp 	= time();
-		$randNum 	= $this->randomkeys(5);
+	// 	//manipulate the file name
+	// 	$timestamp 	= time();
+	// 	$randNum 	= $this->randomkeys(5);
 
-		$file = explode('.', $fileName['name']);
-		$file_name = $file[0];
+	// 	$file = explode('.', $fileName['name']);
+	// 	$file_name = $file[0];
 
-		$type_arr = array(
-			"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
-			";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
-		);
+	// 	$type_arr = array(
+	// 		"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
+	// 		";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
+	// 	);
 
-		$name	= str_replace($type_arr, "", $name);
-		$name	= str_replace(" ", "-", $name);
+	// 	$name	= str_replace($type_arr, "", $name);
+	// 	$name	= str_replace(" ", "-", $name);
 
-		//echo "Name is = ".$name;exit; /* */
-
-		//counting the number of element in the array
-		$num = (int)count($file);
-
-		//getting the file extension, applicable specially when user puts 2 or 3 dots before the extension,
-		// like 1.jpg.jpg
-		$file_extension = $file[$num - 1];
+	// 	//counting the number of element in the array
+	// 	$num = (int)count($file);
 
 
-		//generate unique file name
-		$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
-		//$newName = $fileIndex."-".$id."".$randNum.".".$file_extension;
+	// 	/*getting the file extension, applicable specially when user puts 2 or 3 dots before the
+	// 	 extension, like 1.jpg.jpg*/
+	// 	$file_extension = $file[$num - 1];
+	// 	$file_extension = 'jpg';
 
-		//return the value
-		return $newName;
-	} //eof
+	// 	//generate unique file name
+	// 	if ($fileIndex != '') {
+	// 		$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
+	// 	} else {
+	// 		$newName = $name . "-" . $id . "" . $randNum . "." . $file_extension;
+	// 	}
+
+
+	// 	//return the value
+	// 	return $newName;
+	// } //eof
+
 
 	/**
 	 *	Generate unique file name before uploading in the server. This name will be generating 
 	 *	automatically, highly usable for SEO.
 	 */
-	function getNewName4($fileName, $fileIndex, $id)
-	{
-		$newName = '';
+	// function getNewName3($fileName, $fileIndex, $id, $name)
+	// {
+	// 	$newName = '';
 
-		//manipulate the file name
-		$timestamp 	= time();
-		$randNum 	= $this->randomkeys(5);
+	// 	//manipulate the file name
+	// 	$timestamp 	= time();
+	// 	$randNum 	= $this->randomkeys(5);
 
-		$file = explode('.', $fileName['name']);
-		$file_name = $file[0];
+	// 	$file = explode('.', $fileName['name']);
+	// 	$file_name = $file[0];
 
-		$type_arr = array(
-			"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
-			";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
-		);
+	// 	$type_arr = array(
+	// 		"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
+	// 		";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
+	// 	);
 
-		$name	= str_replace($type_arr, "", $file_name);
-		$name	= str_replace(" ", "-", $name);
+	// 	$name	= str_replace($type_arr, "", $name);
+	// 	$name	= str_replace(" ", "-", $name);
 
+	// 	//echo "Name is = ".$name;exit; /* */
 
+	// 	//counting the number of element in the array
+	// 	$num = (int)count($file);
 
-		//counting the number of element in the array
-		$num = (int)count($file);
-
-		//getting the file extension, applicable specially when user puts 2 or 3 dots 
-		//before the extension,
-		// like 1.jpg.jpg
-		$file_extension = $file[$num - 1];
-
-		if ($fileIndex == '') {
-			//generate unique file name
-			$newName = $name . "-" . $id . "" . $randNum . "." . $file_extension;
-		} else {
-			//generate unique file name
-			$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
-		}
-
-		//return the value
-		return $newName;
-	} //eof
+	// 	//getting the file extension, applicable specially when user puts 2 or 3 dots before the extension,
+	// 	// like 1.jpg.jpg
+	// 	$file_extension = $file[$num - 1];
 
 
-	/**
-	 * 	Check the proper date format 
-	 *
-	 *	@param
-	 *			$formDate	Date in the form field inserted by the user
-	 *
-	 *	@return string
-	 */
-	function checkDate($formDate)
-	{
-		if (strlen($formDate) != 8) {
-			return "DT001";
-		} else {
-			if (ereg("([0-9]{4})([0-9]{2})([0-9]{2})", $formDate)) {
+	// 	//generate unique file name
+	// 	$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
+	// 	//$newName = $fileIndex."-".$id."".$randNum.".".$file_extension;
 
-				//$DATE = explode("-",$date);
-				$DATE = $formDate;
-				$year 	= substr($DATE, 0, 4);
-				$month 	= substr($DATE, 4, 2);
-				$day 	= substr($DATE, 6, 2);
+	// 	//return the value
+	// 	return $newName;
+	// } //eof
 
+	// /**
+	//  *	Generate unique file name before uploading in the server. This name will be generating 
+	//  *	automatically, highly usable for SEO.
+	//  */
+	// function getNewName4($fileName, $fileIndex, $id)
+	// {
+	// 	$newName = '';
 
-				/* Converting month value to the numerical */
-				if (ereg("^0", $month)) {
-					$month = explode("0", $month);
-					$month = (int)$month[1];
-				} else {
-					$month = (int)$month;
-				} //month
+	// 	//manipulate the file name
+	// 	$timestamp 	= time();
+	// 	$randNum 	= $this->randomkeys(5);
 
-				/* Converting day value to the numerical */
-				if (ereg("^0", $day)) {
-					$day = explode("0", $day);
-					$day = (int)$day[1];
-				} else {
-					$day = (int)$day;
-				} //day
+	// 	$file = explode('.', $fileName['name']);
+	// 	$file_name = $file[0];
+
+	// 	$type_arr = array(
+	// 		"'", ":", "\"", "\\", "~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "+", "|",
+	// 		";", ",", "<", ">", "?", "\/", "/", "{", "}", "="
+	// 	);
+
+	// 	$name	= str_replace($type_arr, "", $file_name);
+	// 	$name	= str_replace(" ", "-", $name);
 
 
 
-				if (($day < 1) || ($day > 31)) {
-					return "DT002" . $day;
-				} else if (($month < 1) || ($month > 12)) {
-					return "DT003" . $month;
-				} else if (($month == 2) && ($day == 29) && (($year % 4) != 0)) {
-					return "DT004";
-				} else if (($month == 2) && ($day > 29)) {
-					return "DT004";
-				} else if ((($month == 4) && ($day > 30)) || (($month == 6) && ($day > 30)) || (($month == 9) && ($day > 30))
-					|| (($month == 11) && ($day > 30))
-				) {
-					return "DT005";
-				} else {
-					return "success";
-				}
-			} //ereg if
-			else {
-				return "DT000";
-			}
-		}
-	} //eof
+	// 	//counting the number of element in the array
+	// 	$num = (int)count($file);
+
+	// 	//getting the file extension, applicable specially when user puts 2 or 3 dots 
+	// 	//before the extension,
+	// 	// like 1.jpg.jpg
+	// 	$file_extension = $file[$num - 1];
+
+	// 	if ($fileIndex == '') {
+	// 		//generate unique file name
+	// 		$newName = $name . "-" . $id . "" . $randNum . "." . $file_extension;
+	// 	} else {
+	// 		//generate unique file name
+	// 		$newName = $name . '-' . $fileIndex . "-" . $id . "" . $randNum . "." . $file_extension;
+	// 	}
+
+	// 	//return the value
+	// 	return $newName;
+	// } //eof
+
+
+	// /**
+	//  * 	Check the proper date format 
+	//  *
+	//  *	@param
+	//  *			$formDate	Date in the form field inserted by the user
+	//  *
+	//  *	@return string
+	//  */
+	// function checkDate($formDate)
+	// {
+	// 	if (strlen($formDate) != 8) {
+	// 		return "DT001";
+	// 	} else {
+	// 		if (ereg("([0-9]{4})([0-9]{2})([0-9]{2})", $formDate)) {
+
+	// 			//$DATE = explode("-",$date);
+	// 			$DATE = $formDate;
+	// 			$year 	= substr($DATE, 0, 4);
+	// 			$month 	= substr($DATE, 4, 2);
+	// 			$day 	= substr($DATE, 6, 2);
+
+
+	// 			/* Converting month value to the numerical */
+	// 			if (ereg("^0", $month)) {
+	// 				$month = explode("0", $month);
+	// 				$month = (int)$month[1];
+	// 			} else {
+	// 				$month = (int)$month;
+	// 			} //month
+
+	// 			/* Converting day value to the numerical */
+	// 			if (ereg("^0", $day)) {
+	// 				$day = explode("0", $day);
+	// 				$day = (int)$day[1];
+	// 			} else {
+	// 				$day = (int)$day;
+	// 			} //day
+
+
+
+	// 			if (($day < 1) || ($day > 31)) {
+	// 				return "DT002" . $day;
+	// 			} else if (($month < 1) || ($month > 12)) {
+	// 				return "DT003" . $month;
+	// 			} else if (($month == 2) && ($day == 29) && (($year % 4) != 0)) {
+	// 				return "DT004";
+	// 			} else if (($month == 2) && ($day > 29)) {
+	// 				return "DT004";
+	// 			} else if ((($month == 4) && ($day > 30)) || (($month == 6) && ($day > 30)) || (($month == 9) && ($day > 30))
+	// 				|| (($month == 11) && ($day > 30))
+	// 			) {
+	// 				return "DT005";
+	// 			} else {
+	// 				return "success";
+	// 			}
+	// 		} //ereg if
+	// 		else {
+	// 			return "DT000";
+	// 		}
+	// 	}
+	// } //eof
 
 
 
@@ -559,71 +593,71 @@ class Utility
 	 *	Show the price format according to user set up 
 	 *	@return string
 	 */
-	function priceFormat($value)
-	{
+	// function priceFormat($value)
+	// {
 
-		$sql = "SELECT * FROM currencies WHERE primary_curr='Y'";
-		$query	= $this->conn->query($sql);
-		$result	= $query->fetch_array();
+	// 	$sql = "SELECT * FROM currencies WHERE primary_curr='Y'";
+	// 	$query	= $this->conn->query($sql);
+	// 	$result	= $query->fetch_array();
 
-		$postion		=  $result['position_pref'];
-		$type			=  $result['title'];
-		$symbol_left 	=  $result['symbol_left'];
-		$symbol_right 	=  $result['symbol_right'];
+	// 	$postion		=  $result['position_pref'];
+	// 	$type			=  $result['title'];
+	// 	$symbol_left 	=  $result['symbol_left'];
+	// 	$symbol_right 	=  $result['symbol_right'];
 
-		$format		= '';
-		if ($postion == 'left') {
-			$format = $symbol_left . " " . number_format($value, 2, '.', ',');
-		} else {
-			$format = number_format($value, 2, '.', ',') . " " . $symbol_left;
-		}
-		return $format;
-	} //END OF FORMATTING CURRENCY
+	// 	$format		= '';
+	// 	if ($postion == 'left') {
+	// 		$format = $symbol_left . " " . number_format($value, 2, '.', ',');
+	// 	} else {
+	// 		$format = number_format($value, 2, '.', ',') . " " . $symbol_left;
+	// 	}
+	// 	return $format;
+	// } //END OF FORMATTING CURRENCY
 
 
-	/**
-	 *	Generate randon x coordinate
-	 *	@return int
-	 */
-	function genRandX($from, $limit)
-	{
-		$x = rand($from, $limit);
-		return $x;
-	} //end of generating x
+	// /**
+	//  *	Generate randon x coordinate
+	//  *	@return int
+	//  */
+	// function genRandX($from, $limit)
+	// {
+	// 	$x = rand($from, $limit);
+	// 	return $x;
+	// } //end of generating x
 
-	/**
-	 *	Generate randon y coordinate
-	 *	@return int
-	 */
-	function genRandY($from, $limit)
-	{
-		$y = rand($from, $limit);
-		return $y;
-	} //end of generating y
+	// /**
+	//  *	Generate randon y coordinate
+	//  *	@return int
+	//  */
+	// function genRandY($from, $limit)
+	// {
+	// 	$y = rand($from, $limit);
+	// 	return $y;
+	// } //end of generating y
 
-	/**
-	 *	Generate random length
-	 */
-	function genRandLength($start, $end)
-	{
-		$length = rand($start, $end);
-		return $length;
-	}
+	// /**
+	//  *	Generate random length
+	//  */
+	// function genRandLength($start, $end)
+	// {
+	// 	$length = rand($start, $end);
+	// 	return $length;
+	// }
 
-	/**
-	 *	String format, return s at the end if found more than one else return the normal
-	 *	@return string
-	 */
-	function stringFormat($value, $str)
-	{
-		$this->$str = $str;
-		if ($value > 1) {
-			$str = $str . "s";
-		} else {
-			$str = $str;
-		}
-		return $str;
-	} //end of string format
+	// /**
+	//  *	String format, return s at the end if found more than one else return the normal
+	//  *	@return string
+	//  */
+	// function stringFormat($value, $str)
+	// {
+	// 	$this->$str = $str;
+	// 	if ($value > 1) {
+	// 		$str = $str . "s";
+	// 	} else {
+	// 		$str = $str;
+	// 	}
+	// 	return $str;
+	// } //end of string format
 
 	/**
 	 *	Check the handle name agaist the reserved word, only admin occupy the reserve word.
@@ -3196,64 +3230,66 @@ class Utility
 	} //eof
 
 
-	/**
-	 *	Align image according to it's value associated with a content or paragraph
-	 *
-	 *	@param
-	 *			$alignVal		Alignment of the image
-	 *
-	 *	@return string
-	 */
-	function getImageAlignStr($alignVal)
-	{
-		//declare var
-		$alignStr	= '';
+	// /**
+	//  *	Align image according to it's value associated with a content or paragraph
+	//  *
+	//  *	@param
+	//  *			$alignVal		Alignment of the image
+	//  *
+	//  *	@return string
+	//  */
+	// function getImageAlignStr($alignVal)
+	// {
+	// 	//declare var
+	// 	$alignStr	= '';
 
-		switch ($alignVal) {
-			case 'left':
-				$alignStr = ' fl';
-				break;
+	// 	switch ($alignVal) {
+	// 		case 'left':
+	// 			$alignStr = ' fl';
+	// 			break;
 
-			case 'right':
-				$alignStr = ' fr';
-				break;
+	// 		case 'right':
+	// 			$alignStr = ' fr';
+	// 			break;
 
-			case 'center':
-				$alignStr = ' cen';
-				break;
+	// 		case 'center':
+	// 			$alignStr = ' cen';
+	// 			break;
 
-			default:
-				$alignStr = ' fl';
-		} //eof of switch
+	// 		default:
+	// 			$alignStr = ' fl';
+	// 	} //eof of switch
 
-		//return the align string
-		return $alignStr;
-	} //eof
+	// 	//return the align string
+	// 	return $alignStr;
+	// } //eof
 
 
-	// sentence teaser
-	// this function will cut the string by how many words you want
-	function word_teaser($string, $count)
-	{
-		$original_string = $string;
-		$words = explode(' ', $original_string);
+	// // sentence teaser
+	// // this function will cut the string by how many words you want
+	// function word_teaser($string, $count)
+	// {
+	// 	$original_string = $string;
+	// 	$words = explode(' ', $original_string);
 
-		if (count($words) > $count) {
-			$words = array_slice($words, 0, $count);
-			$string = implode(' ', $words);
-		}
+	// 	if (count($words) > $count) {
+	// 		$words = array_slice($words, 0, $count);
+	// 		$string = implode(' ', $words);
+	// 	}
 
-		return $string;
-	}
-	// sentence reveal teaser
-	// this function will get the remaining words
-	function word_teaser_end($string, $count)
-	{
-		$words = explode(' ', $string);
-		$words = array_slice($words, $count);
-		$string = implode(' ', $words);
-		return $string;
-	}
+	// 	return $string;
+	// }
+	// // sentence reveal teaser
+
+
+	// // this function will get the remaining words
+	// function word_teaser_end($string, $count)
+	// {
+	// 	$words = explode(' ', $string);
+	// 	$words = array_slice($words, $count);
+	// 	$string = implode(' ', $words);
+	// 	return $string;
+	// }
 
 
 	/*****************************************************************************
@@ -3752,6 +3788,18 @@ class Utility
 
 
 
+function isAdminId($id)
+{
+	// Check if the ID starts with the prefix 'ADM'
+	return strpos($id, 'ADM') === 0;
+}
+
+
+// function getNameFromId($id){
+// 	if(isAdminId($id)){
+// 		$query = "SELECT fname, lname FROM admin"; 
+// 	}
+// }
 
 
 
@@ -3819,7 +3867,3 @@ function formatDateTime($datetimeString, $dateDivider = '-', $showTime = False, 
 	// Concatenate the formatted date and time
 	return $datestring;
 }
-
-
-
-

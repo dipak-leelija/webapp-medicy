@@ -20,6 +20,10 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
         <!-- Nav Item For Healthcare -->
         <li class="nav-item <?= $currentURL  ==  LOCAL_DIR ? "active" : ''; ?>">
             <a class="nav-link" href="<?= URL ?>">
@@ -53,14 +57,14 @@
 
             <!-- Nav Item - Doctors -->
             <li class="nav-item <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "active" : ''; ?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
+                <a class="nav-link collapsed" id="doc" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
                     <i class="fas fa fa-users"></i>
                     <span>Doctors</span>
                 </a>
 
-                <div id="collapseDoctor" class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseDoctor"  class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item <?= $page ==  "doctors" ? "active" : ''; ?>" href="doctors.php">Doctors</a>
+                        <a class="collapse-item <?= $page ==  "doctors" || $page == "doctors" ? "active" : ''; ?>" href="doctors.php">Doctors</a>
                         <a class="collapse-item <?= $page ==  "doc-specialization"  || $page == "doctor-specialization" ? "active" : ''; ?>" href="doctor-specialization.php">Specializations</a>
                     </div>
                 </div>
@@ -110,8 +114,34 @@
         <?php endif; ?>
 
 
-        <div class="text-center d-none d-md-inline">
+        <!-- <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+        </div> -->
     </ul>
     <!-- End of Sidebar -->
+
+    
+<!-- ########################################################## -->
+<!-- sidebar toggle button  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // var sidebar = document.querySelector('.sidebar');
+    var sidebarToggle = document.getElementById('sidebarToggle');
+
+    // function updateSidebarWidth() {
+    //     var sidebarWidth = window.getComputedStyle(sidebar).width;
+    //     document.documentElement.style.setProperty('--sidebar-width', sidebarWidth);
+    // }
+
+    // // Initial update
+    // updateSidebarWidth();
+
+    // // Update on window resize
+    // window.addEventListener('resize', updateSidebarWidth);
+
+
+    sidebarToggle.addEventListener('click', function() {
+        sidebarToggle.classList.toggle('active');
+    });
+});
+</script>
