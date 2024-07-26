@@ -11,6 +11,9 @@ session_start();
 	define("NOW", 			date("Y-m-d H:i:s"));
 	define("TODAY", 		date("d-m-Y"));
 
+	$datetime = new DateTime();
+	define("MILI_NOW", 			$datetime->format("Y-m-d H:i:s.u"));
+
 	
 	function is_localhost() {
 
@@ -46,10 +49,8 @@ session_start();
 
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
-	define('SUP_ADM_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
 	
 	define('ROOT_COMPONENT', 	ROOT_DIR.'components/');
-	define('SUP_ROOT_COMPONENT', SUP_ADM_DIR.'components/');
 	// define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
 	// define('ADM_VNDR_CHRT', 	ADM_DIR.'vendor/chart.js/');
 	
@@ -57,7 +58,6 @@ session_start();
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
 	define('PROD_IMG_DIR', 		ROOT_DIR.'images/product-image/');
 	define('ADM_IMG_DIR', 		ROOT_DIR.'images/admin-images/');
-	define('SUP_ADM_IMG_DIR',	SUP_ADM_DIR.'images/admin-images/');
 	define('EMP_IMG_DIR', 		ROOT_DIR.'images/employee-images/');
 	
 	
@@ -65,7 +65,7 @@ session_start();
 	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
 	define('CURRENT_PAGE',		$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	define('CURRENT_URL',		$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-	define('ADM_URL',  			URL.'admin/');
+	
 
 
 	
@@ -136,7 +136,7 @@ session_start();
 
 	const PROD_IMG_PATH						=	URL.'images/product-image/';
 	const ADM_IMG_PATH						=	URL.'images/admin-images/';
-	const SUP_ADM_IMG_PATH					=	URL.'admin/images/admin-images/';
+	
 	const EMPLOYEE_IMG_PATH					=	URL.'images/employee-images/';
 	const DEFAULT_USER_IMG_PATH				=	URL.'images/user-default-image/defaultAvtar.png';
 	const EMP_PATH							=	URL.'employee/';
@@ -145,6 +145,21 @@ session_start();
 
 
 	
+
+	///// =========== super admin constant control =============
+	define('SUP_ADM_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
+	define('SUP_ROOT_COMPONENT', SUP_ADM_DIR.'components/');
+	define('SUP_ADM_IMG_DIR',	SUP_ADM_DIR.'images/admin-images/');
+	define('ADM_URL',  			URL.'admin/');
+
+
+
+	const SUP_ADM_IMG_PATH						=	ADM_URL.'images/admin-images/';
+	const ADM_ASSETS_PATH						=	ADM_URL.'assets/';
+	const ADM_CSS_PATH							=	ADM_URL.'assets/css/';
+	const ADM_JS_PATH							=	ADM_URL.'assets/js/';
+
+	//// =======================================================
 
 
 	
