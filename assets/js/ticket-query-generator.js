@@ -27,6 +27,19 @@ function takeInputFile(fileInput, fileShowDivId) {
 }
 
 
+// email validation function
+function validateEmail(email) {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (regex.test(email)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
 function requestSubmit(t) {
     let table = '';
     let fileInput = '';
@@ -75,12 +88,24 @@ function requestSubmit(t) {
         });
         return;
     }
+
+    console.log(mail.value);
     
     if (mail.value === '') {
         Swal.fire({
             icon: 'error',
             title: 'Alert',
             text: 'Email not found!'
+        });
+        return;
+    }
+
+    mail = validateEmail(mail.value);
+    if(!mail){
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Invalid email'
         });
         return;
     }

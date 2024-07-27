@@ -163,12 +163,12 @@ if ($_SESSION['ADMIN']) {
                                                     </div>
                                                     <div class="row d-flex">
                                                         <div class="col-md-6 form-group">
-                                                            <input type="text" class=" med-input" id="email1" name="email1" maxlength="100" value="<?= $email; ?>" required>
+                                                            <input type="email" class=" med-input" id="email1" name="email1" maxlength="100" value="<?= $email; ?>" required>
                                                             <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
                                                         </div>
 
                                                         <div class="col-md-6 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number1" name="mobile-number1" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
+                                                            <input type="number" class=" med-input" id="mobile-number1" name="mobile-number1" minlength="10" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
                                                             <label class="med-label" for="mobile-number">Contact
                                                                 Number</label>
                                                         </div>
@@ -176,7 +176,7 @@ if ($_SESSION['ADMIN']) {
 
                                                     <div class="row">
                                                         <div class="col-md-12 form-group">
-                                                            <input type="text" class=" med-input" id="title1" name="title1" required>
+                                                            <input type="text" class=" med-input" id="title1" name="title1" required autocomplete="off">
                                                             <label class="med-label" style="margin-left:10px;" for="title1">Message Title</label>
                                                         </div>
                                                     </div>
@@ -216,12 +216,12 @@ if ($_SESSION['ADMIN']) {
                                                     </div>
                                                     <div class="row d-flex">
                                                         <div class="col-md-6 form-group">
-                                                            <input type="text" class=" med-input" id="email2" name="email2" maxlength="100" value="<?= $email; ?>" required>
+                                                            <input type="email" class=" med-input" id="email2" name="email2" maxlength="100" value="<?= $email; ?>" required>
                                                             <label class="med-label" style="margin-left:10px;" for="emial">Email id</label>
                                                         </div>
 
                                                         <div class="col-md-6 form-group">
-                                                            <input type="number" class=" med-input" id="mobile-number2" name="mobile-number2" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
+                                                            <input type="number" class=" med-input" id="mobile-number2" name="mobile-number2" minlength="10" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
                                                             <label class="med-label" for="mobile-number">Contact
                                                                 Number</label>
                                                         </div>
@@ -294,14 +294,6 @@ if ($_SESSION['ADMIN']) {
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
     <script src="<?php echo JS_PATH ?>ticket-query-generator.js"></script>
-
-
-    <!--  -->
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script> -->
 
 </body>
 
