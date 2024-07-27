@@ -113,7 +113,9 @@
                 </a>
             </li>
         <?php endif; ?>
-
+        <li class="mb-4">
+              <p></p>
+        </li>
     </ul>
     <div class="text-center d-none d-md-inline">
             <button class="rounded border-0 " id="sidebarToggle"></button>
