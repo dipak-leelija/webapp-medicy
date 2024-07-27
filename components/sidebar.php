@@ -118,7 +118,7 @@
         </li>
     </ul>
     <div class="text-center d-none d-md-inline">
-            <button class="rounded border-0 " id="sidebarToggle"></button>
+            <button class=" border-0 " id="sidebarToggle"></button>
         </div>
     </div>
     <!-- End of Sidebar -->
