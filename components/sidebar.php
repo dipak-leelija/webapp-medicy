@@ -113,31 +113,15 @@
                 </a>
             </li>
         <?php endif; ?>
-
+        <li class="mb-4">
+              <p></p>
+        </li>
     </ul>
     <div class="text-center d-none d-md-inline">
-            <button class="rounded border-0 " id="sidebarToggle"></button>
+            <button class=" border-0 " id="sidebarToggle"></button>
         </div>
     </div>
     <!-- End of Sidebar -->
 
-    
-<!-- ########################################################## -->
-<!-- sidebar toggle button  -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var sidebarToggle = document.getElementById('sidebarToggle');
-    var expandbtn  = document.getElementById('sidebarExp');
-    var sidebar = document.getElementById('accordionSidebar');
-        
-    sidebarToggle.addEventListener('click', function() {
-        sidebarToggle.classList.toggle('active');
-    });
-
-    expandbtn.addEventListener('click', function() {
-        console.log('click');
-     sidebar.classList.toggle('sidebar');
-     sidebarToggle.classList.toggle('expanded');
-    });
-});
-</script>
+    <!-- ########################################################## -->
+    <script src="<?php echo JS_PATH; ?>custom/sidebar.js"></script>
