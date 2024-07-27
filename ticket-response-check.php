@@ -14,9 +14,18 @@ $Utility    = new Utility;
 $Request    = new Request;
 
 $ticketNo = url_dec($_GET['ticket']);
-
-$ticketDetails = json_decode($Request->selectFromTable($ticketNo));
+// echo $ticketNo;
+$ticketDetails = json_decode($Request->selectFromTables($ticketNo));
+// print_r($ticketDetails);
 $ticketData = $ticketDetails->data;
+foreach ($ticketData as $detaisl) {
+    $attachedFile = $detaisl->attachment;
+}
+
+
+$masterTable = $ticketDetails->masterTable;
+$responseTable = $ticketDetails->responseTable;
+
 
 if ($_SESSION['ADMIN']) {
     $name = $USERFNAME . ' ' . $USERLNAME;
@@ -26,9 +35,18 @@ if ($_SESSION['ADMIN']) {
     $contact = $empContact;
 }
 
-$ticketResponseDetails = json_decode($Request->selectFromResponseTable($ticketNo));
-$responseData = $ticketResponseDetails->data;
+$masterTableData = json_decode($Request->fetchMasterTicketData($masterTable, $ticketNo));
+// print_r($masterTableData);
 
+$queryCreater = $masterTableData->data->name;
+$msgTitle = $masterTableData->data->title;
+
+
+// ============= image file path control ==============
+$fileName = $attachedFile;
+// echo $fileName;
+$filePath = TICKET_DOCUMEN_PATH;
+$fullFilePath = $filePath . $fileName;
 ?>
 
 <!DOCTYPE html>
@@ -90,79 +108,103 @@ $responseData = $ticketResponseDetails->data;
                             <div class=" shadow bg-white rounded  profile">
 
                                 <div id="home" class="tab-pane active">
-                                    <form action="_config\form-submission\ticket-query-submit.php" enctype="multipart/form-data" method="post" id="ticket-form">
-                                        <div class="container mt-5">
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                    <div class="form-group d-none">
-                                                        <input type="text" class="form-control med-input" id="current-usr" name="current-usr" value="<?= $name; ?>" required readonly>
-                                                        <input type="text" class="form-control med-input" id="table-name" name="table-name" value="<?= $ticketDetails->table ?>" required readonly>
-                                                    </div>
-                                                    <!-- Applicant Name and Email -->
-                                                    <div class="row">
-                                                        <div class="col-md-6 form-group">
-                                                            <input type="text" class="form-control med-input" id="applicant-name" name="applicant-name" maxlength="100" value="<?= $ticketData->name; ?>" required readonly>
-                                                            <label class="med-label" for="applicant-name" style="margin-left:10px;">Past Applicant Name</label>
-                                                        </div>
-                                                        <div class="col-md-6 form-group">
-                                                            <input type="email" class="form-control med-input" id="email1" name="email1" maxlength="100" value="<?= $userEmail ?>" required readonly>
-                                                            <label class="med-label" for="email1" style="margin-left:10px;">Email id</label>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Message Title and Contact Number -->
-                                                    <div class="row">
-                                                        <div class="col-md-6 form-group">
-                                                            <input type="text" class="form-control med-input" id="title" name="title" value="<?= $ticketData->title; ?>" required>
-                                                            <label class="med-label" for="title" style="margin-left:10px;">Message Title</label>
-                                                        </div>
-                                                        <div class="col-md-6 form-group">
-                                                            <input type="number" class="form-control med-input" id="mobile-number1" name="mobile-number1" maxlength="10" max="9999999999" value="<?= $contact; ?>" required readonly>
-                                                            <label class="med-label" for="mobile-number1" style="margin-left:10px;">Contact Number</label>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Description -->
-                                                    <div class="row">
-                                                        <div class="col-md-12 form-group">
-                                                            <textarea class="form-control med-input" id="ticket-description1" name="ticket-description1" style="height: 116px;" required><?= $ticketData->message; ?></textarea>
-                                                            <label class="med-label" for="ticket-description1" style="margin-left:10px;">Description</label>
-                                                        </div>
+                                    <div class="container mt-5">
+                                        <div class="form-group d-none">
+                                            <input type="text" class="form-control med-input" id="current-usr" name="current-usr" value="<?= $name; ?>" required readonly>
+                                            <input type="text" class="form-control med-input" id="master-table-name" name="master-table-name" value="<?= $masterTable ?>" required readonly>
+                                            <input type="text" class="form-control med-input" id="response-table-name" name="response-table-name" value="<?= $responseTable ?>" required readonly>
+                                            <input type="text" class="form-control med-input" id="master-ticket-number" name="master-ticket-number" value="<?= $ticketNo ?>" required readonly>
+                                            <input type="text" class="med-input" id="form-flag" name="form-flag" value="2" required readonly>
+                                        </div>
+                                        <div class="row d-flex">
+                                            <div class="col-md-4 form-group">
+                                                <input type="text" class="form-control med-input" id="prev-applicant-name" name="prev-applicant-name" maxlength="100" value="<?= $queryCreater; ?>" required readonly>
+                                                <label class="med-label" for="applicant-name" style="margin-left:10px;">Previous Query Launcher</label>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <input type="email" class="form-control med-input" id="email" name="email" maxlength="100" value="<?= $userEmail ?>" required readonly>
+                                                <label class="med-label" for="email1" style="margin-left:10px;">Email id</label>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <input type="number" class="form-control med-input" id="mobile-number" name="mobile-number" maxlength="10" max="9999999999" value="<?= $contact; ?>" required readonly>
+                                                <label class="med-label" for="mobile-number1" style="margin-left:10px;">Contact Number</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Left Side: Form Inputs -->
+                                            <div class="col-md-7">
+                                                <div class="row">
+                                                    <div class="col-md-12 form-group">
+                                                        <input type="text" class="form-control med-input" id="title" name="title" value="<?= $msgTitle; ?>" required>
+                                                        <label class="med-label" for="title" style="margin-left:10px;">Message Title</label>
                                                     </div>
                                                 </div>
-                                                <!-- Document Upload Section -->
-                                                <div class="col-md-5">
-                                                    <div class="card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 14rem; position: relative;">
-                                                        <div id="document-show-1" class="col-sm-11 card med-card"></div>
+                                                <!-- Description -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="messaging-response-area">
+                                                            <div class="message mb-4 p-3 border rounded bg-light" style="overflow-y:scroll; max-height: 15rem;">
+                                                                <div class="query mb-3">
+                                                                    <?php foreach ($ticketData as $msgData) : ?>
+                                                                        <?php if (!empty($msgData->message)) : ?>
+                                                                            <strong>Query:</strong><small>(<?php
+                                                                                                            $dateString = $msgData->added_on;
+                                                                                                            $dateTime = new DateTime($dateString);
+                                                                                                            $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                                            echo $formattedDate; ?>)</small>
+                                                                            <textarea class="form-control" readonly><?php echo htmlentities($msgData->message); ?></textarea>
+                                                                        <?php endif; ?>
+                                                                </div>
+                                                                <div class="response">
+                                                                    <?php if (!empty($msgData->response)) : ?>
+                                                                        <strong>Response:</strong>
+                                                                        <small>(<?php
+                                                                                $dateString = $msgData->added_on;
+                                                                                $dateTime = new DateTime($dateString);
+                                                                                $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                echo $formattedDate; ?>)</small>
+                                                                        <textarea class="form-control" readonly><?php echo htmlentities($msgData->response); ?></textarea>
+                                                                    <?php endif; ?>
+
+                                                                <?php endforeach; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <label class="med-label text-primary mt-n4" for="fileInput1" style="margin-left:10px;">Document</label>
-                                                    <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 19rem; bottom: 30px; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
-                                                    <input type="file" class="d-none" name="fileInput1" id="fileInput1" onchange="takeInputFile(this, 'document-show-1')" 
-                                                    >
                                                 </div>
                                             </div>
-
-                                            <!-- Response Details -->
-                                            <div class="row mt-3">
-                                                <div class="col-md-12 form-group">
-                                                    <textarea class="form-control med-input" id="ticket-response" name="ticket-response" style="height: 105px;" required readonly><?= $responseData->response; ?></textarea>
-                                                    <label class="med-label" for="ticket-response" style="margin-left:10px;">Response Details</label>
+                                            <!-- Right Side: Document Upload -->
+                                            <div class="col-md-5">
+                                                <div class="card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 18rem; position: relative;">
+                                                    <div id="document-show-1" class="col-sm-11 card med-card"></div>
                                                 </div>
+                                                <label class="med-label text-primary mt-n4" for="fileInput1" style="margin-left:10px;">Document</label>
+                                                <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 18rem; bottom: 3rem; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
+                                                <input type="file" class="d-none" name="fileInput1" id="fileInput1" value="<?= $fileName;?>" onchange="takeInputFile(this, 'document-show-1')">
+                                                <input type="text" class="d-none" id="db-file-data-holder" value="<?= $fileName;?>">
                                             </div>
+                                        </div>
+                                        <!-- Re query and Submit Button -->
+                                        <div class="row mt-3 d-flex">
+                                            <div class="col-md-8 form-group">
+                                                <input type="text" class="form-control med-input" id="re-query" name="re-query" required>
+                                                <label class="med-label" for="title" style="margin-left:10px;">Query</label>
+                                            </div>
+                                            <div class="col-md-4 d-flex justify-content-end">
+                                                <col-sm-6>
+                                                    <button class="btn btn-sm btn-primary mb-3 w-100" type="submit" name="regenerate-query" id="regenerate-query" onclick="reQuery(this)">Submit Query</button>
+                                                </col-sm-6>
 
-                                            <!-- Submit Button -->
-                                            <div class="row mt-3">
-                                                <div class="col-12 d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary" type="submit" name="regenerate-query" id="regenerate-query">Submit Query</button>
+                                                <div class="col-sm-6">
+                                                    <button class="btn btn-sm btn-primary mb-3 w-100" type="submit" name="back-to-ticket" id="back-to-ticket" onclick="backBtn(this)">Back</button>
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </form>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <!-- End of Main Content -->
@@ -172,11 +214,8 @@ $responseData = $ticketResponseDetails->data;
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+    
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
 
@@ -191,6 +230,48 @@ $responseData = $ticketResponseDetails->data;
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
     <script src="<?php echo JS_PATH ?>ticket-query-generator.js"></script>
+
+
+
+    <script>
+        function displayFileFromDatabase(fileUrl, previewId) {
+            console.log(fileUrl);
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const preview = document.getElementById(previewId);
+                    const fileType = fileUrl.split('.').pop().toLowerCase();
+                    const contentType = xhr.getResponseHeader("Content-Type");
+                    const blob = new Blob([xhr.response], {
+                        type: contentType
+                    });
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const base64data = reader.result;
+                        if (fileType === 'pdf') {
+                            preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%">`;
+                        } else if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
+                            preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;">`;
+                        } else {
+                            preview.innerHTML = `<p>Unsupported file format</p>`;
+                        }
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            };
+            xhr.open('GET', fileUrl, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.send();
+        }
+
+        // PHP code to embed JavaScript
+        <?php if (!empty($attachedFile)) : ?>
+            const fileUrl = <?php echo json_encode($fullFilePath); ?>;
+            displayFileFromDatabase(fileUrl, 'document-show-1');
+        <?php endif; ?>
+    </script>
+
 
 </body>
 

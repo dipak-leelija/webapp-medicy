@@ -74,6 +74,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
+                'msgTitle'    => '',
                 'description' => $requestDataItem->req_dsc
             ];
         } elseif ($requestType['tableName'] == 'Distributor Request') {
@@ -81,6 +82,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
+                'msgTitle'    => '',
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'Manufacturer Request') {
@@ -88,6 +90,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
+                'msgTitle'    => '',
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'Packtype Request') {
@@ -95,6 +98,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
+                'msgTitle'    => '',
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'packaging Add') {
@@ -102,6 +106,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
+                'msgTitle'    => '',
                 'description' => 'New Packaging Unit Add'
             ];
         } elseif ($requestType['tableName'] == 'quantity add') {
@@ -109,6 +114,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->short_name,
+                'msgTitle'    => '',
                 'description' => 'New Quantity Unit Add'
             ];
         } elseif ($requestType['tableName'] == 'Generate Quarry') {
@@ -116,6 +122,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => '',
+                'msgTitle'    => $requestDataItem->title,
                 'description' => $requestDataItem->message,
                 'status'      => $requestDataItem->status,
             ];
@@ -124,7 +131,8 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => '',
-                'description' => $requestDataItem->description,
+                'msgTitle'    => $requestDataItem->title,
+                'description' => $requestDataItem->message,
                 'status'      => $requestDataItem->status,
             ];
         }else {
@@ -132,7 +140,7 @@ foreach ($requestTypes as $table => &$requestType) {
                 'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
-                // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'msgTitle'    => '',
                 'description' => 'New' . ' ' . $requestType['tableName']
             ];
         }
@@ -242,6 +250,12 @@ if ($pagination->status == 1) {
                                                 $itemName = '';
                                             }
 
+                                            if ($resItems->msgTitle != null) {
+                                                $title = $resItems->msgTitle;
+                                            } else {
+                                                $title = '';
+                                            }
+
                                             if ($resItems->description != null) {
                                                 $description = $resItems->description;
                                             } else {
@@ -260,7 +274,7 @@ if ($pagination->status == 1) {
                                                         <td>' . $resItems->id . '</td>
                                                         <td>' . $tableName . '</td>
                                                         <td>' . $itemName . '</td>
-                                                        <td>' . '' . '</td>
+                                                        <td>' . $title . '</td>
                                                         <td>' . $description . '</td>
                                                         <td style="color: red;">' . $status . '</td>
                                                     </tr>';

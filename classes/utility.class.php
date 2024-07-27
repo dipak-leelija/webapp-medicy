@@ -31,10 +31,10 @@ class Utility
 				return $fullName;
 			} else {
 				$stmt->close();
-				return ['status' => '0', 'message' => 'no data', 'data' => ''];
+				return '';
 			}
-		} catch (\Throwable $th) {
-			//throw $th;
+		} catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
 		}
 	}
 

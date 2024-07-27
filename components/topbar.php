@@ -97,9 +97,9 @@ foreach ($tables as $tableName) {
                     $addedOn = $responceData[$i]['added_on'];
                     $messageTitle = $responceData[$i]['title'];
                     $messageData = $responceData[$i]['response'];
-                    $ticketNo = url_enc($responceData[$i]['ticket_no']);
+                    $masterTicketNo = url_enc($responceData[$i]['ticket_no']);
 
-                    echo '<div class="dropdown-item d-flex align-items-center" id='.$responceData[$i]["ticket_no"].' data-ticket='.$ticketNo.' onclick="updateResponseTable(this)" style="cursor: pointer;">
+                    echo '<div class="dropdown-item d-flex align-items-center" id='.$responceData[$i]["ticket_no"].' data-ticket='.$masterTicketNo.' onclick="updateResponseTable(this)" style="cursor: pointer;">
                             <div class="mr-3">
                                 <div class="icon-circle bg-primary">
                                     <i class="fas fa-file-alt text-white"></i>
@@ -259,6 +259,7 @@ foreach ($tables as $tableName) {
 function updateResponseTable(element) {
 
     let ticketNo = element.getAttribute('data-ticket');
+    // console.log(ticketNo);
     const xhr = new XMLHttpRequest();
     let alertContorl = `ajax/alertControl.ajax.php?ticket=${ticketNo}`;
     xhr.open("GET", alertContorl, false);
