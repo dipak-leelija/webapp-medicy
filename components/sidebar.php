@@ -6,23 +6,24 @@
     $page       = $updatedUrl;
     ?>
 
+    <div>
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebarExpand sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= URL ?>">
-            <div class="sidebar-brand-icon">
+        <a class="sidebar-brand sidebarExpand-brand d-flex align-items-center justify-content-center" href="<?= URL ?>">
+            <div class="sidebar-brand-icon sidebarExpand-brand-icon">
                 <div class="text-center"><img class="img-fluid" src="<?= IMAGES_PATH ?>logo.png" alt="">
                 </div>
             </div>
         </a>
 
         <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider sidebarExpand-devider my-0">
 
-        <div class="text-center d-none d-md-inline">
+        <!-- <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+        </div> -->
 
         <!-- Nav Item For Healthcare -->
         <li class="nav-item <?= $currentURL  ==  LOCAL_DIR ? "active" : ''; ?>">
@@ -32,7 +33,7 @@
         </li>
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider sidebarExpand-devider">
 
 
         <!-- ==================================== OPD AREA START ==================================== -->
@@ -40,7 +41,7 @@
         if ($userRole == 2 || $userRole == 'ADMIN') : ?>
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <div class="sidebar-heading sidebarExpand-heading">
                 Health Care
             </div>
 
@@ -57,7 +58,7 @@
 
             <!-- Nav Item - Doctors -->
             <li class="nav-item <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "active" : ''; ?>">
-                <a class="nav-link collapsed" id="doc" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
+                <a class="nav-link collapsed" id="sidebarExp" href="#" data-toggle="collapse" data-target="#collapseDoctor" aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
                     <i class="fas fa fa-users"></i>
                     <span>Doctors</span>
                 </a>
@@ -80,8 +81,8 @@
         <?php endif; ?>
 
         <!-- ==================================== PATHALOGY AREA START ==================================== -->
-        <hr class="sidebar-divider d-none d-md-block">
-        <div class="sidebar-heading">Pathalogy Lab</div>
+        <hr class="sidebar-divider sidebarExpand-devider d-none d-md-block">
+        <div class="sidebar-heading sidebarExpand-heading">Pathalogy Lab</div>
 
         <?php if ($userRole == 3 || $userRole == 'ADMIN') :
             include ROOT_COMPONENT . '/sidebar/PathalogySidebar.php';
@@ -93,10 +94,10 @@
         <?php if ($userRole == 1 || $userRole == 'ADMIN') : ?>
 
             <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider sidebarExpand-devider d-none d-md-block">
 
             <!-- Heading -->
-            <div class="sidebar-heading">Pharmacy</div>
+            <div class="sidebar-heading sidebarExpand-heading">Pharmacy</div>
             <?php include ROOT_COMPONENT . '/sidebar/PharmacySidebar.php'; ?>
 
         <?php endif; ?>
@@ -113,11 +114,11 @@
             </li>
         <?php endif; ?>
 
-
-        <!-- <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div> -->
     </ul>
+    <div class="text-center d-none d-md-inline">
+            <button class="rounded border-0 " id="sidebarToggle"></button>
+        </div>
+    </div>
     <!-- End of Sidebar -->
 
     
@@ -125,23 +126,18 @@
 <!-- sidebar toggle button  -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // var sidebar = document.querySelector('.sidebar');
     var sidebarToggle = document.getElementById('sidebarToggle');
-
-    // function updateSidebarWidth() {
-    //     var sidebarWidth = window.getComputedStyle(sidebar).width;
-    //     document.documentElement.style.setProperty('--sidebar-width', sidebarWidth);
-    // }
-
-    // // Initial update
-    // updateSidebarWidth();
-
-    // // Update on window resize
-    // window.addEventListener('resize', updateSidebarWidth);
-
-
+    var expandbtn  = document.getElementById('sidebarExp');
+    var sidebar = document.getElementById('accordionSidebar');
+        
     sidebarToggle.addEventListener('click', function() {
         sidebarToggle.classList.toggle('active');
+    });
+
+    expandbtn.addEventListener('click', function() {
+        console.log('click');
+     sidebar.classList.toggle('sidebar');
+     sidebarToggle.classList.toggle('expanded');
     });
 });
 </script>

@@ -1,6 +1,6 @@
 <!-- Products -->
 <li class="nav-item <?= $page ==  "products" || $page ==  "add-new-product" ? "active" : ''; ?>">
-    <a active class="nav-link <?= $page !=  "sales" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#productsManagement" aria-expanded="<?= $page ==  "products" || $page ==  "add-new-product" ? "true" : ''; ?>" aria-controls="productsManagement">
+    <a  id="sidebarExp1" class="nav-link <?= $page !=  "sales" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#productsManagement" aria-expanded="<?= $page ==  "products" || $page ==  "add-new-product" ? "true" : ''; ?>" aria-controls="productsManagement">
         <i class="fas fa-pills"></i>
         <span>Products</span>
     </a>
@@ -16,7 +16,7 @@
 
 <!-- Product Management collapsed Menu  -->
 <li class="nav-item <?= $page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items" || $page == 'update-sales' || $page == 'sales-return-edit' ? "active" : ''; ?>">
-    <a active class="nav-link <?= $page !=  "sales" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseSalesManagement" aria-expanded="<?= $page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items" || $page == 'update-sales' || $page == 'sales-return-edit' ? "true" : ''; ?>" aria-controls="collapseSalesManagement">
+    <a active id="sidebarExp2" class="nav-link <?= $page !=  "sales" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseSalesManagement" aria-expanded="<?= $page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items" || $page == 'update-sales' || $page == 'sales-return-edit' ? "true" : ''; ?>" aria-controls="collapseSalesManagement">
         <i class="fas fa-clinic-medical"></i>
         <span>Sales Management</span>
     </a>
@@ -32,7 +32,7 @@
 
 <!-- Purchase Management  -->
 <li class="nav-item <?= $page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item" ? "active" : ''; ?>">
-    <a active class="nav-link <?= $page !=  "stock-in" || $page !=  "purchase-details" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?= $page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item" ?  "true" : ''; ?>" aria-controls="collapsePurchaseManagement">
+    <a active id="sidebarExp3" class="nav-link <?= $page !=  "stock-in" || $page !=  "purchase-details" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?= $page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item" ?  "true" : ''; ?>" aria-controls="collapsePurchaseManagement">
         <i class="fas fa-store-alt"></i>
         <span>Purchase Management</span>
     </a>
@@ -50,7 +50,7 @@
 
 <!-- Product Management collapsed Menu  -->
 <li class="nav-item <?= $page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" ?  "active" : ''; ?>">
-    <a class="nav-link <?= $page !=  "current-stock" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseStock" aria-expanded="<?= $page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" ? "true" : ''; ?>" aria-controls="collapseStock">
+    <a id="sidebarExp4" class="nav-link <?= $page !=  "current-stock" ? "collapsed" : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseStock" aria-expanded="<?= $page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" ? "true" : ''; ?>" aria-controls="collapseStock">
         <i class="fas fa-store-alt"></i>
         <span>Stock Details</span>
     </a>
@@ -82,3 +82,47 @@
         <span>Purchase Master</span>
     </a>
 </li>
+
+
+<script>
+//     document.addEventListener('DOMContentLoaded', function() {
+//     var expandbtn  = document.getElementById('sidebarExp1');
+//     var expandbtn2  = document.getElementById('sidebarExp2');
+//     var expandbtn3  = document.getElementById('sidebarExp3');
+//     var expandbtn4  = document.getElementById('sidebarExp4');
+//     var sidebar = document.getElementById('accordionSidebar');
+
+//     expandbtn.addEventListener('click', function() {
+//      sidebar.classList.toggle('sidebar');
+//      sidebarToggle.classList.toggle('expanded');
+//     });
+//     expandbtn2.addEventListener('click', function() {
+//      sidebar.classList.toggle('sidebar');
+//      sidebarToggle.classList.toggle('expanded');
+//     });
+//     expandbtn3.addEventListener('click', function() {
+//      sidebar.classList.toggle('sidebar');
+//      sidebarToggle.classList.toggle('expanded');
+//     });
+//     expandbtn4.addEventListener('click', function() {
+//      sidebar.classList.toggle('sidebar');
+//      sidebarToggle.classList.toggle('expanded');
+//     });
+// });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var sidebar = document.getElementById('accordionSidebar');
+    var buttons = ['sidebarExp1', 'sidebarExp2', 'sidebarExp3', 'sidebarExp4'];
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('sidebar');
+        sidebarToggle.classList.toggle('expanded');
+    }
+
+    buttons.forEach(function(buttonId) {
+        var button = document.getElementById(buttonId);
+        button.addEventListener('click', toggleSidebar);
+    });
+});
+
+</script>
