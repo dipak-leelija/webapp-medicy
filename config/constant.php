@@ -48,7 +48,9 @@ session_start();
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
 	define('SUP_ADM_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
 	
-	define('ROOT_COMPONENT', 	ROOT_DIR.'components/');
+	define('ROOT_COMPONENT', 		ROOT_DIR.'components/');
+	define('DASHBOARD_COMPONENT', 	ROOT_DIR.'components/dashboard/');
+
 	define('SUP_ROOT_COMPONENT', SUP_ADM_DIR.'components/');
 	// define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
 	// define('ADM_VNDR_CHRT', 	ADM_DIR.'vendor/chart.js/');
