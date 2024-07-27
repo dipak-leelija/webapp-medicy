@@ -14,25 +14,57 @@ $Request = new Request;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
-    $table = $_POST['responseTableName'];
-    $masterTicketNo = $_POST['masterTicektNo'];
-    $queryResponse = $_POST['response'];
-    
-    
-    $ticketNo = $_POST['masterTicektNo'];
     $masterTable = $_POST['masterTable'];
+    $responseTable = $_POST['responseTable'];
+    $adminId = $_POST['adminId'];
+    $ticketNo = $_POST['ticketNo'];
+    $adminUsername = $_POST['adminUsername'];
+    $msgSender = $_POST['msgSender'];
+    $email = $_POST['email'];
+    $msgTitle = $_POST['msgTitle'];
+    $contact = $_POST['contact'];
+    $response = $_POST['queryResponse'];
 
+    $fileName = $_POST['fileName'];
+    $filePath = $_POST['filePath'];
 
     $status = 1;
     $viewStatus = 1;
+    //======================================
+    if ($fileName != '' && $filePath != '') {
+        $fileName = $fileName;
+        $tmpFileName = $filePath;
 
-    $addResponse = $Request->addResponseToTicketQueryTable($table, $masterTicketNo, $queryResponse, $status, NOW, $viewStatus);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
 
+        for ($k = 0; $k < 9; $k++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        $nowString = MILI_NOW;
+        $microtime = strtotime($nowString) + (floatval(substr($nowString, -3)) / 1000);
+        $milliseconds = sprintf("%06d", ($microtime - floor($microtime)) * 1000000);
+        $datetime = new DateTime('@' . floor($microtime));
+        $formattedDateTime = $datetime->format('YmdHis') . substr($milliseconds, 0, 6);
+
+        $extention = substr($fileName, -4);
+        $uploadedFileName = substr($fileName, 0, -4);
+
+        $fileNewName  =   $formattedDateTime . '-' . $randomString . $extention;
+        $fileFolder     = TICKET_DOCUMENT_DIR . $fileNewName;
+
+        move_uploaded_file($tmpFileName, $fileFolder);
+        $updatedFilename     =  addslashes($fileNewName);
+    } else {
+        $updatedFilename = $fileName;
+    }
+
+    $addResponse = $Request->addResponseToTicketQueryTable($responseTable, $ticketNo, $updatedFilename, $response, $status, NOW, $viewStatus);
     // print_r($addResponse);
 
-    $response = json_decode($addResponse);
-    if($response->status){
+    $updatedResponse = json_decode($addResponse);
+    if($updatedResponse->status){
         $updatedStatus = 'INACTIVE';
         $updateMasterTable = $Request->updateStatusByTableName($masterTable, $ticketNo, $updatedStatus, NOW);
 

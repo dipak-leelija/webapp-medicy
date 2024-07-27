@@ -94,15 +94,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($_POST['formFlag'] === '2') {
         
-        $masterTable        =  $_POST['masterTable'];
-        $table              =  $_POST['requestTable'];
-        $masterTicket       =  $_POST['masterTicket'];
-        $msgTitle           =  $_POST['msgTitle'];
-        $message            =  $_POST['newQuery'];
+        $masterTable        =   $_POST['masterTable'];
+        $table              =   $_POST['requestTable'];
+        $masterTicket       =   $_POST['masterTicket'];
+        $msgTitle           =   $_POST['msgTitle'];
+        $message            =   $_POST['newQuery'];
+        $fileName           =   $_POST['fileName'];
+        $filePath           =   $_POST['filePath'];
 
-        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-            $fileName = $_FILES['file']['name'];
-            $tmpFileName = $_FILES['file']['tmp_name'];
+        if ($fileName != '' && $filePath !='') {
+            $fileName = $fileName;
+            $tmpFileName = $filePath;
 
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $randomString = '';
@@ -123,10 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileNewName  =   $formattedDateTime . '-' . $randomString . $extention;
             $fileFolder     = TICKET_DOCUMENT_DIR . $fileNewName;
 
-            // move_uploaded_file($tmpFileName, $fileFolder);
+            move_uploaded_file($tmpFileName, $fileFolder);
             $updatedFile         = addslashes($fileNewName);
         } else {
-            $updatedFile = '';
+            $updatedFile = $fileName;
         }
 
         $status = '1';

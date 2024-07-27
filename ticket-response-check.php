@@ -17,8 +17,11 @@ $ticketNo = url_dec($_GET['ticket']);
 // echo $ticketNo;
 $ticketDetails = json_decode($Request->selectFromTables($ticketNo));
 // print_r($ticketDetails);
-
 $ticketData = $ticketDetails->data;
+foreach ($ticketData as $detaisl) {
+    $attachedFile = $detaisl->attachment;
+}
+
 
 $masterTable = $ticketDetails->masterTable;
 $responseTable = $ticketDetails->responseTable;
@@ -32,16 +35,18 @@ if ($_SESSION['ADMIN']) {
     $contact = $empContact;
 }
 
-
-
 $masterTableData = json_decode($Request->fetchMasterTicketData($masterTable, $ticketNo));
 // print_r($masterTableData);
-
 
 $queryCreater = $masterTableData->data->name;
 $msgTitle = $masterTableData->data->title;
 
 
+// ============= image file path control ==============
+$fileName = $attachedFile;
+// echo $fileName;
+$filePath = TICKET_DOCUMEN_PATH;
+$fullFilePath = $filePath . $fileName;
 ?>
 
 <!DOCTYPE html>
@@ -127,7 +132,7 @@ $msgTitle = $masterTableData->data->title;
                                         </div>
                                         <div class="row">
                                             <!-- Left Side: Form Inputs -->
-                                            <div class="col-md-8">
+                                            <div class="col-md-7">
                                                 <div class="row">
                                                     <div class="col-md-12 form-group">
                                                         <input type="text" class="form-control med-input" id="title" name="title" value="<?= $msgTitle; ?>" required>
@@ -169,13 +174,14 @@ $msgTitle = $masterTableData->data->title;
                                                 </div>
                                             </div>
                                             <!-- Right Side: Document Upload -->
-                                            <div class="col-md-4">
-                                                <div class="card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 12rem; position: relative;">
+                                            <div class="col-md-5">
+                                                <div class="card med-card" style="border: 1px solid #ced4da; padding: 1rem; height: 18rem; position: relative;">
                                                     <div id="document-show-1" class="col-sm-11 card med-card"></div>
                                                 </div>
                                                 <label class="med-label text-primary mt-n4" for="fileInput1" style="margin-left:10px;">Document</label>
-                                                <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 15rem; bottom: 8rem; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
-                                                <input type="file" class="d-none" name="fileInput1" id="fileInput1" onchange="takeInputFile(this, 'document-show-1')">
+                                                <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 18rem; bottom: 3rem; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
+                                                <input type="file" class="d-none" name="fileInput1" id="fileInput1" value="<?= $fileName;?>" onchange="takeInputFile(this, 'document-show-1')">
+                                                <input type="text" class="d-none" id="db-file-data-holder" value="<?= $fileName;?>">
                                             </div>
                                         </div>
                                         <!-- Re query and Submit Button -->
@@ -208,11 +214,8 @@ $msgTitle = $masterTableData->data->title;
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
+    <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
+    
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
 
@@ -227,6 +230,48 @@ $msgTitle = $masterTableData->data->title;
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
     <script src="<?php echo JS_PATH ?>ticket-query-generator.js"></script>
+
+
+
+    <script>
+        function displayFileFromDatabase(fileUrl, previewId) {
+            console.log(fileUrl);
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const preview = document.getElementById(previewId);
+                    const fileType = fileUrl.split('.').pop().toLowerCase();
+                    const contentType = xhr.getResponseHeader("Content-Type");
+                    const blob = new Blob([xhr.response], {
+                        type: contentType
+                    });
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const base64data = reader.result;
+                        if (fileType === 'pdf') {
+                            preview.innerHTML = `<embed src="${base64data}" type="application/pdf" width="100%" height="100%">`;
+                        } else if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
+                            preview.innerHTML = `<img src="${base64data}" style="max-width: 100%; max-height: 12rem;">`;
+                        } else {
+                            preview.innerHTML = `<p>Unsupported file format</p>`;
+                        }
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            };
+            xhr.open('GET', fileUrl, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.send();
+        }
+
+        // PHP code to embed JavaScript
+        <?php if (!empty($attachedFile)) : ?>
+            const fileUrl = <?php echo json_encode($fullFilePath); ?>;
+            displayFileFromDatabase(fileUrl, 'document-show-1');
+        <?php endif; ?>
+    </script>
+
 
 </body>
 

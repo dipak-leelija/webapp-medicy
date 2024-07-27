@@ -68,27 +68,48 @@ function requestSubmit(t) {
     let documentShowDiv = document.getElementById(documentShow);
 
     if (user.value === '') {
-        alert('user not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'User not found!'
+        });
         return;
     }
-
+    
     if (mail.value === '') {
-        alert('email not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Email not found!'
+        });
         return;
     }
-
+    
     if (phno.value === '') {
-        alert('contact details not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Phone Number not found!'
+        });
         return;
     }
+    
+    if (msgTitle.value === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Enter message title.'
+        });
+        return;
+    }
+    
 
     if (msgTitle.value === '') {
-        alert('msg title not found');
-        return;
-    }
-
-    if (msg.value === '') {
-        alert('msg not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Enter Message.'
+        });
         return;
     }
 
@@ -150,26 +171,61 @@ function requestSubmit(t) {
 
 
 function reQuery(t){
-    
+
     const masterTable = document.getElementById('master-table-name');
     const responseTable = document.getElementById('response-table-name');
     const masterTicketNumber = document.getElementById('master-ticket-number');
     const msgTitle = document.getElementById('title');
     const newQuery = document.getElementById('re-query');
-
-    console.log(newQuery.value);
-
+    let fileName = '';
+    let filePath = '';
     const formFlag = '2';
 
+    if (msgTitle.value === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Enter message Title'
+        });
+        return;
+    }
+    if (newQuery.value === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'Enter your query.'
+        });
+        return;
+    }
+
     let formData = new FormData();
+
+    let inputFile = document.getElementById('fileInput1');
+
+    if(inputFile.value != ''){
+        filePath = inputFile.value;
+        if (inputFile.value !== '') {
+            let file = inputFile.files[0]; // Get the selected file
+            fileName = file.name;
+        }
+    }else{
+        filePath = '';
+        fileName = document.getElementById('db-file-data-holder').value;
+        console.log(fileName);
+    }
+    
 
     formData.append('masterTable', masterTable.value);
     formData.append('requestTable', responseTable.value);
     formData.append('masterTicket', masterTicketNumber.value);
     formData.append('msgTitle', msgTitle.value);
     formData.append('newQuery', newQuery.value);
+    formData.append('filePath', filePath);
+    formData.append('fileName', fileName);
+
     formData.append('formFlag', formFlag);
 
+   
     $.ajax({
         url: 'ajax/ticket-query-submit.ajax.php', 
         type: 'POST',
@@ -213,4 +269,11 @@ function reQuery(t){
         }
     });
     
+    
+}
+
+
+
+function backBtn(){
+    window.location.href='ticket-details.php';
 }
