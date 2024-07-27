@@ -12,7 +12,7 @@ if($_SESSION['ADMIN']){
   $userType     = $_SESSION['USER_TYPE'];
   $userRole     = $_SESSION['USER_ROLE'];
   $adminName    = $_SESSION['ADMIN_FNAME'];
-  $userFname    = $_SESSION['ADMIN_FNAME'];
+  // $userFname    = $_SESSION['ADMIN_FNAME'];
   $adminLname   = $_SESSION['ADMIN_LNAME'];
   $userImg      = $_SESSION['ADMIN_IMG'] ;
   $adminAddress = $_SESSION['ADMIN_ADDRESS'];
@@ -42,7 +42,7 @@ if($_SESSION['ADMIN']){
   $empContact     = $_SESSION['EMP_CONTACT_NO'];
   $userType       = $_SESSION['USER_TYPE'];
   $userRole       = $_SESSION['EMP_ROLE'];
-  $userFname      = $_SESSION['EMP_NAME'];
+  // $userFname      = $_SESSION['EMP_NAME'];
   $userImg        = $_SESSION['EMP_IMG']; 
   $empAddress     = $_SESSION['EMP_ADDRESS'];
   $username       = $_SESSION['EMP_USERNAME'];
@@ -55,7 +55,8 @@ if($_SESSION['ADMIN']){
   $EMPCONTACT     = $_SESSION['EMP_CONTACT_NO'];
   $USERTYPE       = $_SESSION['USER_TYPE'];
   $USERROLE       = $_SESSION['EMP_ROLE'];
-  $USERFNAME      = $_SESSION['EMP_NAME'];
+  $USERFNAME      = $_SESSION['EMP_FNAME'];
+  $USERLNAME      = $_SESSION['EMP_LNAME'];
   $USERIMG        = $_SESSION['EMP_IMG']; 
   $EMPADDRESS     = $_SESSION['EMP_ADDRESS'];
   $USERNAME       = $_SESSION['EMP_USERNAME'];

@@ -233,7 +233,7 @@ if ($labBills->status == 1) {
                             </div>
                             <div class="col-xl-9 col-md-6">
                                 <!------------- Stock Summary -------------->
-                                <?php require_once ROOT_COMPONENT . "stock-summary.php"; ?>
+                                <?php require_once DASHBOARD_COMPONENT . "StockSummary.php"; ?>
                                 <!------------- end Stock Summary -------------->
 
                             </div>
@@ -245,10 +245,6 @@ if ($labBills->status == 1) {
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->

@@ -6,10 +6,12 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'plan.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 $Plan       = new Plan;
+$Admin      = new Admin;
 $Utility    = new Utility;
 $HealthCare = new HealthCare;
 
@@ -36,6 +38,14 @@ if ($clinicInfo->status == 1) {
     $clinicCity     = $clinic->city;
     $clinicState    = $clinic->health_care_state;
     $clinicPIN      = $clinic->pin;
+}
+
+$adminDetails = json_decode($Admin->adminDetails($adminId));
+if($adminDetails){
+    $adminDetails = $adminDetails->data;
+    $adminFname = $adminDetails->fname;
+    $adminLname = $adminDetails->lname;
+    $ADMINCONTACT = $adminDetails->mobile_no;
 }
 
 $planResponse = json_decode($Plan->getPlan($planId));
@@ -81,24 +91,24 @@ if ($planResponse->status == 1) {
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
                                         <input type="hidden" name="planid" value="<?= $planId ?>">
-                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $userFname; ?>" placeholder="First Name" required onfocusout="checkData()">
+                                        <input type="text" minlength="4" class="form-control shadow-none" id="firstname" name="firstname" value="<?= $USERFNAME; ?>" placeholder="First Name" required onfocusout="checkData()">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="text" minlength="4" class="form-control shadow-none" id="lastName" name="lastName" value="<?= $adminLname; ?>" placeholder="Last Name" required>
+                                        <input type="text" minlength="4" class="form-control shadow-none" id="lastName" name="lastName" value="<?= $USERLNAME; ?>" placeholder="Last Name" required>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="email" class="form-control shadow-none" id="email" name="email" value="<?= $userEmail; ?>" placeholder="Email Address" readonly required>
+                                        <input type="email" class="form-control shadow-none" id="email" name="email" value="<?= $USEREMAIL; ?>" placeholder="Email Address" readonly required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <div class="form-group">
-                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" minlength="10" pattern="[0-9]+" maxlength="10" class="form-control shadow-none" id="mob-no" name="mob-no" value="<?= $adminContact; ?>" placeholder="Contact No" required>
+                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" minlength="10" pattern="[0-9]+" maxlength="10" class="form-control shadow-none" id="mob-no" name="mob-no" value="<?= $ADMINCONTACT; ?>" placeholder="Contact No" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mb-3">

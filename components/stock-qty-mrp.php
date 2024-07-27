@@ -41,16 +41,21 @@
                         Total Stock MRP</div>
                     <div class="mb-0 font-weight-bold text-gray-800">
                         <?php
+                        $looseItemMrp = 0;
+                        $currentItemMrp = 0;
                         $currentMRP = 0;
                         $column = 'mrp';
                         $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                         // print_r($cStock);
                         if ($cStock != null) {
                             foreach ($cStock as $data) {
-                                // print_r($data);
-                                $currentMRP = floatval($currentMRP) + (floatval($data['mrp']) * intval($data['qty']));
-                                
+                                if (in_array(strtolower($data['unit']), LOOSEUNITS)) {
+                                    $looseItemMrp += $data['loosely_price'] * $data['loosely_count'];
+                                } else {
+                                    $currentItemMrp += $data['mrp'] * $data['qty'];
+                                }
                             }
+                            $currentMRP = $looseItemMrp + $currentItemMrp;
                             echo '₹' . round($currentMRP, 2);
                         } else {
                             echo '₹' . '0';
