@@ -171,7 +171,7 @@ if (isset($_GET['ticket'])) {
                                                                                 <small><?php
                                                                                         $dateString = $msgData->added_on;
                                                                                         $dateTime = new DateTime($dateString);
-                                                                                        $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                        $formattedDate = $dateTime->format('F j, Y H:i');
                                                                                         echo $formattedDate; ?></small>
                                                                                 <div class="form-control w-50" readonly style="height: auto; width:auto; background-color:#ffd9b3; color:black;"><?php echo htmlentities($msgData->message); ?></div>
                                                                             <?php endif; ?>
@@ -182,7 +182,7 @@ if (isset($_GET['ticket'])) {
                                                                                     <?php
                                                                                     $dateString = $msgData->added_on;
                                                                                     $dateTime = new DateTime($dateString);
-                                                                                    $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                    $formattedDate = $dateTime->format('F j, Y H:i');
                                                                                     echo $formattedDate;
                                                                                     ?>
                                                                                 </small>
