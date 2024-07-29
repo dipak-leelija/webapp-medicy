@@ -88,9 +88,6 @@ function requestSubmit(t) {
         });
         return;
     }
-
-    console.log(mail.value);
-    
     if (mail.value === '') {
         Swal.fire({
             icon: 'error',
@@ -100,8 +97,8 @@ function requestSubmit(t) {
         return;
     }
 
-    mail = validateEmail(mail.value);
-    if(!mail){
+    email = validateEmail(mail.value);
+    if(!email){
         Swal.fire({
             icon: 'error',
             title: 'Alert',
@@ -161,42 +158,47 @@ function requestSubmit(t) {
         contentType: false,
         processData: false,
         success: function(response) {
-            var jsonResponse = JSON.parse(response);
-            // console.log(jsonResponse);
-            if (jsonResponse.status) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: jsonResponse.message
-                });
-                // window.location.reload();
-            } else {
+            try {
+                var jsonResponse = JSON.parse(response);
+                if (jsonResponse.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: jsonResponse.message
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: jsonResponse.message
+                    });
+                }
+            } catch (e) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: jsonResponse.message
+                    text: 'An unexpected error occurred. Please try again later.'
                 });
             }
-
-            
-            // Clear all fields
-            user.value = '';
-            msgTitle.value = '';
-            msg.value = '';
-
-            inputFile.value = '';
-            let clone = inputFile.cloneNode(true);
-            inputFile.parentNode.replaceChild(clone, inputFile);
-            documentShowDiv.innerHTML = '';
         },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while processing your request. Please try again later.'
+            });
+        }
     });
+    
 }
 
 
 
 
-function reQuery(t){
-
+function reQuery(){
+    console.log('hello requery');
     const masterTable = document.getElementById('master-table-name');
     const responseTable = document.getElementById('response-table-name');
     const masterTicketNumber = document.getElementById('master-ticket-number');
@@ -206,6 +208,15 @@ function reQuery(t){
     let filePath = '';
     const formFlag = '2';
 
+    console.log(masterTicketNumber.value);
+    if (masterTicketNumber.value === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Alert',
+            text: 'No previous query found!'
+        });
+        return;
+    }
     if (msgTitle.value === '') {
         Swal.fire({
             icon: 'error',
@@ -231,12 +242,12 @@ function reQuery(t){
         filePath = inputFile.value;
         if (inputFile.value !== '') {
             let file = inputFile.files[0]; // Get the selected file
+            formData.append('file', file);
             fileName = file.name;
         }
     }else{
         filePath = '';
         fileName = document.getElementById('db-file-data-holder').value;
-        console.log(fileName);
     }
     
 
@@ -258,6 +269,7 @@ function reQuery(t){
         contentType: false, 
         processData: false, 
         success: function(response) {
+            console.log(response);
             try {
                 var jsonResponse = JSON.parse(response);
                 if (jsonResponse.status) {

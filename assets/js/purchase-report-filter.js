@@ -16,6 +16,11 @@ const selectedStartDate = document.getElementById('selected-start-date');
 const selectedEndDate = document.getElementById('selected-end-date');
 const reportGenerationTime = document.getElementById('report-generation-date-time-holder');
 
+// total amount show div
+const totalPurchaseAmountShow = document.getElementById('total-purchase-amount-show-div');
+const grossTotalLebel = document.getElementById('total-purchase-amount');
+totalPurchaseAmountShow.classList.add('d-none');
+
 // date picker control
 $(function() {
     // Set the current date in format "MMMM YYYY" (e.g., "July 2024")
@@ -152,7 +157,7 @@ function filterSearch(){
     gstPurchaseReportSearch(dataArray);
 }
 
-
+let fullReportData = [];
 // item mergin data search function (ajax call)
 function gstPurchaseReportSearch(array){
     let arryString = JSON.stringify(array);
@@ -165,16 +170,13 @@ function gstPurchaseReportSearch(array){
     report = JSON.parse(report);
     // console.log(report);
     if(report.status == '1'){
+        fullReportData = report.data
         purchaseReportShow(report.data);
     }else{
         stockInStockReturnGstReportTable.innerHTML = '';
         alert('no data found');
     }
 }
-
-
-
-
 
 
 function purchaseReportShow(reportData) {
@@ -223,6 +225,7 @@ function purchaseReportShow(reportData) {
         // Create table body
         const tbody = document.createElement('tbody');
         let slNo = start; // Adjust slNo based on pagination
+        let grossTotal = 0;
         paginatedData.forEach(data => {
             slNo++;
             const row = document.createElement('tr');
@@ -285,10 +288,14 @@ function purchaseReportShow(reportData) {
             row.appendChild(totalAmountCell);
 
             tbody.appendChild(row);
+
+            grossTotal = parseFloat(grossTotal) +  parseFloat(data.total_paid_on_item);
         });
 
         // Append the table body to the table
         stockInStockReturnGstReportTable.appendChild(tbody);
+        totalPurchaseAmountShow.classList.remove('d-none');
+        grossTotalLebel.innerHTML = grossTotal.toFixed(2);
 
         // Create pagination controls
         createPaginationControls(data.length, page);
@@ -356,10 +363,6 @@ function purchaseReportShow(reportData) {
 }
 
 
-
-
-
-
 /// report download function call
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -394,21 +397,17 @@ function exportToExcel() {
         []
     ];
 
-    const headers = Array.from(stockInStockReturnGstReportTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(
-        stockInStockReturnGstReportTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+    const headers = ['Sl No', 'Bill No', 'Entry Date', 'Bill Date', 'Distributor', 'Taxable', 'CESS', 'SGST ', 'CGST', 'IGST', 'Total Amount'];
 
     // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Report');
 
     // Add header data1 to the worksheet with merged cells, center alignment, and specified font
-    let currentRow = 1; // Start at row 1
+    let currentRow = 1; 
 
     headerData1.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        const mergeToColumn = headers.length;
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -419,7 +418,7 @@ function exportToExcel() {
 
     // Add header data2 to the worksheet with merged cells and center alignment
     headerData2.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        const mergeToColumn = headers.length;
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -446,19 +445,28 @@ function exportToExcel() {
     let totalSixthColumn = 0;
     let totalEleventhColumn = 0;
 
-    // Add rows to the worksheet
-    rows.forEach(row => {
+    // Add rows to the worksheet using fullReportData
+    fullReportData.forEach((data, index) => {
+        const row = [
+            index + 1, // Serial number
+            data.bill_no || '',
+            data.added_on || '',
+            data.bill_date || '',
+            data.dist_name || '',
+            (parseFloat(data.total_paid_on_item) - parseFloat(data.total_gst_amount)).toFixed(2),
+            '0',
+            (parseFloat(data.total_gst_amount) / 2).toFixed(2) + ' (' + (parseFloat(data.total_gst_percent) / 2).toFixed(2) + '%)',
+            (parseFloat(data.total_gst_amount) / 2).toFixed(2) + ' (' + (parseFloat(data.total_gst_percent) / 2).toFixed(2) + '%)',
+            '0',
+            data.total_paid_on_item
+        ];
         const excelRow = worksheet.addRow(row);
         excelRow.eachCell((cell, colNumber) => {
-            // Skip styling for the first cell (date column)
             if (colNumber > 1) {
-                // Check if cell value is numeric
                 const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
                 if (isNumeric) {
-                    // Left align numeric cells
                     cell.alignment = { horizontal: 'left' };
 
-                    // Add to totals if it's the 6th or 11th column
                     if (colNumber === 6) {
                         totalSixthColumn += parseFloat(cell.value);
                     }
@@ -488,13 +496,17 @@ function exportToExcel() {
     // Generate Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'purchse-report.xlsx');
+        saveAs(blob, 'purchase-report.xlsx');
     });
 }
 
 
 
+
 function exportToCSV() {
+    // Use the fullReportData stored from the AJAX call
+    const data = fullReportData;
+
     const headerData1 = [
         [healthCareName.innerHTML],
     ];
@@ -507,22 +519,11 @@ function exportToCSV() {
         []
     ];
 
-    const headers = Array.from(stockInStockReturnGstReportTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(stockInStockReturnGstReportTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+    const headers = ['Sl No', 'Bill No', 'Entry Date', 'Bill Date', 'Distributor', 'Taxable', 'CESS', 'SGST ', 'CGST', 'IGST', 'Total Amount'];
 
     // Initialize total variables for the 6th and 11th columns
     let totalSixthColumn = 0;
     let totalEleventhColumn = 0;
-
-    // Calculate totals for the 6th and 11th columns
-    rows.forEach(row => {
-        const sixthColumnValue = parseFloat(row[5]) || 0; // 6th column value (Taxable)
-        const eleventhColumnValue = parseFloat(row[10]) || 0; // 11th column value (Total Amount)
-        totalSixthColumn += sixthColumnValue;
-        totalEleventhColumn += eleventhColumnValue;
-    });
 
     // Prepare CSV content
     let csvContent = '';
@@ -543,9 +544,35 @@ function exportToCSV() {
     // Add headers row
     csvContent += headers.join(',') + '\n';
 
-    // Add data rows
-    rows.forEach(row => {
+    // Add data rows and calculate totals
+    data.forEach((data, index) => {
+        const slNo = index + 1;
+        const taxable = (parseFloat(data.total_paid_on_item) - parseFloat(data.total_gst_amount)).toFixed(2);
+        const cess = '0';
+        const sgst = (parseFloat(data.total_gst_amount) / 2).toFixed(2) + ' (' + (parseFloat(data.total_gst_percent) / 2).toFixed(2) + '%)';
+        const cgst = (parseFloat(data.total_gst_amount) / 2).toFixed(2) + ' (' + (parseFloat(data.total_gst_percent) / 2).toFixed(2) + '%)';
+        const igst = '0';
+        const totalAmount = data.total_paid_on_item;
+
+        const row = [
+            slNo,
+            data.bill_no || '',
+            data.added_on || '',
+            data.bill_date || '',
+            data.dist_name || '',
+            taxable,
+            cess,
+            sgst,
+            cgst,
+            igst,
+            totalAmount
+        ];
+
         csvContent += row.join(',') + '\n';
+
+        // Calculate totals
+        totalSixthColumn += parseFloat(taxable);
+        totalEleventhColumn += parseFloat(totalAmount);
     });
 
     // Add an empty row before the totals

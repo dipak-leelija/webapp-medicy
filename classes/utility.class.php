@@ -10,7 +10,7 @@ class Utility
 			if (isAdminId($id)) {
 				$query = " SELECT fname,lname FROM `admin` WHERE `admin_id`= '$id' ";
 			} else {
-				$query = " SELECT fname,lname FROM `employees` WHERE `emp_id`= '$id' ";
+				$query = " SELECT fname, lname FROM `employees` WHERE `emp_id`= '$id' ";
 			}
 			$stmt = $this->conn->prepare($query);
 			$stmt->execute();

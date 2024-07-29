@@ -641,8 +641,15 @@ class Request
 
             if (!$stmt->execute()) {
                 throw new Exception('Execute statement failed: ' . $stmt->error);
+            }else{
+                if($tableName == 'ticket_response'){
+                    $message = "Ticket generated successfully!\nNo:$ticketNo";
+                }
+                if($tableName == 'query_response'){
+                    $message = "Query generated successfully!\nNo:$ticketNo";
+                }
             }
-            return json_encode(['status' => true, 'rowId' => $stmt->insert_id, 'message'=>'Response send successfully!']);
+            return json_encode(['status' => true, 'rowId' => $stmt->insert_id, 'message'=>$message]);
             $stmt->close();
         } catch (Exception $e) {
             return $e->getMessage();

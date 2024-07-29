@@ -32,7 +32,7 @@ if ($_SESSION['ADMIN']) {
     if ($adminDetails->status) {
         $adminData = $adminDetails->data;
 
-        foreach ($adminData as $adminData) {
+        // foreach ($adminData as $adminData) {
             $firstName  = $adminData->fname;
             $lastName   = $adminData->lname;
             $image      = $adminData->adm_img;
@@ -42,7 +42,7 @@ if ($_SESSION['ADMIN']) {
             $phone      = $adminData->mobile_no;
             $password   = $adminData->password;
             $address    = $adminData->address;
-        }
+        // }
     }
 } else {
 
@@ -53,15 +53,16 @@ if ($_SESSION['ADMIN']) {
         // print_r($employeeData);
         foreach ($employeeData as $employeeData) {
 
-            $empName = $employeeData->emp_name;
+            // $empName = $employeeData->emp_name;
 
-            $lastSpacePos = strrpos($empName, ' ');
+            // $lastSpacePos = strrpos($empName, ' ');
 
-            if ($lastSpacePos !== false) {
-                $firstName = substr($empName, 0, $lastSpacePos);
-                $lastName = substr($empName, $lastSpacePos + 1);
-            }
-
+            // if ($lastSpacePos !== false) {
+            //     $firstName = substr($empName, 0, $lastSpacePos);
+            //     $lastName = substr($empName, $lastSpacePos + 1);
+            // }
+            $firstName = $employeeData->fname;
+            $lastName  = $employeeData->lname;
             $image      = $employeeData->emp_img;
 
             if (empty($image)) {
@@ -211,7 +212,7 @@ if ($_SESSION['ADMIN']) {
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="w-75">
+                                    <div class="ml-4 w-75">
                                         <h2 class="mb-0"><?= $firstName . " " . $lastName ?></h2>
                                         <p class="text-primary mb-0">Username: <?= $userName; ?></p>
                                         <p class="text-primary small">ID: <?= $adminId; ?></p>

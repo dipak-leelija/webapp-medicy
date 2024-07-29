@@ -103,8 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filePath           =   $_POST['filePath'];
 
         if ($fileName != '' && $filePath !='') {
-            $fileName = $fileName;
-            $tmpFileName = $filePath;
+            $file = $_FILES['file'];
+            $fileName = $_FILES['file']['name'];
+            $tmpFileName = $_FILES['file']['tmp_name'];
 
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $randomString = '';

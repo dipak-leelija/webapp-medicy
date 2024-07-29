@@ -19,56 +19,68 @@ $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 $Admin = new Admin;
 
-$token = $_GET['tokenNo'];
-$tableName = $_GET['table'];
+
+if (isset($_GET['tokenNo'])) {
+    $token = $_GET['tokenNo'];
+    $tableName = $_GET['table'];
+
+    if ($tableName == 'Generate Quarry') {
+        $table1 = 'query_request';
+        $table2 = 'query_response';
+    } elseif ($tableName == 'Generate Ticket') {
+        $table1 = 'ticket_request';
+        $table2 = 'ticket_response';
+    }
+
+    $selectMasterData = json_decode($Request->fetchMasterTicketData($table1, $token));
+    // print_r($selectMasterData);
+    // echo "<br>";
+
+    $queryDetails = json_decode($Request->selectFromTableNames($token, $table2));
+    if($queryDetails->status){
+        $queryDetailsData = $queryDetails->data;
+    }
+    
 
 
-if ($tableName == 'Generate Quarry') {
-    $table1 = 'query_request';
-    $table2 = 'query_response';
-} elseif ($tableName == 'Generate Ticket') {
-    $table1 = 'ticket_request';
-    $table2 = 'ticket_response';
-}
+    $adminId = $selectMasterData->data->admin_id;
+    $msgSender = $selectMasterData->data->name;
+    $senderEmail = $selectMasterData->data->email;
+    $senderContact = $selectMasterData->data->contact;
 
-$selectMasterData = json_decode($Request->fetchMasterTicketData($table1, $token));
-// print_r($selectMasterData);
-// echo "<br>";
+    $adminData = json_decode($Admin->adminDetails($adminId));
+    $user = $adminData->data->username;
+    //==================================================
 
-$queryDetails = json_decode($Request->selectFromTableNames($token, $table2));
-// print_r($queryDetails);
+    /// dcument detaisl
+    $filePath = TICKET_DOCUMENT_PATH;
 
+    foreach ($queryDetailsData as $query) {
+        // print_r($query);
+        $ticketNo = $query->ticket_no;
+        $lastMsgTitle = $query->title;
+        $fileName = $query->attachment;
+    }
 
-$adminId = $selectMasterData->data->admin_id;
-$msgSender = $selectMasterData->data->name;
-$senderEmail = $selectMasterData->data->email;
-$senderContact = $selectMasterData->data->contact;
+    if ($fileName == '') {
+        $fullFilePath = '';
+    } else {
+        $filePath = TICKET_DOCUMENT_PATH;
+        $fullFilePath = $filePath . $fileName;
+    }
 
-$adminData = json_decode($Admin->adminDetails($adminId));
-$user = $adminData->data->username;
-//==================================================
-
-/// dcument detaisl
-$filePath = TICKET_DOCUMEN_PATH;
-
-foreach ($queryDetails->data as $query) {
-    // print_r($query);
-    $ticketNo = $query->ticket_no;
-    $lastMsgTitle = $query->title;
-    $fileName = $query->attachment;
-}
-
-if ($fileName == '') {
-    $fullFilePath = '';
+    // $fullFilePath = false;
+    // $fileType = pathinfo($fullFilePath, PATHINFO_EXTENSION);
+    $masteruUrlPath = ADM_URL;
 } else {
-    $filePath = TICKET_DOCUMEN_PATH;
-    $fullFilePath = $filePath . $fileName;
+    $ticketNo = '';
+    $user = '';
+    $msgSender = '';
+    $senderEmail = '';
+    $lastMsgTitle = '';
+    $senderContact = '';
+    $queryDetailsData = [];
 }
-
-// $fullFilePath = false;
-// $fileType = pathinfo($fullFilePath, PATHINFO_EXTENSION);
-$masteruUrlPath = ADM_URL;
-
 ?>
 
 <!DOCTYPE html>
@@ -171,33 +183,29 @@ $masteruUrlPath = ADM_URL;
                                 <!-- query respo view -->
                                 <div class="messaging-response-area">
                                     <div class="message mb-4 p-3 border rounded bg-light" style="overflow-y:scroll; max-height: 18rem;">
-                                        <?php foreach ($queryDetails->data as $msgData) : ?>
+                                        <?php foreach ($queryDetailsData as $msgData) : ?>
                                             <?php if (!empty($msgData->message)) : ?>
                                                 <div class="query mb-3">
-                                                    <strong>Query:</strong>
-                                                    <small>(
+                                                    <small>
                                                         <?php
                                                         $dateString = $msgData->added_on;
                                                         $dateTime = new DateTime($dateString);
-                                                        $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                        $formattedDate = $dateTime->format('F j, Y H:i');
                                                         echo $formattedDate;
                                                         ?>
-                                                        )</small>
-                                                    <textarea class="form-control" readonly><?php echo htmlentities($msgData->message); ?></textarea>
+                                                    </small>
+                                                    <div class="form-control w-50" readonly style="height: auto; width:auto; background-color:#ffd9b3; color:black;"><?php echo htmlentities($msgData->message); ?></div>
                                                 </div>
                                             <?php endif; ?>
                                             <?php if (!empty($msgData->response)) : ?>
-                                                <div class="response">
-                                                    <strong>Response:</strong>
-                                                    <small>(
-                                                        <?php
-                                                        $dateString = $msgData->added_on;
-                                                        $dateTime = new DateTime($dateString);
-                                                        $formattedDate = $dateTime->format('F j, Y H:i:s');
-                                                        echo $formattedDate;
-                                                        ?>
-                                                        )</small>
-                                                    <textarea class="form-control" readonly><?php echo htmlentities($msgData->response); ?></textarea>
+                                                <div class="response d-flex flex-column align-items-end">
+                                                    <small><?php
+                                                            $dateString = $msgData->added_on;
+                                                            $dateTime = new DateTime($dateString);
+                                                            $formattedDate = $dateTime->format('F j, Y H:i');
+                                                            echo $formattedDate;
+                                                            ?></small>
+                                                    <div class="form-control w-50" readonly style="height: auto; width:auto; background-color:#b3e6ff; color:black;"><?php echo htmlentities($msgData->response); ?></div>
                                                 </div>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
@@ -264,8 +272,6 @@ $masteruUrlPath = ADM_URL;
 
     <script>
         function displayFileFromDatabase(fileUrl, previewId) {
-            console.log(fileUrl);
-
             const xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
