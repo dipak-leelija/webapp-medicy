@@ -196,7 +196,7 @@ if (isset($_POST['add-emp']) == true) {
                                                 echo '<tr>
                                                         <td>' . $empId . '</td>
                                                         <td>' . $empUsername . '</td>
-                                                        <td>' . $fName .''.$lName.  '</td>
+                                                        <td>' . $fName .' '.$lName.  '</td>
                                                         <td>' . $empRole . '</td>
                                                         <td>' . $empMail . '</td>
                                                         <td>' . formatDateTime($lastUpdate) .'</td>
@@ -258,7 +258,18 @@ if (isset($_POST['add-emp']) == true) {
                                                     <input class="form-control" type="number" name="emp-contact" id="emp-contact" minlength="10" maxlength="10" required>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <!-- <div class="col-md-12">
+                                                    <label class="mb-0 mt-1" for="emp-role">Employee Role:</label>
+                                                    <select class="form-control" name="emp-role" id="emp-role" required>
+                                                        <option value="role1">Choose role..</option>
+                                                        <?php foreach ($showDesignation as $desig) { ?>
+                                                            <option value="<?php echo $desig['id']; ?>"><?php echo $desig['desig_name']; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-role">Employee Role:</label>
                                                     <select class="form-control" name="emp-role" id="emp-role" required>
                                                         <option value="role1">Choose role..</option>
@@ -267,11 +278,9 @@ if (isset($_POST['add-emp']) == true) {
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-address">Full Address:</label>
-                                                    <textarea class="form-control" name="emp-address" id="emp-address" cols="30" rows="4" maxlength="255"></textarea>
+                                                    <textarea class="form-control" name="emp-address" id="emp-address" cols="30" rows="3" maxlength="255"></textarea>
                                                 </div>
 
                                                 <div class="form-group col-md-12">

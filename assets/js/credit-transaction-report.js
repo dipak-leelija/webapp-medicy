@@ -166,6 +166,7 @@ function searchReport(){
 
 
 // item mergin data search function (ajax call)
+let fullReportData = [];
 function getCreditTransactionReport(array){
     let arryString = JSON.stringify(array);
     let salesDataReport = `ajax/credit-transaction-report.ajax.php?dataArray=${arryString}`;
@@ -178,6 +179,7 @@ function getCreditTransactionReport(array){
     // console.log(report);
     if(report.status == '1'){
         creditTransactionReportShow(report.data);
+        fullReportData = report.data;
     }else{
         creditTransactionDetaisTable.innerHTML = '';
         alert('no data found');
@@ -380,9 +382,6 @@ function creditTransactionReportShow(reportDataArray){
 
 
 
-
-
-
 /// report download function call
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -405,7 +404,14 @@ function selectDownloadType(ts){
 
 
 
+
 function exportToExcel() {
+    // Ensure that fullReportData contains the complete data
+    if (!fullReportData || fullReportData.length === 0) {
+        alert('No data available to export');
+        return;
+    }
+
     const headerData1 = [
         [healthCareName.innerHTML],
     ];
@@ -418,10 +424,38 @@ function exportToExcel() {
         []
     ];
 
-    const headers = Array.from(creditTransactionDetaisTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(
-        creditTransactionDetaisTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    // Define headers based on filter values
+    let header = [];
+    if (reportOn.innerHTML == 'P') {
+        header = ['Sl No', 'Distributor Name', 'Bill Id', 'Bill Date', 'Due Date', 'Added On', 'Items Count', 'Amount'];
+    } else if (reportOn.innerHTML == 'S') {
+        header = ['Sl No', 'Customer Name', 'Contact Number', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
+    }
+
+    // Extract rows from fullReportData
+    const rows = fullReportData.map((data, index) => {
+        let row = [];
+        row.push(index + 1); // Serial number
+
+        if (reportOn.innerHTML == 'P') {
+            row.push(data.dist_name || ''); // Distributor Name
+        } else if (reportOn.innerHTML == 'S') {
+            row.push(data.patient_name || ''); // Customer Name
+            row.push(data.patient_contact || ''); // Contact Number
+        }
+
+        row.push('#' + (data.bill_no || '')); // Bill Id
+        row.push(data.bill_date || ''); // Bill Date
+
+        if (reportOn.innerHTML == 'P') {
+            row.push(data.due_date || ''); // Due Date
+        }
+
+        row.push(data.added_on || ''); // Added On
+        row.push(data.total_items || 0); // Items Count
+        row.push(data.amount || 0); // Amount
+
+        return row;
     });
 
     // Create a new Excel workbook
@@ -432,7 +466,7 @@ function exportToExcel() {
     let currentRow = 1; // Start at row 1
 
     headerData1.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        const mergeToColumn = header.length > 0 ? header.length : 1; // Merge across all columns if headers exist
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -443,7 +477,7 @@ function exportToExcel() {
 
     // Add header data2 to the worksheet with merged cells and center alignment
     headerData2.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+        const mergeToColumn = header.length > 0 ? header.length : 1; // Merge across all columns if headers exist
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -455,7 +489,7 @@ function exportToExcel() {
     worksheet.addRow([]);
 
     // Add headers row to the worksheet and apply bold font
-    const headersRow = worksheet.addRow(headers);
+    const headersRow = worksheet.addRow(header);
     headersRow.eachCell((cell, colNumber) => {
         cell.font = { bold: true };
         // Style the header cells with a yellow background
@@ -475,7 +509,7 @@ function exportToExcel() {
         excelRow.eachCell((cell, colNumber) => {
             // Check if cell value is numeric
             const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
-            if (isNumeric && colNumber === headers.length) {
+            if (isNumeric && colNumber === header.length) {
                 // Add to total for the last column
                 totalLastColumn += parseFloat(cell.value);
             }
@@ -488,7 +522,7 @@ function exportToExcel() {
     // Add grand totals row
     const totalsRow = worksheet.addRow([]);
     totalsRow.getCell(1).value = 'Total';
-    totalsRow.getCell(headers.length).value = totalLastColumn.toFixed(2); // Total for the last column
+    totalsRow.getCell(header.length).value = totalLastColumn.toFixed(2); // Total for the last column
 
     // Style the grand totals row
     totalsRow.eachCell((cell, colNumber) => {
@@ -506,165 +540,104 @@ function exportToExcel() {
 
 
 
+// function exportToCSV() {
+//     // Ensure that fullReportData contains the complete data
+//     if (!fullReportData || fullReportData.length === 0) {
+//         alert('No data available to export');
+//         return;
+//     }
 
-function exportToExcel() {
-    const headerData1 = [
-        [healthCareName.innerHTML],
-    ];
-    const headerData2 = [
-        [healthCareAddress.innerHTML],
-        ["GSTIN : " + healthCareGstin.innerHTML],
-        [],
-        ["Purchase Report : " + startDate.innerHTML + " To " + endDate.innerHTML],
-        ["Report generated at : " + reportGenerationDateTime.innerHTML],
-        []
-    ];
+//     // Define headers based on filter values
+//     let header = [];
+//     if (reportOn.innerHTML == 'P') {
+//         header = ['Sl No', 'Distributor Name', 'Bill Id', 'Bill Date', 'Due Date', 'Added On', 'Items Count', 'Amount'];
+//     } else if (reportOn.innerHTML == 'S') {
+//         header = ['Sl No', 'Customer Name', 'Contact Number', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
+//     }
 
-    const headers = Array.from(creditTransactionDetaisTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(
-        creditTransactionDetaisTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+//     // Extract rows from fullReportData
+//     const rows = fullReportData.map((data, index) => {
+//         let row = [];
+//         row.push(index + 1); // Serial number
 
-    // Create a new Excel workbook
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Report');
+//         if (reportOn.innerHTML == 'P') {
+//             row.push(data.dist_name || ''); // Distributor Name
+//         } else if (reportOn.innerHTML == 'S') {
+//             row.push(data.patient_name || ''); // Customer Name
+//             row.push(data.patient_contact || ''); // Contact Number
+//         }
 
-    // Add header data1 to the worksheet with merged cells, center alignment, and specified font
-    let currentRow = 1; // Start at row 1
+//         row.push('#' + (data.bill_no || '')); // Bill Id
+//         row.push(data.bill_date || ''); // Bill Date
 
-    headerData1.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
-        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
-        const mergedCell = worksheet.getCell(`A${currentRow}`);
-        mergedCell.value = rowData[0];
-        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
-        mergedCell.font = { size: 14, bold: true }; // Set font size to 14 and bold
-        currentRow++;
-    });
+//         if (reportOn.innerHTML == 'P') {
+//             row.push(data.due_date || ''); // Due Date
+//         }
 
-    // Add header data2 to the worksheet with merged cells and center alignment
-    headerData2.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
-        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
-        const mergedCell = worksheet.getCell(`A${currentRow}`);
-        mergedCell.value = rowData[0];
-        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
-        currentRow++;
-    });
+//         row.push(data.added_on || ''); // Added On
+//         row.push(data.total_items || 0); // Items Count
+//         row.push(data.amount || 0); // Amount
 
-    // Add an empty row for spacing
-    worksheet.addRow([]);
+//         return row;
+//     });
 
-    // Add headers row to the worksheet and apply bold font
-    const headersRow = worksheet.addRow(headers);
-    headersRow.eachCell((cell, colNumber) => {
-        cell.font = { bold: true };
-        // Style the header cells with a yellow background
-        cell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFFF00' } // Yellow background color
-        };
-    });
+//     // Add header data1 and header data2
+//     const headerData1 = [healthCareName.innerHTML];
+//     const headerData2 = [
+//         healthCareAddress.innerHTML,
+//         "GSTIN : " + healthCareGstin.innerHTML,
+//         "",
+//         "Purchase Report : " + startDate.innerHTML + " To " + endDate.innerHTML,
+//         "Report generated at : " + reportGenerationDateTime.innerHTML,
+//         ""
+//     ];
 
-    // Initialize total variable for the last column
-    let totalLastColumn = 0;
+//     // Convert data to CSV format
+//     let csvContent = "data:text/csv;charset=utf-8,";
 
-    // Add rows to the worksheet
-    rows.forEach(row => {
-        const excelRow = worksheet.addRow(row);
-        excelRow.eachCell((cell, colNumber) => {
-            // Check if cell value is numeric
-            const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
-            if (isNumeric && colNumber === headers.length) {
-                // Add to total for the last column
-                totalLastColumn += parseFloat(cell.value);
-            }
-        });
-    });
+//     // Add header data1
+//     csvContent += headerData1.join(",") + "\n";
 
-    // Add an empty row before the totals
-    worksheet.addRow([]);
+//     // Add header data2
+//     headerData2.forEach(row => {
+//         csvContent += row + "\n";
+//     });
 
-    // Add grand totals row
-    const totalsRow = worksheet.addRow([]);
-    totalsRow.getCell(1).value = 'Grand Total';
-    totalsRow.getCell(headers.length).value = totalLastColumn.toFixed(2); // Total for the last column
+//     // Add an empty row for spacing
+//     csvContent += "\n";
 
-    // Style the grand totals row
-    totalsRow.eachCell((cell, colNumber) => {
-        cell.font = { bold: true };
-        cell.alignment = { horizontal: colNumber > 1 ? 'left' : 'center' };
-    });
+//     // Add headers row
+//     csvContent += header.join(",") + "\n";
 
-    // Generate Excel file
-    workbook.xlsx.writeBuffer().then(buffer => {
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'credit-report.xlsx');
-    });
-}
+//     // Add rows
+//     rows.forEach(row => {
+//         csvContent += row.join(",") + "\n";
+//     });
 
-function exportToCSV() {
-    const headerData1 = [
-        [healthCareName.innerHTML],
-    ];
-    const headerData2 = [
-        [healthCareAddress.innerHTML],
-        ["GSTIN : " + healthCareGstin.innerHTML],
-        [],
-        ["Purchase Report : " + startDate.innerHTML + " To " + endDate.innerHTML],
-        ["Report generated at : " + reportGenerationDateTime.innerHTML],
-        []
-    ];
+//     // Calculate total for the last column
+//     const totalLastColumn = rows.reduce((sum, row) => {
+//         const amount = parseFloat(row[header.length - 1]);
+//         return sum + (isNaN(amount) ? 0 : amount);
+//     }, 0);
 
-    const headers = Array.from(creditTransactionDetaisTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(
-        creditTransactionDetaisTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+//     // Add an empty row before the totals
+//     csvContent += "\n";
 
-    // Initialize total variable for the last column
-    let totalLastColumn = 0;
+//     // Add grand totals row
+//     csvContent += "Total,,".repeat(header.length - 1) + totalLastColumn.toFixed(2) + "\n";
 
-    // Calculate total for the last column
-    rows.forEach(row => {
-        const cellValue = parseFloat(row[headers.length - 1]);
-        if (!isNaN(cellValue)) {
-            totalLastColumn += cellValue;
-        }
-    });
+//     // Encode the CSV content and trigger download
+//     const encodedUri = encodeURI(csvContent);
+//     const link = document.createElement("a");
+//     link.setAttribute("href", encodedUri);
+//     link.setAttribute("download", "credit-report.csv");
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// }
 
-    // Prepare CSV content
-    let csvContent = '';
 
-    // Add header data1 to the CSV content
-    headerData1.forEach(rowData => {
-        csvContent += rowData[0] + '\n';
-    });
 
-    // Add header data2 to the CSV content
-    headerData2.forEach(rowData => {
-        csvContent += rowData[0] + '\n';
-    });
 
-    // Add an empty row for spacing
-    csvContent += '\n';
-
-    // Add headers row to the CSV content
-    csvContent += headers.join(',') + '\n';
-
-    // Add rows to the CSV content
-    rows.forEach(row => {
-        csvContent += row.join(',') + '\n';
-    });
-
-    // Add grand totals row to the CSV content
-    csvContent += 'Grand Total,' + ','.repeat(headers.length - 1) + totalLastColumn.toFixed(2) + '\n';
-
-    // Generate CSV file
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, 'credit-report.csv');
-}
 
 
