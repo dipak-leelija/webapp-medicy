@@ -84,32 +84,7 @@
 </li>
 
 
-<script>
-//     document.addEventListener('DOMContentLoaded', function() {
-//     var expandbtn  = document.getElementById('sidebarExp1');
-//     var expandbtn2  = document.getElementById('sidebarExp2');
-//     var expandbtn3  = document.getElementById('sidebarExp3');
-//     var expandbtn4  = document.getElementById('sidebarExp4');
-//     var sidebar = document.getElementById('accordionSidebar');
-
-//     expandbtn.addEventListener('click', function() {
-//      sidebar.classList.toggle('sidebar');
-//      sidebarToggle.classList.toggle('expanded');
-//     });
-//     expandbtn2.addEventListener('click', function() {
-//      sidebar.classList.toggle('sidebar');
-//      sidebarToggle.classList.toggle('expanded');
-//     });
-//     expandbtn3.addEventListener('click', function() {
-//      sidebar.classList.toggle('sidebar');
-//      sidebarToggle.classList.toggle('expanded');
-//     });
-//     expandbtn4.addEventListener('click', function() {
-//      sidebar.classList.toggle('sidebar');
-//      sidebarToggle.classList.toggle('expanded');
-//     });
-// });
-
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function() {
     var sidebar = document.getElementById('accordionSidebar');
     var buttons = ['sidebarExp1', 'sidebarExp2', 'sidebarExp3', 'sidebarExp4'];
@@ -124,5 +99,4 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', toggleSidebar);
     });
 });
-
-</script>
+</script> -->

@@ -9635,15 +9635,19 @@ a:focus {
 
  #sidebarToggle {
   background-color: #eaecf4;
+  color: #ffff;
+  /* box-shadow: rgba(255, 255, 255, 0.25) 0px 7px 29px 0px; */
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
 }
 
- #sidebarToggle::after {
+ /* #sidebarToggle::after {
   color: #b7b9cc;
-}
+} */
 
  #sidebarToggle:hover {
-  background-color: #dddfeb;
+  background-color: rgb(230, 230, 230, 0.90);
   color: #4e73df;
+  box-shadow: #4e73df 0px 30px 90px;
 }
 
 .sidebar-dark .sidebar-brand {
@@ -9688,15 +9692,16 @@ a:focus {
 
  #sidebarToggle {
   /* background-color: rgba(255, 255, 255, 0.2); */
-  background-color: var(--blue)
+  background-color: var(--blue);
 }
 
-#sidebarToggle::after {
+/* #sidebarToggle::after {
   color: rgb(255 255 255);
-}
+} */
 
-.sidebar-dark #sidebarToggle:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+ #sidebarToggle:hover {
+  background-color: rgba(255, 255, 255,);
+  color: #4e73df;
 }
 
 .sidebar-dark.toggled #sidebarToggle::after {

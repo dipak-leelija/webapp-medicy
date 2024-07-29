@@ -30,7 +30,8 @@ class LoginForm
                     $_SESSION['EMP_EMAIL']      = $email;
                     $_SESSION['EMP_CONTACT_NO'] = $data->contact;
                     $_SESSION['EMP_ROLE']       = $data->emp_role;
-                    $_SESSION['EMP_NAME']       = $data->emp_name;
+                    $_SESSION['EMP_FNAME']      = $data->fname;
+                    $_SESSION['EMP_LNAME']      = $data->lname;
                     $_SESSION['EMP_IMG']        = $data->emp_img;
                     $_SESSION['EMP_ADDRESS']    = $data->emp_address;
                     $_SESSION['EMP_USERNAME']   = $data->emp_username;
