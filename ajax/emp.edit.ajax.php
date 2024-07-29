@@ -6,14 +6,15 @@ require_once CLASS_DIR.'employee.class.php';
 
 $empId          = $_GET['empId'];
 $empUsername    = $_GET['empUsername'];
-$empName        = $_GET['empName'];
+// $empName        = $_GET['empName'];
+$firstName      = $_GET['firstName'];
+$lastName       = $_GET['lastName'];
 $empRole        = $_GET['empRole'];
 $empEmail       = $_GET['empEmail'];
 $empContact     = $_GET['empContact'];
 
-
 $employees = new Employees();
-$EditEmp = $employees->updateEmp($empUsername, $empName, $empRole, $empEmail, $empContact, $empId);
+$EditEmp = $employees->updateEmp($empUsername, $firstName, $lastName, $empRole, $empEmail, $empContact, $empId);
 
 if($EditEmp){
     echo "<div class='alert alert-primary alert-dismissible fade show' role='alert'>
