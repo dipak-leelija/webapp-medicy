@@ -104,7 +104,7 @@
         <!-- ==================================== PHARMACY AREA END ==================================== -->
 
 
-        <?php if ($userRole == 'ADMIN') : ?>
+        <!-- <?php if ($userRole == 'ADMIN') : ?> -->
             <!-- TICKET MENUE -->
             <li class="nav-item <?= $page ==  "ticket-details" ? "active" : ''; ?>">
                 <a class="nav-link collapsed" href="ticket-details.php">
