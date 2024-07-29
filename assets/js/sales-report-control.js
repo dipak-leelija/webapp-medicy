@@ -124,25 +124,7 @@ function dayFilter(t){
 
 
 //// page all function dafination area
-// download file format selection function
-function selectDownloadType(ts){
-    if(document.getElementById('download-checking').innerHTML == '1'){
-        if(ts.value == 'exl'){
-            exportToExcel();
-            downloadType.selectedIndex = 0;
-        }
-        if(ts.value == 'csv'){
-            exportToCSV();
-            downloadType.selectedIndex = 0;
-        }
-        if(ts.value == 'pdf'){
-            exportToPDF();
-        }
-    }else{
-        alert('generate report first!');
-        downloadType.selectedIndex = 0;
-    }
-}
+
 
 // date range select function
 function dateRangeFilter(t){
@@ -702,7 +684,10 @@ function slicedString(string){
 }
 
 
+
+
 // salse data search function (ajax call)
+let reportData = '';
 function salesDataSearchFunction(array){
     let arryString = JSON.stringify(array);
     let salesDataReport = `ajax/salesSummeryReport.ajax.php?dataArray=${arryString}`;
@@ -716,11 +701,11 @@ function salesDataSearchFunction(array){
     
     if(report.status == '1'){
         salesReportShow(report.data);
+        reportData = report.data;
     }else{
         alert('no data found');
     }
 }
-
 
 
 
@@ -1031,6 +1016,9 @@ function salesReportShow(parsedData) {
     renderTable(parsedData, currentPage);
 }
 
+
+
+
 // Custom CSS for Sky Blue Pagination Buttons
 const style = document.createElement('style');
 style.textContent = `
@@ -1049,55 +1037,108 @@ style.textContent = `
 
     .grand-total {
         background-color: #f0f0f0;
-    }
-`;
+    }`;
 document.head.appendChild(style);
 
 
 
 
 
+// download file format selection function
+function selectDownloadType(ts){
+    if(document.getElementById('download-checking').innerHTML == '1'){
+        if(ts.value == 'exl'){
+            exportToExcel(reportData);
+            downloadType.selectedIndex = 0;
+        }
+        if(ts.value == 'csv'){
+            exportToCSV(reportData);
+            downloadType.selectedIndex = 0;
+        }
+        // if(ts.value == 'pdf'){
+        //     exportToPDF();
+        // }
+    }else{
+        alert('generate report first!');
+        downloadType.selectedIndex = 0;
+    }
+}
 
 
 
-/// exporting function gose down there
+
+
 // Function for export the table data to Excel
-function exportToExcel() {
+function exportToExcel(parsedData) {
+    const masterHeaderData1 = [
+        [healthCareName.innerHTML],];
     
-    const headerData1 = [
-        [healthCareName.innerHTML],
-    ];
-    const headerData2 = [
+    const masterHeaderData2 = [
         [healthCareAddress.innerHTML],
         ["GSTIN : " + healthCareGstin.innerHTML],
         [],
         ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
         ["Report generated at : " + reportGenerationTime.innerHTML],
+        []
     ];
 
-    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
-
-    // Calculate grand totals for each column (excluding the first column which is the date column)
-    const grandTotals = headers.map((_, colIndex) => {
-        if (colIndex === 0) return "Grand Total"; // Label for the first column
-        return rows.reduce((sum, row) => {
-            const value = row[colIndex].replace(/[^0-9.-]+/g, ""); // Remove non-numeric characters like currency symbols
-            return sum + (parseFloat(value) || 0);
-        }, 0).toFixed(2); // Sum and format as needed
-    });
-
-    // Create a new Excel workbook
+   
+    // Create a new workbook and a worksheet
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Report');
+    const worksheet = workbook.addWorksheet('Sales Report');
+
+    let currentDateTime = getCurrentDateTime();
+
+    // Define Headers
+    const headerStart1a = ['Date'];
+    const headerStart1b = ['Date', 'Bill Date'];
+    let headerStart1;
+    parsedData.forEach(item => {
+        if (item.hasOwnProperty('bil_dt')) {
+            headerStart1 = headerStart1b;
+        } else {
+            headerStart1 = headerStart1a;
+        }
+    });
+    const headerStart2 = ['Start Date', 'End Date'];
+    const headerEnd1 = ['Total Sell'];
+    const headerEnd2 = ['Total Margin'];
+    const headerEnd3 = ['Total Discount'];
+
+    let headerStart = [];
+    let headerMid = [];
+    let headerEnd = [];
+
+    if (dayFilterVal.innerHTML == 0) {
+        headerStart = headerStart1;
+    } else {
+        headerStart = headerStart2;
+    }
+
+    if (filterByVal.innerHTML === 'ICAT') {
+        headerMid = slicedString(filterByProdCategoryNameVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'PM') {
+        headerMid = slicedString(filterByPaymentModeVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'STF') {
+        headerMid = slicedString(filterByStaffName.innerHTML);
+    }
+
+    if (reportFilterVal.innerHTML === 'Total Sell') {
+        headerEnd = headerEnd1;
+    } else if (reportFilterVal.innerHTML === 'Total Margin') {
+        headerEnd = headerEnd2;
+    } else if (reportFilterVal.innerHTML === 'Total Discount') {
+        headerEnd = headerEnd3;
+    }
+
+    headerMid = [...new Set(headerMid)].sort();
+    const headers = headerStart.concat(headerMid).concat(headerEnd);
 
     // Add header data1 to the worksheet with merged cells, center alignment, and specified font
-    let currentRow = 1; // Start at row 1
+    let currentRow = 1; 
 
-    headerData1.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+    masterHeaderData1.forEach(rowData => {
+        const mergeToColumn = headers.length;
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -1107,8 +1148,8 @@ function exportToExcel() {
     });
 
     // Add header data2 to the worksheet with merged cells and center alignment
-    headerData2.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
+    masterHeaderData2.forEach(rowData => {
+        const mergeToColumn = headers.length;
         worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
         const mergedCell = worksheet.getCell(`A${currentRow}`);
         mergedCell.value = rowData[0];
@@ -1116,56 +1157,200 @@ function exportToExcel() {
         currentRow++;
     });
 
-    // Add an empty row for spacing
-    worksheet.addRow([]);
 
-    // Add headers row to the worksheet and apply bold font
-    const headersRow = worksheet.addRow(headers);
-    headersRow.eachCell((cell, colNumber) => {
+    // Add headers to the worksheet with color
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell(cell => {
         cell.font = { bold: true };
-        // Style the header cells with a yellow background
         cell.fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: 'FFFF00' } // Yellow background color
+            fgColor: { argb: 'FFFF00' } // Yellow
         };
     });
 
-    // Add rows to the worksheet
-    rows.forEach(row => {
-        const excelRow = worksheet.addRow(row);
-        excelRow.eachCell((cell, colNumber) => {
-            // Skip styling for the first cell (date column)
-            if (colNumber > 1) {
-                // Check if cell value is numeric
-                const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
-                if (isNumeric) {
-                    // Left align numeric cells
-                    cell.alignment = { horizontal: 'left' };
+    // Group data and add to worksheet
+    const groupDataByKey = (data, keyFn) => {
+        return data.reduce((acc, item) => {
+            const key = keyFn(item);
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item);
+            return acc;
+        }, {});
+    };
+
+    let groupedData;
+    if (dayFilterVal.innerHTML == 0) {
+        groupedData = groupDataByKey(parsedData, item => item.added_on);
+    } else if (dayFilterVal.innerHTML == 1) {
+        groupedData = groupDataByKey(parsedData, item => item.start_date + ' to ' + item.end_date);
+    } else if (dayFilterVal.innerHTML == 2) {
+        groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
+    }
+
+    const createRows = (groupData, groupKey, headers) => {
+        let rowData = {};
+
+        if (dayFilterVal.innerHTML == 0) {
+            rowData['Date'] = formatDate(groupKey);
+        } else if (dayFilterVal.innerHTML == 1) {
+            const [startDate, endDate] = groupKey.split(' to ');
+            rowData['Start Date'] = formatDate(startDate);
+            rowData['End Date'] = formatDate(endDate);
+        } else if (dayFilterVal.innerHTML == 2) {
+            const [year, month] = groupKey.split('-');
+            rowData['Start Date'] = formatDate(groupData[0].start_date);
+            rowData['End Date'] = formatDate(groupData[0].end_date);
+        }
+
+        let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
+
+        headerMid.forEach(header => {
+            rowData[header] = 0.00;
+        });
+
+        groupData.forEach(data => {
+            if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
                 }
+
+                rowData[data.category_name] += amount;
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            } else if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
+                }
+
+                rowData[data.payment_mode] += amount;
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            } else if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+                let amount = 0;
+                if (reportFilterVal.innerHTML === 'Total Sell') {
+                    amount = parseFloat(data.total_stock_out_amount || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                    amount = parseFloat(data.total_sales_margin || 0);
+                } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                    amount = parseFloat(data.total_discount || 0);
+                }
+
+                rowData[data.added_by_name] += amount;
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
             }
         });
+
+        if (reportFilterVal.innerHTML === 'Total Sell') {
+            rowData['Total Sell'] = totalSellAmount;
+        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+            rowData['Total Margin'] = totalMargin;
+        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+            rowData['Total Discount'] = totalDiscount;
+        }
+
+        return rowData;
+    };
+
+    Object.entries(groupedData).forEach(([groupKey, groupData]) => {
+        const rowData = createRows(groupData, groupKey, headers);
+        const dataRow = [];
+        headers.forEach(header => {
+            if (typeof rowData[header] === 'number') {
+                dataRow.push(`₹${rowData[header].toFixed(2)}`);
+            } else {
+                dataRow.push(rowData[header] || '');
+            }
+        });
+        worksheet.addRow(dataRow);
     });
 
-    // Add the grand totals row and style its cells with green background and bold font
-    const grandTotalRow = worksheet.addRow(grandTotals);
-    grandTotalRow.eachCell((cell, colNumber) => {
-        // Apply bold font to all cells in the grand totals row
-        cell.font = { bold: true };
-        // Skip styling for the first cell (Grand Total label)
-        if (colNumber > 0) {
+    // Calculate and append the grand total row
+    const grandTotals = {};
+    headers.forEach(header => {
+        grandTotals[header] = 0;
+    });
+
+    headers.forEach(header => {
+        if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
+            parsedData.forEach(data => {
+                if (headerMid.includes(header)) {
+                    if (filterByVal.innerHTML === 'ICAT' && data.category_name === header) {
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
+                    } else if (filterByVal.innerHTML === 'PM' && data.payment_mode === header) {
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
+                    } else if (filterByVal.innerHTML === 'STF' && data.added_by_name === header) {
+                        if (reportFilterVal.innerHTML === 'Total Sell') {
+                            grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+                            grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+                            grandTotals[header] += parseFloat(data.total_discount || 0);
+                        }
+                    }
+                } else if (header === 'Total Sell') {
+                    grandTotals[header] += parseFloat(data.total_stock_out_amount || 0);
+                } else if (header === 'Total Margin') {
+                    grandTotals[header] += parseFloat(data.total_sales_margin || 0);
+                } else if (header === 'Total Discount') {
+                    grandTotals[header] += parseFloat(data.total_discount || 0);
+                }
+            });
+        }
+    });
+
+    const grandTotalRow = [];
+    headers.forEach(header => {
+        if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
+            grandTotalRow.push(`₹${grandTotals[header].toFixed(2)}`);
+        }
+    });
+    const grandTotalRowExcel = worksheet.addRow(['Grand Total', ...grandTotalRow]);
+
+    // Style the grand total row
+    grandTotalRowExcel.font = { bold: true };
+    grandTotalRowExcel.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+        const header = headers[colNumber - 1];
+        if (header.includes(header)) {
             cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: '00FF00' } // Green background color
+                fgColor: { argb: '90EE90' } // Light Green
             };
         }
     });
 
-    // Generate Excel file
+    // Save the Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'sales-summery-report.xlsx');
+        saveAs(new Blob([buffer]), `SalesReport_${currentDateTime}.xlsx`);
     });
 }
 
@@ -1176,51 +1361,209 @@ function exportToExcel() {
 
 
 // Function for export the table data to CSV
-function exportToCSV() {
-    const headerData = [
-        [healthCareName.innerHTML],
-        [healthCareAddress.innerHTML],
-        ["GSTIN : " + healthCareGstin.innerHTML],
-        [],
-        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
-        ["Report generated at : " + reportGenerationTime.innerHTML],
-        []
+function exportToCSV(parsedData) {
+    // Define header data
+    const headerData1 = [healthCareName.innerHTML];
+    const headerData2 = [
+        healthCareAddress.innerHTML,
+        "GSTIN : " + healthCareGstin.innerHTML,
+        "",
+        "Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML,
+        "Report generated at : " + reportGenerationTime.innerHTML,
+        ""
     ];
 
-    const headers = Array.from(dataTable.querySelectorAll('th')).map(th => th.textContent); // get headers
+    // Define headers from the data table
+    const headerStart1a = ['Date'];
+    const headerStart1b = ['Date', 'Bill Date'];
+    let headerStart1;
+    parsedData.forEach(item => {
+        if (item.hasOwnProperty('bil_dt')) {
+            headerStart1 = headerStart1b;
+        } else {
+            headerStart1 = headerStart1a;
+        }
+    });
+    const headerStart2 = ['Start Date', 'End Date'];
+    const headerEnd1 = ['Total Sell'];
+    const headerEnd2 = ['Total Margin'];
+    const headerEnd3 = ['Total Discount'];
 
-    // get rows from the table
-    const rows = Array.from(dataTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    let headerStart = [];
+    let headerMid = [];
+    let headerEnd = [];
+
+    if (dayFilterVal.innerHTML == 0) {
+        headerStart = headerStart1;
+    } else {
+        headerStart = headerStart2;
+    }
+
+    if (filterByVal.innerHTML === 'ICAT') {
+        headerMid = slicedString(filterByProdCategoryNameVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'PM') {
+        headerMid = slicedString(filterByPaymentModeVal.innerHTML);
+    } else if (filterByVal.innerHTML === 'STF') {
+        headerMid = slicedString(filterByStaffName.innerHTML);
+    }
+
+    if (reportFilterVal.innerHTML === 'Total Sell') {
+        headerEnd = headerEnd1;
+    } else if (reportFilterVal.innerHTML === 'Total Margin') {
+        headerEnd = headerEnd2;
+    } else if (reportFilterVal.innerHTML === 'Total Discount') {
+        headerEnd = headerEnd3;
+    }
+
+    headerMid = [...new Set(headerMid)].sort();
+    const headers = headerStart.concat(headerMid).concat(headerEnd);
+
+    // Initialize grand totals
+    const grandTotals = {};
+    headers.forEach(header => {
+        grandTotals[header] = 0;
     });
 
-    // Calculate grand totals for each column (excluding the first column which is typically non-numeric)
-    const grandTotals = rows[0].map((_, colIndex) => {
-        if (colIndex === 0) return "Grand Total"; // Label for the first column
-        return rows.reduce((sum, row) => {
-            return sum + (parseFloat(row[colIndex]) || 0);
-        }, 0).toFixed(2); // Sum and format as needed
+    // Group data based on the filter values
+    const groupDataByKey = (data, keyFn) => {
+        return data.reduce((acc, item) => {
+            const key = keyFn(item);
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item);
+            return acc;
+        }, {});
+    };
+
+    let groupedData;
+    if (dayFilterVal.innerHTML == 0) {
+        groupedData = groupDataByKey(parsedData, item => item.added_on);
+    } else if (dayFilterVal.innerHTML == 1) {
+        groupedData = groupDataByKey(parsedData, item => item.start_date + ' to ' + item.end_date);
+    } else if (dayFilterVal.innerHTML == 2) {
+        groupedData = groupDataByKey(parsedData, item => `${item.year}-${item.month}`);
+    }
+
+    const createRows = (groupData, groupKey) => {
+        let rowData = {};
+
+        if (dayFilterVal.innerHTML == 0) {
+            rowData['Date'] = formatDate(groupKey);
+        } else if (dayFilterVal.innerHTML == 1) {
+            const [startDate, endDate] = groupKey.split(' to ');
+            rowData['Start Date'] = formatDate(startDate);
+            rowData['End Date'] = formatDate(endDate);
+        } else if (dayFilterVal.innerHTML == 2) {
+            const [year, month] = groupKey.split('-');
+            rowData['Start Date'] = formatDate(groupData[0].start_date);
+            rowData['End Date'] = formatDate(groupData[0].end_date);
+        }
+
+        let totalSellAmount = 0, totalMargin = 0, totalDiscount = 0;
+
+        headerMid.forEach(header => {
+            rowData[header] = 0.00;
+        });
+
+        groupData.forEach(data => {
+            let amount = 0;
+            if (filterByVal.innerHTML === 'ICAT' && headerMid.includes(data.category_name)) {
+                amount = reportFilterVal.innerHTML === 'Total Sell' ? parseFloat(data.total_stock_out_amount || 0) :
+                        reportFilterVal.innerHTML === 'Total Margin' ? parseFloat(data.total_sales_margin || 0) :
+                        reportFilterVal.innerHTML === 'Total Discount' ? parseFloat(data.total_discount || 0) : 0;
+
+                rowData[data.category_name] += amount;
+                grandTotals[data.category_name] += amount; // Update grand totals
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            } else if (filterByVal.innerHTML === 'PM' && headerMid.includes(data.payment_mode)) {
+                amount = reportFilterVal.innerHTML === 'Total Sell' ? parseFloat(data.total_stock_out_amount || 0) :
+                        reportFilterVal.innerHTML === 'Total Margin' ? parseFloat(data.total_sales_margin || 0) :
+                        reportFilterVal.innerHTML === 'Total Discount' ? parseFloat(data.total_discount || 0) : 0;
+
+                rowData[data.payment_mode] += amount;
+                grandTotals[data.payment_mode] += amount; // Update grand totals
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            } else if (filterByVal.innerHTML === 'STF' && headerMid.includes(data.added_by_name)) {
+                amount = reportFilterVal.innerHTML === 'Total Sell' ? parseFloat(data.total_stock_out_amount || 0) :
+                        reportFilterVal.innerHTML === 'Total Margin' ? parseFloat(data.total_sales_margin || 0) :
+                        reportFilterVal.innerHTML === 'Total Discount' ? parseFloat(data.total_discount || 0) : 0;
+
+                rowData[data.added_by_name] += amount;
+                grandTotals[data.added_by_name] += amount; // Update grand totals
+                totalSellAmount += amount;
+                totalMargin += parseFloat(data.total_sales_margin || 0);
+                totalDiscount += parseFloat(data.total_discount || 0);
+            }
+        });
+
+        if (reportFilterVal.innerHTML === 'Total Sell') {
+            rowData['Total Sell'] = totalSellAmount;
+            grandTotals['Total Sell'] += totalSellAmount; // Update grand totals
+        } else if (reportFilterVal.innerHTML === 'Total Margin') {
+            rowData['Total Margin'] = totalMargin;
+            grandTotals['Total Margin'] += totalMargin; // Update grand totals
+        } else if (reportFilterVal.innerHTML === 'Total Discount') {
+            rowData['Total Discount'] = totalDiscount;
+            grandTotals['Total Discount'] += totalDiscount; // Update grand totals
+        }
+
+        return rowData;
+    };
+
+    const csvRows = [];
+
+    // Add header data to CSV rows
+    csvRows.push(headerData1[0]);
+    headerData2.forEach(row => csvRows.push(row));
+    csvRows.push(headers.join(','));
+
+    // Process grouped data and add to CSV rows
+    Object.entries(groupedData).forEach(([groupKey, groupData]) => {
+        const rowData = createRows(groupData, groupKey);
+        const dataRow = headers.map(header => {
+            if (typeof rowData[header] === 'number') {
+                return `${rowData[header].toFixed(2)}`;
+            } else {
+                return rowData[header] || '';
+            }
+        });
+        csvRows.push(dataRow.join(','));
     });
 
-    // Add grand totals row to the end of the rows array
-    const csvData = [...headerData, headers, ...rows];
+    // Calculate grand totals for the CSV
+    const grandTotalRow = ['Grand Total'];
+    headers.forEach(header => {
+        if (header !== 'Date' && header !== 'Bill Date' && header !== 'Start Date' && header !== 'End Date') {
+            grandTotalRow.push(`${grandTotals[header] || 0.00}`);
+        }
+    });
 
-    // Convert array to CSV string
-    const csvString = csvData.map(row => row.join(',')).join('\n');
+    // Add grand total row to the CSV rows
+    csvRows.push(grandTotalRow.join(','));
+
+    // Convert to CSV string
+    const csvData = csvRows.join('\n');
 
     // Create blob for CSV string
-    const blob = new Blob([csvString], { type: 'text/csv' });
+    const blob = new Blob([csvData], { type: 'text/csv' });
 
     // Create download link
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'sales-summery-report.csv';
+    link.download = `SalesReport_${getCurrentDateTime()}.csv`;
 
     // Append link to DOM, simulate click, and remove link
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
+
+
 
 
 

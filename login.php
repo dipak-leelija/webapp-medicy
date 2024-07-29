@@ -69,27 +69,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="login-wrapper d-flex align-items-center justify-content-center flex-column">
         <form class="p-4 border rounded" action="login.php" method="post" autocomplete="off">
 
-            <div class="d-flex align-items-center justify-content-center mb-3">
-                <img style="width: 160px;" src="<?= IMAGES_PATH ?>logo.png" alt="">
+            <div class="d-flex align-items-center justify-content-center py-4">
+                <img class="pb-2" style="width: 160px;" src="<?= IMAGES_PATH ?>logo.png" alt="">
             </div>
             <?php if (!empty($errorMessage)) : ?>
-            <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?>
+            <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?= $errorMessage ?>
             </div>
             <?php endif; ?>
 
-            <!-- <div class="form-floating mb-3">
-                <input type="text" class=" med-input" name="username" id="username" placeholder="Username" value="<?php echo htmlspecialchars($enteredUsername); ?>">
-                <label class="med-label" for="username">Username</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="password" class=" med-input" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
-                <i class="fas fa-eye " id="toggleBtn" style="display:none;font-size:1.2rem" onclick="togglePassword('password','toggleBtn')"></i>
-                <label class="med-label" for="password">Password</label>
-            </div> -->
-
             <div class="form-group">
-                <input type="text" class=" med-input" name="username" id="username" value="<?php echo htmlspecialchars($enteredUsername); ?>" placeholder="" required autocomplete="off">
+                <input type="text" class=" med-input" name="username" id="username" value="<?= htmlspecialchars($enteredUsername); ?>" placeholder="" required autocomplete="off">
                 <label class="med-label" for="username">Username</label>
             </div>
 
@@ -110,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 
-    <script>
+    <!-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         var errorMessageDiv = document.getElementById('errorMessage');
 
@@ -128,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         }
     });
-    </script>
+    </script> -->
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>password-show-hide.js"></script>

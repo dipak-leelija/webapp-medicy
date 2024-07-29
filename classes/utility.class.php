@@ -21,11 +21,7 @@ class Utility
 				while ($result = $res->fetch_assoc()) {
 					$name = $result;
 				}
-				if (isAdminId($id)) {
-					$fullName = $name['fname'] . ' ' . $name['lname'];
-				} else {
-					$fullName = $name['emp_name'];
-				}
+				$fullName = $name['fname'] . ' ' . $name['lname'];
 
 				$stmt->close();
 				return $fullName;
