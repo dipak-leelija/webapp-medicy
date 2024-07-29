@@ -144,7 +144,7 @@ if ($_SESSION['ADMIN']) {
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-tabs row" role="tablist">
                                         <li class="nav-item col-6">
-                                            <a class="nav-link active" data-toggle="tab" href="#home">Rais Ticket</a>
+                                            <a class="nav-link active" data-toggle="tab" href="#home">Raise a Ticket</a>
                                         </li>
                                         <li class="nav-item col-6">
                                             <a class="nav-link" data-toggle="tab" href="#menu1">Add Request / Query</a>

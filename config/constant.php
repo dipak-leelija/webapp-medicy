@@ -115,8 +115,8 @@ session_start();
 
 	define("PROD_IMG", 							ROOT_DIR.'images/product-image/');
 
-	define("TICKET_DOCUMENT_DIR", 					ROOT_DIR.'images/ticket-documents/');
-	const TICKET_DOCUMEN_PATH				= 	URL.'images/ticket-documents/';
+	define("TICKET_DOCUMENT_DIR", 				ROOT_DIR.'images/ticket-documents/');
+	const TICKET_DOCUMENT_PATH				= 	URL.'images/ticket-documents/';
 	// define("USR_ORGS_IMG_PATH", 				ROOT_DIR.'assets/images/orgs/');
 	
 
@@ -151,8 +151,6 @@ session_start();
 	define('SUP_ROOT_COMPONENT', SUP_ADM_DIR.'components/');
 	define('SUP_ADM_IMG_DIR',	SUP_ADM_DIR.'images/admin-images/');
 	define('ADM_URL',  			URL.'admin/');
-
-
 
 	const SUP_ADM_IMG_PATH						=	ADM_URL.'images/admin-images/';
 	const ADM_ASSETS_PATH						=	ADM_URL.'assets/';

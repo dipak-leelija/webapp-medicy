@@ -32,8 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $viewStatus = 1;
     //======================================
     if ($fileName != '' && $filePath != '') {
-        $fileName = $fileName;
-        $tmpFileName = $filePath;
+        $file = $_FILES['file'];
+        // print_r($file);
+        $fileName = $_FILES['file']['name'];
+        $tmpFileName = $_FILES['file']['tmp_name'];
+        // echo $fileName;
+        // echo $tmpFileName;
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
@@ -52,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uploadedFileName = substr($fileName, 0, -4);
 
         $fileNewName  =   $formattedDateTime . '-' . $randomString . $extention;
+        // echo $fileNewName;
+        // echo TICKET_DOCUMENT_DIR;
         $fileFolder     = TICKET_DOCUMENT_DIR . $fileNewName;
 
         move_uploaded_file($tmpFileName, $fileFolder);

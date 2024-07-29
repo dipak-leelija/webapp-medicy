@@ -13,40 +13,60 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $Utility    = new Utility;
 $Request    = new Request;
 
-$ticketNo = url_dec($_GET['ticket']);
-// echo $ticketNo;
-$ticketDetails = json_decode($Request->selectFromTables($ticketNo));
-// print_r($ticketDetails);
-$ticketData = $ticketDetails->data;
-foreach ($ticketData as $detaisl) {
-    $attachedFile = $detaisl->attachment;
-}
 
+if (isset($_GET['ticket'])) {
+    $ticketNo = url_dec($_GET['ticket']);
 
-$masterTable = $ticketDetails->masterTable;
-$responseTable = $ticketDetails->responseTable;
+    // Assuming $Request->selectFromTables($ticketNo) returns a JSON string
+    $ticketDetails = json_decode($Request->selectFromTables($ticketNo));
+    if ($ticketDetails && isset($ticketDetails->data)) {
+        $ticketData = $ticketDetails->data;
+        $attachedFile = null; // Initialize attachedFile variable
+        foreach ($ticketData as $details) {
+            $attachedFile = $details->attachment;
+        }
 
+        $masterTable = $ticketDetails->masterTable;
+        $responseTable = $ticketDetails->responseTable;
 
-if ($_SESSION['ADMIN']) {
-    $name = $USERFNAME . ' ' . $USERLNAME;
-    $contact = $adminContact;
+        if (isset($_SESSION['ADMIN']) && $_SESSION['ADMIN']) {
+            $name = $userFname . ' ' . $adminLname;
+            $contact = $adminContact;
+        } else {
+            $name = $userFname;
+            $contact = $empContact;
+        }
+
+        $masterTableData = json_decode($Request->fetchMasterTicketData($masterTable, $ticketNo));
+        if ($masterTableData && isset($masterTableData->data)) {
+            $queryCreater = $masterTableData->data->name;
+            $msgTitle = $masterTableData->data->title;
+
+            // ============= image file path control ==============
+            if ($attachedFile) {
+                $fileName = $attachedFile;
+                $filePath = TICKET_DOCUMENT_PATH;
+                $fullFilePath = $filePath . $fileName;
+
+                // You can now use $fullFilePath for displaying or further processing
+            } else {
+                echo 'No attached file found.';
+            }
+        } else {
+            echo 'Error fetching master table data';
+        }
+    } else {
+        echo 'Error decoding ticket details';
+    }
 } else {
-    $name = $USERFNAME;
-    $contact = $empContact;
+    $contact = '';
+    $queryCreater = '';
+    $msgTitle = '';
+    $ticketData = [];
 }
 
-$masterTableData = json_decode($Request->fetchMasterTicketData($masterTable, $ticketNo));
-// print_r($masterTableData);
-
-$queryCreater = $masterTableData->data->name;
-$msgTitle = $masterTableData->data->title;
 
 
-// ============= image file path control ==============
-$fileName = $attachedFile;
-// echo $fileName;
-$filePath = TICKET_DOCUMEN_PATH;
-$fullFilePath = $filePath . $fileName;
 ?>
 
 <!DOCTYPE html>
@@ -135,7 +155,7 @@ $fullFilePath = $filePath . $fileName;
                                             <div class="col-md-7">
                                                 <div class="row">
                                                     <div class="col-md-12 form-group">
-                                                        <input type="text" class="form-control med-input" id="title" name="title" value="<?= $msgTitle; ?>" required>
+                                                        <input type="text" class="form-control med-input" id="title" name="title" value="<?= $msgTitle; ?>" required autocomplete="off">
                                                         <label class="med-label" for="title" style="margin-left:10px;">Message Title</label>
                                                     </div>
                                                 </div>
@@ -144,32 +164,36 @@ $fullFilePath = $filePath . $fileName;
                                                     <div class="col-12">
                                                         <div class="messaging-response-area">
                                                             <div class="message mb-4 p-3 border rounded bg-light" style="overflow-y:scroll; max-height: 15rem;">
-                                                                <div class="query mb-3">
-                                                                    <?php foreach ($ticketData as $msgData) : ?>
-                                                                        <?php if (!empty($msgData->message)) : ?>
-                                                                            <strong>Query:</strong><small>(<?php
-                                                                                                            $dateString = $msgData->added_on;
-                                                                                                            $dateTime = new DateTime($dateString);
-                                                                                                            $formattedDate = $dateTime->format('F j, Y H:i:s');
-                                                                                                            echo $formattedDate; ?>)</small>
-                                                                            <textarea class="form-control" readonly><?php echo htmlentities($msgData->message); ?></textarea>
-                                                                        <?php endif; ?>
-                                                                </div>
-                                                                <div class="response">
-                                                                    <?php if (!empty($msgData->response)) : ?>
-                                                                        <strong>Response:</strong>
-                                                                        <small>(<?php
-                                                                                $dateString = $msgData->added_on;
-                                                                                $dateTime = new DateTime($dateString);
-                                                                                $formattedDate = $dateTime->format('F j, Y H:i:s');
-                                                                                echo $formattedDate; ?>)</small>
-                                                                        <textarea class="form-control" readonly><?php echo htmlentities($msgData->response); ?></textarea>
+                                                                <?php foreach ($ticketData as $msgData) : ?>
+                                                                    <?php if (!empty($msgData->message) || !empty($msgData->response)) : ?>
+                                                                        <div class="query text-start mb-2">
+                                                                            <?php if (!empty($msgData->message)) : ?>
+                                                                                <small><?php
+                                                                                        $dateString = $msgData->added_on;
+                                                                                        $dateTime = new DateTime($dateString);
+                                                                                        $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                        echo $formattedDate; ?></small>
+                                                                                <div class="form-control w-50" readonly style="height: auto; width:auto; background-color:#ffd9b3; color:black;"><?php echo htmlentities($msgData->message); ?></div>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                        <div class="response d-flex flex-column align-items-end">
+                                                                            <?php if (!empty($msgData->response)) : ?>
+                                                                                <small class="text-end">
+                                                                                    <?php
+                                                                                    $dateString = $msgData->added_on;
+                                                                                    $dateTime = new DateTime($dateString);
+                                                                                    $formattedDate = $dateTime->format('F j, Y H:i:s');
+                                                                                    echo $formattedDate;
+                                                                                    ?>
+                                                                                </small>
+                                                                                <div class="form-control mt-1 w-50" readonly style="height: auto; width:auto; background-color:#b3e6ff; color:black;"><?php echo htmlentities($msgData->response); ?></div>
+                                                                            <?php endif; ?>
+                                                                        </div>
                                                                     <?php endif; ?>
-
                                                                 <?php endforeach; ?>
-                                                                </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,19 +204,19 @@ $fullFilePath = $filePath . $fileName;
                                                 </div>
                                                 <label class="med-label text-primary mt-n4" for="fileInput1" style="margin-left:10px;">Document</label>
                                                 <i class="fas fa-upload text-primary" id="upload-document1" style="position: absolute; left: 18rem; bottom: 3rem; cursor: pointer;" onclick="document.getElementById('fileInput1').click();"></i>
-                                                <input type="file" class="d-none" name="fileInput1" id="fileInput1" value="<?= $fileName;?>" onchange="takeInputFile(this, 'document-show-1')">
-                                                <input type="text" class="d-none" id="db-file-data-holder" value="<?= $fileName;?>">
+                                                <input type="file" class="d-none" name="fileInput1" id="fileInput1" value="<?= $fileName; ?>" onchange="takeInputFile(this, 'document-show-1')">
+                                                <input type="text" class="d-none" id="db-file-data-holder" value="<?= $fileName; ?>">
                                             </div>
                                         </div>
                                         <!-- Re query and Submit Button -->
                                         <div class="row mt-3 d-flex">
                                             <div class="col-md-8 form-group">
-                                                <input type="text" class="form-control med-input" id="re-query" name="re-query" required>
+                                                <input type="text" class="form-control med-input" id="re-query" name="re-query" required autocomplete="off">
                                                 <label class="med-label" for="title" style="margin-left:10px;">Query</label>
                                             </div>
                                             <div class="col-md-4 d-flex justify-content-end">
                                                 <col-sm-6>
-                                                    <button class="btn btn-sm btn-primary mb-3 w-100" type="submit" name="regenerate-query" id="regenerate-query" onclick="reQuery(this)">Submit Query</button>
+                                                    <button class="btn btn-sm btn-primary mb-3 w-100" type="submit" name="regenerate-query" id="regenerate-query" onclick="reQuery()">Submit Query</button>
                                                 </col-sm-6>
 
                                                 <div class="col-sm-6">
@@ -215,7 +239,7 @@ $fullFilePath = $filePath . $fileName;
     <!-- End of Page Wrapper -->
 
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
-    
+
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
 
@@ -235,7 +259,6 @@ $fullFilePath = $filePath . $fileName;
 
     <script>
         function displayFileFromDatabase(fileUrl, previewId) {
-            console.log(fileUrl);
 
             const xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -266,7 +289,8 @@ $fullFilePath = $filePath . $fileName;
         }
 
         // PHP code to embed JavaScript
-        <?php if (!empty($attachedFile)) : ?>
+        <?php if (!empty($fileName)) : ?>
+            console.log(<?php $attachedFile; ?>);
             const fileUrl = <?php echo json_encode($fullFilePath); ?>;
             displayFileFromDatabase(fileUrl, 'document-show-1');
         <?php endif; ?>

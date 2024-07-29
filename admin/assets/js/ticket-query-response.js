@@ -63,14 +63,20 @@ function responseOfQuery(t) {
     }
 
     let formData = new FormData();
+    let file = '';
     if (inputedDocument.value !== '') {
-        let file = inputedDocument.files[0]; // Get the selected file
+        file = inputedDocument.files[0]; // Get the selected file
         fileName = file.name;
         filePath = inputedDocument.value;
+        formData.append('file', file);
     }else{
         fileName    = oldFileData.value;
         filePath    = '';
     }
+
+    console.log(file);
+    console.log('file path'+inputedDocument.value);
+    console.log(filePath);
 
     formData.append('masterTable', masterTable.value);
     formData.append('responseTable', responseTable.value);
