@@ -349,8 +349,8 @@ if ($_SESSION['ADMIN']) {
                         <!-- report table start -->
                         <table class="table" id="report-table">
                             <!-- dynamic table gose hear -->
-
                         </table>
+                        
                         <div class="col-md-12 text-right">
                             <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
                         </div>

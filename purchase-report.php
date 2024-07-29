@@ -134,9 +134,17 @@ $distributorList = json_decode($Distributor->showDistributor($adminId));
                             </div>
                         </div>
 
-                        <table class="table" id="gst-purchase-purchasereturn-table">
-                            <!-- dynamic table gose hear -->
-                        </table>
+                        <div class="col-md-12">
+                            <div class="row text-end d-none font-weight-bold" id="total-purchase-amount-show-div">
+                                <label for="" style="color: blue;">Total Purchase Amount:</label>
+                                <label for="" id="total-purchase-amount"></label>
+                            </div>
+                            <div class="row">
+                                <table class="table" id="gst-purchase-purchasereturn-table">
+                                    <!-- dynamic table gose hear -->
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="col-md-12 text-right">
                             <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
