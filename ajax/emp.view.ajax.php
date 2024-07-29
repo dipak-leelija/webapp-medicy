@@ -34,7 +34,7 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
 
 </head>
@@ -47,9 +47,10 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
     if ($showEmployee !== null) {
         $empId = $showEmployee->emp_id;
         $empUsername = $showEmployee->emp_username;
-        $empName = $showEmployee->emp_name;
         $empRoleId = $showEmployee->emp_role;
-
+        // $empName = $showEmployee->emp_name;
+        $fName = $showEmployee->fname;
+        $lName = $showEmployee->lname;
         $empRolData = json_decode($desigRole->designationRoleID($empRoleId), true);
         // print_r($empRolData);
 
@@ -66,7 +67,7 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
         }
 
         $empEmail = $showEmployee->emp_email;
-        $empContact = $showEmployee->contact;
+        $empContact = $showEmployee->emp_contact_no;
 
         $empAddress = $showEmployee->emp_address;
     }
@@ -84,8 +85,12 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
         </div>
 
         <div class="form-group">
-            <label for="" class="col-form-label">Employee Name:</label>
-            <input type="text" class="form-control" id="empName" value="<?php echo $empName; ?>">
+            <label for="" class="col-form-label">Employee First Name:</label>
+            <input type="text" class="form-control" id="fname" value="<?php echo $fName; ?>">
+        </div>
+        <div class="form-group">
+            <label for="" class="col-form-label">Employee Last Name:</label>
+            <input type="text" class="form-control" id="lname" value="<?php echo $lName; ?>">
         </div>
         
         <div class="form-group">
@@ -149,14 +154,16 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
             // Get input values
             let empId = $("#empId").val();
             let empUsername = document.getElementById("empUsername").value;
-            let empName = document.getElementById("empName").value;
+            // let empName = document.getElementById("empName").value;
+            let firstName = document.getElementById("fname").value;
+            let lastName = document.getElementById("lname").value;
             let empRole = document.getElementById("empRole").value;
             let empEmail = document.getElementById("empEmail").value;
             let empContact = document.getElementById("contact").value;
             let empAddress = document.getElementById("empAddress").value;
 
             // Validate input values
-            if (!empId || !empUsername || !empName || !empRole || !empEmail || !empContact || !empAddress) {
+            if (!empId || !empUsername || !firstName || !lastName || !empRole || !empEmail || !empContact || !empAddress) {
                 alert("Please fill in all the required fields.");
                 return;
             }
@@ -174,7 +181,7 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
             }
 
             // Construct the URL for the AJAX request
-            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail) + "&empContact=" + escape(empContact);
+            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&firstName=" + escape(firstName) + "&lastName=" + escape(lastName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail) + "&empContact=" + escape(empContact);
 
             // Make the AJAX request
             request.open('GET', url, true);

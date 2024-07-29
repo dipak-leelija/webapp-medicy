@@ -10,7 +10,7 @@ class Employees
         $password = pass_enc($empPass, EMP_PASS);
 
         try {
-            $sql = "INSERT INTO `employees` (emp_id, admin_id, emp_username, fname, lname, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (emp_id, admin_id, emp_username, fname, lname, emp_role, emp_email, emp_contact_no, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
@@ -281,14 +281,14 @@ class Employees
     // } //end updateEmp function
 
 
-    function updateEmp($empUsername, $empName, $empRole, $empEmail, $empContact, $empId) {
+    function updateEmp($empUsername, $firstName, $lastName, $empRole, $empEmail, $empContact, $empId) {
         try {
             // Prepare the SQL statement with placeholders
-            $edit = "UPDATE `employees` SET `emp_username` = ?, `emp_name` = ?, `emp_role` = ?, `emp_email` = ?, `contact` = ? WHERE `emp_id` = ?";
+            $edit = "UPDATE `employees` SET `emp_username` = ?, `fname` = ?, `lname` = ?, `emp_role` = ?, `emp_email` = ?, `emp_contact_no` = ? WHERE `emp_id` = ?";
             $stmt = $this->conn->prepare($edit);
     
             // Bind parameters to the placeholders
-            $stmt->bind_param("ssssss", $empUsername, $empName, $empRole, $empEmail, $empContact, $empId);
+            $stmt->bind_param("sssssss", $empUsername, $firstName, $lastName, $empRole, $empEmail, $empContact, $empId);
     
             // Execute the prepared statement
             $stmt->execute();
@@ -305,10 +305,11 @@ class Employees
 
             return ['status'=> '0', 'message'=>$e->getMessage()];
 
-        } finally {
-            // Close the statement regardless of the outcome
-            $stmt->close();
-        }
+        } 
+        // finally {
+        //     // Close the statement regardless of the outcome
+        //     $stmt->close();
+        // }
     }
     
 

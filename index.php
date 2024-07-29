@@ -15,7 +15,9 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
-// require_once CLASS_DIR . 'labAppointments.class.php';
+require_once CLASS_DIR . 'component.class.php';
+require_once CLASS_DIR . 'Utility.class.php';
+
 
 // require_once ROOT_DIR . '_config/accessPermission.php';
 // require_once ROOT_DIR . '_config/toastOnPermission.php';
@@ -29,6 +31,8 @@ $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
 $LabBilling        = new LabBilling;
+$Component         = new Component;
+$Utility           = new Utility;
 // $LabAppointments   = new LabAppointments();
 // $AccessPermission  = new AccessPermission();
 // $Employees         = new Employees;
@@ -137,27 +141,27 @@ if ($labBills->status == 1) {
                         <!-- ================ THIRD ROW ================ -->
                         <div class="row d-flex">
                             <div class="col-md-4 mb-4">
-                                <div class="row">
+                                <!-- <div class="row"> -->
                                     <!-- Expiring in 3 Months Card -->
-                                    <div class="col-xl-12 col-md-12 mb-4">
+                                    <!-- <div class="col-xl-12 col-md-12 mb-4">
                                         <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
-                                    </div>
+                                    </div> -->
 
-                                </div>
+                                <!-- </div> -->
 
-                                <div class="row">
+                                <!-- <div class="row"> -->
 
                                     <!----------- Sales of the day card ----------->
-                                    <div class="col-xl-12 col-md-12 mb-4">
-                                        <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
-                                    </div>
+                                    <!-- <div class="col-xl-12 col-md-12 mb-4">
+                                        <?php // require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
+                                    </div> -->
 
-                                </div>
+                                <!-- </div> -->
 
                                 <div class="row">
                                     <!----------- Purchase today card ----------->
                                     <div class="col-xl-12 col-md-12 mb-4">
-                                        <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
+                                        <?php require_once DASHBOARD_COMPONENT . "SalesByEmployee.php"; ?>
                                     </div>
                                 </div>
 
@@ -259,27 +263,20 @@ if ($labBills->status == 1) {
             
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo JS_PATH; ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH; ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH; ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH; ?>sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
+    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+    <script src="<?= PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
-    <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/chart-area-demo.js"></script>
-    
-   
-     ======== CUSTOM JS FOR INDEX PAGE ======= -->
-    <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
+    <script src="<?= JS_PATH; ?>index.js"></script>
 
-
-    <script src="<?php echo JS_PATH; ?>index.js"></script>
 </body>
 
 </html>
