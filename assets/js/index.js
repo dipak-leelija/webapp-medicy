@@ -1,30 +1,12 @@
-// const xmlhttp = new XMLHttpRequest();
-// const searchFor = () => {
-//     let searchForData = document.getElementById("search-all");
+function getRandomColor() {
+    const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-//     let searchReult = document.getElementById('searchAll-list');
+    const r = getRandomNumber(0, 255);
+    const g = getRandomNumber(0, 255);
+    const b = getRandomNumber(0, 255);
 
-//     if (searchForData.value == "") {
-//         searchReult.style.display = "none";
-//         // document.getElementById("search-all-form").reset();
-//         // event.preventDefault();
-//     }
-
-//     if (searchForData.value.length > 5) {
-//         let searchAllUrl = `ajax/search-for-all.ajax.php?searchKey=${searchForData.value}`;
-//         xmlhttp.open("GET", searchAllUrl, false);
-//         xmlhttp.send(null);
-//         // let response = xmlhttp.responseText;
-//         searchReult.style.display = "block";
-//     }
-
-//     xmlhttp.onreadystatechange = function () {
-//         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//             searchReult.innerHTML = xmlhttp.responseText;
-//             // console.log(xmlhttp.responseText);
-//         }
-//     };
-// }
+    return `rgba(${r}, ${g}, ${b}, 0.7)`;
+}
 
 
 const searchFor = () => {
@@ -53,8 +35,8 @@ const searchFor = () => {
 }
 
 const getDtls = (key, id) =>{
-    console.log(key);
-    console.log(id);
+    // console.log(key);
+    // console.log(id);
    
     if(key == 'appointments'){
         window.location.href = `appointments.php?search=${'appointment_search'}&searchKey=${id}`;
