@@ -25,7 +25,8 @@ $showDesignation = json_decode($desigRole->designationRoleCheckForLogin(), true)
 if (isset($_POST['add-emp']) == true) {
 
 
-    $empName      = $_POST['emp-name'];
+    $fName      = $_POST['fname'];
+    $lName      = $_POST['lname'];
     $empUsername  = $_POST['emp-username'];
     $empMail      = $_POST['emp-mail'];
     $empContact   = $_POST['emp-contact'];
@@ -39,7 +40,7 @@ if (isset($_POST['add-emp']) == true) {
         $wrongPasword = false;
         $empId = $IdsGeneration->empIdGenerate($HEALTHCARENAME);
 
-        $addEmployee = $employees->addEmp($empId, $ADMINID, $empUsername, $empName, $empRole, $empMail, $empContact, $empAddress, $empPass);
+        $addEmployee = $employees->addEmp($empId, $ADMINID, $empUsername, $fName, $lName, $empRole, $empMail, $empContact, $empAddress, $empPass);
         // print_r($addEmployee);
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
@@ -171,7 +172,8 @@ if (isset($_POST['add-emp']) == true) {
                                                 $empId          = $showEmployees['emp_id'];
                                                 $empUsername    = $showEmployees['emp_username'];
                                                 $empMail        = $showEmployees['emp_email'];
-                                                $empName        = $showEmployees['emp_name'];
+                                                $fName          = $showEmployees['fname'];
+                                                $lName          = $showEmployees['lname'];
                                                 $empRoleId      = $showEmployees['emp_role'];
                                                 $lastUpdate     = $showEmployees['updated_on'];
 
@@ -194,7 +196,7 @@ if (isset($_POST['add-emp']) == true) {
                                                 echo '<tr>
                                                         <td>' . $empId . '</td>
                                                         <td>' . $empUsername . '</td>
-                                                        <td>' . $empName . '</td>
+                                                        <td>' . $fName .''.$lName.  '</td>
                                                         <td>' . $empRole . '</td>
                                                         <td>' . $empMail . '</td>
                                                         <td>' . formatDateTime($lastUpdate) .'</td>
@@ -234,8 +236,12 @@ if (isset($_POST['add-emp']) == true) {
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="col-md-12">
-                                                    <label class="mb-0 mt-1" for="emp-name"> Employee Name:</label>
-                                                    <input class="form-control" type="text" name="emp-name" id="emp-name" maxlength="30" required>
+                                                    <label class="mb-0 mt-1" for="fname"> First Name:</label>
+                                                    <input class="form-control" type="text" name="fname" id="fname" maxlength="30" required>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="mb-0 mt-1" for="lname"> Last Name:</label>
+                                                    <input class="form-control" type="text" name="lname" id="lname" maxlength="30" required>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-username">Employee Username:</label>
