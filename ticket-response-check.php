@@ -29,7 +29,6 @@ if (isset($_GET['ticket'])) {
         $masterTable = $ticketDetails->masterTable;
         $responseTable = $ticketDetails->responseTable;
 
-        print_r($_SESSION);
         if (isset($_SESSION['ADMIN']) && $_SESSION['ADMIN']) {
             $name = $adminName . ' ' . $adminLname;
             $contact = $adminContact;
