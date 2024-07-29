@@ -191,7 +191,7 @@ function getCreditTransactionReport(array){
 function creditTransactionReportShow(reportDataArray){
     
     // pagination page Constants
-    const rowsPerPage = 1;
+    const rowsPerPage = 25;
     let currentPage = 1;
 
     // Clear the table and other elements
@@ -536,7 +536,6 @@ function exportToExcel() {
         saveAs(blob, 'credit-report.xlsx');
     });
 }
-
 
 
 
