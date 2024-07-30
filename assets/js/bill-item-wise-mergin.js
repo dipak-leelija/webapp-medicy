@@ -167,7 +167,9 @@ function itemMerginSearch(){
 
 
 
+
 // item mergin data search function (ajax call)
+let fullReportData = [];
 function itemMerginDataSearch(array){
 
     let arryString = JSON.stringify(array);
@@ -180,6 +182,7 @@ function itemMerginDataSearch(array){
     // console.log(report);
     report = JSON.parse(report);
     if(report.status == '1'){
+        fullReportData = report.data;
         billItemMerginReportShow(report.data);
     }else{
         grandTotalShow.classList.add('d-none');
@@ -187,6 +190,8 @@ function itemMerginDataSearch(array){
         alert('no data found');
     }
 }
+
+
 
 
 function billItemMerginReportShow(reportData) {
@@ -395,9 +400,6 @@ function billItemMerginReportShow(reportData) {
 
 
 
-
-
-
 // download file format selection function
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -418,117 +420,68 @@ function selectDownloadType(ts){
     }
 }
 
-// exporting function gose down there
+
+
+
 // Function for export the table data to Excel
 function exportToExcel() {
-    const headerData1 = [
-        [healthCareName.innerHTML],
-    ];
-    const headerData2 = [
-        [healthCareAddress.innerHTML],
-        ["GSTIN : " + healthCareGstin.innerHTML],
-        [],
-        ["Sales Summary Report : " + selectedStartDate.innerHTML + " To " + selectedEndDate.innerHTML],
-        ["Report generated at : " + reportGenerationTime.innerHTML],
-    ];
-
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
-
-    // Calculate grand totals for each column (excluding the first column which is the date column)
-    const numColumns = headers.length;
-    const grandTotals = new Array(numColumns).fill('');
-    const startColumn = numColumns - 4; // Start from the last four columns
-
-    for (let colIndex = startColumn; colIndex < numColumns; colIndex++) {
-        grandTotals[colIndex] = rows.reduce((sum, row) => {
-            // Extract numeric value outside parentheses
-            const match = row[colIndex].match(/([0-9.-]+)(?:\s*\([^)]*\))?/);
-            const value = match ? match[1].replace(/[^0-9.-]+/g, "") : "0";
-            return sum + (parseFloat(value) || 0);
-        }, 0).toFixed(2); // Sum and format as needed
-    }
-
-    // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Report');
 
-    // Add header data1 to the worksheet with merged cells, center alignment, and specified font
-    let currentRow = 1; // Start at row 1
+    // Merge rows for header data
+    worksheet.mergeCells('A1:O1');
+    worksheet.getCell('A1').value = healthCareName.innerHTML;
+    worksheet.getCell('A1').font = { size: 16, bold: true };
+    worksheet.getCell('A1').alignment = { vertical: 'middle', horizontal: 'center' };
 
-    headerData1.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
-        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
-        const mergedCell = worksheet.getCell(`A${currentRow}`);
-        mergedCell.value = rowData[0];
-        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
-        mergedCell.font = { size: 14, bold: true }; // Set font size to 14 and bold
-        currentRow++;
+    worksheet.mergeCells('A2:O2');
+    worksheet.getCell('A2').value = healthCareAddress.innerHTML;
+    worksheet.getCell('A2').alignment = { vertical: 'middle', horizontal: 'center' };
+
+    worksheet.mergeCells('A3:O3');
+    worksheet.getCell('A3').value = healthCareGstin.innerHTML;
+    worksheet.getCell('A3').alignment = { vertical: 'middle', horizontal: 'center' };
+
+    worksheet.mergeCells('A4:O4');
+    worksheet.getCell('A4').value = selectedStartDate.innerHTML;
+    worksheet.getCell('A4').alignment = { vertical: 'middle', horizontal: 'center' };
+
+    worksheet.mergeCells('A5:O5');
+    worksheet.getCell('A5').value = 'Report generated time: ' + reportGenerationTime.innerHTML;
+    worksheet.getCell('A5').alignment = { vertical: 'middle', horizontal: 'center' };
+
+    // Add the header row
+    const headerRow = worksheet.addRow(['Added by', 'Bill No', 'Bill Date', 'Patient Name', 'Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)']);
+    headerRow.font = { bold: true };
+
+    // Add data rows
+    fullReportData.forEach(data => {
+        const profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+        const profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        const rowData = [
+            data.added_by_name,
+            data.bill_no,
+            data.bill_date,
+            data.patient_name,
+            data.item,
+            data.category,
+            data.unit,
+            data.manuf_short_name,
+            data.stock_out_qty,
+            data.current_qty,
+            parseFloat(data.mrp).toFixed(2),
+            parseFloat(data.sales_amount).toFixed(2),
+            parseFloat(data.p_amount).toFixed(2),
+            parseFloat(data.gst_amount).toFixed(2),
+            `${profit.toFixed(2)} (${profitPercent.toFixed(2)}%)`
+        ];
+        worksheet.addRow(rowData);
     });
 
-    // Add header data2 to the worksheet with merged cells and center alignment
-    headerData2.forEach(rowData => {
-        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Merge across all columns if headers exist
-        worksheet.mergeCells(`A${currentRow}:${String.fromCharCode(65 + mergeToColumn - 1)}${currentRow}`);
-        const mergedCell = worksheet.getCell(`A${currentRow}`);
-        mergedCell.value = rowData[0];
-        mergedCell.alignment = { horizontal: 'center' }; // Center align the content
-        currentRow++;
-    });
-
-    // Add an empty row for spacing
-    worksheet.addRow([]);
-    currentRow++; // Increment row index for spacing
-
-    // Add headers row to the worksheet and apply bold font
-    const headersRow = worksheet.addRow(headers);
-    headersRow.eachCell((cell, colNumber) => {
-        cell.font = { bold: true };
-        // Style the header cells with a yellow background
-        cell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFFF00' } // Yellow background color
-        };
-    });
-
-    // Add rows to the worksheet
-    rows.forEach(row => {
-        const excelRow = worksheet.addRow(row);
-        excelRow.eachCell((cell, colNumber) => {
-            // Skip styling for the first cell (date column)
-            if (colNumber > 1) {
-                // Check if cell value is numeric
-                const isNumeric = !isNaN(parseFloat(cell.value)) && isFinite(cell.value);
-                if (isNumeric) {
-                    // Left align numeric cells
-                    cell.alignment = { horizontal: 'left' };
-                }
-            }
-        });
-    });
-
-    // Add the grand totals row and style its cells with green background and bold font
-    const grandTotalRow = worksheet.addRow(grandTotals);
-    grandTotalRow.eachCell((cell, colNumber) => {
-        // Apply bold font to all cells in the grand totals row
-        cell.font = { bold: true };
-        // Skip styling for the first cell (Grand Total label)
-        if (colNumber > 0) {
-            cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: '00FF00' } // Green background color
-            };
-        }
-    });
-
-    // Generate Excel file
-    workbook.xlsx.writeBuffer().then(buffer => {
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'billItem-report.xlsx');
+    // Save the workbook
+    workbook.xlsx.writeBuffer().then(data => {
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'bill-item-wise-mergin.xlsx');
     });
 }
 
@@ -548,9 +501,27 @@ function exportToCSV() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    const headers = ['Added by', 'Bill No', 'Bill Date', 'Patient Name', 'Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)'];
+    const rows = fullReportData.map(data => {
+        const profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+        const profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        return [
+            data.added_by_name,
+            data.bill_no,
+            data.bill_date,
+            data.patient_name,
+            data.item,
+            data.category,
+            data.unit,
+            data.manuf_short_name,
+            data.stock_out_qty,
+            data.current_qty,
+            parseFloat(data.mrp).toFixed(2),
+            parseFloat(data.sales_amount).toFixed(2),
+            parseFloat(data.p_amount).toFixed(2),
+            parseFloat(data.gst_amount).toFixed(2),
+            `${profit.toFixed(2)} (${profitPercent.toFixed(2)}%)`
+        ];
     });
 
     // Calculate grand totals for each column (excluding the first column which is the date column)

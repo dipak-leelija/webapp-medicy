@@ -169,6 +169,7 @@ function itemMerginSearch(){
 
 
 // item mergin data search function (ajax call)
+let reportData = [];
 function itemMerginDataSearch(array){
 
     let arryString = JSON.stringify(array);
@@ -181,6 +182,7 @@ function itemMerginDataSearch(array){
     // console.log(report);
     report = JSON.parse(report);
     if(report.status == '1'){
+        reportData = report.data;
         itemMerginReportShow(report.data);
     }else{
         grandTotalShow.classList.add('d-none');
@@ -385,10 +387,6 @@ function itemMerginReportShow(reportData) {
 
 
 
-
-
-
-
 // download file format selection function
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -409,6 +407,8 @@ function selectDownloadType(ts){
     }
 }
 
+
+
 // exporting function gose down there
 // Function for export the table data to Excel
 function exportToExcel() {
@@ -423,9 +423,24 @@ function exportToExcel() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    // Use the full report data instead of the paginated data
+    const headers = ['Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)'];
+    const rows = reportData.map(data => {
+        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        return [
+            data.item,
+            data.category || '',
+            data.unit || '',
+            data.manuf_short_name || '',
+            data.stock_out_qty,
+            data.current_qty,
+            parseFloat(data.mrp).toFixed(2),
+            parseFloat(data.sales_amount).toFixed(2),
+            parseFloat(data.p_amount).toFixed(2),
+            parseFloat(data.gst_amount).toFixed(2),
+            profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)'
+        ];
     });
 
     // Calculate grand totals for each column (excluding the first column which is the date column)
@@ -519,9 +534,10 @@ function exportToExcel() {
     // Generate Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'report.xlsx');
+        saveAs(blob, 'item-wise-mergin-report.xlsx');
     });
 }
+
 
 
 
@@ -539,9 +555,24 @@ function exportToCSV() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+    // Use the full report data instead of the paginated data
+    const headers = ['Item Name', 'Category', 'Unit', 'MANUF.', 'Sale', 'Stock', 'MRP', 'Sales Amt.', 'Purchase', 'Net GST', 'Profit (%)'];
+    const rows = reportData.map(data => {
+        let profit = ((parseFloat(data.sales_amount) - parseFloat(data.p_amount)) - parseFloat(data.gst_amount));
+        let profitPercent = (parseFloat(profit) * 100) / parseFloat(data.p_amount);
+        return [
+            data.item,
+            data.category || '',
+            data.unit || '',
+            data.manuf_short_name || '',
+            data.stock_out_qty,
+            data.current_qty,
+            parseFloat(data.mrp).toFixed(2),
+            parseFloat(data.sales_amount).toFixed(2),
+            parseFloat(data.p_amount).toFixed(2),
+            parseFloat(data.gst_amount).toFixed(2),
+            profit.toFixed(2) + ' (' + profitPercent.toFixed(2) + '%)'
+        ];
     });
 
     // Calculate grand totals for each column (excluding the first column which is the date column)
@@ -558,51 +589,44 @@ function exportToCSV() {
         }, 0).toFixed(2); // Sum and format as needed
     }
 
-    // Function to escape CSV values
-    function escapeCSVValue(value) {
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-            value = '"' + value.replace(/"/g, '""') + '"';
-        }
-        return value;
-    }
-
     // Create CSV content
     let csvContent = '';
 
-    // Add header data1 to the CSV content
+    // Add header data1 to the CSV
     headerData1.forEach(rowData => {
-        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+        csvContent += rowData.join(',') + '\n';
     });
 
-    // Add header data2 to the CSV content
+    // Add header data2 to the CSV
     headerData2.forEach(rowData => {
-        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+        csvContent += rowData.join(',') + '\n';
     });
 
-    // Add an empty row for spacing
+    // Add an empty line for spacing
     csvContent += '\n';
 
-    // Add headers row to the CSV content
-    csvContent += headers.map(escapeCSVValue).join(',') + '\n';
+    // Add headers row to the CSV
+    csvContent += headers.join(',') + '\n';
 
-    // Add rows to the CSV content
+    // Add rows to the CSV
     rows.forEach(row => {
-        csvContent += row.map(escapeCSVValue).join(',') + '\n';
+        csvContent += row.join(',') + '\n';
     });
 
-    // Add the grand totals row to the CSV content
-    csvContent += grandTotals.map(escapeCSVValue).join(',') + '\n';
+    // Add the grand totals row to the CSV
+    csvContent += grandTotals.join(',') + '\n';
 
-    // Create a blob from the CSV content
+    // Download the CSV file
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    // Create a link to download the CSV file
     const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'report.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (link.download !== undefined) { // feature detection
+        // Browsers that support HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'item-wise-mergin-report.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }
