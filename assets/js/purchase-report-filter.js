@@ -384,6 +384,8 @@ function selectDownloadType(ts){
 }
 
 
+
+
 function exportToExcel() {
     const headerData1 = [
         [healthCareName.innerHTML],

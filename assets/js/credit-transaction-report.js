@@ -246,7 +246,7 @@ function creditTransactionReportShow(reportDataArray){
         // Create table body
         const tbody = document.createElement('tbody');
         let slNo = start; // Adjust slNo based on pagination
-        let totalAmount = '';
+        let totalAmount = 0;
 
         paginatedData.forEach(data => {
             slNo++;
@@ -301,7 +301,7 @@ function creditTransactionReportShow(reportDataArray){
             amountCell.style.textAlign = 'right';
             row.appendChild(amountCell);
 
-            totalAmount += data.amount;
+            totalAmount = parseFloat(totalAmount) + parseFloat(data.amount);
 
             tbody.appendChild(row);
         });
@@ -309,7 +309,7 @@ function creditTransactionReportShow(reportDataArray){
         if(reportOn.innerHTML == 'P'){
             needToCollectLabel.innerHTML = totalAmount;
         }else if(reportOn.innerHTML == 'S'){
-            needToPayLabel.innerHTML = totalAmount;
+            needToPayLabel.innerHTML = totalAmount.toFixed(2);
         }
 
         // Append the table body to the table
@@ -533,109 +533,66 @@ function exportToExcel() {
     // Generate Excel file
     workbook.xlsx.writeBuffer().then(buffer => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'credit-report.xlsx');
+        saveAs(blob, 'credit-transaction-report.xlsx');
     });
 }
 
 
 
 
-// function exportToCSV() {
-//     // Ensure that fullReportData contains the complete data
-//     if (!fullReportData || fullReportData.length === 0) {
-//         alert('No data available to export');
-//         return;
-//     }
 
-//     // Define headers based on filter values
-//     let header = [];
-//     if (reportOn.innerHTML == 'P') {
-//         header = ['Sl No', 'Distributor Name', 'Bill Id', 'Bill Date', 'Due Date', 'Added On', 'Items Count', 'Amount'];
-//     } else if (reportOn.innerHTML == 'S') {
-//         header = ['Sl No', 'Customer Name', 'Contact Number', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
-//     }
+function exportToCSV() {
+    if (!fullReportData || fullReportData.length === 0) {
+        alert('No data available to export');
+        return;
+    }
+    console.log(fullReportData);
 
-//     // Extract rows from fullReportData
-//     const rows = fullReportData.map((data, index) => {
-//         let row = [];
-//         row.push(index + 1); // Serial number
+    let header = [];
+    if (reportOn.innerHTML == 'P') {
+        header = ['Sl No', 'Distributor Name', 'Bill Id', 'Bill Date', 'Due Date', 'Added On', 'Items Count', 'Amount'];
+    } else if (reportOn.innerHTML == 'S') {
+        header = ['Sl No', 'Customer Name', 'Contact Number', 'Bill Id', 'Bill Date', 'Added On', 'Items Count', 'Amount'];
+    }
 
-//         if (reportOn.innerHTML == 'P') {
-//             row.push(data.dist_name || ''); // Distributor Name
-//         } else if (reportOn.innerHTML == 'S') {
-//             row.push(data.patient_name || ''); // Customer Name
-//             row.push(data.patient_contact || ''); // Contact Number
-//         }
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += header.join(",") + "\n";
 
-//         row.push('#' + (data.bill_no || '')); // Bill Id
-//         row.push(data.bill_date || ''); // Bill Date
+    fullReportData.forEach((data, index) => {
+        let row = [];
+        row.push(index + 1); // Sl No
 
-//         if (reportOn.innerHTML == 'P') {
-//             row.push(data.due_date || ''); // Due Date
-//         }
+        if (reportOn.innerHTML == 'P') {
+            row.push(data.dist_name || ''); // Distributor Name
+        } else if (reportOn.innerHTML == 'S') {
+            row.push(data.patient_name || ''); // Customer Name
+            row.push(data.patient_contact || ''); // Contact Number
+        }
 
-//         row.push(data.added_on || ''); // Added On
-//         row.push(data.total_items || 0); // Items Count
-//         row.push(data.amount || 0); // Amount
+        row.push(data.bill_no || ''); // Bill Id
+        row.push(data.bill_date || ''); // Bill Date
 
-//         return row;
-//     });
+        if (reportOn.innerHTML == 'P') {
+            row.push(data.due_date || ''); // Due Date
+        }
 
-//     // Add header data1 and header data2
-//     const headerData1 = [healthCareName.innerHTML];
-//     const headerData2 = [
-//         healthCareAddress.innerHTML,
-//         "GSTIN : " + healthCareGstin.innerHTML,
-//         "",
-//         "Purchase Report : " + startDate.innerHTML + " To " + endDate.innerHTML,
-//         "Report generated at : " + reportGenerationDateTime.innerHTML,
-//         ""
-//     ];
+        row.push(data.added_on || ''); // Added On
+        row.push(data.total_items || ''); // Items Count
+        row.push(data.amount || ''); // Amount
 
-//     // Convert data to CSV format
-//     let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += row.join(",") + "\n";
+    });
 
-//     // Add header data1
-//     csvContent += headerData1.join(",") + "\n";
+    // Create a link to trigger the download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "credit-transaction-report.csv");
+    document.body.appendChild(link); // Required for FF
 
-//     // Add header data2
-//     headerData2.forEach(row => {
-//         csvContent += row + "\n";
-//     });
-
-//     // Add an empty row for spacing
-//     csvContent += "\n";
-
-//     // Add headers row
-//     csvContent += header.join(",") + "\n";
-
-//     // Add rows
-//     rows.forEach(row => {
-//         csvContent += row.join(",") + "\n";
-//     });
-
-//     // Calculate total for the last column
-//     const totalLastColumn = rows.reduce((sum, row) => {
-//         const amount = parseFloat(row[header.length - 1]);
-//         return sum + (isNaN(amount) ? 0 : amount);
-//     }, 0);
-
-//     // Add an empty row before the totals
-//     csvContent += "\n";
-
-//     // Add grand totals row
-//     csvContent += "Total,,".repeat(header.length - 1) + totalLastColumn.toFixed(2) + "\n";
-
-//     // Encode the CSV content and trigger download
-//     const encodedUri = encodeURI(csvContent);
-//     const link = document.createElement("a");
-//     link.setAttribute("href", encodedUri);
-//     link.setAttribute("download", "credit-report.csv");
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-// }
-
+    link.click();
+    document.body.removeChild(link);
+}
 
 
 

@@ -108,28 +108,27 @@ function purchaseAnalysisSearch(){
 
 
 
-// item mergin data search function (ajax call)
+// purchase analysis data fetch ajax call
+let fullReportData = [];
 function purchaseAnalysisDataSearch(array){
-
     let arryString = JSON.stringify(array);
     let salesDataReport = `ajax/purchaseAnalysis.ajax.php?dataArray=${arryString}`;
     xmlhttp.open("GET", salesDataReport, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(null);
-    let report = xmlhttp.responseText;
-
-    
+    let report = xmlhttp.responseText; 
     
     report = JSON.parse(report);
     // console.log(report);
     if(report.status == '1'){
+        fullReportData = report.data;
         purchaseAnalysisReportShow(report.data);
     }else{
         itemMarginTable.innerHTML = '';
+        fullReportData = [];
         alert('no data found');
     }
 }
-
 
 
 
@@ -418,9 +417,6 @@ function purchaseAnalysisReportShow(reportData) {
 
 
 
-
-
-
 // download file format selection function
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -442,6 +438,8 @@ function selectDownloadType(ts){
 }
 
 
+
+
 // exporting function gose down there
 // Function for export the table data to Excel
 function exportToExcel() {
@@ -456,10 +454,22 @@ function exportToExcel() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+    const headers = ['Bill Date', 'Bill No', 'Distributo Name', 'Item Name', 'Qty', 'MRP', 'PTR', 'Margin %', 'Margin Difference %', 'Margin Difference ₹', 'Avg. Margin%'];
+    
+    // Use fullReportData for rows
+    const rows = fullReportData.map(data => [
+        data.bill_date || '',
+        data.bill_no || '',
+        data.dist_name || '',
+        data.item_name || '',
+        data.qty || '',
+        parseFloat(data.mrp).toFixed(2),
+        parseFloat(data.ptr).toFixed(2),
+        parseFloat(data.margin).toFixed(2),
+        parseFloat(data.margin_diff).toFixed(2) + ' %',
+        parseFloat(data.margin_diff_amount).toFixed(2),
+        parseFloat(data.avg_margin).toFixed(2)
+    ]);
 
     // Create a new Excel workbook
     const workbook = new ExcelJS.Workbook();
@@ -520,62 +530,74 @@ function exportToExcel() {
 
 
 
+
 // export to csv
 function exportToCSV() {
     const headerData1 = [
-        healthCareName.innerHTML,
+        [healthCareName.innerHTML],
     ];
     const headerData2 = [
-        healthCareAddress.innerHTML,
-        "GSTIN : " + healthCareGstin.innerHTML,
-        "",
-        "Sales Summary Report : " + selectedStartDate.innerHTML,
-        "Report generated at : " + reportGenerationTime.innerHTML,
+        [healthCareAddress.innerHTML],
+        ["GSTIN : " + healthCareGstin.innerHTML],
+        [],
+        ["Sales Summary Report : " + selectedStartDate.innerHTML],
+        ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemMarginTable.querySelectorAll('th')).map(th => th.textContent);
-    const rows = Array.from(itemMarginTable.querySelectorAll('tbody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-    });
+    const headers = ['Bill Date', 'Bill No', 'Distributo Name', 'Item Name', 'Qty', 'MRP', 'PTR', 'Margin %', 'Margin Difference %', 'Margin Difference ₹', 'Avg. Margin%'];
+    
+    // Use fullReportData for rows
+    const rows = fullReportData.map(data => [
+        data.bill_date || '',
+        data.bill_no || '',
+        data.dist_name || '',
+        data.item_name || '',
+        data.qty || '',
+        parseFloat(data.mrp).toFixed(2),
+        parseFloat(data.ptr).toFixed(2),
+        parseFloat(data.margin).toFixed(2),
+        parseFloat(data.margin_diff).toFixed(2) + ' %',
+        parseFloat(data.margin_diff_amount).toFixed(2),
+        parseFloat(data.avg_margin).toFixed(2)
+    ]);
 
-    // Initialize CSV content
-    let csvContent = "";
+    // Convert data to CSV format
+    function convertToCSV(data) {
+        return data.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    }
 
-    // Add header data1 to the CSV content with merged cells (simulated by joining columns)
+    // Prepare CSV content
+    let csvContent = '';
+
+    // Add headerData1 to CSV
     headerData1.forEach(rowData => {
-        csvContent += rowData + "\n";
+        csvContent += rowData[0] + '\n';
     });
 
-    // Add header data2 to the CSV content with merged cells (simulated by joining columns)
+    // Add headerData2 to CSV
     headerData2.forEach(rowData => {
-        csvContent += rowData + "\n";
+        csvContent += rowData[0] + '\n';
     });
 
-    // Add an empty row for spacing
-    csvContent += "\n";
+    // Add empty row for spacing
+    csvContent += '\n';
 
-    // Add headers row to the CSV content
-    csvContent += headers.join(",") + "\n";
+    // Add headers row to CSV
+    csvContent += headers.join(',') + '\n';
 
-    // Add rows to the CSV content
-    rows.forEach(row => {
-        csvContent += row.join(",") + "\n";
-    });
+    // Add rows to CSV
+    csvContent += convertToCSV(rows);
 
-    // Create a Blob from the CSV content
+    // Create a Blob and trigger download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    // Create a link to download the CSV file
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "purchase-analysis-report.csv");
-    document.body.appendChild(link);
-
-    // Simulate a click to trigger the download
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    const link = document.createElement('a');
+    if (link.download !== undefined) { // feature detection
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'purchase-analysis-report.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }

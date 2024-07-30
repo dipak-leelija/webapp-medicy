@@ -175,6 +175,7 @@ function itemExpiryReportSearch(){
 
 
 // item mergin data search function (ajax call)
+let fullReportData = [];
 function itemExpiaryDataSearch(array){
 
     let arryString = JSON.stringify(array);
@@ -185,16 +186,15 @@ function itemExpiaryDataSearch(array){
     let report = xmlhttp.responseText;
 
     report = JSON.parse(report);
-    console.log(report);
     if(report.status == '1'){
         itemExpiryReportShow(report.data);
+        fullReportData = report.data;
     }else{
         // grandTotalShow.classList.add('d-none');
         itemExpiaryReportTable.innerHTML = '';
         alert('no data found');
     }
 }
-
 
 
 
@@ -374,8 +374,6 @@ function itemExpiryReportShow(reportData) {
 
 
 
-
-
 // download file format selection function
 function selectDownloadType(ts){
     if(document.getElementById('download-checking').innerHTML == '1'){
@@ -397,6 +395,8 @@ function selectDownloadType(ts){
 }
 
 
+
+
 // exporting function gose down there
 // Function for export the table data to Excel
 function exportToExcel() {
@@ -411,22 +411,31 @@ function exportToExcel() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
-    headers.push('Total'); // Add 'Total' to the headers
+    // Define headers based on table columns
+    const headers = ['Distributor', 'GSTIN', 'Total Items', 'Total Quantity', 'Stock by PTR'];
 
-    const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
-        const cells = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-        const total = parseFloat(cells[cells.length - 1].replace(/[^0-9.-]+/g, "")) || 0; // Get the last column's value
-        cells.push(total.toFixed(2)); // Add total to each row
-        return cells;
+    // Use fullReportData for rows
+    const rows = fullReportData.map(data => {
+        const distName = data.dist_name || '';
+        const distGstin = data.dist_gstin || 'No GST ID found!';
+        const totalItems = fullReportData.filter(d => d.dist_name === distName).length;
+        const totalQuantity = fullReportData.filter(d => d.dist_name === distName).reduce((sum, d) => sum + d.current_qty, 0);
+        const stockByPtr = fullReportData.filter(d => d.dist_name === distName).reduce((sum, d) => sum + (d.current_qty * d.item_ptr), 0);
+
+        return [distName, distGstin, totalItems, totalQuantity, stockByPtr.toFixed(2)];
+    });
+
+    // Remove duplicate rows based on distributor name
+    const uniqueRows = Array.from(new Set(rows.map(row => row[0]))).map(distName => {
+        const row = rows.find(r => r[0] === distName);
+        return row;
     });
 
     // Calculate grand total for the last column
-    const numColumns = headers.length;
-    const grandTotals = new Array(numColumns).fill('');
+    const grandTotals = new Array(headers.length).fill('');
     grandTotals[0] = 'Total'; // Set the label for the first cell in the grand total row
-    grandTotals[numColumns - 1] = rows.reduce((sum, row) => {
-        const value = parseFloat(row[row.length - 1]) || 0;
+    grandTotals[headers.length - 1] = uniqueRows.reduce((sum, row) => {
+        const value = parseFloat(row[headers.length - 1]) || 0;
         return sum + value;
     }, 0).toFixed(2);
 
@@ -474,7 +483,7 @@ function exportToExcel() {
     });
 
     // Add rows to the worksheet
-    rows.forEach(row => {
+    uniqueRows.forEach(row => {
         const excelRow = worksheet.addRow(row);
         excelRow.eachCell((cell, colNumber) => {
             // Skip styling for the first cell (date column)
@@ -514,9 +523,6 @@ function exportToExcel() {
 
 
 
-
-
-
 // export to csv
 function exportToCSV() {
     const headerData1 = [
@@ -530,71 +536,66 @@ function exportToCSV() {
         ["Report generated at : " + reportGenerationTime.innerHTML],
     ];
 
-    const headers = Array.from(itemExpiaryReportTable.querySelectorAll('th')).map(th => th.textContent);
-    headers.push('Total'); // Add 'Total' to the headers
+    // Define headers based on table columns
+    const headers = ['Distributor', 'GSTIN', 'Total Items', 'Total Quantity', 'Stock by PTR'];
 
-    const rows = Array.from(itemExpiaryReportTable.querySelectorAll('tbody tr')).map(tr => {
-        const cells = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
-        const total = parseFloat(cells[cells.length - 1].replace(/[^0-9.-]+/g, "")) || 0; // Get the last column's value
-        cells.push(total.toFixed(2)); // Add total to each row
-        return cells;
+    // Use fullReportData for rows
+    const rows = fullReportData.map(data => {
+        const distName = data.dist_name || '';
+        const distGstin = data.dist_gstin || 'No GST ID found!';
+        const totalItems = fullReportData.filter(d => d.dist_name === distName).length;
+        const totalQuantity = fullReportData.filter(d => d.dist_name === distName).reduce((sum, d) => sum + d.current_qty, 0);
+        const stockByPtr = fullReportData.filter(d => d.dist_name === distName).reduce((sum, d) => sum + (d.current_qty * d.item_ptr), 0);
+
+        return [distName, distGstin, totalItems, totalQuantity, stockByPtr.toFixed(2)];
+    });
+
+    // Remove duplicate rows based on distributor name
+    const uniqueRows = Array.from(new Set(rows.map(row => row[0]))).map(distName => {
+        const row = rows.find(r => r[0] === distName);
+        return row;
     });
 
     // Calculate grand total for the last column
-    const numColumns = headers.length;
-    const grandTotals = new Array(numColumns).fill('');
+    const grandTotals = new Array(headers.length).fill('');
     grandTotals[0] = 'Total'; // Set the label for the first cell in the grand total row
-    grandTotals[numColumns - 1] = rows.reduce((sum, row) => {
-        const value = parseFloat(row[row.length - 1]) || 0;
+    grandTotals[headers.length - 1] = uniqueRows.reduce((sum, row) => {
+        const value = parseFloat(row[headers.length - 1]) || 0;
         return sum + value;
     }, 0).toFixed(2);
 
-    // Function to escape CSV values
-    function escapeCSVValue(value) {
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-            value = '"' + value.replace(/"/g, '""') + '"';
-        }
-        return value;
-    }
-
-    // Create CSV content
+    // Convert data to CSV format
     let csvContent = '';
 
-    // Add header data1 to the CSV content
+    // Add header data1 to CSV
     headerData1.forEach(rowData => {
-        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Adjust for header length
+        csvContent += rowData[0] + ','.repeat(mergeToColumn - 1) + '\n';
     });
 
-    // Add header data2 to the CSV content
+    // Add header data2 to CSV
     headerData2.forEach(rowData => {
-        csvContent += rowData.map(escapeCSVValue).join(',') + '\n';
+        const mergeToColumn = headers.length > 0 ? headers.length : 1; // Adjust for header length
+        csvContent += rowData[0] + ','.repeat(mergeToColumn - 1) + '\n';
     });
 
     // Add an empty row for spacing
     csvContent += '\n';
 
-    // Add headers row to the CSV content
-    csvContent += headers.map(escapeCSVValue).join(',') + '\n';
+    // Add headers row to CSV
+    csvContent += headers.join(',') + ',Total\n';
 
-    // Add rows to the CSV content
-    rows.forEach(row => {
-        csvContent += row.map(escapeCSVValue).join(',') + '\n';
+    // Add rows to CSV
+    uniqueRows.forEach(row => {
+        csvContent += row.join(',') + '\n';
     });
 
-    // Add the grand totals row to the CSV content
-    csvContent += grandTotals.map(escapeCSVValue).join(',') + '\n';
+    // Add the grand totals row
+    csvContent += grandTotals.join(',') + '\n';
 
-    // Create a blob from the CSV content
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    // Create a link to download the CSV file
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'expired-items-report.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Generate CSV file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+    saveAs(blob, 'expired-items-report.csv');
 }
+
 
