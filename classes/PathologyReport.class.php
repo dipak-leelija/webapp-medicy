@@ -90,6 +90,23 @@ class PathologyReport
         }
     }
 
+    function testReportByPatient($patient_id)
+    {
+        try {
+            $sql = "SELECT * FROM `test_report` WHERE `patient_id` = '$patient_id'";
+            $query = $this->conn->query($sql);
+            $data = [];
+            while($result = $query->fetch_assoc()){
+                $result['details'] = $this->reportDetails($result['id']);
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 
     function testReportFetch($adminId = "")
     {
