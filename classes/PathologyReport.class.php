@@ -8,17 +8,17 @@ class PathologyReport
      *                                      Test Report Table                                   *
      ********************************************************************************************/
 
-    function addTestReport($bill_id, $adminId, $addedBy, $added_on = NOW)
+    function addTestReport($bill_id, $patient_id, $adminId, $addedBy, $added_on = NOW)
     {
         try {
-            $addQuery = "INSERT INTO `test_report` (`bill_id`, `admin_id`, `created_by`, `added_on`) VALUES (?, ?, ?, ?)";
+            $addQuery = "INSERT INTO `test_report` (`bill_id`, `patient_id`, `admin_id`, `created_by`, `added_on`) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($addQuery);
 
             if ($stmt === false) {
                 throw new Exception('Prepare failed: ' . $this->conn->error);
             }
 
-            $stmt->bind_param('ssss', $bill_id, $adminId, $addedBy, $added_on);
+            $stmt->bind_param('sssss', $bill_id, $patient_id, $adminId, $addedBy, $added_on);
 
             $result = $stmt->execute();
             if ($result) {
