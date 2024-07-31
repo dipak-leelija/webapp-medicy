@@ -52,6 +52,7 @@ $IdsGeneration  = new IdsGeneration;
         $mrp = $_POST['mrp'];
         $gst = $_POST['gst'];
         $hsnoNumber = $_POST['hsno-number'];
+        $prodReqStatus = 0;
 
         $description = 'New Product Request';
 
@@ -60,7 +61,7 @@ $IdsGeneration  = new IdsGeneration;
 
         //Insert into request table 
 
-        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, 0);
+        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, $prodReqStatus);
 
 
         // print_r($addProductRequest);
