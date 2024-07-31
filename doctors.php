@@ -261,7 +261,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="doc-email" class="col-form-label">Email:</label>
-                                    <input type="email" class="form-control" id="email" autocomplete="off" onfocusout="checkMail(this)">
+                                    <input type="email" class="form-control" id="email" autocomplete="off">
                                 </div>
                             </div>
 
@@ -269,7 +269,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                 <div class="form-group">
                                     <label for="doc-phno" class="col-form-label">Contact
                                         Number:</label>
-                                    <input type="number" class="form-control" id="doc-phno" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
+                                    <input type="number" class="form-control" id="doc-phno" autocomplete="off">
                                 </div>
                             </div>
 
