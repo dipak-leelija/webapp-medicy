@@ -51,20 +51,20 @@ $empId = '';
 
 if (isset($_GET['search']) || isset($_GET['dateFilterStart']) || isset($_GET['dateFilterEnd']) || isset($_GET['docIdFilter']) || isset($_GET['staffIdFilter'])) {
 
-    if(isset($_GET['search'])){
+    if (isset($_GET['search'])) {
         $searchVal = $match = $_GET['search'];
     }
-    
-    if(isset($_GET['dateFilterStart'])){
+
+    if (isset($_GET['dateFilterStart'])) {
         $startDate = $_GET['dateFilterStart'];
         $endDate = $_GET['dateFilterEnd'];
     }
-    
-    if(isset($_GET['docIdFilter'])){
+
+    if (isset($_GET['docIdFilter'])) {
         $docId = $_GET['docIdFilter'];
     }
 
-    if(isset($_GET['staffIdFilter'])){
+    if (isset($_GET['staffIdFilter'])) {
         $empId = $_GET['staffIdFilter'];
     }
 
@@ -154,14 +154,11 @@ if ($allAppointments->status) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="row" style="z-index: 999;">
-                        <div class="col-12">
-                            <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
-                        </div>
-                    </div>
+
+                    <?php include ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow-sm mb-4">
 
                         <div class="card-header py-3 justify-content-between">
 
@@ -184,14 +181,14 @@ if ($allAppointments->status) {
                                 <div class="d-flex">
                                     <div class="col-md-6 col-6 mt-2">
                                         <div class="input-group">
-                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()"*/>
+                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
 
                                             <div class="input-group-append" id="appointment-search-filter-1">
                                                 <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                             </div>
 
                                             <!-- <div class="d-none input-group-append" > -->
-                                                <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1"type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                            <button class=" d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                             <!-- </div> -->
                                         </div>
                                     </div>
@@ -241,7 +238,8 @@ if ($allAppointments->status) {
                                             <?php
 
                                             foreach ($employeeDetails as $employeeData) {
-                                                echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
+                                                $empName = $employeeData->fname.' '.$employeeData->lname;
+                                                echo '<option value="' . $employeeData->emp_id . '">' . $empName . '</option>';
                                             }
 
                                             ?>
@@ -278,11 +276,12 @@ if ($allAppointments->status) {
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Patient Name</th>
+                                            <th>Contact</th>
                                             <th>Assigned Doctor</th>
                                             <th>Date</th>
                                             <th>Action</th>
@@ -294,11 +293,12 @@ if ($allAppointments->status) {
                                         if (!empty($slicedAppointments)) {
                                             // print_r($slicedAppointments);
                                             foreach ($slicedAppointments as $showAppointDetails) {
-                                                $appointmentTableID = $showAppointDetails->id;
-                                                $appointmentID = $showAppointDetails->appointment_id;
-                                                $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
-                                                $appointmentName = $showAppointDetails->patient_name;
-                                                $getDoctorForPatient = $showAppointDetails->doctor_id;
+                                                $appointmentTableID   = $showAppointDetails->id;
+                                                $appointmentID        = $showAppointDetails->appointment_id;
+                                                $appointmentDate      = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
+                                                $appointmentName      = $showAppointDetails->patient_name;
+                                                $patientContact       = $showAppointDetails->patient_phno;
+                                                $getDoctorForPatient  = $showAppointDetails->doctor_id;
 
                                                 $deleteAppointmentLink = "delete-appointment.php?delete-appointment=$appointmentID";
                                                 $updateAppointmentLink = "update-appointment.php?update-prescription=$appointmentID";
@@ -321,16 +321,44 @@ if ($allAppointments->status) {
                                                         
                                                         <td>' . $appointmentID . '</td>
                                                         <td>' . $appointmentName . '</td>
+                                                        <td>' . $patientContact . '</td>
                                                         <td>' . $docName . '</td>
                                                         <td>' . $appointmentDate . '</td>
 
-                                                        <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit"><i class="far fa-edit"></i></a>
+                                                        <td>
+
+                                                        
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-outline-primary rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-sliders-h"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <span class="dropdown-item cursor-pointer" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                View & Edit
+                                                                </span>
+
+                                                                
+                                                                <a class="dropdown-item" onclick="openPrint(this.href); return false;" href="' . URL . 'prescription.php?prescription=' . url_enc($appointmentID) . '">
+                                                                    <i class="fas fa-print"></i>
+                                                                    Print Prescription
+                                                                </a>
+                                                        
+                                                                <span class="dropdown-item cursor-pointer text-danger" data-id="' . $appointmentID . '">
+                                                                <i class="far fa-trash-alt"></i>
+                                                                Delete
+                                                                </span>
+                                                        
+                                                            </div>
+                                                        </div>
+
+                                                        
+                                                        
 
 
-                                                        <a href="prescription.php?prescription=' . url_enc($appointmentID) . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
 
 
-                                                        <a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
+                                                        <a class="delete-btn" ></a>
                                                         </td>
                                                     </tr>';
                                             }
@@ -353,20 +381,12 @@ if ($allAppointments->status) {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     <!-- Select Appointment Type Modal  -->
     <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -32,34 +32,16 @@ if (!$labBillingData->status) {
     $resErrMsg = $labBillingData->message;
 } else {
 
-    // $reportDetails = $PathologyReport->getReportParamsByBill($testBillId);
-    // if (!empty($reportDetails)) {
-    //     foreach ($reportDetails as $eachParam) {
-    //         $details = json_decode($Pathology->showTestByParameter($eachParam));
-    //         if($details->status){
-    //             $existingTests[] = $details->data->test_id;
-    //         }
-    //     }
-    //     $existingTests = array_unique($existingTests);
-    // }else {
-    //     $existingTests = [];
-    // }
+    $patientId = $labBillingData->data->patient_id;
 
     $labBillingDetails  = json_decode($LabBillDetails->billDetailsById($testBillId)); //labBillingDetails
-    // $showpatient        = $LabReport->patientDatafetch($labBillingData->data->patient_id);
-    $showpatient        = $Patients->patientsDisplayByPId($labBillingData->data->patient_id);
-    // $testBillId         = $labBillingData->data->bill_id;
-    // $patientId          = $labBillingData->data->patient_id;
-
-
-
+    $showpatient        = $Patients->patientsDisplayByPId($patientId);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $parameterData =  array_combine($_POST['params'], $_POST['values']);
-        // print_r($parameterData);
-
-        $reportResponse = $PathologyReport->addTestReport($testBillId, $ADMINID, $ADDEDBY, NOW);
+ 
+        $reportResponse = $PathologyReport->addTestReport($testBillId, $patientId, $ADMINID, $ADDEDBY, NOW);
         $reportResponse = json_decode($reportResponse);
         if ($reportResponse->status) {
             $addedReportId = $reportResponse->reportid;

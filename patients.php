@@ -97,7 +97,7 @@ if ($allPatients->status) {
     <title>Patients - <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template-->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -229,7 +229,7 @@ if ($allPatients->status) {
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Patient ID</th>
@@ -254,25 +254,24 @@ if ($allPatients->status) {
                                                 $slicedPatientsVisited = $slicedPatientsdetails->visited;
                                                 $slicedPatientsLabVisited = $slicedPatientsdetails->lab_visited;
                                                 $slicedPatientsPin = $slicedPatientsdetails->patient_pin;
-                                                echo '<tr>
-                                         <td>' . $slicedPatientsID . '</td>
-                                         <td>' . $slicedPatientsName . '</td>
-                                         <td>' . $slicedPatientsAge . '</td>
-                                         <td><a class="text-decoration-none" href="tel:$slicedPatientsPhone">' . $slicedPatientsPhone . '</a></td>
-                                         <td class="align-middle pb-0 pt-0">
-                                             <small class="small">
-                                                 <span>Doctor: ' . $slicedPatientsVisited . '</span>
-                                                 <br>
-                                                 <span>Lab: ' . $slicedPatientsLabVisited . '</span></small>
-                                         </td>
-                                         <td> ' . $slicedPatientsPin . '</td>
+                                            echo '<tr>
+                                                    <td>' . $slicedPatientsID . '</td>
+                                                    <td>' . $slicedPatientsName . '</td>
+                                                    <td>' . $slicedPatientsAge . '</td>
+                                                    <td><a class="text-decoration-none" href="tel:'.$slicedPatientsPhone.'">' . $slicedPatientsPhone . '</a></td>
+                                                    <td class="align-middle pb-0 pt-0">
+                                                        <small class="small">
+                                                            <span class="pr-2">OPD: ' . $slicedPatientsVisited . '</span>
+                                                            <span>Lab: ' . $slicedPatientsLabVisited . '</span></small>
+                                                    </td>
+                                                    <td> ' . $slicedPatientsPin . '</td>
 
-                                         <td class="text-center">
-                                             <a class="text-primary" href="patient-details.php?patient=' . url_enc($slicedPatientsID) . '"
-                                                 title="View and Edit"><i class="fas fa-eye"></i>
-                                             </a>
-                                         </td>
-                                     </tr>';
+                                                    <td class="text-center">
+                                                        <a class="text-primary" href="patient-details.php?patient=' . url_enc($slicedPatientsID) . '"
+                                                            title="View and Edit"><i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>';
                                             }
                                         } ?>
                                     </tbody>

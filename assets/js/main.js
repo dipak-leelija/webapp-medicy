@@ -2,6 +2,15 @@ const goback = () => {
   window.history.back();
 };
 
+function getRandomColor() {
+  const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const r = getRandomNumber(0, 255);
+  const g = getRandomNumber(0, 255);
+  const b = getRandomNumber(0, 255);
+
+  return `rgba(${r}, ${g}, ${b}, 0.7)`;
+}
 /*==================================================================
     [ Focus input ]*/
 const inputElements = document.querySelectorAll(".input100");
@@ -178,5 +187,5 @@ showPassButtons.forEach((button) => {
 
 ///open a new tab for invoice print///
 const openPrint=(url)=> {
-    window.open(url, '_blank', 'width=1500,height=800');
+    window.open(url, '_blank', 'width=800,height=800');
 }

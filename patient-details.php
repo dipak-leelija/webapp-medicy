@@ -12,7 +12,9 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
-require_once CLASS_DIR . 'report-generate.class.php';
+// require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'PathologyReport.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 
 
@@ -23,7 +25,9 @@ $LabBilling     = new LabBilling;
 $LabBillDetails = new LabBillDetails();
 $SubTests       = new SubTests();
 $LabAppointments = new LabAppointments();
-$LabReport      = new LabReport;
+$PathologyReport = new PathologyReport;
+$Pathology        = new Pathology;
+// $LabReport      = new LabReport;
 $StockOut       = new StockOut;
 
 
@@ -33,12 +37,12 @@ $getPatientId = url_dec($_GET['patient']); // on click get value
 // patient details by patient id
 $patientDetails = json_decode($Patients->patientsDisplayByPId($getPatientId));
 
-$Name = $patientDetails->name;
-$Age  = $patientDetails->age;
-$sex  = $patientDetails->gender;
-$address = $patientDetails->address_1;
-$labVisited = $patientDetails->lab_visited;
-$lastVisited = $patientDetails->added_on;
+$Name           = $patientDetails->name;
+$Age            = $patientDetails->age;
+$sex            = $patientDetails->gender;
+$address        = $patientDetails->address_1;
+$labVisited     = $patientDetails->lab_visited;
+$lastVisited    = $patientDetails->added_on;
 
 
 /// list of invoice with bill from stokOut table /// stock out data by patient id
@@ -71,18 +75,7 @@ if ($stockOutDetailsBYinvoiveID !== null) {
 //end...
 
 // =====find labreport by Id=====// data fetch form lab_report table // by patient id and adminid
-$labreportfetch = $LabReport->patientDatafetchByPatientAndAdmin($getPatientId, $adminId);
-$labReportData = json_decode($labreportfetch, true);
-// print_r($labReportData);
-
-if (!empty($labReportData)) {
-    $reportId  = $labReportData['id'];
-    $patientId = $labReportData['patient_id'];
-}
-// else {
-//     echo "no data found";
-// } ////end....
-
+$labreport = json_decode($PathologyReport->testReportByPatient($getPatientId), true);
 
 
 // lab billing details
@@ -124,11 +117,9 @@ if (!empty($labBillingDetails)) {
     ///......find multiple subtest name from multiple test_id.....//////
     $subTestNames = [];
     foreach ($test_ids as $test_id) {
-        $subTestDetails = $SubTests->showSubTestsId($test_id);
-        if (is_array($subTestDetails)) {
-            foreach ($subTestDetails as $subTest) {
-                $subTestNames[] = $subTest['sub_test_name'];
-            }
+        $testList = $Pathology->showTestById($test_id);
+        if (is_array($testList)) {
+            $subTestNames[] = $testList['name'];
         }
     }
     $occurrences = array_count_values($subTestNames);
@@ -238,7 +229,8 @@ if (!empty($labBillingDetails)) {
                                                             <tr>
                                                                 <th>Last Visited</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= isset($maxBillDate) ? $maxBillDate : ' _ / _ / _' ?></td>
+                                                                <td><?= isset($maxBillDate) ? $maxBillDate : ' _ / _ / _' ?>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Amount Spend</th>
@@ -250,31 +242,43 @@ if (!empty($labBillingDetails)) {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- <div class="col-5 p-2">
-                                            <canvas id="chart2" style="height: 167px; width: 100%;"></canvas>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="scondrow d-flex justify-content-around pt-2 ">
-                                <div class=" w- 100 mt-2 p-2 rounded">
-                                    <canvas id="chart2"></canvas>
+                            <div class="row d-flex justify-content-around pt-5">
+                                <div class="col-12 col-md-6">
+                                    <div class="shadow-sm p-4">
+                                        <p class="text-xs font-weight-bold text-primary text-uppercase">Purchase Graph</p>
+                                        <?php if (!empty($itemNames)) : ?>
+                                            <canvas id="chart2" style="width: 100%;"></canvas>
+                                        <?php else : ?>
+                                            <div class="p-3">
+                                                <p class="text-sm text-center text-danger">No purchase history found.</p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                                <?php
-                                if (empty($subTestNames)) {
-                                    echo " ";
-                                } else {
-                                    echo "<div class='graph-Chart'>
-                                        <canvas id='myChart'>Most taken Tests</canvas>
-                                      </div>";
-                                }
-                                ?>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="shadow-sm p-4">
+                                        <p class="text-xs font-weight-bold text-primary text-uppercase">Tests Taken</p>
+                                        <?php if (!empty($subTestNames)) : ?>
+                                            <div class="graph-Chart">
+                                                <canvas id='myChart' style='width: 100%;'>Most taken Tests</canvas>
+                                            </div>
+                                        <?php else : ?>
+                                            <div class="p-3">
+                                                <p class="text-center text-sm text-danger">No Tests Taken</p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="table-div">
-                                <div class="left-table">
-                                    <p>List Of Invoice</p>
+
+                            <div class="table-div mt-5">
+                                <div class="left-table shadow-sm p-3">
+                                    <p class="text-xs font-weight-bold text-primary text-uppercase">List Of Invoice</p>
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -294,7 +298,13 @@ if (!empty($labBillingDetails)) {
                                                     <tr class="appoinment-row1">
                                                         <td><?= $invoice_id ?></td>
                                                         <td><?= $stockOutData['bill_date'] ?></td>
-                                                        <td><a class="text-primary text-center" title="show" href="_config/form-submission/item-invoice-reprint.php?id=<?= url_enc($invoice_id) ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                        <td>
+
+                                                            <a class="text-primary text-center" onclick="openPrint(this.href); return false;" href="<?= URL ?>invoices/print.php?name=sales&id=<?= url_enc($invoice_id) ?>">
+                                                                <i class="fa fa-print" aria-hidden="true"></i>
+                                                            </a>
+
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
@@ -304,8 +314,8 @@ if (!empty($labBillingDetails)) {
                                         <button class="btn btn-primary btn-sm" id="toggleButton1">More...</button>
                                     </div>
                                 </div>
-                                <div class="right-table">
-                                    <p>List Of Test</p>
+                                <div class="right-table shadow-sm p-3">
+                                    <p class="text-xs font-weight-bold text-primary text-uppercase">List Of Test</p>
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -320,45 +330,32 @@ if (!empty($labBillingDetails)) {
                                         <tbody>
                                             <?php
 
-                                            $labReportData = json_decode($labreportfetch, true);
-                                            // echo $getPatientId;
-                                            print_r($labReportData);
-                                            if (!empty($labReportData)) {
-                                                $showLabAppointmentsById = json_decode($LabBilling->labBillDisplayById($labReportData['bill_id']));
+                                            // $labReportData = $labreport;
+                                            if (!empty($labreport)) {
+                                                $count = 0;
+                                                foreach ($labBillingDetails as $eachBill) {
+                                                    $count++;
+                                                    $billId    = $eachBill->bill_id;
+                                                    $billDate  = $eachBill->bill_date;
+                                                    $testDate  = $eachBill->test_date;
 
-                                                $showLabAppointmentsById = $showLabAppointmentsById->data;
 
-                                                if ($labReportData && $showLabAppointmentsById) {
-                                                    // Create an associative array with patient_id as key and reportId as value
-                                                    $reportIdMap = [];
-                                                    foreach ($labReportData as $entry) {
-                                                        $reportIdMap[$entry->patient_id] = $entry->id;
-                                                    }
+                                                    // $labBills = json_decode($LabBilling->labBillDisplayById($eachReport['bill_id']));
 
-                                                    if ($showLabAppointmentsById) {
-                                                        $count = 0;
-                                                        foreach ($showLabAppointmentsById as $appointment) {
-
-                                                            $patient_id = $appointment['patient_id'];
-                                                            $bill_id    = $appointment['bill_id'];
-                                                            $test_date  = $appointment['test_date'];
-                                                            $count++;
-
-                                                            if (isset($reportIdMap[$patient_id])) {
-                                                                $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                                <tr class="appointment-row">
-                                                                    <td><?= $bill_id ?></td>
-                                                                    <td><?= $test_date ?></td>
-                                                                    <td><a class="text-primary text-center" title="show" href="reprint-test-bill.php?bill_id=<?= $billID  ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
-
-                                                                    <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
-
-                                                                </tr>
+                                                    <tr class="appointment-row">
+                                                        <td><?= $billId ?></td>
+                                                        <td><?= $testDate ?></td>
+                                                        <td>
+                                                            <a class="text-primary text-center" onclick="openPrint(this.href); return false;" href="<?= URL ?>invoices/print.php?name=lab_invoice&id=<?= url_enc($billId) ?>">
+                                                                <i class="fa fa-link" aria-hidden="true"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        </td>
+                                                    </tr>
                                             <?php
-                                                            }
-                                                        }
-                                                    }
                                                 }
                                             } else {
                                                 echo "<tr><td colspan='3' style='text-align: center;'>Data Not found</td></tr>";
@@ -381,20 +378,11 @@ if (!empty($labBillingDetails)) {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
@@ -404,31 +392,19 @@ if (!empty($labBillingDetails)) {
     <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
+    <script src="<?php echo JS_PATH ?>main.js"></script>
 
     <script>
         const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
         const data = <?php echo json_encode(array_values($occurrences)) ?>;
 
-        const getRandomColor = () => {
-            const r = Math.floor(Math.random() * 256);
-            const g = Math.floor(Math.random() * 256);
-            const b = Math.floor(Math.random() * 256);
-            const randomColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
-            const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
-            return {
-                backgroundColor: randomColor,
-                borderColor: borderColor
-            };
-        }
+
 
         const backgroundColors = [];
-        const borderColors = [];
 
         for (let i = 0; i < data.length; i++) {
-            const randomColors = getRandomColor();
-            backgroundColors.push(randomColors.backgroundColor);
-            borderColors.push(randomColors.borderColor);
+            backgroundColors.push(getRandomColor());
         }
 
         /// pie chart for most taken test///
@@ -446,6 +422,7 @@ if (!empty($labBillingDetails)) {
                     hoverOffset: 1
                 }]
             },
+            responsive: true
         });
 
         /// bar chart for most purchased ///
@@ -494,13 +471,15 @@ if (!empty($labBillingDetails)) {
 
             toggleButton.addEventListener("click", function() {
                 for (var i = 3; i < rows.length; i++) {
-                    if (rows[i].style.display === "none" ? rows[i].style.display = "table-row" : rows[i].style.display = "none");
+                    if (rows[i].style.display === "none" ? rows[i].style.display = "table-row" : rows[i]
+                        .style.display = "none");
                 }
             });
 
             toggleButton1.addEventListener("click", function() {
                 for (var i = 3; i < rows1.length; i++) {
-                    if (rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i].style.display = "none");
+                    if (rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i]
+                        .style.display = "none");
                 }
             });
         });

@@ -290,6 +290,7 @@ use DatabaseConnection;
     } //end updateLabBill function
 
     /// Lab bill details by patient Id ///
+    
     function labBiilingDetailsByPatientId($patientId)
     {
         try {

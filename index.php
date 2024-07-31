@@ -16,7 +16,7 @@ require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'component.class.php';
-require_once CLASS_DIR . 'Utility.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 
 // require_once ROOT_DIR . '_config/accessPermission.php';
