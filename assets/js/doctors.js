@@ -43,6 +43,11 @@ const addDocDetails = () => {
     }
   });
 
+  if (!data["doc-speclz-id"]) {
+    Swal.fire("Alert", "Select Specialization From Dropdown!", "error");
+    return;
+  }
+
   if (data["email"]) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data["email"])) {
@@ -118,8 +123,6 @@ const docViewAndEdit = (docId) => {
       '"></iframe>'
   );
 }; // end of viewAndEdit function
-
-
 
 // delete doctor data ----------
 $(document).ready(function () {
@@ -199,12 +202,12 @@ function editDoc() {
       }
     },
   });
-
 }
 
 // =======================================================================================
 
 // //////////////////// set specialization /////////////////////
+const docSpecializationId = document.getElementById("doc-speclz-id");
 const docSpecializationInput = document.getElementById("doc-speclz");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
@@ -231,25 +234,24 @@ document.addEventListener("blur", (event) => {
 
 docSpecializationInput.addEventListener("keyup", () => {
   let list = document.getElementsByClassName("lists")[0];
+  docSpecializationId.value = '';
 
   if (docSpecializationInput.value.length > 2) {
     // console.log('check spe data : '+docSpecializationInput.value);
     var docSpecializationUrl =
-      "doc-specialization-list-view.ajax.php?match=" +
+      "ajax/doc-specialization-list-view.ajax.php?match=" +
       docSpecializationInput.value;
     request.open("GET", docSpecializationUrl, false);
     request.send(null);
     // console.log();
     list.innerHTML = request.responseText;
-  } else if (docSpecializationInput.value == "") {
+  } else {
     var docSpecializationUrl =
-      "doc-specialization-list-view.ajax.php?match=all";
+      "ajax/doc-specialization-list-view.ajax.php?match=all";
     request.open("GET", docSpecializationUrl, false);
     request.send(null);
     // console.log();
     list.innerHTML = request.responseText;
-  } else {
-    list.innerHTML = "";
   }
   // console.log("check return : "+request.responseText);
 });

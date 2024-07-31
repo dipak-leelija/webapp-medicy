@@ -3,10 +3,11 @@ class DoctorCategory
 {
 
     use DatabaseConnection;
-    
 
-    function addDoctorCategory($docCatName, $docDesc, $employee, $addedOn, $adminId){
-        
+
+    function addDoctorCategory($docCatName, $docDesc, $employee, $addedOn, $adminId)
+    {
+
         try {
             $insertDocCat = "INSERT INTO doctor_category (`category_name`, `category_descreption`, `added_by`,  `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
 
@@ -27,17 +28,18 @@ class DoctorCategory
 
 
 
-    function showDoctorCategory(){
+    function showDoctorCategory()
+    {
         try {
             $selectDoctorCategory = "SELECT * FROM `doctor_category`";
             $selectDoctorCategoryQuery = $this->conn->query($selectDoctorCategory);
-            
+
             if (!$selectDoctorCategoryQuery) {
                 throw new Exception("Error in query: " . $this->conn->error);
             }
-    
+
             $row = $selectDoctorCategoryQuery->num_rows;
-    
+
             if ($row > 0) {
                 while ($result = $selectDoctorCategoryQuery->fetch_array()) {
                     $categoryData[] = $result;
@@ -50,21 +52,21 @@ class DoctorCategory
             return $e->getMessage();
         }
     }
-    
 
 
 
 
-    function showDoctorCategoryByLikeWise($data, $adminId){
+
+    function showDoctorCategoryByLikeWise($data)
+    {
         try {
             if ($data != 'all') {
-            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE  CONCAT('%', ?, '%') AND `admin_id` = ? ";
-            $stmt = $this->conn->prepare($selectDoctorCategory);
-            $stmt->bind_param("ss", $data, $adminId);
-            }else{
-            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ?";
-            $stmt = $this->conn->prepare($selectDoctorCategory);
-            $stmt->bind_param("s", $adminId);
+                $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE  CONCAT('%', ?, '%')";
+                $stmt = $this->conn->prepare($selectDoctorCategory);
+                $stmt->bind_param("s", $data);
+            } else {
+                $selectDoctorCategory = "SELECT * FROM `doctor_category`";
+                $stmt = $this->conn->prepare($selectDoctorCategory);
             }
 
             if (!$stmt->execute()) {
@@ -74,33 +76,34 @@ class DoctorCategory
             $result = $stmt->get_result();
             $categoryData = [];
 
-            if($result->num_rows > 0){
+            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $categoryData[] = $row;
                 }
-                return json_encode(['status'=>'1', 'data'=>$categoryData]);
-            }else{
-                return json_encode(['status'=>'0', 'data'=>'']);
+                return json_encode(['status' => '1', 'data' => $categoryData]);
+            } else {
+                return json_encode(['status' => '0', 'data' => '']);
             }
             $stmt->close();
         } catch (Exception $e) {
             return $e->getMessage();
         }
-    }  
+    }
 
 
 
 
 
-    function showDoctorCategoryByAdmin($adminId=''){
+    function showDoctorCategoryByAdmin($adminId = '')
+    {
         try {
             if (!empty($adminId)) {
-            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ? ";
-            $stmt = $this->conn->prepare($selectDoctorCategory);
-            $stmt->bind_param("s", $adminId);
-            }else{
-            $selectDoctorCategory = "SELECT * FROM `doctor_category` ";
-            $stmt = $this->conn->prepare($selectDoctorCategory);
+                $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ? ";
+                $stmt = $this->conn->prepare($selectDoctorCategory);
+                $stmt->bind_param("s", $adminId);
+            } else {
+                $selectDoctorCategory = "SELECT * FROM `doctor_category` ";
+                $stmt = $this->conn->prepare($selectDoctorCategory);
             }
             // $stmt = $this->conn->prepare($selectDoctorCategory);
             // $stmt->bind_param("s", $adminId); 
@@ -122,7 +125,7 @@ class DoctorCategory
         } catch (Exception $e) {
             return $e->getMessage();
         }
-    }   
+    }
 
 
 
@@ -142,7 +145,8 @@ class DoctorCategory
     // } //end showDoctorCategoryById function
 
 
-    function showDoctorCategoryById($docSpecialization){
+    function showDoctorCategoryById($docSpecialization)
+    {
         try {
             // Use prepared statements to prevent SQL injection
             $selectDoctorCategoryById = "SELECT * FROM `doctor_category` WHERE `doctor_category`.`doctor_category_id`=?";
@@ -161,19 +165,16 @@ class DoctorCategory
                 throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             }
 
-            if($result->num_rows === 1) {
+            if ($result->num_rows === 1) {
                 $response = $result->fetch_all(MYSQLI_ASSOC);
                 $stmt->close();
-                return json_encode(['status'=> 1, 'message'=> 'success', 'data' => $response]);
-            }else {
+                return json_encode(['status' => 1, 'message' => 'success', 'data' => $response]);
+            } else {
                 $stmt->close();
-                return json_encode(['status'=> 0, 'message'=> 'empty', 'data' => '']);
+                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
             }
-
-
-
         } catch (Exception $e) {
-            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data' => '']);
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
         }
     }
 
