@@ -13,45 +13,6 @@
                 </div>
 
                 <div class="row">
-                    <div class="d-none col-md-12 mt-2">
-                        <label class="mb-0" for="manufacturer-id">Manufacturer</label>
-                        <!-- <select class="upr-inp" id="manufacturer-id" name="manufacturer-id"
-                                                required>
-                                                <option value="" disabled selected>Select </option>
-
-                                            </select> -->
-                        <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
-                        <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
-                    </div>
-                </div>
-
-                <div class="d-none row">
-                    <div class="col-md-12 ">
-                        <div class="">
-
-                            <div class="col-sm-4 col-md-3 mt-2 ">
-                                <label class="mb-0" for="weightage">Weightage</label>
-                                <input type="text" class="upr-inp" id="weightage" value="" readonly>
-                            </div>
-
-                            <div class="col-sm-4 col-md-3 mt-2 ">
-                                <label class="mb-0" for="unit"> Unit</label>
-                                <input type="text" class="upr-inp" id="unit" value="" readonly>
-                            </div>
-
-                            <div class="col-sm-4 col-md-3 mt-2 ">
-                                <label class="mb-0" for="packaging-in">Packaging-in</label>
-                                <input type="text" class="upr-inp" id="packaging-in" value="" readonly>
-                            </div>
-                            <div class="col-sm-4 col-md-3 mt-2 ">
-                                <label class="mb-0" for="medicine-power">Medicine Power</label>
-                                <input class="upr-inp" type="text" name="medicine-power" id="medicine-power">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-sm-6 col-md-6 mt-2">
                         <label class="mb-0" for="mrp">MRP/Package</label>
                         <input type="number" class="upr-inp" name="mrp" id="mrp">
@@ -63,9 +24,7 @@
                         <input type="number" class="upr-inp" name="gst-check" id="gst-check" hidden>
 
                         <select class="upr-inp" name="gst" id="gst" onchange="getBillAmount(this)">
-
                             <option value="" selected disabled>Select GST%</option>
-
                             <?php
                             foreach ($gstData as $gstData) {
                                 echo '<option value="' . $gstData->percentage . '" >' . $gstData->percentage . '</option>';
@@ -82,16 +41,7 @@
                         <span class="text-danger">*</span>
                         <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                     </div>
-                    <!-- <div class="col-sm-4  mt-2">
-                        <label class="mb-0 mt-1" for="mfd-date">MFD</label>
-                        <div class="d-flex date-field">
-                            <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);"
-                                onfocusout="setmfdMonth(this);">
-                            <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);"
-                                onkeyup="setMfdYEAR(this)">
-                        </div>
-                    </div> -->
+
                     <div class="col-sm-6 mt-2">
                         <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                         <span class="text-danger">*</span>
@@ -100,15 +50,6 @@
                             <span class="date-divider">&#47;</span>
                             <input class="year " type="number" id="exp-year" onkeyup="setExpYear(this)" onfocusout="setExpYEAR(this)">
                         </div>
-                    </div>
-                    <div class="d-none col-md-4 mt-2">
-                        <label class="mb-0" for="product-id">Product Id</label>
-                        <input class="upr-inp" id="product-id" name="product-id" readonly>
-                    </div>
-
-                    <div class="d-none col-md-4 mt-2">
-                        <label class="mb-0" for="edit-request-flag">Edit Request Flag</label>
-                        <input class="upr-inp" id="edit-request-flag" name="edit-request-flag" readonly>
                     </div>
                 </div>
                 <!--/End Quantity Row  -->
@@ -136,20 +77,6 @@
                     </div>
 
                 </div>
-                <!--/End Price Row -->
-
-                <div class="d-none col-sm-6 col-md-6 mt-2">
-                    <label class="mb-0" for="packaging-type">Packaging Type</label>
-                    <select class="upr-inp" name="packaging-type" id="packaging-type">
-                        <option value="" disabled selected>Select Packaging Type </option>
-                        <?php
-                        foreach ($showPackagingUnits as $rowPackagingUnits) {
-                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-                <!--/End Quantity Row  -->
 
                 <!-- Price Row -->
                 <div class="row mb-2">
@@ -185,6 +112,39 @@
                 </div>
 
             </div>
+            <div class="row mt-2" hidden>
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="product-id">Product Id</label>
+                    <input class="upr-inp" id="product-id" name="product-id" readonly>
+                </div>
+
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="manufacturer-id">Manuf Id</label>
+                    <input class="upr-inp" id="manufacturer-id" name="manufacturer-id" readonly>
+                </div>
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="manufacturer-name">Manuf Name</label>
+                    <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" readonly>
+                </div>
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="medicine-power">Med Power</label>
+                    <input class="upr-inp" id="medicine-power" name="medicine-power" readonly>
+                </div>
+
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="weightage">Weightage</label>
+                    <input class="upr-inp" id="weightage" name="weightage" readonly>
+                </div>
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="packaging-in">Unit</label>
+                    <input class="upr-inp" id="unit" name="unit" readonly>
+                </div>
+                <div class=" col-md-3 mt-2">
+                    <label class="mb-0" for="edit-request-flag">Edit Request Flag</label>
+                    <input class="upr-inp" id="edit-request-flag" name="edit-request-flag" readonly>
+                </div>
+            </div>
+
 
         </div>
 

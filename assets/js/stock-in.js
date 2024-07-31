@@ -1,144 +1,154 @@
+const  xmlhttp = new XMLHttpRequest();
+// ----------------------------------------------------------------------------------
+// data fields
+const manufId = document.getElementById("manufacturer-id");
+const manufName = document.getElementById("manufacturer-name");
+const medPower = document.getElementById("medicine-power");
+const weatage = document.getElementById("weightage");
+const unit = document.getElementById("unit");
 
-//////////////////// set distributor name /////////////////////
+//-----------------------------------------------------------------------------------
 
 const distributorInput = document.getElementById("distributor-id");
-const dropdown = document.getElementsByClassName("c-dropdown")[0];
+const dropdown = document.querySelector(".c-dropdown");
+const list = document.querySelector('.lists');
+const distIdInput = document.getElementById("dist-id");
+const distNameInput = document.getElementById("dist-name");
 
+// Show dropdown on focus
 distributorInput.addEventListener("focus", () => {
     dropdown.style.display = "block";
 });
 
+// Hide dropdown on click outside
 document.addEventListener("click", (event) => {
-    // Check if the clicked element is not the input field or the dropdown
     if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
         dropdown.style.display = "none";
     }
 });
 
-document.addEventListener("blur", (event) => {
-    // Check if the element losing focus is not the dropdown or its descendants
-    if (!dropdown.contains(event.relatedTarget)) {
-        // Delay the hiding to allow the click event to be processed
-        setTimeout(() => {
+// Hide dropdown on blur with a delay
+distributorInput.addEventListener("blur", (event) => {
+    setTimeout(() => {
+        if (!dropdown.contains(document.activeElement)) {
             dropdown.style.display = "none";
-        }, 100);
-    }
+        }
+    }, 100);
 });
 
+// Update dropdown list based on input value
+distributorInput.addEventListener("keyup", async () => {
+    const query = distributorInput.value;
+    let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + (query.length > 2 ? query : 'all');
 
-
-distributorInput.addEventListener("keyup", () => {
-    // Delay the hiding to allow the click event to be processed
-    let list = document.getElementsByClassName('lists')[0];
-
-    if (distributorInput.value.length > 2) {
-        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
-        request.open("GET", distributorURL, false);
-        request.send(null);
-        // console.log();
-        list.innerHTML = request.responseText
-    } else if (distributorInput.value == '') {
-
-        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
-        request.open("GET", distributorURL, false);
-        request.send(null);
-        // console.log();
-        list.innerHTML = request.responseText
-    } else {
+    try {
+        const response = await fetch(distributorURL);
+        const data = await response.text();
+        list.innerHTML = data;
+    } catch (error) {
+        console.error("Error fetching distributors: ", error);
         list.innerHTML = '';
     }
-    // console.log("check return : "+request.responseText);
 });
 
+// Set distributor details
 const setDistributor = (t) => {
-    let distributirId = t.id.trim();
-    let distributirName = t.innerHTML.trim();
+    const distributirId = t.id.trim();
+    const distributirName = t.innerHTML.trim();
 
-    document.getElementById("dist-id").value = distributirId;
-    document.getElementById("dist-name").value = distributirName;
-    document.getElementById("distributor-id").value = distributirName;
+    distIdInput.value = distributirId;
+    distNameInput.value = distributirName;
+    distributorInput.value = distributirName;
 
-    document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-}
+    dropdown.style.display = "none";
+};
+
+// Add new distributor
+const addDistributor = async () => {
+    const parentLocation = window.location.origin + window.location.pathname;
+
+    try {
+        const response = await fetch("components/distributor-add.php", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ urlData: parentLocation })
+        });
+        const data = await response.text();
+        document.querySelector('.add-distributor').innerHTML = data;
+    } catch (error) {
+        console.error("Error adding distributor: ", error);
+    }
+};
 
 
-const addDistributor = () => {
-
-    var parentLocation = window.location.origin + window.location.pathname;
-
-    $.ajax({
-        url: "components/distributor-add.php",
-        type: "POST",
-        data: { urlData: parentLocation },
-        success: function (response) {
-            let body = document.querySelector('.add-distributor');
-            body.innerHTML = response;
-        },
-        error: function (error) {
-            console.error("Error: ", error);
-        }
-    });
-}
+// function captureCurrentLocation() {
+//     // Get the current URL
+//     var currentLocation = window.location.href;
+// }
 
 
-
-function captureCurrentLocation() {
-    // Get the current URL
-    var currentLocation = window.location.href;
-
-}
 
 //////////////////// set distributor bill no /////////////////////
 
 const setDistBillNo = (t) => {
     let val = t.value.toUpperCase();
-    // console.log(val);
     document.getElementById("distBill-no").value = val;
 }
 
-//////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
-var setBillDate = new Date();
-document.getElementById('bill-date').value = setBillDate.toISOString().slice(0, 10);
-document.getElementById("bill-date-val").value = setBillDate.toISOString().slice(0, 10);
+//////////////////// set bill date due date \\\\\\\\\\\\\\\\\\\\
+// Set current date for bill date and due date
+const todayDate = new Date();
+const formatDate = (date) => date.toISOString().slice(0, 10);
 
-var todayDate = new Date();
 
-var date = todayDate.getDate();
-var month = todayDate.getMonth() + 1;
-var year = todayDate.getFullYear();
+// Initialize bill date and due date
+const billDateInput = document.getElementById('bill-date');
+const dueDateInput = document.getElementById('due-date');
+const billDateValInput = document.getElementById('bill-date-val');
+const dueDateValInput = document.getElementById('due-date-val');
 
-if (date < 10) {
-    date = '0' + date;
+// Set default values
+billDateInput.value = formatDate(todayDate);
+billDateValInput.value = formatDate(todayDate);
+
+// Set due date to be the current date
+dueDateInput.value = formatDate(todayDate);
+dueDateValInput.value = formatDate(todayDate);
+
+// Set the maximum bill date to today
+billDateInput.setAttribute("max", formatDate(todayDate));
+
+// Update bill date and due date when bill date changes
+const updateDates = () => {
+    const billDate = new Date(billDateInput.value);
+    const maxDueDate = new Date(billDate);
+    maxDueDate.setDate(billDate.getDate() + 10);
+
+    // Update due date constraints
+    dueDateInput.setAttribute("min", billDateInput.value);
+    dueDateInput.setAttribute("max", formatDate(maxDueDate));
+
+    // Set due date value to a date within the allowed range if necessary
+    if (new Date(dueDateInput.value) < billDate) {
+        dueDateInput.value = formatDate(billDate);
+        dueDateValInput.value = formatDate(billDate);
+    }
 }
-if (month < 10) {
-    month = '0' + month;
-}
-var todayFullDate = year + "-" + month + "-" + date;
-document.getElementById("bill-date").setAttribute("max", todayFullDate);
 
-// =======  bill date set ===========
-const getbillDate = (billDate) => {
-    billDate = billDate.value;
+// Set event listeners
+billDateInput.addEventListener('change', () => {
+    billDateValInput.value = billDateInput.value;
+    updateDates();
+});
 
-    document.getElementById("bill-date-val").value = billDate;
+dueDateInput.addEventListener('change', () => {
+    dueDateValInput.value = dueDateInput.value;
+});
+updateDates();
+// =========== eof bill date due date control =============
 
-    document.getElementById("due-date").setAttribute("min", billDate);
-
-    var date2 = todayDate.getDate() + 7;
-    var todayFullDate2 = year + "-" + month + "-" + date2;
-    document.getElementById("due-date").setAttribute("max", todayFullDate2);
-}
-
-
-//////////////////// set due date /////////////////////
-var setDueDate = new Date();
-document.getElementById('due-date').value = setDueDate.toISOString().slice(0, 10);
-document.getElementById('due-date-val').value = setDueDate.toISOString().slice(0, 10);
-
-const getDueDate = (t) => {
-    // console.log(t.value);
-    document.getElementById("due-date-val").value = t.value;
-}
 
 /////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
 document.getElementById('payment-mode').value = 'Cash';
@@ -147,10 +157,10 @@ document.getElementById("payment-mode-val").value = 'Cash';
 const setPaymentMode = (pMode) => {
     document.getElementById("payment-mode-val").value = pMode.value;
 }
+// ================= eof payment mode control ===================
 
 
-
-//////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
+///////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
 const Qty = document.getElementById('qty');
 Qty.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
@@ -178,26 +188,20 @@ distBillNo.addEventListener('input', function (event) {
 
 ///////////////////////////////////////////////////////////
 
-//=============== stock in save button control ==============
+//=============== stock-in save button control(active/inactive) ==============
 var stockInSave = document.getElementById('stock-in-submit');
 stockInSave.setAttribute("disabled", "true");
-
 const chekForm = () => {
     var tableBody = document.getElementById('dataBody');
-
     if (document.getElementById('product-name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
         stockInSave.removeAttribute("disabled");
     } else {
         stockInSave.setAttribute("disabled", "true");
     }
 }
-
-
 //==========================================================
 
 ////////////////////// set coursor as pointer on table row hover /////////////////////
-
-
 ///////////////////////////////////////////////////////////
 const firstInput = document.getElementById('product-name');
 window.addEventListener('load', function () {
@@ -215,106 +219,77 @@ firstInput.addEventListener('input', function (event) {
 });
 
 
-//////////////////////////// ITEM SEART START ////////////////////////////////
+//////////////////////////// ITEM SEARCH START ////////////////////////////////
 function searchItem(input) {
+    const productSelect = document.getElementById('product-select');
+    const stockInDataForm = document.getElementById("stock-in-data");
+    const checkLength = input.length;
 
-    let checkLength = input.length;
-
-    let xmlhttp = new XMLHttpRequest();
-
-    let searchReult = document.getElementById('product-select');
-
-    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
-    xmlhttp.send();
-
-    if (input == "") {
-        document.getElementById("product-select").style.display = "none";
-        document.getElementById("stock-in-data").reset();
-        event.preventDefault();
+    if (input === "") {
+        productSelect.style.display = "none";
+        stockInDataForm.reset();
+        return;
     }
 
     if (checkLength > 2) {
-        if (input != "") {
-            document.getElementById("product-select").style.display = "block";
-        }
+        productSelect.style.display = "block";
     }
 
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            searchReult.innerHTML = xmlhttp.responseText;
-        }
-    };
-
+    fetch('ajax/purchase-item-list.ajax.php?data=' + encodeURIComponent(input))
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            }
+            throw new Error('Network response was not ok');
+        })
+        .then(data => {
+            productSelect.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
 }
 
+
+
+
 const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) => {
-
-    // console.log(productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag);
-
-    let xmlhttp = new XMLHttpRequest();
-
+    // console.log(productId +' 1. '+ prodReqStatus +' 2. '+ oldProdReqStatus +' 3. '+ edtiRequestFlag);
     if (productId != "") {
-        // console.log(productId);
         //==================== edit request flag ====================
         document.getElementById('edit-request-flag').value = edtiRequestFlag;
         //==================== Manufacturere List ====================
         manufacturerurl = `ajax/product.getManufacturer.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(url);
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
-        document.getElementById("manufacturer-id").value = xmlhttp.responseText;
+        manufId.value = xmlhttp.responseText;
 
         manufacturerName = `ajax/product.getManufacturer.ajax.php?name=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         xmlhttp.open("GET", manufacturerName, false);
         xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("manufacturer-name").value = xmlhttp.responseText;
+        manufName.value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
         powerurl = `ajax/product.getMedicineDetails.ajax.php?power=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("medicine-power").value = xmlhttp.responseText;
-
-        //==================== Packaging Type ====================
-        packTypeUrl = `ajax/product.getMedicineDetails.ajax.php?pType=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(url);
-        xmlhttp.open("GET", packTypeUrl, false);
-        xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
-
-        packTypeFieldUrl = `ajax/product.getMedicineDetails.ajax.php?packegeIn=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // // alert(url);
-        xmlhttp.open("GET", packTypeFieldUrl, false);
-        xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("packaging-in").value = xmlhttp.responseText;
+        medPower.value = xmlhttp.responseText;
 
         //==================== Weightage ====================
         weightage = `ajax/product.getMedicineDetails.ajax.php?weightage=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("weightage").value = xmlhttp.responseText;
+        weatage.value = xmlhttp.responseText;
 
 
         //==================== Unit ====================
         unitUrl = `ajax/product.getMedicineDetails.ajax.php?unit=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
-        document.getElementById("unit").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+        unit.value = xmlhttp.responseText;
 
         //==================== MRP ====================
         mrpUrl = `ajax/product.getMrp.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
@@ -326,22 +301,16 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) =>
 
         // //==================== ptr check url ===================
         chkPtr = `ajax/product.getMrp.ajax.php?ptrChk=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", chkPtr, false);
         xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        // document.getElementById("chk-ptr").value = xmlhttp.responseText;
+        // console.log(xmlhttp.responseText);
         document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
         gstUrl = `ajax/product.getGst.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
-
-        // console.log("gst check : ",xmlhttp.responseText);
-
+        
         if (xmlhttp.responseText != ' ' || xmlhttp.responseText != null) {
             document.getElementById("gst").value = xmlhttp.responseText;
             document.getElementById("gst-check").value = xmlhttp.responseText;
@@ -350,32 +319,18 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) =>
         //==================== Product Id ====================
         document.getElementById("product-id").value = productId;
 
-        // idUrl = `ajax/product.getName.ajax.php?Pid=${productId}`
-        // // alert(unitUrl);
-        // xmlhttp.open("GET", idUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("product-ID").value = xmlhttp.responseText;
-        // console.log(xmlhttp.responseText);
-
         //==================== Product Name ====================
         nameUrl = `ajax/product.getMedicineDetails.ajax.php?pName=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
-        // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
         document.getElementById("product-name").value = xmlhttp.responseText;
-        // console.log(xmlhttp.responseText);
-
-
         document.getElementById('batch-no').focus();
-        // document.getElementById("gst").focus;
         stockInSave.setAttribute("disabled", "true");
 
     } else {
 
         document.getElementById("manufacturer-id").innerHTML = "";
         document.getElementById("medicine-power").value = "";
-        document.getElementById("packaging-type").innerHTML = "";
-        document.getElementById("packaging-in").value = "";
         document.getElementById("weightage").value = "";
         document.getElementById("unit").value = "";
         document.getElementById("mrp").value = "";
@@ -385,6 +340,9 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) =>
     }
     document.getElementById("product-select").style.display = "none";
 }
+
+
+
 
 
 //==================== INPUT FUILD BLOCK FUNCTION ==================================
@@ -444,79 +402,70 @@ ptrInput.addEventListener('keydown', function (event) {
 const getBillAmount = () => {
 
     let mrp = parseFloat(document.getElementById('mrp').value);
-
     let ptr = parseFloat(document.getElementById('ptr').value);
-
-    // console.log('check 1 : '+ptr);
-
     let gst = parseInt(document.getElementById('gst').value);
-    // console.log("change gst : "+gst);
-
     let prevGst = parseInt(document.getElementById("gst-check").value);
-    // console.log("prev gst : "+prevGst);
-
     let qty = parseInt(document.getElementById('qty').value);
     if (isNaN(qty)) {
         qty = 0;
     }
     
-        let disc = parseFloat(document.getElementById('discount').value);
-        if (isNaN(disc)) {
-            disc = 0;
-        }
+    let disc = parseFloat(document.getElementById('discount').value);
+    if (isNaN(disc)) {
+        disc = 0;
+    }
 
-        let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
-        maxPtr = maxPtr.toFixed(2);
-        maxPtr = parseFloat(maxPtr);
+    let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
+    maxPtr = maxPtr.toFixed(2);
+    maxPtr = parseFloat(maxPtr);
 
-        if (gst != prevGst) {
-            document.getElementById('ptr').value = maxPtr;
-            document.getElementById("gst-check").value = gst;
-        }
+    if (gst != prevGst) {
+        document.getElementById('ptr').value = maxPtr;
+        document.getElementById("gst-check").value = gst;
+    }
 
-        if (ptr > maxPtr) {
-            Swal.fire({
-                title: "Error Input",
-                text: "PTR must be lower than MRP with GST Calculated Price!",
-                icon: "error",
-            });
-
-            document.getElementById("ptr").value = maxPtr;
-
-            maxPtr = maxPtr;
-
-            document.getElementById("bill-amount").value = " ";
-
-            document.getElementById("ptr").focus();
-        }
-
-        let modifiedPtr = document.getElementById("ptr").value;
-        
-        let dprice = (parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100))).toFixed(2);
-        let totalAmount = ((parseFloat(dprice) + (parseFloat(dprice) * (parseFloat(gst) / 100))) * parseInt(qty)).toFixed(2);
-
-        document.getElementById("dprice").value = dprice;
-        document.getElementById("bill-amount").value = totalAmount;
-
-        //=============================================
-        //======= UPDATE GST ON PRODUCT SECTION =======
-        let prodId = document.getElementById("product-id").value;
-
-        $.ajax({
-            url: 'ajax/update-product-gst.ajax.php',
-            type: 'POST',
-            data: {
-                gstPercent: gst,
-                prodId: prodId
-            },
-            success: function (response) {
-                // console.log(response);
-            },
-            error: function (error) {
-                // console.error('Error removing image:', error);
-            }
+    if (ptr > maxPtr) {
+        Swal.fire({
+            title: "Error Input",
+            text: "PTR must be lower than MRP with GST Calculated Price!",
+            icon: "error",
         });
-    // }
+
+        document.getElementById("ptr").value = maxPtr;
+        maxPtr = maxPtr;
+        document.getElementById("bill-amount").value = " ";
+        document.getElementById("ptr").focus();
+    }
+
+    let modifiedPtr = document.getElementById("ptr").value;
+    
+    let dprice = (parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100))).toFixed(2);
+    let totalAmount = ((parseFloat(dprice) + (parseFloat(dprice) * (parseFloat(gst) / 100))) * parseInt(qty)).toFixed(2);
+
+    document.getElementById("dprice").value = dprice;
+    document.getElementById("bill-amount").value = totalAmount;
+
+    //=============================================
+    //======= UPDATE GST ON PRODUCT SECTION =======
+    let prodId = document.getElementById("product-id").value;
+
+    $.ajax({
+        url: 'ajax/update-product-gst.ajax.php',
+        type: 'POST',
+        data: {
+            gstPercent: gst,
+            prodId: prodId
+        },
+        success: function (response) {
+            if(!response){
+                console.log(response);
+            }
+        },
+        error: function (error) {
+            console.error('Error :', error);
+        }
+    });
+    
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -527,8 +476,6 @@ const addData = () => {
     // alert('Clicked');
     let editRequestFlag = document.getElementById('edit-request-flag');
     let distId = document.getElementById("distributor-id");
-    let distId2 = document.getElementById("dist-id");
-    // console.log(distId.value1);
     let distBillid = document.getElementById("dist-bill-no");
 
     let billDate = document.getElementById("bill-date");
@@ -548,7 +495,7 @@ const addData = () => {
     expDate = expDate.toString();
     let weightage = document.getElementById("weightage");
     let unit = document.getElementById("unit");
-    let packagingIn = document.getElementById("packaging-in");
+
     let mrp = document.getElementById("mrp");
     let ptr = document.getElementById("ptr");
     let qty = document.getElementById("qty");
@@ -559,7 +506,7 @@ const addData = () => {
     
     let billAmount = document.getElementById("bill-amount");
 
-    if (distId.value == "" && distId2.value == "") {
+    if (distId.value == "") {
         Swal.fire("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
                 distId.focus();
@@ -627,14 +574,12 @@ const addData = () => {
         return;
     }
 
-    if (packagingIn.value == "") {
-        packagingIn.focus();
+   
+    if (mrp.value == "") {
+        mrp.focus();
         return;
-    } else
-        if (mrp.value == "") {
-            mrp.focus();
-            return;
-        }
+    }
+
     if (ptr.value == "") {
         Swal.fire("Blank Field", "Please enter PTR value", "error")
             .then((value) => {
@@ -737,14 +682,6 @@ const addData = () => {
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
     let payble = (((parseFloat(dprice.value)) + (parseFloat(dprice.value) * (parseInt(gst.value) / 100))) * parseInt(qty.value)).toFixed(2);
 
-    // let marginP = 0;
-    // if (parseFloat(totalMrp) > parseFloat(payble)) {
-    //     let marginAmount = parseFloat(totalMrp) - parseFloat(billAmount.value);
-    //     marginP = (parseFloat(marginAmount) / parseFloat(totalMrp)) * 100;
-    // } else {
-    //     marginP = 0;
-    // }
-
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}" style="cursor: pointer; text-align: right;">
             <td style="color: red; padding-top:1.2rem; width:1rem"> <i class="fas fa-trash" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
@@ -759,7 +696,6 @@ const addData = () => {
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" hidden>
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none" hidden>
 
-                <input class="table-data line-inp50" type="text" name="packagingin[]" value="${packagingIn.value}" style="display: none" hidden>
                 <input class="d-none table-data w-2r"  type="text" name="discount[]" value="${discount.value}%" style="font-size: .7rem; text-align: end">
 
             </td>
@@ -832,7 +768,6 @@ const addData = () => {
         expYr: expYear.value,
         itemWeightage: weightage.value,
         unitType: unit.value,
-        packegeinIn: packagingIn.value,
         mrp: mrp.value,
         ptr: ptr.value,
 
@@ -923,7 +858,6 @@ const editItem = (tupleData) => {
 
         document.getElementById("weightage").value = TupleData.itemWeightage;
         document.getElementById("unit").value = TupleData.unitType;
-        document.getElementById("packaging-in").value = TupleData.packegeinIn;
         document.getElementById("mrp").value = TupleData.mrp;
         document.getElementById("ptr").value = TupleData.ptr;
 

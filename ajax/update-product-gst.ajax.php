@@ -6,7 +6,7 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'gst.class.php';
 
-$Product = new Products;
+$Products = new Products;
 $Gst = new Gst;
 
 
@@ -15,21 +15,23 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $gstPercent = $_POST['gstPercent'];
     $prodId = $_POST['prodId'];
 
-    $colParcent = 'percentage';
-    $gstData= json_decode($Gst->seletGstByColVal($colParcent, $gstPercent));
-    $gstData = $gstData->data;
-    $gstid = $gstData[0]->id;
+    
+    $productTable = json_decode($Products->selectTableNameByProdId($prodId));
+    if($productTable->status){
+        $table = $productTable->table;
 
-    $col = 'gst';
-    $updateProductGst = $Product->updateProductValuebyCol($prodId, $col, $gstid, $employeeId, NOW, $adminId);
+        $col = 'gst';
+        $updateProdcutGst = json_decode($Products->updateProductValuebyTableColName($table, $prodId, $col,
+        $gstPercent, $employeeId, NOW, $adminId));
+        // print_r($updateProdcutGst);
 
-    $updateProductGst = json_decode($updateProductGst);
-
-    // print_r($updateProductGst);
-    if($updateProductGst->status){
-        echo '0';
+        if($updateProdcutGst->status){
+            echo true;
+        } else {
+            echo false;
+        }
     } else {
-        echo '1';
+        echo false;
     }
 }
 

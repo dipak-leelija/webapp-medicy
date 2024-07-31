@@ -491,7 +491,6 @@ class Products
 
                     return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
                 }
-
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
@@ -502,7 +501,6 @@ class Products
 
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             }
-            
         } catch (Exception $e) {
             // error_log("Error in showProductsById: " . $e->getMessage());
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
@@ -594,7 +592,6 @@ class Products
                 }
                 $prodStmt->close();
             } else {
-
                 $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR prod_req_status = 0)";
                 $prodReqStmt = $this->conn->prepare($selectProductRequest);
 
@@ -1006,6 +1003,42 @@ class Products
 
 
 
+
+
+
+    function updateProductValuebyTableColName($tableName, $productid, $col, $value, $adminId, $updatedBy = '', $updatedOn = '')
+    {
+        try {
+            // Prepare the SQL statement based on the table name
+            if ($tableName == 'products') {
+                $updateProduct = "UPDATE $tableName SET `$col`=?, `updated_by`=?, `updated_on`=?, `admin_id`=? WHERE `product_id`=?";
+                $stmt = $this->conn->prepare($updateProduct);
+                $stmt->bind_param("sssss", $value, $updatedBy, $updatedOn, $adminId, $productid);
+            } else if ($tableName == 'product_request') {
+                $updateProduct = "UPDATE $tableName SET `$col`=?, `admin_id`=? WHERE `product_id`=?";
+                $stmt = $this->conn->prepare($updateProduct);
+                $stmt->bind_param("sss", $value, $adminId, $productid);
+            } else {
+                return json_encode(['status' => false, 'message' => 'Invalid table name']);
+            }
+    
+            // Execute the statement and check for errors
+            if ($stmt->execute()) {
+                $stmt->close();
+                return json_encode(['status' => true, 'message' => 'Success']);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => false, 'message' => 'Failed to execute statement']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => false, 'message' => 'Error', 'details' => $e->getMessage()]);
+        }
+    }
+    
+
+
+
+
     function updateProduct($productid, $name, $manufacturerId, $type, $comp_1, $comp_2, $power, $dsc, $quantity, $quantityUnit, $itemUnit, $packagingType, $mrp, $gst, $updatedBy, $updatedOn)
     {
         try {
@@ -1069,62 +1102,59 @@ class Products
 
 
 
-    function selectItemLikeForStockInOut($data, $adminid)
-    {
-        $resultData1 = array();
-        $resultData2 = array();
+    function selectItemLikeForStockInOut($data, $adminid){
+        $resultData1 = [];
+        $resultData2 = [];
 
         try {
-            $searchSql1 = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ?   LIMIT 10";
-            $stmt1 = $this->conn->prepare($searchSql1);
+            // Prepare search pattern
+            $searchPattern = "%" . $data . "%";
 
-            if ($stmt1) {
-                $searchPattern = "%" . $data . "%";
-                $stmt1->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
-                $stmt1->execute();
+            // Define queries
+            $queries = [
+                [
+                    "sql" => "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10",
+                    "params" => [$searchPattern, $searchPattern, $searchPattern],
+                    "types" => "sss",
+                    "resultData" => &$resultData1
+                ],
+                [
+                    "sql" => "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id` = ? LIMIT 10",
+                    "params" => [$searchPattern, $adminid],
+                    "types" => "ss",
+                    "resultData" => &$resultData2
+                ]
+            ];
 
-                // Get the results
-                $result1 = $stmt1->get_result();
+            foreach ($queries as $query) {
+                $stmt = $this->conn->prepare($query['sql']);
 
-                while ($row = $result1->fetch_assoc()) {
-                    $resultData1[] = $row;
+                if ($stmt) {
+                    $stmt->bind_param($query['types'], ...$query['params']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    while ($row = $result->fetch_assoc()) {
+                        $query['resultData'][] = $row;
+                    }
+
+                    $stmt->close();
+                } else {
+                    throw new Exception("Failed to prepare the statement: " . $query['sql']);
                 }
-
-                $stmt1->close();
-            } else {
-                throw new Exception("Failed to prepare the statement 1.");
-            }
-
-            $searchSql2 = "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id`= ? LIMIT 10";
-            $stmt2 = $this->conn->prepare($searchSql2);
-
-            if ($stmt2) {
-                $searchPattern = "%" . $data . "%";
-                $stmt2->bind_param("ss", $searchPattern, $adminid);
-                $stmt2->execute();
-
-                // Get the results
-                $result2 = $stmt2->get_result();
-
-                while ($row = $result2->fetch_assoc()) {
-                    $resultData2[] = $row;
-                }
-
-                $stmt2->close();
-            } else {
-                throw new Exception("Failed to prepare the statement 2.");
             }
 
             $mergedResults = array_merge($resultData1, $resultData2);
 
-            return (['status' => '1', 'message' => 'data forund', 'data' => $mergedResults]);
+            return ['status' => '1', 'message' => 'data found', 'data' => $mergedResults];
         } catch (Exception $e) {
             // Log or handle the exception appropriately
             error_log("Error: " . $e->getMessage());
         }
 
-        return (['status' => '0', 'message' => 'no data found']);
+        return ['status' => '0', 'message' => 'no data found'];
     }
+
 
 
 
@@ -1185,6 +1215,44 @@ class Products
             return $e->getMessage();
         }
     }
+
+
+
+
+    /// find tablename by poroduct id
+    function selectTableNameByProdId($prodId) {
+        try {
+            $queries = [
+                "products" => "SELECT `gst` FROM `products` WHERE `product_id` = ?",
+                "product_request" => "SELECT `gst` FROM `product_request` WHERE `product_id` = ?"
+            ];
+            
+            foreach ($queries as $table => $query) {
+                $stmt = $this->conn->prepare($query);
+                if ($stmt) {
+                    $stmt->bind_param("s", $prodId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    
+                    if ($result->num_rows > 0) {
+                        $stmt->close();
+                        return json_encode(['status' => true, 'table' => $table]);
+                    }
+                    
+                    $stmt->close();
+                } else {
+                    throw new Exception("Failed to prepare the statement: " . $query);
+                }
+            }
+            
+            return json_encode(['status' => false, 'table' => 'no data found']);
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage());
+            return json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    
+
 
 
 

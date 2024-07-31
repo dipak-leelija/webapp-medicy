@@ -153,7 +153,7 @@ $todayYr = date("y");
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
+                                    <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date" /*onchange="getDueDate(this)*/">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">

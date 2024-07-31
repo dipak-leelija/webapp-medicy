@@ -17,23 +17,28 @@ $ItemUnit       = new ItemUnit;
 // oldProdReqStatus
 // ============= get product name =================
 if (isset($_GET["pName"])) {
-    
-    $prodData = json_decode($Products->showProductsById($_GET["pName"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
 
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["pName"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
-    $showProducts = $showProducts->data;
-    // print_r($showProducts);
-    foreach ($showProducts as $row) {
-        echo $row->name;
+    $prodData = json_decode($Products->showProductsById($_GET["pName"]));
+    if ($prodData->status) {
+        $prodDataDetails = $prodData->data;
+        // print_r($prodDataDetails);
+        if (isset($prodDataDetails->edit_request_flag)) {
+            $editReqFlag = '1';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        } else {
+            $editReqFlag = '';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        }
+
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["pName"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
+        $showProducts = $showProducts->data;
+        // print_r($showProducts);
+        foreach ($showProducts as $row) {
+            // print_r($row);
+            echo $row->name;
+        }
     }
 }
 
@@ -41,96 +46,54 @@ if (isset($_GET["pName"])) {
 if (isset($_GET["power"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["power"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
+    if ($prodData->status) {
+        $prodDataDetails = $prodData->data;
+        // print_r($prodDataDetails);
+        if (isset($prodDataDetails->edit_request_flag)) {
+            $editReqFlag = '1';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        } else {
+            $editReqFlag = '';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        }
 
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["power"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
-    // print_r($showProducts);
-    if($showProducts->status){
-        $showProducts = $showProducts->data;
-        echo $showProducts[0]->power;
-    }
-    
-}
-// echo "Hi";
-
-// ========================= packege Type ====================
-if (isset($_GET["pType"])) {
-
-    $prodData = json_decode($Products->showProductsById($_GET["pType"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
-
-    $showProductsPType = $Products->showProductsByIdOnUser($_GET["pType"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus);
-    $showPackType = $PackagingUnits->showPackagingUnitByIdArray($showProductsPType[0]['packaging_type']);
-    // print_r($showPackType);
-    foreach ($showPackType as $row) {
-        echo '<option value="' . $row["id"] . '">' . $row["unit_name"] . '</option>';
-    }
-}
-
-// ========================== packege In ====================
-if (isset($_GET["packegeIn"])) {
-
-    $prodData = json_decode($Products->showProductsById($_GET["packegeIn"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
-
-    $showProductsPackegeIn = json_decode($Products->showProductsByIdOnUser($_GET["packegeIn"], $adminId,$editReqFlag, $prodReqStatus, $oldProdReqStatus));
-    
-    if ($showProductsPackegeIn->status) {
-        $showProductsPackegeIn = $showProductsPackegeIn->data;
-        // print_r($showProductsPackegeIn);
-
-        $showPackType = $PackagingUnits->showPackagingUnitByIdArray($showProductsPackegeIn[0]->packaging_type);
-        foreach ($showPackType as $row) {
-            echo $row["unit_name"];
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["power"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
+        // print_r($showProducts);
+        if ($showProducts->status) {
+            $showProducts = $showProducts->data;
+            echo $showProducts[0]->power;
         }
     }
 }
+// echo "Hi";
 
 // ======================= weightage ========================
 if (isset($_GET["weightage"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["weightage"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
+    if ($prodData->status) {
+        $prodDataDetails = $prodData->data;
+        // print_r($prodDataDetails);
+        if (isset($prodDataDetails->edit_request_flag)) {
+            $editReqFlag = '1';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        } else {
+            $editReqFlag = '';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        }
 
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["weightage"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
-    $showProducts = $showProducts->data;
-    // print_r($showProducts);
-    // $showWeightage = $Products->showProductsById($showProducts[0]['packaging_type']);
-    // print_r($showPackType);
-    foreach ($showProducts as $row) {
-        echo $row->unit_quantity;
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["weightage"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
+        $showProducts = $showProducts->data;
+        // print_r($showProducts);
+        // $showWeightage = $Products->showProductsById($showProducts[0]['packaging_type']);
+        // print_r($showPackType);
+        foreach ($showProducts as $row) {
+            echo $row->unit_quantity;
+        }
     }
 }
 
@@ -138,22 +101,26 @@ if (isset($_GET["weightage"])) {
 if (isset($_GET["unit"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["unit"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-        $prodReqStatus = '';
-        $oldProdReqStatus = '';
-    }else{
-        $editReqFlag = '';
-        $prodReqStatus = 'not null';
-        $oldProdReqStatus = 'not null';
-    }
+    if ($prodData->status) {
+        $prodDataDetails = $prodData->data;
+        // print_r($prodDataDetails);
+        if (isset($prodDataDetails->edit_request_flag)) {
+            $editReqFlag = '1';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        } else {
+            $editReqFlag = '';
+            $prodReqStatus = '';
+            $oldProdReqStatus = '';
+        }
 
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["unit"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
-    $showProducts = $showProducts->data;
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["unit"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus));
+        $showProducts = $showProducts->data;
 
-    foreach ($showProducts as $row) {
-        $unitId =  $row->unit;
+        foreach ($showProducts as $row) {
+            $unitId =  $row->unit;
 
-        echo $ItemUnit->itemUnitName($unitId);
+            echo $ItemUnit->itemUnitName($unitId);
+        }
     }
 }
