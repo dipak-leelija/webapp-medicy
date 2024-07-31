@@ -253,7 +253,9 @@ docSpecializationInput.addEventListener("keyup", () => {
     // console.log();
     list.innerHTML = request.responseText;
   }
-  // console.log("check return : "+request.responseText);
+  console.log(docSpecializationUrl);
+  console.log("check return : "+request.responseText);
+
 });
 
 const setDocSpecialization = (t) => {
