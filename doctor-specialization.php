@@ -44,7 +44,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Doctor Specialization - Medicy Health Care</title>
+    <title>Doctor Specialization - <?= $healthCareName ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -52,7 +52,6 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
 
 
 </head>
@@ -78,10 +77,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Doctor Specialization</h1>
                     <div class="row">
-
                         <div class="col-md-5">
                             <div class="card shadow mb-4">
                                 <div class="card-body">
@@ -110,13 +106,12 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                 <div class="card-body">
                                     <!-- Showing Unit Table -->
                                     <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <table class="table table-sm table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Specialization</th>
                                                     <th>Description</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -128,18 +123,13 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                                         $specializationDsc = $rowDoctorCategory['category_descreption'];
 
                                                         echo '<tr>
-                                                    <td>' . $specializationid . '</td>
-                                                    <td>' . $specializationName . '</td>
-                                                    <td>' . substr($specializationDsc, 0, 65) . '..</td>
-                                                    <td>
-                                                        <a class="text-primary" data-toggle="modal" data-target=".docCatModal"
-                                                            onclick="viewAndEdit(' . $specializationid . ')"><i
-                                                                class="fas fa-edit"></i></a>
-
-                                                        <a class="text-primary delete-btn" data-id="' . $specializationid . '"><i class="far fa-trash-alt"></i></a>
-                                                    </td>
-                                                </tr>';
+                                                            <td>' . $specializationid . '</td>
+                                                            <td>' . $specializationName . '</td>
+                                                            <td>' . substr($specializationDsc, 0, 65) . '..</td>
+                                                        </tr>';
                                                     }
+                                                }else {
+                                                    echo '<tr class="text-center"><td colspan="3">No Data Found</td></tr>';
                                                 }
                                                 ?>
 
@@ -209,12 +199,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
-
     <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
     <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 
@@ -226,32 +211,32 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                 let docSpecialization = document.getElementById('splz-name').value;
                 let docSpecializationDescription = document.getElementById('splz-dsc').value;
 
-                if(docSpecialization != '' && docSpecializationDescription != ''){
+                if (docSpecialization != '' && docSpecializationDescription != '') {
 
                     // ajax/doc-specialization-add.ajax.php
                     $.ajax({
-                            url: "ajax/doc-specialization-add.ajax.php",
-                            type: "POST",
-                            data: {
-                                docSpeclzn: docSpecialization,
-                                docSpeclznDsc: docSpecializationDescription
-                            },
-                            success: function(response) {
-                                // alert(response);
-                                if (response) {
-                                    // Swal.fire('Success', 'Data added successfully', 'success');
-                                    window.location.reload();
-                                } else {
-                                    // Swal.fire('Fail', 'Fail to add data.', 'error');
-                                    window.location.reload();
-                                }
+                        url: "ajax/doc-specialization-add.ajax.php",
+                        type: "POST",
+                        data: {
+                            docSpeclzn: docSpecialization,
+                            docSpeclznDsc: docSpecializationDescription
+                        },
+                        success: function(response) {
+                            // alert(response);
+                            if (response) {
+                                // Swal.fire('Success', 'Data added successfully', 'success');
+                                window.location.reload();
+                            } else {
+                                // Swal.fire('Fail', 'Fail to add data.', 'error');
+                                window.location.reload();
                             }
-                        });
+                        }
+                    });
 
-                }else{
-                    Swal.fire('Check','Fill both Doctor specialization and Description field.','info');
+                } else {
+                    Swal.fire('Check', 'Fill both Doctor specialization and Description field.', 'info');
                 }
-                
+
                 document.getElementById('splz-name').value = '';
                 document.getElementById('splz-dsc').value = '';
             })
@@ -297,7 +282,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                 if (response == 1) {
                                     $(btn).closest("tr").fadeOut()
                                 } else {
-                                    Swal.fire("Error","Deletion Failed!","Error");
+                                    Swal.fire("Error", "Deletion Failed!", "Error");
                                     $("#error-message").html("Deletion Failed !!!").slideDown();
                                     $("success-message").slideUp();
                                 }
