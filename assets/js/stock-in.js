@@ -439,8 +439,10 @@ const getBillAmount = () => {
 
     let modifiedPtr = document.getElementById("ptr").value;
     
-    let dprice = (parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100))).toFixe(2);
-    let totalAmount = ((parseFloat(dprice) + (parseFloat(dprice) * (parseFloat(gst) / 100))) * parseIn(qty)).toFixed(2);
+    let dprice = (parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100)));
+    dprice = parseFloat(dprice).toFixed(2);
+    let totalAmount = ((parseFloat(dprice) + (parseFloat(dprice) * (parseFloat(gst) / 100))) * parseInt(qty));
+    totalAmount = parseFloat(totalAmount).toFixed(2);
 
     document.getElementById("dprice").value = dprice;
     document.getElementById("bill-amount").value = totalAmount;
