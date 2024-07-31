@@ -16,28 +16,25 @@ $Gst = new Gst;
 if (isset($_GET["id"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["id"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-    }else{
-        $editReqFlag = '';
+    if ($prodData->status) {
+        $prodDataDetails = $prodData->data;
+        // print_r($prodDataDetails);
+        if (isset($prodDataDetails->edit_request_flag)) {
+            $editReqFlag = '1';
+        } else {
+            $editReqFlag = '';
+        }
+
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag));
+        $showProducts = $showProducts->data;
+        // print _r($showProducts);
+
+        foreach($showProducts as $prodData){
+            $gstPercent = $prodData->gst;
+            echo $gstPercent;
+        }
+        
     }
-
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag));
-    $showProducts = $showProducts->data;
-    $gstId = $showProducts[0]->gst;
-
-    echo $gstId;
-    // 
-    // $col = 'id';
-    // $gstData = json_decode($Gst->seletGstByColVal($col, $gstId));
-    // if($gstData->status){
-    //     $gstData = $gstData->data;
-
-    //     echo $gstData[0]->percentage;
-    // } else {
-    //     echo null;
-    // }
-    
 }
 
 

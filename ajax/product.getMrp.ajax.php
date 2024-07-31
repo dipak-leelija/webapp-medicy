@@ -17,22 +17,32 @@ $Gst            = new Gst;
 if (isset($_GET["id"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["id"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-    }else{
-        $editReqFlag = '';
+    if ($prodData->status) {
+        $productData = $prodData->data;
+        if (isset($productData->edit_request_flag)) {
+            $editReqFlag = $productData->edit_request_flag;
+        } else {
+            $editReqFlag = '';
+        }
+
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag));
+        $showProducts = $showProducts->data;
+
+        echo $showProducts[0]->mrp;
     }
-
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag));
-    $showProducts = $showProducts->data;
-
-    echo $showProducts[0]->mrp;
 }
 
+
+
+
+// ====================================================================================
 if (isset($_GET["stockmrp"])) {
     $stock = $CurrentStock->showCurrentStocByPId($_GET["stockmrp"]);
     echo $stock[0]['mrp'];
 }
+
+
+
 
 
 // =============== ptr check =====================
@@ -40,30 +50,34 @@ if (isset($_GET["stockmrp"])) {
 if (isset($_GET["ptrChk"])) {
 
     $prodData = json_decode($Products->showProductsById($_GET["ptrChk"]));
-    if($prodData->status){
-        $editReqFlag = 'not null';
-    }else{
-        $editReqFlag = '';
+    // print_r($prodData);
+
+    if ($prodData->status) {
+        $productData = $prodData->data;
+        if (isset($productData->edit_request_flag)) {
+            $editReqFlag = $productData->edit_request_flag;
+        } else {
+            $editReqFlag = '';
+        }
+
+        $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["ptrChk"], $adminId, $editReqFlag));
+        $showProducts = $showProducts->data;
+
+        $mrp = $showProducts[0]->mrp;
+
+        if ($showProducts[0]->gst != null || $showProducts[0]->gst != '') {
+            $gstval = $showProducts[0]->gst;
+            
+            $maxptr = ($mrp * 100) / ($gstval + 100);
+            $maxptr = floatval($maxptr);
+            $maxptr = round($maxptr, 2);
+            echo $maxptr;
+        } else {
+            echo $mrp;
+        }
     }
 
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["ptrChk"], $adminId, $editReqFlag));
-    $showProducts = $showProducts->data;
-
-    $mrp = $showProducts[0]->mrp;
-
-    if($showProducts[0]->gst != null || $showProducts[0]->gst != ''){
-        $col = 'id';
-        $gstData = json_decode($Gst->seletGstByColVal($col, $showProducts[0]->gst));
-        $gstData = $gstData->data;
-        $gstval = $gstData[0]->percentage;
-
-        $maxptr = ($mrp*100)/($gstval+100);
-        $maxptr = floatval($maxptr);
-        $maxptr = round($maxptr,2);
-        echo $maxptr;
-    } else {
-        echo $mrp;
-    }
+    
    
 }
 ?>

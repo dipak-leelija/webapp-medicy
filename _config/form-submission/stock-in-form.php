@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $weightage          = array_shift($_POST['weightage']);
                 $unit               = array_shift($_POST['unit']);
-                $pack               = array_shift($_POST['packagingin']);
+                // $pack               = array_shift($_POST['packagingin']);
                 $qty                = array_shift($_POST['qty']);
                 $freeQty            = array_shift($_POST['freeQty']);
                 $looselyCount       = '';
