@@ -18,6 +18,8 @@ $DoctorCategory = new DoctorCategory;
 $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors, true);
 // print_r($showDoctors);
+
+$docSplzList = $DoctorCategory->showDoctorCategory();
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +141,7 @@ $showDoctors = json_decode($showDoctors, true);
                                                     </tr>';
                                                     }
                                             }
-                                        }else {
+                                        } else {
                                             echo '<tr class="text-center"><td colspan="6">No Doctors Found</td></tr>';
                                         }
 
@@ -223,8 +225,8 @@ $showDoctors = json_decode($showDoctors, true);
                                     <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" autocomplete="off">
 
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="doc-specialization-list">
-                                        <?php if (!empty($docSplzList)) : ?>
-                                            <div class="lists" id="lists">
+                                        <div class="lists" id="lists">
+                                            <?php if (!empty($docSplzList)) : ?>
                                                 <?php foreach ($docSplzList as $docSplzList) { ?>
                                                     <div class="p-1 border-bottom list" id="<?= $docSplzList['doctor_category_id'] ?>" onclick="setDocSpecialization(this)">
                                                         <?= $docSplzList['category_name'] ?>
@@ -241,38 +243,40 @@ $showDoctors = json_decode($showDoctors, true);
                                                     <button type="button" id="add-specialization" class="text-primary border-0">
                                                         <i class="fas fa-plus-circle"></i>Add Now</button>
                                                 </div>
-                                            </div>
-                                        <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
 
                                 </div>
+                            </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <label for="doc-degree" class="col-form-label">Degree:</label>
-                                        <input type="text" class="form-control" id="doc-degree" autocomplete="off">
-                                    </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <label for="doc-degree" class="col-form-label">Degree:</label>
+                                    <input type="text" class="form-control" id="doc-degree" autocomplete="off">
                                 </div>
+                            </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="doc-email" class="col-form-label">Email:</label>
-                                        <input type="email" class="form-control" id="email" autocomplete="off" onfocusout="checkMail(this)">
-                                    </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="doc-email" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" autocomplete="off" onfocusout="checkMail(this)">
                                 </div>
+                            </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="doc-phno" class="col-form-label">Contact
-                                            Number:</label>
-                                        <input type="number" class="form-control" id="doc-phno" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
-                                    </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="doc-phno" class="col-form-label">Contact
+                                        Number:</label>
+                                    <input type="number" class="form-control" id="doc-phno" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
                                 </div>
+                            </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="doc-address" class="col-form-label">Address:</label>
-                                        <textarea class="form-control" id="doc-address" rows="1"></textarea autocomplete="off">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="doc-address" class="col-form-label">Address:</label>
+                                    <textarea class="form-control" id="doc-address" rows="1"></textarea autocomplete="off">
                                     </div>
                                 </div>
 
@@ -312,12 +316,7 @@ $showDoctors = json_decode($showDoctors, true);
         <!-- Custom scripts for all pages-->
         <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins
-        <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-        <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script> -->
-
         <!-- Page level custom scripts -->
-        <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
         <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
         <!-- custom js for custom script -->
@@ -326,8 +325,6 @@ $showDoctors = json_decode($showDoctors, true);
         <!-- sweetalert2 js link  -->
         <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
-        <!-- custom javascript for action -->
-        <script src="<?php echo JS_PATH ?>doctors-speclz.js"></script>
         <script>
             const addDocSpecialization = () => {
                 // alert('<?= URL ?>doctor-specialization.php');

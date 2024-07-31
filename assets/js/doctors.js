@@ -25,20 +25,11 @@ const addDocDetails = () => {
   let docAddress = document.getElementById("doc-address").value;
   let docAlsoWith = document.getElementById("doc-with").value;
 
-  if (
-    docName != "" &&
-    docSpecialization != "" &&
-    docAlsoWith != "" &&
-    docEmail != "" &&
-    docMob != "" &&
-    docRegNo != "" &&
-    docDegree != "" &&
-    docAddress != ""
-  ) {
-    console.log(docAlsoWith);
+  if (docName != "" && docSpecialization != "" && docRegNo != "" && docDegree != "" ) {
+    
 
     $.ajax({
-      url: "doctors.new.data.add.ajax.php",
+      url: "ajax/doctors.new.data.add.ajax.php",
       type: "POST",
       data: {
         docName: docName,
