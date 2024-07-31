@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $col = 'gst';
         $updateProdcutGst = json_decode($Products->updateProductValuebyTableColName($table, $prodId, $col,
         $gstPercent, $employeeId, NOW, $adminId));
-        print_r($updateProdcutGst);
+        // print_r($updateProdcutGst);
 
         if($updateProdcutGst->status){
             echo true;

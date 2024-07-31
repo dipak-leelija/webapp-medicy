@@ -680,14 +680,6 @@ const addData = () => {
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
     let payble = (((parseFloat(dprice.value)) + (parseFloat(dprice.value) * (parseInt(gst.value) / 100))) * parseInt(qty.value)).toFixed(2);
 
-    // let marginP = 0;
-    // if (parseFloat(totalMrp) > parseFloat(payble)) {
-    //     let marginAmount = parseFloat(totalMrp) - parseFloat(billAmount.value);
-    //     marginP = (parseFloat(marginAmount) / parseFloat(totalMrp)) * 100;
-    // } else {
-    //     marginP = 0;
-    // }
-
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}" style="cursor: pointer; text-align: right;">
             <td style="color: red; padding-top:1.2rem; width:1rem"> <i class="fas fa-trash" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
