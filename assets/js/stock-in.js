@@ -457,7 +457,9 @@ const getBillAmount = () => {
             prodId: prodId
         },
         success: function (response) {
-            console.log(response);
+            if(!response){
+                console.log(response);
+            }
         },
         error: function (error) {
             console.error('Error :', error);
