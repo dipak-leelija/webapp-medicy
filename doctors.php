@@ -83,7 +83,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                             </div>
                             <div class="card-header py-3 col-md-6 d-flex justify-content-end">
                                 <div class="d-md-flex justify-content-md-end">
-                                    <button class="btn btn-sm btn-success" name="add-new-doc-data" id="add-new-doc-data" data-toggle="modal" data-target="#addDoctorDataModal" onclick="addDoctor()">Add
+                                    <button class="btn btn-sm btn-success" name="add-new-doc-data" id="add-new-doc-data" data-toggle="modal" data-target="#addDoctorDataModal">Add
                                         New</button>
                                 </div>
                             </div>

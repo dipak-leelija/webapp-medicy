@@ -1,18 +1,3 @@
-// doctor data add modal link -------
-const addDoctor = () => {
-  let url = "ajax/doctor.data.add.ajax.php";
-  // document.getElementById('new-doctor-modal').innerHTML =
-
-  // $("#new-doctor-modal").html('<iframe width="100%" height="500px" frameborder="0" allowtransparency="true"  src="' + url + '"></iframe>');
-
-  fetch(url)
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("new-doctor-modal").innerHTML = data;
-    })
-    .catch((error) => console.error("Error fetching doctor data:", error));
-};
-
 /*==================== ADD NEW DOCTOR ====================*/
 const addDocDetails = () => {
   const fields = [
