@@ -312,16 +312,13 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
         <!-- Core plugin JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
+        
         <!-- Custom scripts for all pages-->
-        <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+        <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
+        <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
 
         <!-- custom js for custom script -->
         <script src="<?php echo JS_PATH ?>doctors.js"></script>
-        <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
         <!-- sweetalert2 js link  -->
         <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 

@@ -236,7 +236,7 @@ docSpecializationInput.addEventListener("keyup", () => {
     list.innerHTML = request.responseText;
   }
   console.log(docSpecializationUrl);
-  console.log("check return : "+request.responseText);
+  // console.log("check return : "+request.responseText);
 
 });
 
