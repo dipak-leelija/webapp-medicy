@@ -24,10 +24,10 @@ const addCustomerModal = () => {
         '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
         url + '"></iframe>');
 }
+
 // GET CUSTOMER DETAILS
 const getCustomer = (customer) => {
     if (customer.length > 0) {
-        
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("customer-list").style.display = "block";
@@ -84,15 +84,12 @@ const getPaymentMode = (mode) => {
 
 /////////////// making search item focused fist value not a space \\\\\\\\\\\\\\\\\\
 const firstInput = document.getElementById('product-name');
-
 window.addEventListener('load', function () {
     firstInput.focus();
 });
 
 firstInput.addEventListener('input', function (event) {
-    
     const inputValue = this.value;
-
     // Check if the first character is a space
     if (inputValue.length > 0 && inputValue[0] === ' ') {
         this.value = inputValue.slice(1);
@@ -106,7 +103,6 @@ const searchItem = (searchFor) => {
 
     let searchReult = document.getElementById('searched-items');
     
-
     if (document.getElementById("product-name").value == "") {
         document.getElementById("searched-items").style.display = "none";
         document.getElementById("searched-batchNo").style.display = "none";
