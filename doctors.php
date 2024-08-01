@@ -206,21 +206,21 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-name" class="col-form-label">Doctor Name:</label>
+                                    <label for="doc-name" class="col-form-label">Doctor Name:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-name" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-reg-no" class="col-form-label">Reg. No:</label>
+                                    <label for="doc-reg-no" class="col-form-label">Reg. No:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-reg-no" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-splz" class="col-form-label">Specialization:</label>
+                                    <label for="doc-splz" class="col-form-label">Specialization: <span class="text-danger small">*</span></label>
                                     <input type="text" name="doc-speclz-id" id="doc-speclz-id" class="form-control" autocomplete="off" hidden>
                                     <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" autocomplete="off">
 
@@ -253,7 +253,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
                             <div class="col-sm-6">
                                 <div class="form-group ">
-                                    <label for="doc-degree" class="col-form-label">Degree:</label>
+                                    <label for="doc-degree" class="col-form-label">Degree:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-degree" autocomplete="off">
                                 </div>
                             </div>
