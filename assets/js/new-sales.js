@@ -10,11 +10,24 @@ newSellGenerateBill.setAttribute("disabled", "true");
 
 //======================================================================================
 var setDate = new Date();
-document.getElementById("bill-date").value = setDate.toISOString().slice(0, 10);
-document.getElementById('final-bill-date').value = setDate.toISOString().slice(0, 10);
+var today = setDate.toISOString().slice(0, 10);
 
+// Set default value to today
+document.getElementById("bill-date").value = today;
+document.getElementById('final-bill-date').value = today;
+
+// Set max attribute to today
+document.getElementById("bill-date").max = today;
+document.getElementById('final-bill-date').max = today;
+
+// Function to set date, ensuring it does not exceed today
 const getDate = (date) => {
-    document.getElementById("final-bill-date").value = date;
+    if (new Date(date) > setDate) {
+        alert("Date cannot be beyond the current date.");
+        document.getElementById("final-bill-date").value = today;
+    } else {
+        document.getElementById("final-bill-date").value = date;
+    }
 }
 
 // ADD NEW CUSTOMER =======================================================================
