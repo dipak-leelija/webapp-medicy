@@ -54,15 +54,24 @@ const setDistributor = (t) => {
   document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 };
 
+
+
 const addDistributor = () => {
-  var parentLocation = window.location.origin + window.location.pathname;
+  const parentLocation = window.location.origin + window.location.pathname;
+  const distBillNo = document.getElementById('data-holder-1').value;
+  const editId = document.getElementById('data-holder-2').value;
 
   $.ajax({
     url: "components/distributor-add.php",
     type: "POST",
-    data: { urlData: parentLocation },
+    data: {
+      urlData: parentLocation,
+      distBill: distBillNo,
+      editid: editId,
+      flag: 'dist-add',
+    },
     success: function (response) {
-      let body = document.querySelector(".add-distributor");
+      const body = document.querySelector(".add-distributor");
       body.innerHTML = response;
     },
     error: function (error) {
@@ -70,6 +79,7 @@ const addDistributor = () => {
     },
   });
 };
+
 
 ///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
 const stockInSave = document.getElementById("stockInEdit-update-btn");
@@ -260,40 +270,57 @@ const setDistBillNo = (t) => {
   document.getElementById("distributor-bill-no").value = val;
 };
 
-///////////// set purchse date \\\\\\\\\\\\\\\\
-var todayDate = new Date();
-var date = todayDate.getDate();
-var month = todayDate.getMonth() + 1;
-var year = todayDate.getFullYear();
+//////////////////// set bill date due date \\\\\\\\\\\\\\\\\\\\
+// Set current date for bill date and due date
+const todayDate = new Date();
+const formatDate = (date) => date.toISOString().slice(0, 10);
 
-if (date < 10) {
-  date = "0" + date;
+
+// Initialize bill date and due date
+const billDateInput = document.getElementById('bill-date');
+const dueDateInput = document.getElementById('due-date');
+const billDateValInput = document.getElementById('bill-date-val');
+const dueDateValInput = document.getElementById('due-date-val');
+
+// Set default values
+billDateInput.value = formatDate(todayDate);
+billDateValInput.value = formatDate(todayDate);
+
+// Set due date to be the current date
+dueDateInput.value = formatDate(todayDate);
+dueDateValInput.value = formatDate(todayDate);
+
+// Set the maximum bill date to today
+billDateInput.setAttribute("max", formatDate(todayDate));
+
+// Update bill date and due date when bill date changes
+const updateDates = () => {
+    const billDate = new Date(billDateInput.value);
+    const maxDueDate = new Date(billDate);
+    maxDueDate.setDate(billDate.getDate() + 10);
+
+    // Update due date constraints
+    dueDateInput.setAttribute("min", billDateInput.value);
+    dueDateInput.setAttribute("max", formatDate(maxDueDate));
+
+    // Set due date value to a date within the allowed range if necessary
+    if (new Date(dueDateInput.value) < billDate) {
+        dueDateInput.value = formatDate(billDate);
+        dueDateValInput.value = formatDate(billDate);
+    }
 }
-if (month < 10) {
-  month = "0" + month;
-}
-var todayFullDate = year + "-" + month + "-" + date;
-// console.log(todayFullDate);
-document.getElementById("bill-date").setAttribute("max", todayFullDate);
-// ========== set purchse date ===========
-const getbillDate = (billDate) => {
-  billDate = billDate.value;
 
-  document.getElementById("bill-date-val").value = billDate;
+// Set event listeners
+billDateInput.addEventListener('change', () => {
+    billDateValInput.value = billDateInput.value;
+    updateDates();
+});
 
-  document.getElementById("due-date").setAttribute("min", billDate);
-
-  var date2 = todayDate.getDate() + 7;
-  // // console.log(date2);
-  var todayFullDate2 = year + "-" + month + "-" + date2;
-  document.getElementById("due-date").setAttribute("max", todayFullDate2);
-};
-
-////////////// set payment date \\\\\\\\\\\\\\\
-const getDueDate = (t) => {
-  // console.log(t.value);
-  document.getElementById("due-date-val").value = t.value;
-};
+dueDateInput.addEventListener('change', () => {
+    dueDateValInput.value = dueDateInput.value;
+});
+updateDates();
+// =========== eof bill date due date control =============
 
 //////////// set payment mode \\\\\\\\\\\\\\\\\
 const setPaymentMode = (pMode) => {

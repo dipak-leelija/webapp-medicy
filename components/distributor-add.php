@@ -1,9 +1,17 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
 
-if (isset($_POST['urlData'])){
-    $url = $_POST['urlData'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the data from the POST request
+    if (isset($_POST['flag']) && $_POST['flag'] === 'dist-add') {
+        $url = isset($_POST['urlData']) ? $_POST['urlData'] : '';
+        $distBill = isset($_POST['distBill']) ? $_POST['distBill'] : '';
+        $editId = isset($_POST['editid']) ? $_POST['editid'] : '';
+    } else {
+        $url = '';
+    }
 }
+
 ?>
 
 <div class="card-body pt-0">
@@ -46,6 +54,12 @@ if (isset($_POST['urlData'])){
 
         <div class="d-none col-md-12">
             <input type="text" class="form-control" id="parent-window-location" name="parent-window-location"  maxlength="100" value="<?php echo $url ?>">
+        </div>
+        <div class="d-none col-md-12">
+            <input type="text" class="form-control" id="distBill" name="distBill"  maxlength="100" value="<?php echo $distBill ?>">
+        </div>
+        <div class="d-none col-md-12">
+            <input type="text" class="form-control" id="editId" name="editId"  maxlength="100" value="<?php echo $editId ?>">
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
