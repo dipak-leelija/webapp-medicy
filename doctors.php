@@ -15,8 +15,6 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $doctors        = new Doctors();
 $DoctorCategory = new DoctorCategory;
 
-echo $ADMINID;
-echo '<br><br><br>';
 $showDoctors = $doctors->showDoctors($ADMINID);
 $showDoctors = json_decode($showDoctors, true);
 print_r($showDoctors);
@@ -35,7 +33,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medicy Doctors</title>
+    <title>Doctors - <?= $healthCareName ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -107,6 +105,8 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                         <?php
                                         if ($showDoctors && isset($showDoctors['status']) && $showDoctors['status'] == 1) {
                                             $showDoctors = $showDoctors['data'];
+                                            print_r($showDoctors);
+
                                             foreach ($showDoctors as $doctors) {
                                                 $docId              = $doctors['doctor_id'];
                                                 $docRegNo           = $doctors['doctor_reg_no'];
