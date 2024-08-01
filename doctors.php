@@ -124,6 +124,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                 if ($docSplz && $docSplz['status'] == 1 && !empty($docSplz))
                                                     foreach ($docSplz['data'] as $docSplzShow) {
                                                         echo $docSpecializn = $docSplzShow['category_name'];
+                                                    }
 
                                                         echo '<tr>
                                                         <td>' . $docId . '</td>
@@ -141,7 +142,6 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                         
                                                             </td>
                                                     </tr>';
-                                                    }
                                             }
                                         } else {
                                             echo '<tr class="text-center"><td colspan="6">No Doctors Found</td></tr>';
