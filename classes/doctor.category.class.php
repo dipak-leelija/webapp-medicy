@@ -82,11 +82,11 @@ class DoctorCategory
                 }
                 return json_encode(['status' => '1', 'data' => $categoryData]);
             } else {
-                return json_encode(['status' => '0', 'data' => '']);
+                return json_encode(['status' => '0', 'error' => 'not found!']);
             }
             $stmt->close();
         } catch (Exception $e) {
-            return $e->getMessage();
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
     }
 
