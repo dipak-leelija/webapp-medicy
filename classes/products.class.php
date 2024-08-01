@@ -1102,58 +1102,58 @@ class Products
 
 
 
-    function selectItemLikeForStockInOut($data, $adminid){
+    function selectItemLikeForStockInOut($data, $adminid) {
         $resultData1 = [];
         $resultData2 = [];
-
+    
+        // Prepare search pattern
+        $searchPattern = "%" . $data . "%";
+    
+        // Define queries
+        $queries = [
+            [
+                "sql" => "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10",
+                "params" => [$searchPattern, $searchPattern, $searchPattern],
+                "types" => "sss",
+                "resultData" => &$resultData1
+            ],
+            [
+                "sql" => "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id` = ? LIMIT 5",
+                "params" => [$searchPattern, $adminid],
+                "types" => "ss",
+                "resultData" => &$resultData2
+            ]
+        ];
+    
         try {
-            // Prepare search pattern
-            $searchPattern = "%" . $data . "%";
-
-            // Define queries
-            $queries = [
-                [
-                    "sql" => "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10",
-                    "params" => [$searchPattern, $searchPattern, $searchPattern],
-                    "types" => "sss",
-                    "resultData" => &$resultData1
-                ],
-                [
-                    "sql" => "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id` = ? LIMIT 10",
-                    "params" => [$searchPattern, $adminid],
-                    "types" => "ss",
-                    "resultData" => &$resultData2
-                ]
-            ];
-
             foreach ($queries as $query) {
                 $stmt = $this->conn->prepare($query['sql']);
-
-                if ($stmt) {
-                    $stmt->bind_param($query['types'], ...$query['params']);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-
-                    while ($row = $result->fetch_assoc()) {
-                        $query['resultData'][] = $row;
-                    }
-
-                    $stmt->close();
-                } else {
-                    throw new Exception("Failed to prepare the statement: " . $query['sql']);
+    
+                if ($stmt === false) {
+                    throw new Exception("Failed to prepare the statement: " . $this->conn->error);
                 }
+    
+                $stmt->bind_param($query['types'], ...$query['params']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                while ($row = $result->fetch_assoc()) {
+                    $query['resultData'][] = $row;
+                }
+    
+                $stmt->close();
             }
-
+    
             $mergedResults = array_merge($resultData1, $resultData2);
-
+    
             return ['status' => '1', 'message' => 'data found', 'data' => $mergedResults];
         } catch (Exception $e) {
             // Log or handle the exception appropriately
             error_log("Error: " . $e->getMessage());
+            return ['status' => '0', 'message' => 'an error occurred'];
         }
-
-        return ['status' => '0', 'message' => 'no data found'];
     }
+    
 
 
 
