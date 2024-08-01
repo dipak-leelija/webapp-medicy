@@ -7,17 +7,11 @@ require_once CLASS_DIR . 'doctor.category.class.php';
 
 $DoctorCategory = new DoctorCategory();
 
-print_r($_GET);
-print_r($_REQUEST);
-
-
 if (isset($_GET['match'])) {
 
     $match = htmlspecialchars($_GET['match']);
 
     $searchResult = json_decode($DoctorCategory->showDoctorCategoryByLikeWise($match));
-    print_r($searchResult);
-    
 
     if ($searchResult->status) {
         $data = $searchResult->data;
