@@ -91,43 +91,31 @@ class DoctorCategory
 
 
 
-    function showDoctorCategoryByLikeWise($data)
+    function doctorCategorySearch($data)
     {
         try {
-            if ($data == '*') {
-
-                $categoryData = $this->showDoctorCategory();
-
+            $query = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
+            $stmt = $this->conn->prepare($query);
+            if ($stmt === false) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
             }
-            //  else {
-            //     $query = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
-            //     $stmt = $this->conn->prepare($query);
-            //     if ($stmt === false) {
-            //         throw new Exception("Error preparing statement: " . $this->conn->error);
-            //     }
-            //     $stmt->bind_param("s", $data);
+            $stmt->bind_param("s", $data);
 
-            //     if (!$stmt->execute()) {
-            //         throw new Exception("Error in query execution: " . $stmt->error);
-            //     }
+            if (!$stmt->execute()) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
 
-            //     $result = $stmt->get_result();
-            //     $categoryData = [];
+            $result = $stmt->get_result();
+            $categoryData = [];
 
-            //     if ($result->num_rows > 0) {
-            //         while ($row = $result->fetch_assoc()) {
-            //             $categoryData[] = $row;
-            //         }
-            //     }
-            //     $stmt->close();
-            // }
-
-            if (count($categoryData) > 0) {
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $categoryData[] = $row;
+                }
+                $stmt->close();
                 return json_encode(['status' => '1', 'data' => $categoryData]);
-            } else {
-                return json_encode(['status' => '0', 'error' => 'not found!']);
             }
-
+            return json_encode(['status' => '0', 'error' => 'not found!']);
         } catch (Exception $e) {
             if (isset($stmt) && $stmt instanceof mysqli_stmt) {
                 $stmt->close();

@@ -196,7 +196,7 @@ const docSpecializationId = document.getElementById("doc-speclz-id");
 const docSpecializationInput = document.getElementById("doc-speclz");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
-docSpecializationInput.addEventListener("click", () => {
+docSpecializationInput.addEventListener("focus", () => {
   dropdown.style.display = "block";
 });
 
