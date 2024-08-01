@@ -15,9 +15,11 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $doctors        = new Doctors();
 $DoctorCategory = new DoctorCategory;
 
-$showDoctors = $doctors->showDoctors($adminId);
+echo $ADMINID;
+echo '<br><br><br>';
+$showDoctors = $doctors->showDoctors($ADMINID);
 $showDoctors = json_decode($showDoctors, true);
-// print_r($showDoctors);
+print_r($showDoctors);
 
 $docSplzList = $DoctorCategory->showDoctorCategory();
 ?>
