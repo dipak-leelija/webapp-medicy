@@ -7,6 +7,8 @@ require_once CLASS_DIR . 'doctor.category.class.php';
 
 $DoctorCategory = new DoctorCategory();
 
+print_r($_POST);
+
 if (isset($_GET['match'])) {
 
     $match = htmlspecialchars($_GET['match']);
