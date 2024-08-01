@@ -222,20 +222,17 @@ docSpecializationInput.addEventListener("keyup", () => {
   docSpecializationId.value = '';
 
   if (docSpecializationInput.value.length > 2) {
-    var docSpecializationUrl =
-      "ajax/doc-specialization-list-view.ajax.php?match=" +
-      docSpecializationInput.value;
-    request.open("GET", docSpecializationUrl, false);
+    var reqUrl = `ajax/doc-specialization-list-view.ajax.php?match=${docSpecializationInput.value}`;
+    request.open("GET", reqUrl, false);
     request.send(null);
     list.innerHTML = request.responseText;
   } else {
-    var docSpecializationUrl =
-      "ajax/doc-specialization-list-view.ajax.php?match=all";
-    request.open("GET", docSpecializationUrl, false);
+    var reqUrl = `ajax/doc-specialization-list-view.ajax.php?match=all`;
+    request.open("GET", reqUrl, false);
     request.send(null);
     list.innerHTML = request.responseText;
   }
-  console.log(docSpecializationUrl);
+  console.log(reqUrl);
   // console.log("check return : "+request.responseText);
 
 });
