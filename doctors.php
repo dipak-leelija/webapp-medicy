@@ -105,7 +105,6 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                         <?php
                                         if ($showDoctors && isset($showDoctors['status']) && $showDoctors['status'] == 1) {
                                             $showDoctors = $showDoctors['data'];
-                                            print_r($showDoctors);
 
                                             foreach ($showDoctors as $doctors) {
                                                 $docId              = $doctors['doctor_id'];
@@ -121,9 +120,10 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                 //initilizing Doctors Category
                                                 $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
                                                 $docSplz = json_decode($docSplz, true);
+                                                print_r($docSplz);
                                                 if ($docSplz && $docSplz['status'] == 1 && !empty($docSplz))
                                                     foreach ($docSplz['data'] as $docSplzShow) {
-                                                        $docSpecializn = $docSplzShow['category_name'];
+                                                        echo $docSpecializn = $docSplzShow['category_name'];
 
                                                         echo '<tr>
                                                         <td>' . $docId . '</td>
