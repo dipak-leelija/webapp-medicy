@@ -232,7 +232,7 @@ docSpecializationInput.addEventListener("keyup", () => {
     request.send(null);
     list.innerHTML = request.responseText;
   }
-  console.log(reqUrl);
+  // console.log(reqUrl);
   // console.log("check return : "+request.responseText);
 
 });
