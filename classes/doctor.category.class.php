@@ -96,19 +96,19 @@ class DoctorCategory
     function showDoctorCategoryByLikeWise($data)
     {
         try {
-            if ($data != 'all') {
-                $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
-                $stmt = $this->conn->prepare($selectDoctorCategory);
+            if ($data == '*') {
+                $query = "SELECT * FROM `doctor_category`";
+                $stmt = $this->conn->prepare($query);
+                if ($stmt === false) {
+                    throw new Exception("Error preparing statement: " . $this->conn->error);
+                }
+            } else {
+                $query = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
+                $stmt = $this->conn->prepare($query);
                 if ($stmt === false) {
                     throw new Exception("Error preparing statement: " . $this->conn->error);
                 }
                 $stmt->bind_param("s", $data);
-            } else {
-                $selectDoctorCategory = "SELECT * FROM `doctor_category`";
-                $stmt = $this->conn->prepare($selectDoctorCategory);
-                if ($stmt === false) {
-                    throw new Exception("Error preparing statement: " . $this->conn->error);
-                }
             }
     
             if (!$stmt->execute()) {
@@ -116,6 +116,8 @@ class DoctorCategory
             }
     
             $result = $stmt->get_result();
+            print_r($result);
+            
             $categoryData = [];
     
             if ($result->num_rows > 0) {
