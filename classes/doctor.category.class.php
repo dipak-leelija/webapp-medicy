@@ -31,17 +31,15 @@ class DoctorCategory
     function showDoctorCategory()
     {
         try {
-            $selectDoctorCategory = "SELECT * FROM `doctor_category`";
-            $selectDoctorCategoryQuery = $this->conn->query($selectDoctorCategory);
+            $query = "SELECT * FROM `doctor_category`";
+            $stmt = $this->conn->query($query);
 
-            if (!$selectDoctorCategoryQuery) {
+            if (!$stmt) {
                 throw new Exception("Error in query: " . $this->conn->error);
             }
 
-            $row = $selectDoctorCategoryQuery->num_rows;
-
-            if ($row > 0) {
-                while ($result = $selectDoctorCategoryQuery->fetch_array()) {
+            if ($stmt->num_rows) {
+                while ($result = $stmt->fetch_assoc()) {
                     $categoryData[] = $result;
                 }
                 return $categoryData;
@@ -96,38 +94,40 @@ class DoctorCategory
     function showDoctorCategoryByLikeWise($data)
     {
         try {
-            if ($data != 'all') {
-                $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
-                $stmt = $this->conn->prepare($selectDoctorCategory);
-                if ($stmt === false) {
-                    throw new Exception("Error preparing statement: " . $this->conn->error);
-                }
-                $stmt->bind_param("s", $data);
-            } else {
-                $selectDoctorCategory = "SELECT * FROM `doctor_category`";
-                $stmt = $this->conn->prepare($selectDoctorCategory);
-                if ($stmt === false) {
-                    throw new Exception("Error preparing statement: " . $this->conn->error);
-                }
+            if ($data == '*') {
+
+                $categoryData = $this->showDoctorCategory();
+
             }
-    
-            if (!$stmt->execute()) {
-                throw new Exception("Error in query execution: " . $stmt->error);
-            }
-    
-            $result = $stmt->get_result();
-            $categoryData = [];
-    
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $categoryData[] = $row;
-                }
-                $stmt->close();
+            //  else {
+            //     $query = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE CONCAT('%', ?, '%')";
+            //     $stmt = $this->conn->prepare($query);
+            //     if ($stmt === false) {
+            //         throw new Exception("Error preparing statement: " . $this->conn->error);
+            //     }
+            //     $stmt->bind_param("s", $data);
+
+            //     if (!$stmt->execute()) {
+            //         throw new Exception("Error in query execution: " . $stmt->error);
+            //     }
+
+            //     $result = $stmt->get_result();
+            //     $categoryData = [];
+
+            //     if ($result->num_rows > 0) {
+            //         while ($row = $result->fetch_assoc()) {
+            //             $categoryData[] = $row;
+            //         }
+            //     }
+            //     $stmt->close();
+            // }
+
+            if (count($categoryData) > 0) {
                 return json_encode(['status' => '1', 'data' => $categoryData]);
             } else {
-                $stmt->close();
                 return json_encode(['status' => '0', 'error' => 'not found!']);
             }
+
         } catch (Exception $e) {
             if (isset($stmt) && $stmt instanceof mysqli_stmt) {
                 $stmt->close();
@@ -135,7 +135,7 @@ class DoctorCategory
             return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
     }
-    
+
 
 
     function showDoctorCategoryByAdmin($adminId = '')

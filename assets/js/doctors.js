@@ -227,7 +227,7 @@ docSpecializationInput.addEventListener("keyup", () => {
     request.send(null);
     list.innerHTML = request.responseText;
   } else {
-    var reqUrl = `ajax/doc-specialization-list-view.ajax.php?match=all`;
+    var reqUrl = `ajax/doc-specialization-list-view.ajax.php?match=*`;
     request.open("GET", reqUrl, false);
     request.send(null);
     list.innerHTML = request.responseText;
