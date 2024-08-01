@@ -12,7 +12,7 @@ if (isset($_GET['match'])) {
     $match = htmlspecialchars($_GET['match']);
 
     $searchResult = json_decode($DoctorCategory->showDoctorCategoryByLikeWise($match));
-
+    
     if ($searchResult->status) {
         $data = $searchResult->data;
 
