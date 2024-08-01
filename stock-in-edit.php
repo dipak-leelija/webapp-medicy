@@ -45,14 +45,17 @@ $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 $edit = FALSE;
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['edit'])) {
         $edit = TRUE;
 
         $distBill           = $_GET['edit']; // get distributor bill no
 
         $stockIn_id         = $_GET['editId']; // get stock in id
+
+        // session_start();
 
         //fetching stok in data by stok in id
         $stockInAttribute = 'id';
@@ -179,14 +182,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <input type="text" class="upr-inp" style="text-transform: uppercase;" name="distributor-bill" id="distributor-bill" value="<?= $edit == TRUE ? $stockIn[0]['distributor_bill'] : ''; ?>" onkeyup="setDistBillNo(this)">
                                 </div>
 
-
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['bill_date']), "Y-m-d") : ''; ?>" onchange="getbillDate(this)">
+                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['bill_date']), "Y-m-d") : ''; ?>" /*onchange="getbillDate(this)"*/>
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['due_date']), "Y-m-d") : ''; ?>" onchange="getDueDate(this)">
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['due_date']), "Y-m-d") : ''; ?>" /*onchange="getDueDate(this)"*/>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
@@ -237,11 +239,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </select>
                                 </div>
                             </div>
+                            
+                            <input type="text" id="data-holder-1" value="<?php echo $distBill; ?>" hidden>
+                            <input type="text" id="data-holder-2" value="<?php echo $stockIn_id; ?>" hidden>
 
                             <div>
-
                                 <hr class="sidebar-divider">
-
                                 <form id="data-details">
 
                                     <div class="row">
@@ -262,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-md-12 ">
                                                     <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()" autocomplete="off">
-                                                    
+
                                                     <div class="p-2 bg-light" id="product-select" style="max-height: 20rem; max-width: 100%;">
                                                     </div>
                                                 </div>
@@ -528,7 +531,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     $col = 'stock_in_details_id ';
                                                     $currentStockData = $CurrentStock->selectByColAndData($col, $detailsId);
 
-                                                    foreach($currentStockData as $currentData){
+                                                    foreach ($currentStockData as $currentData) {
                                                         if (in_array(strtolower(trim($currentData['unit'])), LOOSEUNITS)) {
                                                             $currentQty = $currentData['loosely_count'];
                                                         } else {
@@ -538,10 +541,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     $delFlag = 1;
                                             ?>
-                                                    <tr id="<?= 'table-row-' . $slno; ?>" productid="<?= $detail['product_id'] ?>"
-                                                    me-distId="<?= $detail['distributor_bill'] ?>" me-batch-no="<?= $detail['batch_no'] ?>">
+                                                    <tr id="<?= 'table-row-' . $slno; ?>" productid="<?= $detail['product_id'] ?>" me-distId="<?= $detail['distributor_bill'] ?>" me-batch-no="<?= $detail['batch_no'] ?>">
 
-                                                        <td style="color: red; width:1rem"><i class="fas fa-trash " style="padding-top: .5rem;" onclick="deleteData(<?php echo $slno . ',' . intval($detail['qty']) + intval($detail['free_qty']) . ',' . $detail['gst_amount'] . ',' . $detail['amount'] .','. $purchaeQty .','. $currentQty .','. $delFlag ?>)">
+                                                        <td style="color: red; width:1rem"><i class="fas fa-trash " style="padding-top: .5rem;" onclick="deleteData(<?php echo $slno . ',' . intval($detail['qty']) + intval($detail['free_qty']) . ',' . $detail['gst_amount'] . ',' . $detail['amount'] . ',' . $purchaeQty . ',' . $currentQty . ',' . $delFlag ?>)">
                                                             </i>
                                                         </td>
 
@@ -685,7 +687,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php // print_r($stockInDetailsIds) ?>" hidden> -->
+                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php // print_r($stockInDetailsIds) 
+                                                                                                                                        ?>" hidden> -->
 
                                 <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
                             </div>

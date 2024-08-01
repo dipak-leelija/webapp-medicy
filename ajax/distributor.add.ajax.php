@@ -32,6 +32,9 @@ $Distributor = new Distributor();
         $distributorAreaPIN     = $_POST['distributor-area-pin'];
         $distributorDsc         = $_POST['distributor-dsc'];
         $parentUrl              = $_POST['parent-window-location'];
+        $billData               = $_POST['distBill'];
+        $editId                 = $_POST['editId'];
+
         $distributorStatus      = 0;
         $newData                = 1;
 
@@ -48,7 +51,7 @@ $Distributor = new Distributor();
             <script>
                 swal("Success", "Distributor added successfully!", "success")
                     .then((value) => {
-                        window.location = '<?= $parentUrl ?>';
+                        window.location = `<?= $parentUrl ?>?edit=<?= $billData ?>&editId=<?= $editId ?>`;
                     });
             </script>
         <?php
@@ -57,7 +60,7 @@ $Distributor = new Distributor();
             <script>
                 swal("Error", "Data Not Added!", "error")
                     .then((value) => {
-                        window.location = '<?= $parentUrl ?>';
+                        window.location = `<?= $parentUrl ?>?edit=<?= $billData ?>&editId=<?= $editId ?>`;
                     });
             </script>
     <?php
