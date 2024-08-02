@@ -325,7 +325,7 @@ if ($stockReturnLists->status == '1') {
                                                     if ($adminData->status) {
                                                         $adminData = $adminData->data;
                                                         // print_r($adminData);
-                                                        $stockReturnInitiatedBy = $adminData[0]->fname . ' ' . $adminData[0]->lname;
+                                                        $stockReturnInitiatedBy = $adminData->fname . ' ' . $adminData->lname;
                                                     }
 
 
