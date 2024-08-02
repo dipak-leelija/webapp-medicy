@@ -96,7 +96,7 @@ $doctor = json_decode($doctor, true);
                                             </div>
                                             <div class="col-md-6 col-6">
                                                 <label for="">Customer</label><br>
-                                                <input type="text" class="customer-search" id="customer" placeholder="Customer Name/Mobile" onkeyup="getCustomer(this.value)">
+                                                <input type="text" class="customer-search" id="customer" placeholder="Customer Name/Mobile" onkeyup="getCustomer(this.value)" autocomplete="off">
                                                 <div id="customer-list">
 
                                                 </div>
@@ -441,10 +441,6 @@ $doctor = json_decode($doctor, true);
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
