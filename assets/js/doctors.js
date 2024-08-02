@@ -96,16 +96,35 @@ const addDocDetails = () => {
 };
 /*==================== EOF ADD NEW DOCTOR ====================*/
 
-// doctor data edit -------
+/*==================== DOCTOR DATA VIEW ====================*/
 const docViewAndEdit = (docId) => {
-  let ViewAndEditdocId = docId;
-  let url = "ajax/doctors.view.ajax.php?docId=" + ViewAndEditdocId;
-  $(".docViewAndEditModal").html(
-    '<iframe width="100%" height="500px" frameborder="0" allowtransparency="true"  src="' +
-      url +
-      '"></iframe>'
-  );
-}; // end of viewAndEdit function
+  let url = "ajax/doctors.view.ajax.php?docId=" + docId;
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return response.text();
+    })
+    .then((data) => {
+      // Assuming there is an element with the class "docViewAndEditModal"
+      let modalElement = document.querySelector(".docViewAndEditModal");
+      if (modalElement) {
+        modalElement.innerHTML = data;
+      } else {
+        Swal.fire("Error", "Modal element not found", "error");
+      }
+    })
+    .catch((error) => {
+      Swal.fire("Error", "Fetch operation error!", "error");
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    });
+};
+/*==================== EOF DOCTOR DATA VIEW ====================*/
 
 // delete doctor data ----------
 $(document).ready(function () {
@@ -213,7 +232,7 @@ function editDoc() {
   }
 
   $.ajax({
-    url: "doctors.edit.ajax.php",
+    url: "ajax/doctors.edit.ajax.php",
     type: "POST",
     data: {
       docId: docId,
@@ -231,7 +250,8 @@ function editDoc() {
       if (data == 1) {
         Swal.fire("Alert", "Updated Successfully!", "success");
       } else {
-        Swal.fire("Alert", "Error occur during updation!", "error");
+        Swal.fire("Alert", "Something is Wrong!", "error");
+        console.error(data);
       }
     },
   });

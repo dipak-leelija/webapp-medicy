@@ -47,6 +47,11 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
+<!-- Custom styles for this template-->
+<link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>lab-test.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 </head>
 
 <body id="page-top">
