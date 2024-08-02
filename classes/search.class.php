@@ -33,13 +33,29 @@ class Search
     function searchCustomerByAdmin($data, $adminId)
     {
         $res = array();
-        $searchSql = "SELECT * FROM `patient_details` WHERE (`patient_details`.`name` LIKE '%$data%' OR `patient_details`.`phno` LIKE '%$data%') AND `patient_details`.`admin_id`= '$adminId'";
-        $query     = $this->conn->query($searchSql);
-        while ($result = $query->fetch_array()) {
-            $res[] = $result;
+        try {
+            $searchSql = "SELECT * FROM `patient_details` WHERE (`name` LIKE ? OR `phno` LIKE ?) AND `admin_id` = ?";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt === false) {
+                throw new Exception("Failed to prepare the SQL statement: " . $this->conn->error);
+            }
+            $likeData = '%' . $data . '%';
+            $stmt->bind_param("sss", $likeData, $likeData, $adminId);
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to execute the SQL statement: " . $stmt->error);
+            }
+            $query = $stmt->get_result();
+            while ($result = $query->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $result;
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            return array("error" => $e->getMessage());
         }
         return $res;
     }
+
 
 
 
