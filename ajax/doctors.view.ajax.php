@@ -53,7 +53,7 @@ $docSplzList = $doctorCategory->showDoctorCategory();
         <div class="row justify-content-between text-left">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="doc-name" class="col-form-label">Doctor Name:</label>
+                    <label for="doc-name" class="col-form-label">Doctor Name:<span class="text-danger small">*</span></label>
                     <input type="text" class="form-control" id="doc-name" value="<?php echo $docName; ?>" autocomplete="off">
                     <input type="text" class="form-control" id="doc-id" value="<?php echo $docId; ?>" readonly hidden>
                 </div>
@@ -61,7 +61,7 @@ $docSplzList = $doctorCategory->showDoctorCategory();
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="doc-reg-no" class="col-form-label">Doctor Reg. No:</label>
+                    <label for="doc-reg-no" class="col-form-label">Registration No:<span class="text-danger small">*</span></label>
                     <input type="text" class="form-control" id="doc-reg-no" value="<?php echo $docRegNo; ?>">
                 </div>
             </div>
@@ -112,7 +112,7 @@ $docSplzList = $doctorCategory->showDoctorCategory();
 
 
             <div class="form-group col-sm-6 flex-column d-flex">
-                <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
+                <label for="doc-degree" class="col-form-label">Doctor Degree:<span class="text-danger small">*</span></label>
                 <input type="text" class="form-control" id="doc-degree" value="<?php echo $docDegree; ?>" autocomplete="off">
             </div>
         </div>
