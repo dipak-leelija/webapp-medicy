@@ -362,8 +362,10 @@ if ($allAppointments->status) {
                                                         </td>
                                                     </tr>';
                                             }
+                                        }else {
+                                            echo '<tr class="text-center"><td colspan="5">Appointment Found!</td></tr>';
                                         }
-                                        // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
+
                                         ?>
 
                                     </tbody>
