@@ -166,26 +166,26 @@ $(document).ready(function () {
 // ======== script for ductors data edit update form doctors.view.ajax.php ========
 
 function editDoc() {
-  let docId = $("#doc-id").val();
-  let docName = $("#doc-name").val();
-  let docRegNo = $("#doc-reg-no").val();
-  let docSpecialization = document.getElementById("doc-speclz-id").value;
-  let docDegree = $("#doc-degree").val();
-  let docAlsoWith = $("#doc-with").val();
-  let docEmail = $("#email").val();
-  let docPhno = $("#doc-phno").val();
+  let docId = $("#u-doctor-id").val();
+  let docName = $("#u-doctor-name").val();
+  let docRegNo = $("#u-doc-reg-no").val();
+  let docSpecialization = document.getElementById("u-doc-speclz-id").value;
+  let docDegree = $("#u-doc-degree").val();
+  let docEmail = $("#u-doc-email").val();
+  let docPhno = $("#u-doc-phno").val();
   let docAddress = $("#doc-address").val();
+  let docAlsoWith = $("#doc-with").val();
 
   const fields = [
-    "doc-id",
-    "doc-name",
-    "doc-reg-no",
-    "doc-speclz-id",
-    "doc-degree",
-    "email",
-    "doc-phno",
-    "doc-address",
-    "doc-with",
+    "u-doctor-id",
+    "u-doctor-name",
+    "u-doc-reg-no",
+    "u-doc-speclz-id",
+    "u-doc-degree",
+    "u-doc-email",
+    "u-doc-phno",
+    "u-doc-address",
+    "u-doc-with",
   ];
 
   const data = {};
@@ -197,30 +197,30 @@ function editDoc() {
     data[field] = document.getElementById(field).value.trim();
     if (
       !data[field] &&
-      (field === "doc-name" ||
-        field === "doc-reg-no" ||
-        field === "doc-speclz-id" ||
-        field === "doc-degree")
+      (field === "u-doctor-name" ||
+        field === "u-doc-reg-no" ||
+        field === "u-doc-speclz-id" ||
+        field === "u-doc-degree")
     ) {
       isEmpty = true;
     }
   });
 
-  if (!data["doc-speclz-id"]) {
+  if (!data["u-doc-speclz-id"]) {
     Swal.fire("Alert", "Select Specialization From Dropdown!", "error");
     return;
   }
 
-  if (data["email"]) {
+  if (data["u-doc-email"]) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data["email"])) {
+    if (!emailRegex.test(data["u-doc-email"])) {
       Swal.fire("Alert", "Provide Correct Email Address!", "error");
       return;
     }
   }
 
-  if (data["doc-phno"]) {
-    if (data["doc-phno"].length != 10) {
+  if (data["u-doc-phno"]) {
+    if (data["u-doc-phno"].length != 10) {
       Swal.fire("Alert", "Enter 10 Digit Contact Number!", "error");
       return;
     }
