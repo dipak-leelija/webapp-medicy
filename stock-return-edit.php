@@ -388,8 +388,9 @@ if (isset($_GET["returnId"])) {
                                                 //========================
 
                                                 $productDetails = json_decode($Products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
-
+                                                
                                                 $productDetails = $productDetails->data;
+                                                print_r($productDetails);
 
                                                 $productName = $productDetails[0]->name;
                                                 $productUnit = $productDetails[0]->unit;
