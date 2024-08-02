@@ -111,9 +111,16 @@ firstInput.addEventListener('input', function (event) {
 
 
 
-//==========================================================
+// =================== Clearing Batch list =================
+// document.getElementById('product-name').addEventListener('keypress', function(event){
+//     console.log(event);
+//     if (event.key === 'Backspace') {
+//         console.log('Backspace key was pressed.');
+//     }
+// });
+// ==========================================================
 const searchItem = (searchFor) => {
-
+    
     let searchReult = document.getElementById('searched-items');
     
     if (document.getElementById("product-name").value == "") {
@@ -227,16 +234,18 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         Swal.fire({
             title: "Want Add This Item?",
             text: "This Item is not avilable in your stock, do you want to add?",
-            // icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    window.location.href = "stock-in.php";
-                }
-            });
+            icon: "info",
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "stock-in.php";
+            } 
+          });
     }
+
+    
 }
 // ========= END OF PRODUCT BATCH NUMBER FETCH AREA ==================
 
