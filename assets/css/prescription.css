@@ -98,7 +98,12 @@ body {
     width: 100px;
     height: 110px;
 }
-
+.w-15{
+    width: 15rem;
+}
+.w-60{
+    width: 60rem;
+}
 .space {
     min-height: 70vh;
 }

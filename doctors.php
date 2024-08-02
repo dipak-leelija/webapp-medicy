@@ -47,6 +47,11 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
+<!-- Custom styles for this template-->
+<link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>lab-test.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 </head>
 
 <body id="page-top">
@@ -89,11 +94,12 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Reg. No</th>
                                             <th>Specialization</th>
                                             <th>PH. No</th>
                                             <th>Email</th>
@@ -110,9 +116,6 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                 $docRegNo           = $doctors['doctor_reg_no'];
                                                 $docName            = $doctors['doctor_name'];
                                                 $docSpecialization  = $doctors['doctor_specialization'];
-                                                $docDeg             = $doctors['doctor_degree'];
-                                                $docAlsoWith        = $doctors['also_with'];
-                                                $docAddrs           = $doctors['doctor_address'];
                                                 $docEmail           = $doctors['doctor_email'];
                                                 $docPhno            = $doctors['doctor_phno'];
 
@@ -129,18 +132,31 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                         echo '<tr>
                                                         <td>' . $docId . '</td>
                                                         <td>' . $docName . '</td>
+                                                        <td>' . $docRegNo . '</td>
                                                         <td>' . $docSpecializn . '</td>
                                                         <td>' . $docPhno . '</td>
                                                         <td>' . $docEmail . '</td>
                                                         <td>
-                                                        <a href="dr-prescription.php?prescription=' . url_enc($docId) . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-primary rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="fas fa-sliders-h"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu">
+                                                                
+                                                                    <span class="dropdown-item cursor-pointer" data-toggle="modal"  data-target="#docViewAndEditModal" onclick="docViewAndEdit(' . $docId . ')">
+                                                                    <i class="fas fa-edit pr-1"></i>View & Edit
+                                                                    </span>
+                                                                    
+                                                                    <a class="dropdown-item" href="dr-prescription.php?prescription=' . url_enc($docId) . '"><i class="fas fa-print pr-1"></i>Prescriotion LH</a>
+
+                                                                    <span class="dropdown-item cursor-pointer text-danger delete-btn" data-id="'.$docId.'">
+                                                                    <i class="far fa-trash-alt pr-1"></i>Delete </span>
+                                                            
+                                                                </div>
+                                                            </div>
                                                         
-                                                        <a class="" data-toggle="modal" data-target="#docViewAndEditModal" onclick="docViewAndEdit(' . $docId . ')"><i class="fas fa-edit"></i></a>
-                                                        
-                                                        <a class="delete-btn" data-id="' . $docId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
-    
-                                                        
-                                                            </td>
+                                                        </td>
                                                     </tr>';
                                             }
                                         } else {
@@ -170,7 +186,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
         <!-- Doctor View and Edit Modal -->
         <div class="modal fade" id="docViewAndEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Doctor Information</h5>

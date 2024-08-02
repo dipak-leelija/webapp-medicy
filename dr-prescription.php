@@ -42,10 +42,9 @@ $DoctorCategory = new DoctorCategory();
 
 $showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
 $showDoctorCategoryById =json_decode($showDoctorCategoryById , true);
-if($showDoctorCategoryById && $showDoctorCategoryById['status'] == 1 && !empty($showDoctorCategoryById))
-foreach ($showDoctorCategoryById['data'] as $rowDocCatName) {
-    // print_r($rowDocCatName);
-    $doctorName = $rowDocCatName['category_name'];
+$doctorSpecialization = '';
+if($showDoctorCategoryById && $showDoctorCategoryById['status']){
+    $doctorSpecialization = $showDoctorCategoryById['data']['category_name'];
 }
 
 ?>
@@ -57,7 +56,7 @@ foreach ($showDoctorCategoryById['data'] as $rowDocCatName) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>bootstrap/5.3.3/dist/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>prescription.css">
     <title>Prescription</title>
 </head>
@@ -85,7 +84,7 @@ foreach ($showDoctorCategoryById['data'] as $rowDocCatName) {
                     </p>
 
                     <p class="text-end  mb-0 ">
-                        <small><?php echo $DoctorDegree . ', ' . $doctorName ?></small>
+                        <small><?php echo $DoctorDegree . ', ' . $doctorSpecialization ?></small>
                     </p>
                     <p class="text-end  mb-0"> <?php echo $DoctorAlsoWith ?></p>
                     <!-- Member of: -->

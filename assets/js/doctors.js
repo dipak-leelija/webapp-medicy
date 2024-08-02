@@ -96,18 +96,35 @@ const addDocDetails = () => {
 };
 /*==================== EOF ADD NEW DOCTOR ====================*/
 
-// doctor data edit -------
+/*==================== DOCTOR DATA VIEW ====================*/
 const docViewAndEdit = (docId) => {
-  let ViewAndEditdocId = docId;
-  // alert(ViewAndEditdocId);
-  let url = "ajax/doctors.view.ajax.php?docId=" + ViewAndEditdocId;
+  let url = "ajax/doctors.view.ajax.php?docId=" + docId;
 
-  $(".docViewAndEditModal").html(
-    '<iframe width="100%" height="500px" frameborder="0" allowtransparency="true"  src="' +
-      url +
-      '"></iframe>'
-  );
-}; // end of viewAndEdit function
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return response.text();
+    })
+    .then((data) => {
+      // Assuming there is an element with the class "docViewAndEditModal"
+      let modalElement = document.querySelector(".docViewAndEditModal");
+      if (modalElement) {
+        modalElement.innerHTML = data;
+      } else {
+        Swal.fire("Error", "Modal element not found", "error");
+      }
+    })
+    .catch((error) => {
+      Swal.fire("Error", "Fetch operation error!", "error");
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    });
+};
+/*==================== EOF DOCTOR DATA VIEW ====================*/
 
 // delete doctor data ----------
 $(document).ready(function () {
@@ -159,8 +176,63 @@ function editDoc() {
   let docPhno = $("#doc-phno").val();
   let docAddress = $("#doc-address").val();
 
+  const fields = [
+    "doc-id",
+    "doc-name",
+    "doc-reg-no",
+    "doc-speclz-id",
+    "doc-degree",
+    "email",
+    "doc-phno",
+    "doc-address",
+    "doc-with",
+  ];
+
+  const data = {};
+
+  let isEmpty = false;
+  var errMsg = "Mandatory Fields Must be Field!";
+
+  fields.forEach((field) => {
+    data[field] = document.getElementById(field).value.trim();
+    if (
+      !data[field] &&
+      (field === "doc-name" ||
+        field === "doc-reg-no" ||
+        field === "doc-speclz-id" ||
+        field === "doc-degree")
+    ) {
+      isEmpty = true;
+    }
+  });
+
+  if (!data["doc-speclz-id"]) {
+    Swal.fire("Alert", "Select Specialization From Dropdown!", "error");
+    return;
+  }
+
+  if (data["email"]) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data["email"])) {
+      Swal.fire("Alert", "Provide Correct Email Address!", "error");
+      return;
+    }
+  }
+
+  if (data["doc-phno"]) {
+    if (data["doc-phno"].length != 10) {
+      Swal.fire("Alert", "Enter 10 Digit Contact Number!", "error");
+      return;
+    }
+  }
+
+  if (isEmpty) {
+    Swal.fire("Alert", errMsg, "info");
+    return;
+  }
+
   $.ajax({
-    url: "doctors.edit.ajax.php",
+    url: "ajax/doctors.edit.ajax.php",
     type: "POST",
     data: {
       docId: docId,
@@ -175,15 +247,11 @@ function editDoc() {
     },
 
     success: function (data) {
-      // alert(data);
       if (data == 1) {
-        document.getElementById("reportUpdateSuccess").style.display = "block";
-        document.getElementById("reportUpdateSuccess").innerHTML =
-          "Data edited & updated successfully.";
+        Swal.fire("Alert", "Updated Successfully!", "success");
       } else {
-        document.getElementById("reportUpdateFail").style.display = "block";
-        document.getElementById("reportUpdateFail").innerHTML =
-          "Error occur during updation";
+        Swal.fire("Alert", "Something is Wrong!", "error");
+        console.error(data);
       }
     },
   });
@@ -219,7 +287,7 @@ document.addEventListener("blur", (event) => {
 
 docSpecializationInput.addEventListener("keyup", () => {
   let list = document.getElementsByClassName("lists")[0];
-  docSpecializationId.value = '';
+  docSpecializationId.value = "";
 
   if (docSpecializationInput.value.length > 2) {
     var reqUrl = `ajax/doc-specialization-list-view.ajax.php?match=${docSpecializationInput.value}`;
@@ -234,7 +302,6 @@ docSpecializationInput.addEventListener("keyup", () => {
   }
   // console.log(reqUrl);
   // console.log("check return : "+request.responseText);
-
 });
 
 const setDocSpecialization = (t) => {
