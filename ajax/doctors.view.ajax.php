@@ -9,15 +9,11 @@ require_once CLASS_DIR . 'doctor.category.class.php';
 
 $docId = $_GET['docId'];
 
-$Doctors = new Doctors();
+$Doctors        = new Doctors();
 $doctorCategory = new DoctorCategory();
 
-
 $showDoctor = json_decode($Doctors->showDoctorNameById($docId));
-// print_r($showDoctor);
-
-$docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
-// print_r($docSplzList);
+$docSplzList = $doctorCategory->showDoctorCategory();
 ?>
 
 <!DOCTYPE html>
@@ -25,137 +21,137 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
 
 <head>
     <!-- Custom fonts for this template-->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+    
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>lab-test.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 
 </head>
 
-<body class="mx-2">
+<body class="mx-3">
 
     <?php
     $showDoctor = $showDoctor->data;
 
-    foreach ($showDoctor as $doctor) {
-        $docId = $doctor->doctor_id;
-        $docRegNo = $doctor->doctor_reg_no;
-        $docName = $doctor->doctor_name;
-        $docSplz = $doctor->doctor_specialization;
-        $docDegree = $doctor->doctor_degree;
-        $docAlsoWith = $doctor->also_with;
-        $docAddress = $doctor->doctor_address;
-        $docEmail = $doctor->doctor_email;
-        $docPhno = $doctor->doctor_phno;
+    $docId          = $showDoctor->doctor_id;
+    $docRegNo       = $showDoctor->doctor_reg_no;
+    $docName        = $showDoctor->doctor_name;
+    $docSplz        = $showDoctor->doctor_specialization;
+    $docDegree      = $showDoctor->doctor_degree;
+    $docAlsoWith    = $showDoctor->also_with;
+    $docAddress     = $showDoctor->doctor_address;
+    $docEmail       = $showDoctor->doctor_email;
+    $docPhno        = $showDoctor->doctor_phno;
 
-        // echo $docSplz;
-    }
     ?>
 
-    <div class="container-fluid px-1  mx-auto">
-        <div class="row d-flex justify-content-center">
-            <div class="col-xl-9 col-lg-10 col-md-10 text-center">
-                <div class="col-xl-12 card shadow-sm p-4">
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-name" class="col-form-label">Doctor Name:</label>
-                            <input type="text" class="form-control" id="doc-name" value="<?php echo $docName; ?>" autocomplete="off">
-                            <input type="text" class="form-control" id="doc-id" value="<?php echo $docId; ?>" readonly hidden>
+    <div>
+
+        <div class="row justify-content-between text-left">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="doc-name" class="col-form-label">Doctor Name:</label>
+                    <input type="text" class="form-control" id="doc-name" value="<?php echo $docName; ?>" autocomplete="off">
+                    <input type="text" class="form-control" id="doc-id" value="<?php echo $docId; ?>" readonly hidden>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="doc-reg-no" class="col-form-label">Doctor Reg. No:</label>
+                    <input type="text" class="form-control" id="doc-reg-no" value="<?php echo $docRegNo; ?>">
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-between text-left">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="doc-splz" class="col-form-label">Specialization: <span class="text-danger small">*</span></label>
+                    <input type="text" name="doc-speclz-id" id="doc-speclz-id" value="<?= $docSplz ?>" autocomplete="off" hidden>
+
+                    <?php
+                        foreach ($docSplzList as $eachSplzList) {
+                            if ($docSplz == $eachSplzList['doctor_category_id']) {
+                                $docCatName = $eachSplzList['category_name'];
+                            }
+                        }
+                    ?>
+
+                    <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" value="<?= $docCatName ?>">
+
+                    <div class="p-2 bg-light col-md-6 c-dropdown" id="doc-specialization-list" style="display: none;">
+                        <div class="lists" id="lists">
+                            <?php if (!empty($docSplzList)) : ?>
+                                <?php foreach ($docSplzList as $docSplzList) { ?>
+                                    <div class="p-1 border-bottom list" id="<?= $docSplzList['doctor_category_id'] ?>" onclick="setDocSpecialization(this)">
+                                        <?= $docSplzList['category_name'] ?>
+                                    </div>
+                                <?php } ?>
+
+                                <div class="d-flex flex-column justify-content-center mt-1" onclick="addDocSpecialization()">
+                                    <button type="button" id="add-specialization" class="text-primary border-0">
+                                        <i class="fas fa-plus-circle"></i> Add Now</button>
+                                </div>
+                            <?php else : ?>
+                                <p class="text-center font-weight-bold mb-1">Not Found!</p>
+                                <div class="d-flex flex-column justify-content-center" onclick="addDocSpecialization()">
+                                    <button type="button" id="add-specialization" class="text-primary border-0">
+                                        <i class="fas fa-plus-circle"></i>Add Now</button>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-with" class="col-form-label">Doctor Also With:</label>
-                            <input type="text" class="form-control" id="doc-with" value="<?php echo $docAlsoWith; ?>" autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-splz" class="col-form-label">Doctor Specialization:</label>
-                            <select class="form-control" name="" id="doc-splz" autocomplete="off">
-                                <?php
-
-                                foreach ($docSplzList as $splzList) {
-
-                                ?>
-                                    <option <?= $docSplz == $splzList['doctor_category_id'] ? 'selected' : ''; ?> value="<?php echo $splzList['doctor_category_id'] ?>">
-                                        <?php echo $splzList['category_name'] ?>
-                                    </option>';
-
-                                <?php
-                                }
-
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-email" class="col-form-label">Doctor Email:</label>
-                            <input type="email" class="form-control" id="email" value="<?php echo $docEmail; ?>" autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-reg-no" class="col-form-label">Doctor Reg. No:</label>
-                            <input type="text" class="form-control" id="doc-reg-no" value="<?php echo $docRegNo; ?>">
-                        </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-phno" class="col-form-label">Doctor Contact Number:</label>
-                            <input type="text" class="form-control" id="doc-phno" value="<?php echo $docPhno; ?>" autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
-                            <input type="text" class="form-control" id="doc-degree" value="<?php echo $docDegree; ?>" autocomplete="off">
-                        </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-address" class="col-form-label">Doctor Address:</label>
-                            <textarea class="form-control" id="doc-address" rows="3"><?php echo $docAddress; ?></textarea autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="alert alert-success" role="alert" id="reportUpdateSuccess" style="display: none;">
-                        
-                    </div>
-
-                    <div class="alert alert-danger" role="alert" id="reportUpdateFail" style="display: none;">
-                       
-                    </div>
-
-                    <div class="d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-sm btn-primary" onclick="editDoc()">Save changes</button>
                     </div>
 
                 </div>
             </div>
+
+
+            <div class="form-group col-sm-6 flex-column d-flex">
+                <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
+                <input type="text" class="form-control" id="doc-degree" value="<?php echo $docDegree; ?>" autocomplete="off">
+            </div>
         </div>
+
+        <div class="row justify-content-between text-left">
+            <div class="form-group col-sm-6 flex-column d-flex">
+                <label for="doc-email" class="col-form-label">Email:</label>
+                <input type="email" class="form-control" id="email" value="<?php echo $docEmail; ?>" autocomplete="off">
+            </div>
+            <div class="form-group col-sm-6 flex-column d-flex">
+                <label for="doc-phno" class="col-form-label">Contact Number:</label>
+                <input type="text" class="form-control" id="doc-phno" value="<?php echo $docPhno; ?>" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="row justify-content-between text-left">
+
+            <div class="form-group col-sm-6 flex-column d-flex">
+                <label for="doc-address" class="col-form-label">Address:</label>
+                <textarea class="form-control" id="doc-address" rows="3"><?php echo $docAddress; ?></textarea autocomplete="off">
+            </div>
+            <div class="form-group col-sm-6 flex-column d-flex">
+                <label for="doc-with" class="col-form-label">Also With:</label>
+                <input type="text" class="form-control" id="doc-with" value="<?php echo $docAlsoWith; ?>" autocomplete="off">
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn btn-sm btn-primary" onclick="editDoc()">Save changes</button>
+        </div>
+
     </div>
-
-
-    
 
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <!-- <script src="<?php echo PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script> -->
-    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-    <!-- Bootstrap Js -->
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
-
-
-    <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
     <script src="<?php echo JS_PATH ?>doctors.js"></script>
+    <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
 </body>
 
 </html>
