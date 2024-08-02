@@ -111,9 +111,16 @@ firstInput.addEventListener('input', function (event) {
 
 
 
-//==========================================================
+// =================== Clearing Batch list =================
+// document.getElementById('product-name').addEventListener('keypress', function(event){
+//     console.log(event);
+//     if (event.key === 'Backspace') {
+//         console.log('Backspace key was pressed.');
+//     }
+// });
+// ==========================================================
 const searchItem = (searchFor) => {
-
+    
     let searchReult = document.getElementById('searched-items');
     
     if (document.getElementById("product-name").value == "") {
