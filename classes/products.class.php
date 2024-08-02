@@ -574,56 +574,53 @@ class Products
     {
         $productData = array();
         $productReqData = array();
+
         try {
-            if ($prodReqStatus == '' && $oldProdFlag == '' && $editReqFlag != '') {
+            // Prepare the SQL statement based on the conditions
+            if ($prodReqStatus === '' && $oldProdFlag === '' && $editReqFlag !== '') {
+                echo 'a';
                 $selectProduct = "SELECT * FROM products WHERE product_id = ?";
-                $prodStmt = $this->conn->prepare($selectProduct);
-
-                if (!$prodStmt) {
-                    throw new Exception("Statement preparation failed: " . $this->conn->error);
-                }
-
-                $prodStmt->bind_param("s", $productId);
-                $prodStmt->execute();
-                $prodResult = $prodStmt->get_result();
-
-                while ($row = $prodResult->fetch_assoc()) {
-                    $productData[] = $row;
-                }
-                $prodStmt->close();
+                $stmt = $this->conn->prepare($selectProduct);
+                $stmt->bind_param("s", $productId);
             } else {
-                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR prod_req_status = 0)";
-                $prodReqStmt = $this->conn->prepare($selectProductRequest);
+                echo 'b';
+                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ?";
+                $stmt = $this->conn->prepare($selectProductRequest);
+                $stmt->bind_param("ss", $productId, $adminId);
+            }
 
-                if (!$prodReqStmt) {
-                    throw new Exception("Statement preparation failed: " . $this->conn->error);
-                }
+            // Check for statement preparation errors
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
 
-                $prodReqStmt->bind_param("ss", $productId, $adminId);
-                $prodReqStmt->execute();
-                $prodReqResult = $prodReqStmt->get_result();
+            // Execute the statement and fetch results
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                while ($row = $prodReqResult->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
+                if ($prodReqStatus === '' && $oldProdFlag === '' && $editReqFlag !== '') {
+                    $productData[] = $row;
+                } else {
                     $productReqData[] = $row;
                 }
-                $prodReqStmt->close();
             }
-            // return $productReqData;
-            if ($productData != null || $productReqData != null) {
+
+            $stmt->close();
+
+            // Merge data and return response
+            if (!empty($productData) || !empty($productReqData)) {
                 $productData = array_merge($productData, $productReqData);
                 return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productData]);
             } else {
                 return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => '']);
             }
         } catch (Exception $e) {
-            error_log("Error in showProductsById: " . $e->getMessage());
+            // error_log("Error in showProductsByIdOnUser: " . $e->getMessage());
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
-
-        $prodStmt->close();
-        $prodReqStmt->close();
-        return 0;
     }
+
 
 
 
