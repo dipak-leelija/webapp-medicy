@@ -15,9 +15,8 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $doctors        = new Doctors();
 $DoctorCategory = new DoctorCategory;
 
-$showDoctors = $doctors->showDoctors($adminId);
+$showDoctors = $doctors->showDoctors($ADMINID);
 $showDoctors = json_decode($showDoctors, true);
-// print_r($showDoctors);
 
 $docSplzList = $DoctorCategory->showDoctorCategory();
 ?>
@@ -33,7 +32,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medicy Doctors</title>
+    <title>Doctors - <?= $healthCareName ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -105,6 +104,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                         <?php
                                         if ($showDoctors && isset($showDoctors['status']) && $showDoctors['status'] == 1) {
                                             $showDoctors = $showDoctors['data'];
+
                                             foreach ($showDoctors as $doctors) {
                                                 $docId              = $doctors['doctor_id'];
                                                 $docRegNo           = $doctors['doctor_reg_no'];
@@ -119,9 +119,12 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                 //initilizing Doctors Category
                                                 $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
                                                 $docSplz = json_decode($docSplz, true);
-                                                if ($docSplz && $docSplz['status'] == 1 && !empty($docSplz))
-                                                    foreach ($docSplz['data'] as $docSplzShow) {
-                                                        $docSpecializn = $docSplzShow['category_name'];
+                                                
+                                                if ($docSplz['status']){
+                                                    $docSpecializn = $docSplz['data']['category_name'];
+                                                }else {
+                                                    $docSpecializn = '';
+                                                }
 
                                                         echo '<tr>
                                                         <td>' . $docId . '</td>
@@ -139,7 +142,6 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
                                                         
                                                             </td>
                                                     </tr>';
-                                                    }
                                             }
                                         } else {
                                             echo '<tr class="text-center"><td colspan="6">No Doctors Found</td></tr>';
@@ -206,21 +208,21 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-name" class="col-form-label">Doctor Name:</label>
+                                    <label for="doc-name" class="col-form-label">Doctor Name:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-name" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-reg-no" class="col-form-label">Reg. No:</label>
+                                    <label for="doc-reg-no" class="col-form-label">Reg. No:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-reg-no" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="doc-splz" class="col-form-label">Specialization:</label>
+                                    <label for="doc-splz" class="col-form-label">Specialization: <span class="text-danger small">*</span></label>
                                     <input type="text" name="doc-speclz-id" id="doc-speclz-id" class="form-control" autocomplete="off" hidden>
                                     <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" autocomplete="off">
 
@@ -253,7 +255,7 @@ $docSplzList = $DoctorCategory->showDoctorCategory();
 
                             <div class="col-sm-6">
                                 <div class="form-group ">
-                                    <label for="doc-degree" class="col-form-label">Degree:</label>
+                                    <label for="doc-degree" class="col-form-label">Degree:<span class="text-danger small">*</span></label>
                                     <input type="text" class="form-control" id="doc-degree" autocomplete="off">
                                 </div>
                             </div>
