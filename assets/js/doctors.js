@@ -29,27 +29,27 @@ const addDocDetails = () => {
   });
 
   if (!data["doc-speclz-id"]) {
-    Swal.fire("Alert", "Select Specialization From Dropdown!", "error");
+    Swal.fire("Failed", "Select Specialization From Dropdown!", "error");
     return;
   }
 
   if (data["email"]) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data["email"])) {
-      Swal.fire("Alert", "Provide Correct Email Address!", "error");
+      Swal.fire("Failed", "Provide Correct Email Address!", "error");
       return;
     }
   }
 
   if (data["doc-phno"]) {
     if (data["doc-phno"].length != 10) {
-      Swal.fire("Alert", "Enter 10 Digit Contact Number!", "error");
+      Swal.fire("Failed", "Enter 10 Digit Contact Number!", "error");
       return;
     }
   }
 
   if (isEmpty) {
-    Swal.fire("Alert", errMsg, "info");
+    Swal.fire("Failed", errMsg, "info");
     return;
   }
 
@@ -86,7 +86,7 @@ const addDocDetails = () => {
           document.getElementById(field).value = "";
         });
       } else {
-        Swal.fire("Error", "Unable to add data", "error");
+        Swal.fire("Success", "Unable to add data", "error");
       }
     },
     error: function () {
@@ -207,27 +207,27 @@ function editDoc() {
   });
 
   if (!data["u-doc-speclz-id"]) {
-    Swal.fire("Alert", "Select Specialization From Dropdown!", "error");
+    Swal.fire("Failed", "Select Specialization From Dropdown!", "error");
     return;
   }
 
   if (data["u-doc-email"]) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data["u-doc-email"])) {
-      Swal.fire("Alert", "Provide Correct Email Address!", "error");
+      Swal.fire("Failed", "Provide Correct Email Address!", "error");
       return;
     }
   }
 
   if (data["u-doc-phno"]) {
     if (data["u-doc-phno"].length != 10) {
-      Swal.fire("Alert", "Enter 10 Digit Contact Number!", "error");
+      Swal.fire("Failed", "Enter 10 Digit Contact Number!", "error");
       return;
     }
   }
 
   if (isEmpty) {
-    Swal.fire("Alert", errMsg, "info");
+    Swal.fire("Failed", errMsg, "info");
     return;
   }
 
@@ -248,9 +248,9 @@ function editDoc() {
 
     success: function (data) {
       if (data == 1) {
-        Swal.fire("Alert", "Updated Successfully!", "success");
+        Swal.fire("Success", "Updated Successfully!", "success");
       } else {
-        Swal.fire("Alert", "Something is Wrong!", "error");
+        Swal.fire("Failed", "Something is Wrong!", "error");
         console.error(data);
       }
     },
