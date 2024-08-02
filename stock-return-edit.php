@@ -386,7 +386,7 @@ if (isset($_GET["returnId"])) {
                                                     $editReqFlag = '';
                                                 }
                                                 //========================
-                                                echo $$productid;
+                                                echo $productid;
                                                 echo $editReqFlag;
                                                 $productDetails = json_decode($Products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
                                                 
