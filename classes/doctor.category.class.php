@@ -198,12 +198,12 @@ class DoctorCategory
             }
 
             if ($result->num_rows === 1) {
-                $response = $result->fetch_all(MYSQLI_ASSOC);
+                $response = $result->fetch_assoc();
                 $stmt->close();
-                return json_encode(['status' => 1, 'message' => 'success', 'data' => $response]);
+                return json_encode(['status' => true, 'message' => 'success', 'data' => $response]);
             } else {
                 $stmt->close();
-                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+                return json_encode(['status' => false, 'message' => 'empty', 'data' => '']);
             }
         } catch (Exception $e) {
             return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
