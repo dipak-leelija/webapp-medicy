@@ -82,21 +82,13 @@ if (!empty($soldItems)) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sales</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Default styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
+    <title>Sales - <?= $healthCareName?></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    
     <!-- Custom styles for this Page-->
-    <link rel="stylesheet" href="<?= CSS_PATH ?>sales.css">
-
-    <!-- Data Table CSS  -->
-    <!-- <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet"> -->
-
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sales.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 
 </head>
 
@@ -240,16 +232,16 @@ if (!empty($soldItems)) {
                                                     $patientName = $patient;
                                                 }
 
-                                                echo "<tr class='text-center sales-table";
-                                        ?>
-                                                <?php
+
                                                 $creditIcon = "";
+                                                $tableBg = "";
                                                 if ($paymentMode == "Credit") {
-                                                    echo "text-danger";
+                                                    $tableBg = "text-danger";
+
                                                     $creditIcon = "<i class='ml-1 fas fa-exclamation-circle' data-toggle='tooltip' data-placement='top' title='This payment is due, Collect all the due payments.'></i>";
                                                 }
-                                                ?>
-                                        <?php echo "'data-toggle='modal' data-target='#viewBillModal'>
+                                                
+                                                echo "<tr class='text-center sales-table ".$tableBg."' 'data-toggle='modal' data-target='#viewBillModal'>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $invoice . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $patientName . "</td>
                                                         <td onclick='viewBills(" . $invoice . ")'>" . $billDate . "</td>
@@ -266,6 +258,8 @@ if (!empty($soldItems)) {
                                                     </td>
                                                     </tr>";
                                             }
+                                        else:
+                                            echo "<tr class='text-center sales-table'><td colspan='8'>No Sales Data Found!<tr>";
                                         endif;
                                         ?>
                                     </tbody>
