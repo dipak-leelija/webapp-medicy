@@ -584,6 +584,7 @@ class Products
                 $stmt->bind_param("s", $productId);
             } else {
                 echo 'b';
+                echo $adminId;
                 $selectProductRequest = "SELECT * FROM product_request
                                             WHERE product_id = ?
                                             AND admin_id = ?
