@@ -126,7 +126,7 @@ $Products       = new Products();
                                 $editReqFlag = '';
                             }
                             //===============================================
-
+                            echo $item['product_id'];
                             $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId, $editReqFlag));
                             $product = $product->data;
                             $pName = $product[0]->name;

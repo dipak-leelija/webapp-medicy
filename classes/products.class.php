@@ -585,10 +585,8 @@ class Products
             } else {
                 echo 'b';
                 echo $adminId;
-                $selectProductRequest = "SELECT * FROM product_request
-                                            WHERE product_id = ?
-                                            AND admin_id = ?
-                                            AND (old_prod_flag = 1 OR prod_req_status = 0)";
+                $selectProductRequest = "
+                ";
                 $stmt = $this->conn->prepare($selectProductRequest);
                 $stmt->bind_param("ss", $productId, $adminId);
             }
