@@ -223,8 +223,8 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
         document.getElementById("amount").value = '';
-        document.getElementById("loose-stock").value = 'None';
-        document.getElementById("loose-price").value = 'None';
+        document.getElementById("loose-stock").value = '';
+        document.getElementById("loose-price").value = '';
 
         // document.getElementById("qty-type").setAttribute("disabled", true);
 
@@ -440,8 +440,6 @@ const stockDetails = (productId, batchNo, itemId) => {
 
         // ======================= AVAILIBILITY ===========================
         itemAvailibilityUrl = `ajax/getProductDetails.ajax.php?availibility=${productId}&batchNo=${batchNo}`;
-        // alert(ptrUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", itemAvailibilityUrl, false);
         xmlhttp.send(null);
         document.getElementById("aqty").value = xmlhttp.responseText;
@@ -507,8 +505,8 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("amount").value = '';
 
         // document.getElementById("qty-type").setAttribute("disabled", true);
-        document.getElementById("loose-stock").value = 'None';
-        document.getElementById("loose-price").value = 'None';
+        document.getElementById("loose-stock").value = '';
+        document.getElementById("loose-price").value = '';
         document.getElementById("exta-details").style.display = "none";
     }
 }
