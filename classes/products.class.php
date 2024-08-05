@@ -578,15 +578,16 @@ class Products
         try {
             // Prepare the SQL statement based on the conditions
             if ($prodReqStatus === '' && $oldProdFlag === '' && $editReqFlag !== '') {
-                echo 'a';
+                // echo 'a';
                 $selectProduct = "SELECT * FROM products WHERE product_id = ?";
                 $stmt = $this->conn->prepare($selectProduct);
                 $stmt->bind_param("s", $productId);
             } else {
-                echo 'b';
-                echo $adminId;
-                $selectProductRequest = "
-                ";
+                // echo 'b';
+                $selectProductRequest = "SELECT * FROM product_request
+                                            WHERE product_id = ?
+                                            AND admin_id = ?
+                                            AND (old_prod_flag = 1 OR prod_req_status = 0)";
                 $stmt = $this->conn->prepare($selectProductRequest);
                 $stmt->bind_param("ss", $productId, $adminId);
             }
