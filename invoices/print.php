@@ -14,6 +14,9 @@ switch ($name) {
     case 'report':
         $url = "../test-report-show.php?id=$id";
         break;
+    case 'prescription':
+        $url = "../prescription.php?prescription=$id";
+        break;
     default:
         # code...
         break;
@@ -24,7 +27,7 @@ switch ($name) {
 <html>
 
 <head>
-    <title>Print Invoice</title>
+    <title>Print</title>
     <style>
         #frame-area {
             width: 100%;

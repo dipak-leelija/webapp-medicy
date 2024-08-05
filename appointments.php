@@ -238,7 +238,7 @@ if ($allAppointments->status) {
                                             <?php
 
                                             foreach ($employeeDetails as $employeeData) {
-                                                $empName = $employeeData->fname.' '.$employeeData->lname;
+                                                $empName = $employeeData->fname . ' ' . $employeeData->lname;
                                                 echo '<option value="' . $employeeData->emp_id . '">' . $empName . '</option>';
                                             }
 
@@ -316,58 +316,47 @@ if ($allAppointments->status) {
                                                 } else {
                                                     $docName = '';
                                                 }
+                                        ?>
+                                                <tr>
+                                                    <td><?= $appointmentID ?></td>
+                                                    <td><?= $appointmentName ?></td>
+                                                    <td><?= $patientContact ?></td>
+                                                    <td><?= $docName ?></td>
+                                                    <td><?= $appointmentDate ?></td>
+                                                    <td>
 
-                                                echo '<tr>
-                                                        
-                                                        <td>' . $appointmentID . '</td>
-                                                        <td>' . $appointmentName . '</td>
-                                                        <td>' . $patientContact . '</td>
-                                                        <td>' . $docName . '</td>
-                                                        <td>' . $appointmentDate . '</td>
-
-                                                        <td>
-
-                                                        
                                                         <div class="dropdown">
                                                             <button class="btn btn-sm btn-outline-primary rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                                 <i class="fas fa-sliders-h"></i>
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                <span class="dropdown-item cursor-pointer" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit">
-                                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                                View & Edit
+                                                                <span class="dropdown-item cursor-pointer" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(<?= $appointmentTableID ?>)" title="View and Edit">
+                                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    View & Edit
                                                                 </span>
 
-                                                                
-                                                                <a class="dropdown-item" onclick="openPrint(this.href); return false;" href="' . URL . 'prescription.php?prescription=' . url_enc($appointmentID) . '">
+
+                                                                <span class="dropdown-item cursor-pointer" onclick="openPrint('<?php echo URL . "prescription.php?prescription=" . url_enc($appointmentID); ?>')">
                                                                     <i class="fas fa-print"></i>
                                                                     Print Prescription
-                                                                </a>
-                                                        
-                                                                <span class="dropdown-item cursor-pointer text-danger" data-id="' . $appointmentID . '">
-                                                                <i class="far fa-trash-alt"></i>
-                                                                Delete
                                                                 </span>
-                                                        
+
+
+                                                                <span class="dropdown-item cursor-pointer text-danger" data-id="<?= $appointmentID ?>">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                    Delete
+                                                                </span>
+
                                                             </div>
                                                         </div>
-
-                                                        
-                                                        
-
-
-
-
-                                                        <a class="delete-btn" ></a>
-                                                        </td>
-                                                    </tr>';
+                                                    </td>
+                                                </tr>
+                                        <?php
                                             }
-                                        }else {
+                                        } else {
                                             echo '<tr class="text-center"><td colspan="5">No Appointment Found!</td></tr>';
                                         }
-
                                         ?>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -442,12 +431,14 @@ if ($allAppointments->status) {
     <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.js"></script>
     <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
 
     <!-- custom scripts for appointments serarch and filter -->
     <script src="<?= JS_PATH ?>appointments.js"></script>
     <script src="<?= JS_PATH ?>polyclinic-searchFilter.js"></script>
+    <script src="<?= JS_PATH ?>main.js"></script>
+
 
 
 </body>

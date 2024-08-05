@@ -61,9 +61,7 @@ if ($selectDoctorByid != '') {
 $doctorCategory = json_decode($DoctorCategory->showDoctorCategoryById($docSpecialization));
 if ($doctorCategory->status == 1) {
     $doctorCategories = $doctorCategory->data;
-    foreach ($doctorCategories as $rowDocCatName) {
-        $doccategoryName = $rowDocCatName->category_name;
-    }
+    $doccategoryName = $doctorCategories->category_name;
 } else {
     $doccategoryName = '';
 }
@@ -87,12 +85,9 @@ if ($doctorCategory->status == 1) {
             <div class="header hospitslDetails mb-0">
                 <div class="details-bx">
                     <div class="col-5 left-header">
-                        <!-- <img class="prescription-logo" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>"> -->
-                        <!-- <div> -->
-                            <h1><?= $healthCareName ?></h1>
-                            <p><?= $healthCareAddress1 . ', ' . $healthCareCity . ', ' .  $patientDist ?></p>
-                            <p><?= $healthCareState . ', ' . $healthCarePin; ?></p>
-                        <!-- </div> -->
+                        <h1><?= $healthCareName ?></h1>
+                        <p><?= $healthCareAddress1 . ', ' . $healthCareCity . ', ' .  $patientDist ?></p>
+                        <p><?= $healthCareState . ', ' . $healthCarePin; ?></p>
                     </div>
                     <div class="col-5 right-header">
                         <h2><?= $DoctorName ?></h2>
