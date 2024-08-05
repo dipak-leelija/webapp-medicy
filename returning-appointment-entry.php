@@ -8,7 +8,7 @@ require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'patients.class.php';
-
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 //Creating Object of Appointments Class
 $appointments   = new Appointments();
@@ -19,23 +19,23 @@ $showDoctors = json_decode($doctors->showDoctors($adminId));
 
 // var_dump($_POST);
 // if (isset($_POST['proceed'])) {
-    if (isset($_POST['patientId'])) {
-        $patientId = $_POST['patientId'];
+if (isset($_POST['patientId'])) {
+    $patientId = $_POST['patientId'];
 
-        $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-        $name            = $patient->name;
-        $age             = $patient->age;
-        $gurdianName     = $patient->gurdian_name;
-        $phno            = $patient->phno;
-        $email           = $patient->email;
-        $gender          = $patient->gender;
-        $addres1         = $patient->address_1;
-        $addres2         = $patient->address_2;
-        $patientPs       = $patient->patient_ps;
-        $patientDist     = $patient->patient_dist;
-        $patientPIN      = $patient->patient_pin;
-        $patientState    = $patient->patient_state;
-    }
+    $patient = json_decode($Patients->patientsDisplayByPId($patientId));
+    $name            = $patient->name;
+    $age             = $patient->age;
+    $gurdianName     = $patient->gurdian_name;
+    $phno            = $patient->phno;
+    $email           = $patient->email;
+    $gender          = $patient->gender;
+    $addres1         = $patient->address_1;
+    $addres2         = $patient->address_2;
+    $patientPs       = $patient->patient_ps;
+    $patientDist     = $patient->patient_dist;
+    $patientPIN      = $patient->patient_pin;
+    $patientState    = $patient->patient_state;
+}
 // }
 
 
@@ -79,6 +79,7 @@ if (isset($_POST['submit'])) {
         // Inserting Into Patients Database
         $updatePatientsVisitingTime = $Patients->updatePatientsVisitingTime($patientId, $patientEmail, $patientPhoneNumber, $patientAge, $visited);
         if ($updatePatientsVisitingTime) {
+            $appointmentId = url_enc($appointmentId);
             header("location: appointment-sucess.php?appointmentId={$appointmentId}");
             exit();
         } else {
@@ -94,25 +95,17 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet" />
-    <link href="<?php echo CSS_PATH ?>patient-style.css" rel="stylesheet" />
-    <title>Update/Verify Details</title>
+    <title>Update/Verify Patient - <?= $healthCareName ?></title>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet" />
-
-    <!-- Custom styles for this page -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-
-    <!-- css for sweetalert2 -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
 </head>
 
 <body>
@@ -171,7 +164,8 @@ if (isset($_POST['submit'])) {
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
+                                                <label class="form-control-label px-3" for="patientWeight">Weight
+                                                    <small>(in
                                                         kg)</small><span class="text-danger"> *</span></label>
 
                                                 <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" maxlength="3" required onfocusout="checkWeight(this)" autocomplete="off">
@@ -198,7 +192,8 @@ if (isset($_POST['submit'])) {
 
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="appointmentDate">Appointment Date<span class="text-danger"> *</span></label>
+                                                <label class="form-control-label px-3" for="appointmentDate">Appointment
+                                                    Date<span class="text-danger"> *</span></label>
 
                                                 <input type="date" id="appointmentDate" name="appointmentDate" placeholder="" value="<?php print(date("Y-m-d")) ?>" required>
                                             </div>
@@ -214,10 +209,8 @@ if (isset($_POST['submit'])) {
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="patientEmail">Patient
-                                                    Email</label>
-
-                                                <input type="email" id="email" name="patientEmail" placeholder="Patient Email" value="<?php echo $email; ?>" required onfocusout="checkMail(this)" autocomplete="off">
+                                                <label class="form-control-label px-3" for="email">Email</label>
+                                                <input type="email" id="email" name="patientEmail" placeholder="Patient Email" value="<?php echo $email; ?>" onfocusout="checkMail(this)" autocomplete="off">
                                             </div>
 
 
@@ -229,7 +222,8 @@ if (isset($_POST['submit'])) {
                                         <div class="row justify-content-between text-left">
                                             <div class="form-group col-sm-6 flex-column d-flex">
 
-                                                <label class="form-control-label px-3" for="patientAddress1">Address Line
+                                                <label class="form-control-label px-3" for="patientAddress1">Address
+                                                    Line
                                                     1<span class="text-danger"> *</span></label>
 
                                                 <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" value="<?php echo $addres1; ?>" required autocomplete="off">
@@ -237,16 +231,18 @@ if (isset($_POST['submit'])) {
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="patientAddress2">Address Line
-                                                    2<span class="text-danger"> *</span></label>
+                                                <label class="form-control-label px-3" for="patientAddress2">Address
+                                                    Line
+                                                    2</label>
                                                 <input type="text" id="patientAddress2" name="patientAddress2" placeholder="Address Line 2" value="<?php echo $addres2; ?>" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="row justify-content-between text-left">
                                             <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="patientPS">Police Station<span class="text-danger"> *</span></label>
-                                                <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value="<?php echo $addres2; ?>" required autocomplete="off">
+                                                <label class="form-control-label px-3" for="patientPS">Police
+                                                    Station<span class="text-danger"> *</span></label>
+                                                <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value="<?php echo $addres2; ?>" autocomplete="off">
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
@@ -281,10 +277,11 @@ if (isset($_POST['submit'])) {
 
                                             <h5 class="text-center mb-4 mt-5">Select Doctor</h5>
                                             <div class="form-group col-sm-12 flex-column d-flex">
-                                                <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span class="text-danger"> *</span></label>
+                                                <label class="form-control-label px-3" for="patientDoctor">Doctor
+                                                    Name<span class="text-danger"> *</span></label>
 
                                                 <select id="docList" class="customDropSelection" name="patientDoctor" required>
-                                                    <option disabled selected>Select Doctor</option>
+                                                    <option value="" disabled selected>Select Doctor</option>
                                                     <?php
                                                     if ($showDoctors->status == 1) {
                                                         $showDoctors = $showDoctors->data;
@@ -312,54 +309,47 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                 </div>
-
-                <!-- Footer -->
-                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
-                <!-- End of Footer -->
-
-                <!-- Bootstrap core JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-                <!-- <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script> -->
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
-                <!-- <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script> -->
+            </div>
+        </div>
+    </div>
 
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
 
-                <!-- Core plugin JavaScript-->
-                <!-- <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script> -->
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
 
-                <!-- Custom scripts for all pages-->
-                <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <!-- script for sweetalert2 -->
+    <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
-                <!-- script for sweetalert2 -->
-                <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
-
-                <!-- custom script for add patient -->
-                <script src="<?php echo JS_PATH ?>add-patient.js"></script>
+    <!-- custom script for add patient -->
+    <script src="<?php echo JS_PATH ?>add-patient.js"></script>
 
 
-                <script>
-                    var todayDate = new Date();
+    <script>
+        var todayDate = new Date();
 
-                    var date = todayDate.getDate();
-                    var month = todayDate.getMonth() + 1;
-                    var year = todayDate.getFullYear();
+        var date = todayDate.getDate();
+        var month = todayDate.getMonth() + 1;
+        var year = todayDate.getFullYear();
 
-                    if (date < 10) {
-                        date = '0' + date;
-                    }
-                    if (month < 10) {
-                        month = '0' + month;
-                    }
-                    var todayFullDate = year + "-" + month + "-" + date;
-                    console.log(todayFullDate);
-                    document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
-                    // $('#docView-Edit').on('click', function() {
-                    //     $('#docViewAndEdit').modal('show');
+        if (date < 10) {
+            date = '0' + date;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var todayFullDate = year + "-" + month + "-" + date;
+        console.log(todayFullDate);
+        document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
+        // $('#docView-Edit').on('click', function() {
+        //     $('#docViewAndEdit').modal('show');
 
-                    // })
-                </script>
+        // })
+    </script>
 
 </body>
 

@@ -52,6 +52,7 @@ body {
 
 
 #printBtn {
+  cursor: pointer;
   position: relative;
   top: 1.5em;
   text-decoration: none;

@@ -287,15 +287,12 @@ if ($allAppointments->status) {
 
                                             <?php
 
-                                            // foreach ($employeeDetails as $employeeData) {
-                                            //     echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
-                                            // }
 
                                             if ($adminDetails && isset($adminDetails->status) && $adminDetails->status == 1 && isset($adminDetails->data)) {
                                                 foreach ($adminDetails->data as $admin) {
                                                     $username = $admin->username;
                                                     $adminID  =  $admin->admin_id;
-                                                    echo '<option value="' . $admin->admin_id . '">' . $username . '</option>';
+                                                    echo '<option value="' . $adminID . '">' . $username . '</option>';
                                                 }
                                             } 
                                             ?>

@@ -1,13 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
-// require_once __DIR__ . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';
-// print_r($_SESSION, true);
-// echo "hello";
 
 require_once CLASS_DIR . 'dbconnect.php';
-// require_once ADM_DIR . '_config/user-details.inc.php';
-// require_once ADM_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
@@ -16,8 +11,6 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
-// require_once ROOT_DIR . '_config/accessPermission.php';
-// require_once ROOT_DIR . '_config/toastOnPermission.php';
 
 
 $appoinments       = new Appointments();
@@ -27,9 +20,6 @@ $StockIn           = new StockIn();
 $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
-$LabAppointments   = new LabAppointments();
-// $AccessPermission  = new AccessPermission();
-// $Employees         = new Employees;
 
 
 $totalAppointments = $appoinments->appointmentsDisplay();
@@ -40,8 +30,6 @@ if ($totalAppointments->status) {
 } else {
     $totalAppointmentsCount = 0;
 }
-
-$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId();
 
 ?>
 
@@ -93,86 +81,70 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div> -->
-
-
                     <!-- CONTENT USER DATA ROW -->
 
                     <!-- Content Row -->
-                        <!-- ================ THIRD ROW ================ -->
-                        <div class="row">
+                    <!-- ================ THIRD ROW ================ -->
+                    <div class="row">
 
-                            <!-- Expiring in 3 Months Card -->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "expiring.php"; ?>
-                            </div>
-
-                            <!----------- Sales of the day card ----------->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "salesoftheday.php"; ?>
-                            </div>
-
-                            <!----------- Purchase today card ----------->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "purchasedToday.php"; ?>
-                            </div>
-
+                        <!-- Expiring in 3 Months Card -->
+                        <div class="col-xl-4 col-md-4 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "expiring.php"; ?>
                         </div>
 
-                        <!-- ================ FORTH ROW ROW ================ -->
-                        <div class="row">
-
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "mostsolditems.php"; ?>
-                            </div>
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "lesssolditems.php"; ?>
-                            </div>
-                            <br>
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
-                            </div>
-                            <br>
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
-                            </div>
-
+                        <!----------- Sales of the day card ----------->
+                        <div class="col-xl-4 col-md-4 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "salesoftheday.php"; ?>
                         </div>
 
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "mopdByAmount.php"; ?>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "mopdByItems.php"; ?>
-                            </div>
-
+                        <!----------- Purchase today card ----------->
+                        <div class="col-xl-4 col-md-4 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "purchasedToday.php"; ?>
                         </div>
+
+                    </div>
+
+                    <!-- ================ FORTH ROW ROW ================ -->
+                    <div class="row">
+
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "mostsolditems.php"; ?>
+                        </div>
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "lesssolditems.php"; ?>
+                        </div>
+                        <br>
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
+                        </div>
+                        <br>
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "mopdByAmount.php"; ?>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once SUP_ROOT_COMPONENT . "mopdByItems.php"; ?>
+                        </div>
+
+                    </div>
 
                 </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <?php include SUP_ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH; ?>jquery/jquery.min.js"></script>
@@ -184,14 +156,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId();
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH; ?>sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
-
-    <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/chart-area-demo.js"></script>
-    
-   
-     ======== CUSTOM JS FOR INDEX PAGE ======= -->
+    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
     <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 
