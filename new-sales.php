@@ -104,7 +104,7 @@ $doctor = json_decode($doctor, true);
                                             <div class="col-md-4 col-4" onclick="counterBill()">
                                                 <div class="rounded counter-bill">
                                                     Counter Bill <i class="fas fa-plus-circle"></i></div>
-                                                <div class="d-none contact-box">
+                                                <div class=" contact-box">
                                                     <span id="contact"></span>
                                                 </div>
                                             </div>
@@ -173,7 +173,7 @@ $doctor = json_decode($doctor, true);
                                             <input class="sale-inp" type="text" id="batch-no" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-12">
+                                        <div class=" col-md-1 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Current Stock Item Id</label><br>
                                             <input class="sale-inp" type="text" id="crnt-stck-itm-id" readonly>
                                         </div>
@@ -183,12 +183,12 @@ $doctor = json_decode($doctor, true);
                                             <input class="sale-inp" type="text" id="weightage" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-12">
+                                        <div class=" col-md-1 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Weightage</label><br>
                                             <input class="sale-inp" type="text" id="item-weightage" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class=" col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Unit typ</label><br>
                                             <input class="sale-inp" type="text" id="item-unit-type" readonly>
                                         </div>
@@ -203,7 +203,7 @@ $doctor = json_decode($doctor, true);
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class=" col-md-1 mt-3 col-6">
                                             <!-- Available qty on batch no -->
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Availability</label><br>
                                             <input class="sale-inp" type="text" id="aqty">
@@ -214,7 +214,7 @@ $doctor = json_decode($doctor, true);
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)" onfocusout="checkQty(this)">
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class=" col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
                                             <input class="sale-inp" type="text" id="type-check" disabled>
                                         </div>
@@ -223,7 +223,7 @@ $doctor = json_decode($doctor, true);
                                             <label for="" style="font-size: 0.96rem;  font-weight: bold;">Disc%</label><br>
                                             <input class="sale-inp" type="any" id="disc" onkeyup="onDisc(this.value)">
                                         </div>
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class=" col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">D.Price</label><br>
                                             <input class="sale-inp" type="any" id="dPrice" readonly>
                                         </div>
@@ -259,7 +259,7 @@ $doctor = json_decode($doctor, true);
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="d-none sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class=" sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
@@ -311,7 +311,7 @@ $doctor = json_decode($doctor, true);
                                                     </div>
                                                 </div>
 
-                                                <div class="d-none row mt-3">
+                                                <div class=" row mt-3">
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="">Loose Stock:</label>
                                                         <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
