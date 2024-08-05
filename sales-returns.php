@@ -96,7 +96,7 @@ if (!empty($salesReturns)) {
 
 // print_r($slicedData);
 
-
+$form20Data;
 
 ?>
 
@@ -272,7 +272,7 @@ if (!empty($salesReturns)) {
                                                 if ($adminData->status) {
                                                     $adminData = $adminData->data;
                                                     // print_r($adminData);
-                                                    $salesReturnInitiatedBy = $adminData[0]->fname . ' ' . $adminData[0]->lname;
+                                                    $salesReturnInitiatedBy = $adminData->fname . ' ' . $adminData->lname;
                                                 }
 
 
