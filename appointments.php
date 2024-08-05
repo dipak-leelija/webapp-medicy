@@ -363,7 +363,7 @@ if ($allAppointments->status) {
                                                     </tr>';
                                             }
                                         }else {
-                                            echo '<tr class="text-center"><td colspan="5">Appointment Found!</td></tr>';
+                                            echo '<tr class="text-center"><td colspan="5">No Appointment Found!</td></tr>';
                                         }
 
                                         ?>

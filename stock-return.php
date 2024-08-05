@@ -116,24 +116,18 @@ if ($stockReturnLists->status == '1') {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medicy Items</title>
-
-    <!-- Custom fonts for this template -->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-
+    <title>Purchase Return - <?= $healthCareName ?></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    
     <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css">
-
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
+    
     <!-- Datatable Style CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -470,7 +464,7 @@ if ($stockReturnLists->status == '1') {
                                 </div>
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <div class="col-12 shadow p-3 mt-5 bg-white rounded d-flex justify-content-center"><p class="font-weight-bold text-danger" for="">NO DATA FOUND</p></div>
+                                <div class="col-12 p-3 mt-5 bg-white rounded d-flex justify-content-center"><p class="font-weight-bold text-danger" for="">NO DATA FOUND</p></div>
                             </div>
                         </div>
                     <?php } elseif ($flag == 0 && $totalItem == 0) { ?>
@@ -552,15 +546,9 @@ if ($stockReturnLists->status == '1') {
             </div>
         </div>
 
-
-
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
 
@@ -569,17 +557,10 @@ if ($stockReturnLists->status == '1') {
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-
-    <!-- <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script> -->
-    <!-- <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script> -->
+    <script src="<?= JS_PATH ?>sb-admin-2.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
-
-    <!-- Page level custom scripts -->
-    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
 
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
