@@ -27,42 +27,24 @@ $showDesignation = json_decode($showDesignation, true);
 
 $profileDetails = array();
 if ($_SESSION['ADMIN']) {
-    $currentUserId = $adminId;
-    $adminDetails = $Admin->adminDetails($adminId);
-    $adminDetails = json_decode($adminDetails);
-    if ($adminDetails->status) {
-        $adminData = $adminDetails->data;
-
-        $firstName  = $adminData->fname;
-        $lastName   = $adminData->lname;
-        $userName   = $adminData->username;
-        $email      = $adminData->email;
-        $phone      = $adminData->mobile_no;
-    }
+    $currentUserId  = $adminId;
+    $firstName      = $adminName;
+    $lastName       = $adminLname;
+    $userName       = $username;
+    $email          = $userEmail;
+    $phone          = $adminContact;
 
     $name = $firstName . ' ' . $lastName;
 } else {
-    $currentUserId = $employeeId;
-    $employeeDetails = json_decode($employees->employeeDetails($employeeId, $adminId));
-
-    if ($employeeDetails->status) {
-        $employeeData = $employeeDetails->data;
-        // print_r($employeeData);
-        foreach ($employeeData as $employeeData) {
-
-            $empName = $employeeData->emp_name;
-
-            $lastSpacePos = strrpos($empName, ' ');
-
-            if ($lastSpacePos !== false) {
-                $firstName = substr($empName, 0, $lastSpacePos);
-                $lastName = substr($empName, $lastSpacePos + 1);
-            }
-
-            $email      = $employeeData->emp_email;
-        }
-    }
-    $name = $empName;
+    $currentUserId  = $employeeId;
+    $adminid        = $adminId;
+    $firstName      = $USERFNAME;
+    $lastName       = $USERLNAME;
+    $userName       = $username;
+    $email          = $userEmail;
+    $phone          = $EMPCONTACT;
+    
+    $name = $firstName . ' ' . $lastName;
 }
 
 

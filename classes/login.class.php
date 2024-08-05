@@ -27,7 +27,7 @@ class LoginForm
                     $_SESSION['LOGGEDIN']       = true;
                     $_SESSION['ADMIN']          = false;
                     $_SESSION['USER_TYPE']      = 'USER';
-                    $_SESSION['EMP_EMAIL']      = $email;
+                    $_SESSION['EMP_EMAIL']      = $data->emp_email;
                     $_SESSION['EMP_CONTACT_NO'] = $data->contact;
                     $_SESSION['EMP_ROLE']       = $data->emp_role;
                     $_SESSION['EMP_FNAME']      = $data->fname;
