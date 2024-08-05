@@ -158,14 +158,24 @@ function takeInputFile(fileInput, fileShowDivId) {
         const reader = new FileReader();
         reader.onload = function(e) {
             if (file.type.includes('image')) {
-                filePreview.innerHTML = '<img src="' + e.target.result + '" style="max-width: 100%; max-height: 12rem;" ><i class="" style="position: absolute; align-items: center; width: auto; max-width: 60%; height: 12rem;"></i>';
+                filePreview.innerHTML = `
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                        <img src="${e.target.result}" style="max-width: 100%; max-height: 12rem;" />
+                    </div>`;
             } else if (file.type === 'application/pdf') {
-                filePreview.innerHTML = '<embed src="' + e.target.result + '" style="max-width: 100%; max-height: 12rem;" class="fas fa-upload"><i class="" style="position: absolute; align-items: center; width: auto; max-width: 60%; height: 12rem;"></i>';
+                filePreview.innerHTML = `
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                        <embed src="${e.target.result}" type="application/pdf" style="max-width: 100%; max-height: 12rem;" />
+                    </div>`;
             } else {
                 filePreview.innerHTML = '<p>Select PDF or JPEG/JPG/PNG files.</p>';
-                document.getElementById(fileInput.id).value = '';
-                document.getElementById(fileShowDivId).innerHTML = '';
-                alert('Select PDF or JPEG/JPG/PNG files.')
+                fileInput.value = ''; // Clear the input
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Alert',
+                    text: 'Select PDF or JPEG/JPG/PNG files'
+                });
+                return;
             }
         };
         reader.readAsDataURL(file);
