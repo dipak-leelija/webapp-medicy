@@ -272,7 +272,7 @@ $form20Data;
                                                 if ($adminData->status) {
                                                     $adminData = $adminData->data;
                                                     // print_r($adminData);
-                                                    $salesReturnInitiatedBy = $adminData->fname . ' ' . $adminData->lname;
+                                                    $salesReturnInitiatedBy = $adminData[0]->fname . ' ' . $adminData[0]->lname;
                                                 }
 
 
