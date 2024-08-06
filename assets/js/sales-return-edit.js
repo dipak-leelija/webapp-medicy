@@ -232,12 +232,12 @@ const getRefund = (returnQty) => {
        
         if (parseFloat(returnQty) < 0) {
             // alert("Return Quantity must be lesser than current quantity!");
-            Swal.fire("Error", "Enter valid input", "error");
+            Swal.fire("Error", "Enter valid qantity", "error");
             document.getElementById('return-qty').value = '';
         }
         else if (parseFloat(returnQty) > parseFloat(maxRtrnQty)) {
             // alert("Return Quantity must be lesser than current quantity!");
-            Swal.fire("Error", "Return edit Quantity must be lesser than Editabel Qty! This item current max return qty is "+maxRtrnQty, "error");
+            Swal.fire("Error", "Return quantity must be lesser or equals to current available Qty! This item current max return qty is "+maxRtrnQty, "error");
             document.getElementById('return-qty').value = '';
         }
 
@@ -342,16 +342,18 @@ const addData = () => {
     }
 
     if (returnDate == "") {
-        Swal.fire("Failed!", "Select Return Date", "error");
+        Swal.fire("Failed!", "Select Return Date", "info");
         return;
     }
 
     if (billDate.value == "") {
+        Swal.fire("Failed!", "Bill date not found!", "error");
         billDate.focus();
         return;
     }
 
     if (reffBy.value == "") {
+        Swal.fire("Failed!", "Doctor name not found!", "error");
         reffBy.focus();
         return;
     }
@@ -439,7 +441,7 @@ const addData = () => {
 
             const item = existsItems[i];
             if (item.childNodes[5].childNodes[3].value == itemList.value) {
-                swal("You can not add same item more than one!");
+                swal("You can not add same item more than once!");
 
                 CurrentStockItemId.value = '';
                 returnDetailsitemid.value = "";
@@ -512,7 +514,6 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-2">
                 <input class="table-data w-12r" type="text" value="${itemName}" readonly style="font-size: 0.7rem;">
                 <input class="d-none" type="text" name="productId[]" value="${prodId.value}">
-
             </td>
 
             <td class="d-none pt-3">
@@ -522,6 +523,7 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-3">
                 <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch.value}" readonly style="font-size: 0.7rem;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-4">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate.value}" readonly style="font-size: 0.7rem;">
             </td>
@@ -545,15 +547,19 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-8">
                 <input class="table-data w-2r" type="text" name="disc[]" value="${discount.value}%" readonly style="font-size: 0.7rem;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-9">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size: 0.7rem;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-10">
                 <input class="table-data w-3r" type="text" name="taxable[]" value="${taxable.value}"  style="font-size: 0.7rem;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-11">
                 <input class="table-data w-3r" type="text" name="return[]" value="${rtnqty.value}" readonly style="font-size: 0.7rem;">
             </td>
+            
             <td class="pt-3" id="row-${slControl}-col-12">
                 <input class="table-data w-4r" type="any" name="refund[]" value="${billAmount.value}" readonly style="font-size: 0.7rem;">
             </td>

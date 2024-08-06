@@ -74,7 +74,7 @@ if ($clinicInfo['status'] == 1) {
             <script>
                 swal({
                     title: "Success",
-                    text: "Customer Added Successfully!",
+                    text: "Customer data added Successfully!",
                     icon: "success",
                     button: "OK"
                 }).then(() => {
@@ -89,7 +89,7 @@ if ($clinicInfo['status'] == 1) {
             <script>
                 swal({
                     title: "Failed",
-                    text: "Customer Addition Failed !",
+                    text: "Customer data cannot be added!",
                     icon: "error",
                     button: "OK"
                 }).then(() => {

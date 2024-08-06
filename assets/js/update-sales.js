@@ -92,7 +92,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
             }
         })
     } else {
-        swal("Failed!", "Please ADD previous data first!", "error");
+        swal("Failed!", "Please add previous data first!", "error");
     }
 
 }
@@ -291,18 +291,18 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("exta-details").style.display = "none";
         document.getElementById("searched-items").style.display = "none";
 
-        swal({
-            title: "Want Add This Item?",
+        Swal.fire({
+            title: "Want to add this itme?",
             text: "This Item is not avilable in your stock, do you want to add?",
-            // icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    window.location.href = "stock-in.php";
-                }
-            });
+            icon: "info",
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "stock-in.php";
+            } 
+          });
     }
 }
 
@@ -637,21 +637,22 @@ const onQty = (qty) => {
             reverseButtons: true
           }).then((result) => {
             if (result.isConfirmed) {
-              swalWithBootstrapButtons.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                swalWithBootstrapButtons.fire({
+                    title: "Check Margin",
+                    text: "Margin value is now negative",
+                    icon: "info"
+                });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelled",
-                text: "Your imaginary file is safe :)",
-                icon: "error"
-              });
+                document.getElementById('disc').value = '';
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Enter discount percent...",
+                    icon: "info"
+                });
             }
-          });
+        });
     }
 
 
@@ -774,21 +775,22 @@ const ondDisc = (disc) => {
             reverseButtons: true
           }).then((result) => {
             if (result.isConfirmed) {
-              swalWithBootstrapButtons.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                swalWithBootstrapButtons.fire({
+                    title: "Check Margin",
+                    text: "Margin value is now negative",
+                    icon: "info"
+                });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelled",
-                text: "Your imaginary file is safe :)",
-                icon: "error"
-              });
+                document.getElementById('disc').value = '';
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Enter discount percent...",
+                    icon: "info"
+                });
             }
-          });
+        });
     }
 
     // ================ sales margin calculation area ==================
@@ -868,19 +870,19 @@ const addSummary = () => {
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     if (billDAte == '') {
-        swal("Failed!", "Please Enter Bill Date!", "error");
+        swal("Failed!", "Enter Bill Date!", "error");
         return;
     }
     if (customer == '') {
-        swal("Failed!", "Please Select Customer Name!", "error");
+        swal("Failed!", "Select/Enter Customer Name!", "error");
         return;
     }
     if (doctorName == '') {
-        swal("Failed!", "Please Select/Enter Doctor Name!", "error");
+        swal("Failed!", "Select Doctor!", "error");
         return;
     }
     if (paymentMode == '') {
-        swal("Failed!", "Please Select a Payment Mode!", "error");
+        swal("Failed!", "Select Payment Mode!", "error");
         return;
     }
     if (productId == '') {
@@ -900,7 +902,7 @@ const addSummary = () => {
         return;
     }
     if (weightage == '') {
-        swal("Failed!", "Product Weatage/Unit Not Found!", "error");
+        swal("Failed!", "Product Weatage / Unit Not Found!", "error");
         return;
     }
     if (mrp == '') {

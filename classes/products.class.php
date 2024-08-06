@@ -361,9 +361,67 @@ class Products
 
 
 
+    // function showProductsByLimitForUser($adminId)
+    // {
+    //     try {
+    //         $selectProduct = "SELECT * FROM products LIMIT 5";
+    //         $productStmt = $this->conn->prepare($selectProduct);
+
+    //         if (!$productStmt) {
+    //             throw new Exception("Product Statement preparation failed: " . $this->conn->error);
+    //         }
+
+    //         $productStmt->execute();
+    //         $productResult = $productStmt->get_result();
+
+    //         $products = array();
+    //         while ($prodRes = $productResult->fetch_object()) {
+    //             $products[] = $prodRes;
+    //         }
+
+
+
+    //         $selectProductRequest = "SELECT * FROM product_request WHERE admin_id = '$adminId' LIMIT 5";
+    //         $productRequestStmt = $this->conn->prepare($selectProductRequest);
+
+    //         if (!$productRequestStmt) {
+    //             throw new Exception("Product Request Statement preparation failed: " . $this->conn->error);
+    //         }
+
+    //         $productRequestStmt->execute();
+    //         $productRequestResult = $productRequestStmt->get_result();
+
+    //         $productRequest = array();
+    //         while ($prodReqRes = $productRequestResult->fetch_object()) {
+    //             $productRequest[] = $prodReqRes;
+    //         }
+
+    //         // print_r($productRequest);
+
+    //         if ($productResult->num_rows > 0 || $productRequestResult->num_rows > 0) {
+    //             $products = array_merge($products, $productRequest);
+    //             return json_encode(['status' => '1', 'message' => 'success', 'data' => $products]);
+    //         } else {
+    //             return json_encode(['status' => '0', 'message' => 'No products found', 'data' => []]);
+    //         }
+
+    //         $productStmt->close();
+    //         $productRequestStmt->close();
+    //     } catch (Exception $e) {
+    //         return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => []]);
+    //     }
+    // }
+    // updated query used bello
+
     function showProductsByLimitForUser($adminId)
     {
+        $products = [];
+        $productRequests = [];
+        $productStmt = null;
+        $productRequestStmt = null;
+
         try {
+            // Select products with a limit of 5
             $selectProduct = "SELECT * FROM products LIMIT 5";
             $productStmt = $this->conn->prepare($selectProduct);
 
@@ -374,43 +432,54 @@ class Products
             $productStmt->execute();
             $productResult = $productStmt->get_result();
 
-            $products = array();
             while ($prodRes = $productResult->fetch_object()) {
                 $products[] = $prodRes;
             }
 
-
-
-            $selectProductRequest = "SELECT * FROM product_request WHERE admin_id = '$adminId' LIMIT 5";
+            // Select product requests with a limit of 5 for the specific admin
+            $selectProductRequest = "SELECT * FROM product_request WHERE admin_id = ? LIMIT 5";
             $productRequestStmt = $this->conn->prepare($selectProductRequest);
 
             if (!$productRequestStmt) {
                 throw new Exception("Product Request Statement preparation failed: " . $this->conn->error);
             }
 
+            $productRequestStmt->bind_param('i', $adminId);
             $productRequestStmt->execute();
             $productRequestResult = $productRequestStmt->get_result();
 
-            $productRequest = array();
             while ($prodReqRes = $productRequestResult->fetch_object()) {
-                $productRequest[] = $prodReqRes;
+                $productRequests[] = $prodReqRes;
             }
 
-            // print_r($productRequest);
-
-            if ($productResult->num_rows > 0 || $productRequestResult->num_rows > 0) {
-                $products = array_merge($products, $productRequest);
-                return json_encode(['status' => '1', 'message' => 'success', 'data' => $products]);
+            if (count($products) > 0 || count($productRequests) > 0
+            ) {
+                $response = [
+                    'status' => '1',
+                    'message' => 'success',
+                    'products' => $products,
+                    'product_requests' => $productRequests
+                ];
             } else {
-                return json_encode(['status' => '0', 'message' => 'No products found', 'data' => []]);
+                $response = ['status' => '0', 'message' => 'No products found', 'data' => []];
             }
-
-            $productStmt->close();
-            $productRequestStmt->close();
         } catch (Exception $e) {
-            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => []]);
+            $response = ['status' => '0', 'message' => $e->getMessage(), 'data' => []];
+        } finally {
+            if ($productStmt) {
+                $productStmt->close();
+            }
+            if ($productRequestStmt) {
+                $productRequestStmt->close();
+            }
         }
+
+        return json_encode($response);
     }
+
+
+
+
 
 
 
@@ -1021,7 +1090,7 @@ class Products
             } else {
                 return json_encode(['status' => false, 'message' => 'Invalid table name']);
             }
-    
+
             // Execute the statement and check for errors
             if ($stmt->execute()) {
                 $stmt->close();
@@ -1034,7 +1103,7 @@ class Products
             return json_encode(['status' => false, 'message' => 'Error', 'details' => $e->getMessage()]);
         }
     }
-    
+
 
 
 
@@ -1102,17 +1171,19 @@ class Products
 
 
 
-    function selectItemLikeForStockInOut($data, $adminid) {
+    function selectItemLikeForStockInOut($data, $adminid)
+    {
         $resultData1 = [];
         $resultData2 = [];
-    
+        $mergedResults = [];
+
         // Prepare search pattern
         $searchPattern = "%" . $data . "%";
-    
-        // Define queries
+
+        // Define queries and their respective parameters
         $queries = [
             [
-                "sql" => "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10",
+                "sql" => "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 5",
                 "params" => [$searchPattern, $searchPattern, $searchPattern],
                 "types" => "sss",
                 "resultData" => &$resultData1
@@ -1124,28 +1195,28 @@ class Products
                 "resultData" => &$resultData2
             ]
         ];
-    
+
         try {
             foreach ($queries as $query) {
                 $stmt = $this->conn->prepare($query['sql']);
-    
+
                 if ($stmt === false) {
                     throw new Exception("Failed to prepare the statement: " . $this->conn->error);
                 }
-    
+
                 $stmt->bind_param($query['types'], ...$query['params']);
                 $stmt->execute();
                 $result = $stmt->get_result();
-    
+
                 while ($row = $result->fetch_assoc()) {
                     $query['resultData'][] = $row;
                 }
-    
+
                 $stmt->close();
             }
-    
+
             $mergedResults = array_merge($resultData1, $resultData2);
-    
+
             return ['status' => '1', 'message' => 'data found', 'data' => $mergedResults];
         } catch (Exception $e) {
             // Log or handle the exception appropriately
@@ -1153,7 +1224,8 @@ class Products
             return ['status' => '0', 'message' => 'an error occurred'];
         }
     }
-    
+
+
 
 
 
@@ -1220,38 +1292,39 @@ class Products
 
 
     /// find tablename by poroduct id
-    function selectTableNameByProdId($prodId) {
+    function selectTableNameByProdId($prodId)
+    {
         try {
             $queries = [
                 "products" => "SELECT `gst` FROM `products` WHERE `product_id` = ?",
                 "product_request" => "SELECT `gst` FROM `product_request` WHERE `product_id` = ?"
             ];
-            
+
             foreach ($queries as $table => $query) {
                 $stmt = $this->conn->prepare($query);
                 if ($stmt) {
                     $stmt->bind_param("s", $prodId);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    
+
                     if ($result->num_rows > 0) {
                         $stmt->close();
                         return json_encode(['status' => true, 'table' => $table]);
                     }
-                    
+
                     $stmt->close();
                 } else {
                     throw new Exception("Failed to prepare the statement: " . $query);
                 }
             }
-            
+
             return json_encode(['status' => false, 'table' => 'no data found']);
         } catch (Exception $e) {
             error_log("Error: " . $e->getMessage());
             return json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
-    
+
 
 
 

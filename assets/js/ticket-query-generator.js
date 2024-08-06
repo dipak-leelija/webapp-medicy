@@ -93,6 +93,9 @@ function requestSubmit(t) {
     let msg = document.getElementById(message);
     let documentShowDiv = document.getElementById(documentShow);
 
+    console.log('check message');
+    console.log(msg.value);
+    
     if (user.value === '') {
         Swal.fire({
             icon: 'error',
@@ -139,7 +142,7 @@ function requestSubmit(t) {
     }
     
 
-    if (msgTitle.value === '') {
+    if (msg.value === '') {
         Swal.fire({
             icon: 'error',
             title: 'Alert',

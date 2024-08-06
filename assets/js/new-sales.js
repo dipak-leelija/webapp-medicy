@@ -232,7 +232,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("searched-items").style.display = "none";
 
         Swal.fire({
-            title: "Want Add This Item?",
+            title: "Want to add this itme?",
             text: "This Item is not avilable in your stock, do you want to add?",
             icon: "info",
             showDenyButton: false,
@@ -251,8 +251,12 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
 
 
 /////// extra detials div control function \\\\\\\\
-const chekForm = () =>{
-   
+const chekForm = (t) =>{
+
+    if(t.value.length == 0 || t.value.length == 1){
+        newSellGenerateBill.setAttribute("disabled", "true");
+    }
+    
     if(document.getElementById('product-name').value == ''){
         document.getElementById("exta-details").style.display = "none";
         document.getElementById("searched-items").style.display = "none";
@@ -664,21 +668,22 @@ const onQty = (qty) => {
             reverseButtons: true
           }).then((result) => {
             if (result.isConfirmed) {
-              swalWithBootstrapButtons.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                swalWithBootstrapButtons.fire({
+                    title: "Check Margin",
+                    text: "Margin value is now negative",
+                    icon: "info"
+                });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelled",
-                text: "Your imaginary file is safe :)",
-                icon: "error"
-              });
+                document.getElementById('disc').value = '';
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Enter discount percent...",
+                    icon: "info"
+                });
             }
-          });
+        });
     }
 
     // ================ sales margin calculation area ==============
@@ -818,7 +823,7 @@ const onDisc = (disc) => {
                 document.getElementById('disc').value = '';
                 swalWithBootstrapButtons.fire({
                     title: "Cancelled",
-                    text: "Discout percent set as 0",
+                    text: "Enter discount percent...",
                     icon: "info"
                 });
             }
@@ -896,19 +901,19 @@ const addSummary = () => {
     //===========================================
 
     if (billDAte == '') {
-        Swal.fire("Failed!", "Please Select Bill Date!", "error");
+        Swal.fire("Failed!", "Select Bill Date!", "error");
         return;
     }
     if (customer == '') {
-        Swal.fire("Failed!", "Please Select Customer Name!", "error");
+        Swal.fire("Failed!", "Select/Enter Customer Details!", "error");
         return;
     }
     if (doctorName == '') {
-        Swal.fire("Failed!", "Please Select/Enter Doctor Name!", "error");
+        Swal.fire("Failed!", "Select Doctor!", "error");
         return;
     }
     if (paymentMode == '') {
-        Swal.fire("Failed!", "Please Select a Payment Mode!", "error");
+        Swal.fire("Failed!", "Select Payment Mode!", "error");
         return;
     }
     if (productId == '') {
@@ -920,7 +925,7 @@ const addSummary = () => {
         return;
     }
     if (batchNo == '') {
-        Swal.fire("Failed!", "Batch No Not Found!", "error");
+        Swal.fire("Failed!", "Item batch number not found!", "error");
         return;
     }
     if (weightage == '') {
@@ -928,19 +933,19 @@ const addSummary = () => {
         return;
     }
     if (expDate == '') {
-        Swal.fire("Failed!", "Expiry Date Not Found!", "error");
+        Swal.fire("Failed!", "Item expiery date not found!", "error");
         return;
     }
     if (mrp == '') {
-        Swal.fire("Failed!", "MRP Not Found!", "error");
+        Swal.fire("Failed!", "Item MRP not found!", "error");
         return;
     }
     if (qty == '') {
-        Swal.fire("Failed!", "Please Enter Quantity:", "error");
+        Swal.fire("Failed!", "Enter Sell Quantity:", "error");
         return;
     }
     if (discPercent == '') {
-        Swal.fire("Failed!", "Please Enter Discount Minimum: 0", "error");
+        Swal.fire("Failed!", "Enter Discount Minimum value 0", "error");
         return;
     }
     if (discPrice == '') {
@@ -948,11 +953,11 @@ const addSummary = () => {
         return;
     }
     if (gst == '') {
-        Swal.fire("Failed!", "GST Not Found!", "error");
+        Swal.fire("Failed!", "Item GST Not Found!", "error");
         return;
     }
     if (amount == '') {
-        Swal.fire("Failed!", "Total Amount Not Found!", "error");
+        Swal.fire("Failed!", "Net Amount Not Found!", "error");
         return;
     }
 
