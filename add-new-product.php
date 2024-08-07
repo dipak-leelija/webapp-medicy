@@ -112,15 +112,32 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap" style="min-height: 70vh; max-width: 150vh;">
+                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap" style="min-height: 70vh; max-width: 170vh;">
                             <!-- <div class="card-body col-12 d-flex flex-wrap"> -->
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
+
                                 <div class="row justify-content-center">
                                     <h4 class="h4 mt-4"> Add New Product</h4>
                                 </div>
 
-                                <div class="row flex-wrap-reverse">
-                                    <div class="col-md-6" id="first-div">
+                                <div class="row d-flex flex-wrap">
+                                    <!-- image and add/reset button secssion -->
+                                    <div class="col-md-6">
+                                        <div id="img-div">
+                                            <div class="container-fluid" id="img-container">
+                                                <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                <p id="num-of-files">No files chosen</p>
+                                                <div>
+                                                    <div id="images">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <label for="product-name">Product Name</label>
@@ -128,11 +145,10 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" required autocomplete="off">
                                             </div>
                                         </div>
-
                                         <!-- product category row -->
                                         <div class="row mt-2">
                                             <div class="col-sm-6 mt-2">
-                                                <label for="product-catagory">Prodcut Catagory</label>
+                                                <label for="product-catagory">Catagory</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="product-catagory" id="product-catagory" required>
                                                     <option value="" disabled selected>Select</option>
@@ -149,7 +165,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             </div>
 
                                             <div class="col-sm-6 mt-2">
-                                                <label for="product-catagory">Packeging In</label>
+                                                <label for="product-catagory">Packeging</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="packeging-type" id="packeging-type" required>
                                                     <option value="" disabled selected>Select</option>
@@ -165,8 +181,6 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             </div>
 
                                         </div>
-
-
                                         <!-- catagory - packging - power and unit row  -->
                                         <div class="row mt-2">
                                             <div class="col-sm-6 mt-2">
@@ -192,27 +206,25 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                                 </select>
                                             </div>
                                         </div>
-
                                         <!-- catagory - packging - power and unit row  -->
                                         <div class="row mt-2">
                                             <div class="col-sm-6 mt-2">
-                                                <label for="medicine-power">Medicine Power</label>
+                                                <label for="medicine-power">Med Power</label>
                                                 <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1" type="number" id="medicine-power" name="medicine-power" required>
                                             </div>
 
 
                                             <div class="col-sm-6 mt-2">
-                                                <label for="mrp">Enter MRP</label>
+                                                <label for="mrp">MRP</label>
                                                 <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1" type="number" id="mrp" name="mrp" step="0.01" required>
                                             </div>
                                         </div>
-
                                         <!-- gst and hsno number row  -->
                                         <div class="row mt-2">
                                             <div class="col-sm-6 mt-2">
-                                                <label for="mrp">Enter GST</label>
+                                                <label for="mrp">GST%</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100" name="gst" id="gst" required>
                                                     <option value="" disabled selected>Select</option>
@@ -227,29 +239,11 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             </div>
 
                                             <div class="col-sm-6 mt-2">
-                                                <label for="hsno-number">HSNO Number</label>
+                                                <label for="hsno-number">HSN Code</label>
                                                 <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1" type="number" id="hsno-number" name="hsno-number" minlength="4" maxlength="6" required>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <!-- image and add/reset button secssion -->
-                                    <div class="col-md-6" id="second-div">
-                                        <!-- <div class="col-12"> -->
-                                        <div id="img-div">
-                                            <div class="container-fluid" id="img-container">
-                                                <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                                                <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                <p id="num-of-files">No files chosen</p>
-                                                <div>
-                                                    <div id="images">
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
 
@@ -260,7 +254,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             <button class="btn btn-danger text-center" id="reset" type="reset" onclick="resetImg()"> Reset</button>
                                         </div>
                                         <div class="col-sm-6 text-center">
-                                            <button class="btn btn-primary text-center" name="add-new-product" id="add-btn" type="submit">Add new</button>
+                                            <button class="btn btn-primary text-center" name="add-new-product" id="add-btn" type="submit">Add</button>
                                         </div>
                                     </div>
                                 </div>
