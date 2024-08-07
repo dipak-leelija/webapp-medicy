@@ -2,7 +2,8 @@
 
 
 ///initial total count ///
-$newPatients = $Patients->newPatientToday($adminId);
+$newPatients = $Patients->newPatientToday($ADMINID);
+// print_r($newPatients);exit;
 $totalCount = 0;
 if ($newPatients) {
     foreach ($newPatients as $row) {
@@ -99,10 +100,8 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     </div>
 
 </div>
-<script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
-
 <script>
-    const xmlhttp = new XMLHttpRequest();
+    // const xmlhttp = new XMLHttpRequest();
 
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
@@ -120,10 +119,10 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         let title = document.getElementById('new-patient-title');
 
         newPatientDtUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
-        xmlhttp.open("GET", newPatientDtUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var newPatientDataByDate = xmlhttp.responseText;
+        request.open("GET", newPatientDtUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var newPatientDataByDate = request.responseText;
         title.innerText = `New Patients of ${newPatientDt}`;
         // console.log(newPatientDataByDate);
         if (newPatientDataByDate) {
@@ -147,10 +146,10 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         let title = document.getElementById('new-patient-title');
 
         newPatientDtRngUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
-        xmlhttp.open("GET", newPatientDtRngUrl, false);
-        xmlhttp.send(null);
+        request.open("GET", newPatientDtRngUrl, false);
+        request.send(null);
 
-        var newPatientDataByDateRange = xmlhttp.responseText;
+        var newPatientDataByDateRange = request.responseText;
         // console.log(newPatientDataByDateRange);
         var newPatientElement = document.getElementById('newPatient');
         title.innerText = `New Patients From ${newPatientStartDate} to ${newPatientEndDate}`;
