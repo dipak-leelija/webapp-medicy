@@ -364,25 +364,28 @@ if (isset($_POST['bill-proceed'])) {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!--/End Part 1  -->
-
-
-                </script>
-
-                <!-- Bootstrap core JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <!--/End Part 1  -->
 
 
-                <!-- Core plugin JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+    </script>
 
-                <!-- Custom scripts for all pages-->
-                <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-                <script src="<?php echo JS_PATH ?>custom/lab-billing.js"></script>
-                <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+
+
+    <!-- Core plugin JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>custom/lab-billing.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 </body>
 
