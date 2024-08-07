@@ -119,52 +119,111 @@ firstInput.addEventListener('input', function (event) {
 //     }
 // });
 // ==========================================================
-const searchItem = (searchFor) => {
+// const searchItem = (searchFor) => {
     
-    let searchReult = document.getElementById('searched-items');
+//     let searchReult = document.getElementById('searched-items');
     
-    if (document.getElementById("product-name").value == "") {
-        document.getElementById("searched-items").style.display = "none";
-        document.getElementById("searched-batchNo").style.display = "none";
-    }
+//     if (document.getElementById("product-name").value == "") {
+//         document.getElementById("searched-items").style.display = "none";
+//         document.getElementById("searched-batchNo").style.display = "none";
+//     }
 
-    if (searchFor.length == "") {
-        searchReult.innerHTML = '';
-        document.getElementById('searched-batchNo').innerHTML = '';
+//     if (searchFor.length == "") {
+//         searchReult.innerHTML = '';
+//         document.getElementById('searched-batchNo').innerHTML = '';
 
-        document.getElementById("product-name").value = '';
-        document.getElementById("weightage").value = '';
-        document.getElementById("batch-no").value = '';
-        document.getElementById("exp-date").value = '';
-        document.getElementById("mrp").value = '';
-        document.getElementById("gst").value = '';
+//         document.getElementById("product-name").value = '';
+//         document.getElementById("weightage").value = '';
+//         document.getElementById("batch-no").value = '';
+//         document.getElementById("exp-date").value = '';
+//         document.getElementById("mrp").value = '';
+//         document.getElementById("gst").value = '';
 
-        document.getElementById("item-weightage").value = '';
-        document.getElementById("item-unit-type").value = '';
-        document.getElementById("aqty").value = '';
-        document.getElementById("type-check").value = '';
-        document.getElementById("qty").value = '';
-        document.getElementById("disc").value = '';
-        document.getElementById("dPrice").value = '';
-        document.getElementById("taxable").value = '';
-        document.getElementById("amount").value = '';
-    } else {
-        if (searchFor.length > 2) {
-            document.getElementById("searched-items").style.display = "block";
-            document.getElementById("exta-details").style.display = "none";
+//         document.getElementById("item-weightage").value = '';
+//         document.getElementById("item-unit-type").value = '';
+//         document.getElementById("aqty").value = '';
+//         document.getElementById("type-check").value = '';
+//         document.getElementById("qty").value = '';
+//         document.getElementById("disc").value = '';
+//         document.getElementById("dPrice").value = '';
+//         document.getElementById("taxable").value = '';
+//         document.getElementById("amount").value = '';
+//     } else {
+//         if (searchFor.length > 2) {
+//             document.getElementById("searched-items").style.display = "block";
+//             document.getElementById("exta-details").style.display = "none";
             
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    searchReult.innerHTML = xmlhttp.responseText;
-                }
-            };
-            xmlhttp.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
-            xmlhttp.send();
-        }
+//             xmlhttp.onreadystatechange = function () {
+//                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//                     searchReult.innerHTML = xmlhttp.responseText;
+//                 }
+//             };
+//             xmlhttp.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
+//             xmlhttp.send();
+//         }
 
-        newSellGenerateBill.setAttribute("disabled", "true");
+//         newSellGenerateBill.setAttribute("disabled", "true");
+//     }
+// }
+
+
+// Cache DOM elements outside the function
+const productName = document.getElementById("product-name");
+const searchReult = document.getElementById('searched-items');
+const searchedBatchNo = document.getElementById('searched-batchNo');
+const extaDetails = document.getElementById("exta-details");
+
+const elementsToClear = [
+    "product-name", "weightage", "batch-no", "exp-date", "mrp", "gst",
+    "item-weightage", "item-unit-type", "aqty", "type-check", "qty",
+    "disc", "dPrice", "taxable", "amount"
+].map(id => document.getElementById(id));
+
+const clearFields = () => {
+    elementsToClear.forEach(element => element.value = '');
+    searchReult.innerHTML = '';
+    searchedBatchNo.innerHTML = '';
+};
+
+// Debounce function to limit the rate of function execution
+const debounce = (func, delay) => {
+    let debounceTimer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+};
+
+const searchItem = debounce((searchFor) => {
+    if (productName.value === "") {
+        searchReult.style.display = "none";
+        searchedBatchNo.style.display = "none";
+        clearFields();
+        return;
     }
-}
+
+    if (searchFor.length === 0) {
+        clearFields();
+    } else if (searchFor.length > 2) {
+        searchReult.style.display = "block";
+        extaDetails.style.display = "none";
+
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                searchReult.innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open('GET', 'ajax/sales-item-list.ajax.php?data=' + encodeURIComponent(searchFor), true);
+        xmlhttp.send();
+    }
+
+    newSellGenerateBill.setAttribute("disabled", "true");
+}, 300); // 300ms delay for debounce
+
+
 
 // ========= PRODUCT BATCH NUMBER FETCH AREA ==================
 const itemsBatchDetails = (prodcutId, name, stock) => {
