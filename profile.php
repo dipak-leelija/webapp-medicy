@@ -30,7 +30,7 @@ if ($_SESSION['ADMIN']) {
     $adminDetails = $Admin->adminDetails($ADMINID);
     $adminDetails = json_decode($adminDetails);
     if ($adminDetails->status) {
-        $adminData = $adminDetails->data;
+        $adminData = $adminDetails->data[0];
 
         // foreach ($adminData as $adminData) {
         $firstName  = $adminData->fname;
