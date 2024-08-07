@@ -21,7 +21,6 @@ $ImageUtil  = new ImageUtil;
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,18 +30,14 @@ $ImageUtil  = new ImageUtil;
 </head>
 
 <body>
-
     <?php
-
-
     if (isset($_FILES['profile-image'])) {
 
         $imageName         = $_FILES['profile-image']['name'];
-        $imageTempName       = $_FILES['profile-image']['tmp_name'];
+        $imageTempName     = $_FILES['profile-image']['tmp_name'];
 
         $response = $ImageUtil->uploadAndDeleteImage($imageName, $imageTempName, ADM_IMG_DIR, 'admin', 'adm_img', 'admin_id', $adminId);
         $response = json_decode($response);
-
         if ($response->status == 1) {
             $_SESSION['ADMIN_IMG'] = $response->image_name;
             $flag = 1;
@@ -63,21 +58,19 @@ $ImageUtil  = new ImageUtil;
             $flag = 0;
 
             if ($_SESSION['ADMIN']) {
-                $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $email, $phNo,  $address, NOW, $adminId);
+                $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $email, $phNo,  $address, NOW, $ADMINID);
                 if ($updateAdminData['result']) {
                     $flag = 1;
                 }
             } else {
-                $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $email, $phNo, $address, NOW, $employeeId, $adminId);
+                $updateEmployeeData = $Employees->updateEmpData($fname, $lname, $email, $phNo, $address, NOW, $employeeId, $ADMINID);
                 if ($updateEmployeeData['result']) {
                     $flag = 1;
                 }
             }
         }
     }
-
     ?>
-
 
     <?php if ($flag == 1) {  ?>
 
@@ -96,7 +89,5 @@ $ImageUtil  = new ImageUtil;
         </script>
 
     <?php } ?>
-
 </body>
-
 </html>

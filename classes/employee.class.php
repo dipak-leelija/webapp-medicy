@@ -227,16 +227,14 @@ class Employees
 
 
 
-    function updateEmpData($name, $email, $contactNo, $address, $updatedOn, $empid, $adminid) {
+    function updateEmpData($fname, $lname, $email, $contactNo, $address, $updatedOn, $empid, $adminid) {
         try {
-            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_email`=?, `contact`=?, `emp_address`=?, `updated_on`=? WHERE `emp_id`=? AND `admin_id`=?";
+            $updateQuery = "UPDATE `employees` SET `fname`=?, `lname`=?, `emp_email`=?, `contact`=?, `emp_address`=?, `updated_on`=? WHERE `emp_id`=? AND `admin_id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
-            $stmt->bind_param("sssssss", $name, $email, $contactNo, $address, $updatedOn, $empid, $adminid);
-    
+            $stmt->bind_param("ssssssss", $fname, $lname, $email, $contactNo, $address, $updatedOn, $empid, $adminid);
             $stmt->execute();
-    
             $stmt->close();
     
             return ['result' => '1'];
