@@ -112,7 +112,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap" style="min-height: 70vh; max-width: 170vh;">
+                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap justify-content-center" style="min-height: 70vh; max-width: 170vh;">
                             <!-- <div class="card-body col-12 d-flex flex-wrap"> -->
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
 

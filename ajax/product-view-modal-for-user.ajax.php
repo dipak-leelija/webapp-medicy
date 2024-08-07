@@ -98,8 +98,9 @@ $QuantityUnit   = new QuantityUnit;
         }
 
         $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId, $editRequestFlag, $reqStatus, $oldProdFlag));
-        $product        = $product->data;
         // print_r($product);
+        $product        = $product->data;
+       
 
         if (property_exists($product[0], 'manufacturer_id')) {
             $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));

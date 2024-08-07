@@ -34,6 +34,31 @@ $totalPtoducts  = $result->totalPtoducts;
 
 $productList = json_decode($Products->showProductsByLimit());
 
+$viewCheck = 0;
+$prodTicketNo = '';
+$modalName = '';
+
+if (isset($_GET['check'])) {
+    $viewCheck = $_GET['check'];
+}
+
+if (isset($_GET['tokenNo'])) {
+    $prodTicketNo = $_GET['tokenNo'];
+}
+
+if (isset($_GET['modalName'])) {
+    $modalName = $_GET['modalName'];
+}
+
+
+if ($modalName == 0) {
+    $modalHead = 'New Product Request';
+} elseif ($modalName == 1) {
+    $modalHead = 'Existing Product Edit Request';
+} else {
+    $modalHead = '';
+}
+
 
 ?>
 
@@ -85,7 +110,11 @@ $productList = json_decode($Products->showProductsByLimit());
 
                 <!-- Begin container-fluid -->
                 <div class="container-fluid">
-
+                    <div class="col-12 d-none">
+                        <label for="" id='req-check'><?php echo $viewCheck; ?></label>
+                        <label for="" id='req-token'><?php echo $prodTicketNo; ?></label>
+                        <label for="" id='req-tableName'><?php echo $modalHead; ?></label>
+                    </div>
                     <!-- New Section -->
                     <div class="col">
                         <div class="card shadow mb-4">
@@ -127,7 +156,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                                         }
 
 
-                                                        if ($item->prod_req_status == 0) {
+                                                        if (isset($item->prod_req_status)) {
                                                             if ($item->old_prod_flag == 0) {
                                                                 $modalHeading = 'New Product Request';
                                                             } else {
@@ -150,7 +179,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $modalHeading; ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->ticket_no ?>" value="<?php echo $modalHeading; ?>" onclick="viewItem(this.id, this.value)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -234,105 +263,41 @@ $productList = json_decode($Products->showProductsByLimit());
 
 
     <script>
-        var xmlhttp = new XMLHttpRequest();
+        document.addEventListener('DOMContentLoaded', function() {
+            let itemCheck = document.getElementById('req-check');
+            let tokenData = document.getElementById('req-token');
+            let tableDetails = document.getElementById('req-tableName');
 
-        // ========================== view and edit fucntion =========================
-        const viewItem = (t) => {
-            let prodId = t.id;
-            let modalHeading = t.value;
+            console.log(itemCheck.innerHTML);
+
+            if (itemCheck.innerHTML.trim() === '1') {
+                // Show the modal
+                $('#productViewModal').modal('show');
+                viewItem(tokenData.innerHTML.trim(), tableDetails.innerHTML.trim());
+            }
+        });
+
+        // ========================== view and edit function =========================
+        function viewItem(id, value) {
+            let prodId = id;
+            let modalHeading = value;
 
             let modalTitle = document.getElementById('product-view-edit-modal-title');
             modalTitle.textContent = modalHeading;
 
-            let url = '';
-            url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'product_request'}`;
+            let url = `ajax/product-view-modal.ajax.php?id=${encodeURIComponent(prodId)}&table=product_request`;
 
+            // Set the iframe source in the modal
             $(".productViewModal").html(
-                '<iframe width="100%" height="500px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+                `<iframe width="100%" height="500px" frameborder="0" allowtransparency="true" src="${url}"></iframe>`
+            );
         }
-        // === end of view and edit ==================================================
+        // ================================================================================
 
-
-        // ========================== PRODUCT SEARCH START ===========================
-
-        // const productsSearch = document.getElementById("prodcut-search");
-        // const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
-
-        // document.addEventListener("click", (event) => {
-        //     if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
-        //         productsDropdown.style.display = "none";
-        //     }
-        // });
-
-
-        // document.addEventListener("blur", (event) => {
-        //     if (!productsDropdown.contains(event.relatedTarget)) {
-        //         setTimeout(() => {
-        //             productsDropdown.style.display = "none";
-        //         }, 100);
-        //     }
-        // });
-
-
-
-        // productsSearch.addEventListener("keydown", () => {
-
-        //     let list = document.getElementsByClassName('lists')[0];
-        //     let searchVal = document.getElementById("prodcut-search").value;
-
-        //     if (searchVal.length > 2) {
-
-        //         let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
-        //         xmlhttp.open("GET", manufURL, false);
-        //         xmlhttp.send(null);
-
-        //         list.innerHTML = xmlhttp.responseText;
-        //         document.getElementById('product-list').style.display = 'block';
-        //     } else if (searchVal == '') {
-
-        //         searchVal = 'all';
-
-        //         let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
-        //         xmlhttp.open("GET", manufURL, false);
-        //         xmlhttp.send(null);
-        //         // console.log();
-        //         list.innerHTML = xmlhttp.responseText;
-        //         document.getElementById('product-list').style.display = 'block';
-        //     } else {
-        //         document.getElementById('product-list').style.display = 'none';
-        //         list.innerHTML = '';
-        //         productsDropdown.style.display = "none";
-        //     }
-
-        // });
-
-        //================================================================
-
-        // const searchProduct = (t) => {
-        //     var prodId = t.id.trim();
-        //     var prodName = t.innerHTML.trim();
-
-        //     var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-
-        //     let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
-
-        //     localStorage.setItem('prodName', prodName);
-
-        //     window.location.href = newUrl;
-
+        // function resetUrl() {
+        //     window.location.href = "<?php echo ADM_URL . 'product-request-lsit.php'; ?>";
         // }
 
-
-        // document.addEventListener('DOMContentLoaded', function() {
-
-        //     let storedProdName = localStorage.getItem('prodName');
-
-        //     if (storedProdName !== null) {
-        //         document.getElementById("prodcut-search").value = storedProdName;
-        //         localStorage.setItem('prodName', '');
-        //     }
-        // });
     </script>
 
 </body>

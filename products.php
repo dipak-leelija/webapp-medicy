@@ -368,30 +368,6 @@ if (isset($_GET['search'])) {
 
     <script>
         var xmlhttp = new XMLHttpRequest();
-
-        // =============== modal size control funcion ==============
-        /*function changeModalSize(flag, modalId) {
-
-            let modal = document.getElementById(modalId);
-
-            if (modal) {
-                if (flag == 0) {
-                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
-
-                    // modal.querySelector('.modal-dialog').classList.add('modal-md'); 
-
-                    modal.querySelector('.modal-dialog').classList.add('modal-xl');
-                }
-
-                if (flag == 1) {
-                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
-
-                    modal.querySelector('.modal-dialog').classList.add('modal-xl');
-                }
-            }
-        }*/
-        // ================ end of modal size control =============
-
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
@@ -414,19 +390,12 @@ if (isset($_GET['search'])) {
         const productsSearch = document.getElementById("prodcut-search");
         const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
 
-
-        // productsSearch.addEventListener("focus", () => {
-        //     productsDropdown.style.display = "block";
-        // });
-
-
         document.addEventListener("click", (event) => {
             // Check if the clicked element is not the input field or the manufDropdown
             if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
                 productsDropdown.style.display = "none";
             }
         });
-
 
         document.addEventListener("blur", (event) => {
             // Check if the element losing focus is not the manufDropdown or its descendants
@@ -437,8 +406,6 @@ if (isset($_GET['search'])) {
                 }, 100);
             }
         });
-
-
 
         productsSearch.addEventListener("keydown", () => {
 

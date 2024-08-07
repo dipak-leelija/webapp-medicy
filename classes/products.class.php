@@ -656,7 +656,7 @@ class Products
                 $selectProductRequest = "SELECT * FROM product_request
                                             WHERE product_id = ?
                                             AND admin_id = ?
-                                            AND (old_prod_flag = 1 OR prod_req_status = 0)";
+                                            AND (old_prod_flag = 1 OR prod_req_status = 1)";
                 $stmt = $this->conn->prepare($selectProductRequest);
                 $stmt->bind_param("ss", $productId, $adminId);
             }
@@ -731,7 +731,7 @@ class Products
             }
 
             if ($tableName == 'product_request') {
-                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ?";
+                $selectProductRequest = "SELECT * FROM product_request WHERE ticket_no = ?";
                 $prodReqStmt = $this->conn->prepare($selectProductRequest);
 
                 if (!$prodReqStmt) {
