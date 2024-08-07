@@ -42,7 +42,7 @@ if (isset($_POST['add-emp']) == true) {
 
         $addEmployee = $employees->addEmp($empId, $ADMINID, $empUsername, $fName, $lName, $empRole, $empMail, $empContact, $empAddress, $empPass);
         // print_r($addEmployee);
-        if ($addEmployee) {
+        if ($addEmployee['result']) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
             $response = json_encode($addEmployee);

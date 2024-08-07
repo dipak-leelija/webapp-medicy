@@ -10,7 +10,7 @@ class Employees
         $password = pass_enc($empPass, EMP_PASS);
 
         try {
-            $sql = "INSERT INTO `employees` (emp_id, admin_id, emp_username, fname, lname, emp_role, emp_email, emp_contact_no, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (emp_id, admin_id, emp_username, fname, lname, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
@@ -284,7 +284,7 @@ class Employees
     function updateEmp($empUsername, $firstName, $lastName, $empRole, $empEmail, $empContact, $empId) {
         try {
             // Prepare the SQL statement with placeholders
-            $edit = "UPDATE `employees` SET `emp_username` = ?, `fname` = ?, `lname` = ?, `emp_role` = ?, `emp_email` = ?, `emp_contact_no` = ? WHERE `emp_id` = ?";
+            $edit = "UPDATE `employees` SET `emp_username` = ?, `fname` = ?, `lname` = ?, `emp_role` = ?, `emp_email` = ?, `contact` = ? WHERE `emp_id` = ?";
             $stmt = $this->conn->prepare($edit);
     
             // Bind parameters to the placeholders
