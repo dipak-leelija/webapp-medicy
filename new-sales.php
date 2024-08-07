@@ -24,19 +24,16 @@ $doctor = json_decode($doctor, true);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>New Sale - <?= $healthCareName ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= PLUGIN_PATH ?>font-asesome-5/font-awesome-5.15.4-all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <!-- Custom CSS  -->
-    <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
-    <!-- sweetalert2 css -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>new-sales.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css">
 
 </head>
 
@@ -484,7 +481,7 @@ $doctor = json_decode($doctor, true);
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.js"></script>
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
