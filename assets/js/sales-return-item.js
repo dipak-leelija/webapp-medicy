@@ -15,7 +15,7 @@ let patientName = document.getElementById("patient-name");
 let billDate = document.getElementById("bill-date");
 let reffBy = document.getElementById("reff-by");
 
-var itemList = document.getElementById("items-list");
+let itemList = document.getElementById("items-list");
 
 let stockOutDetailsItemid = document.getElementById('stock-out-details-item-id');
 let pharmacyItemid = document.getElementById('pharmacy-invoice-item-details-id');
@@ -36,7 +36,7 @@ let gst = document.getElementById("gst")
 let taxable = document.getElementById("taxable");
 let billAmount = document.getElementById("bill-amount");
 
-let invoiceNo = document.getElementById("invoice-no");
+const invoiceNo = document.getElementById("invoice-no");
 let refundMode = document.getElementById("refund-mode");
 let returnDate = document.getElementById("select-return-date");
 
@@ -383,10 +383,10 @@ const addData = () => {
     let billAmount = document.getElementById("bill-amount").value;
 
     //============================ set and filter invoice number ==================================
-    let invoiceNo = document.getElementById("invoice-no").value;
+    // let invoiceNo = invoiceNo.value;
     let returnInvoiceId = document.getElementById('invoice').value;
     if (returnInvoiceId != "") {
-        if (returnInvoiceId != invoiceNo) {
+        if (returnInvoiceId != invoiceNo.value) {
             Swal.fire({
                 title: 'Are you sure? Do you want to chang Invoice id?',
                 text: "You won't be able to revert this!",
@@ -407,7 +407,7 @@ const addData = () => {
             })
         }
     } else {
-        document.getElementById('invoice').value = invoiceNo;
+        document.getElementById('invoice').value = invoiceNo.value;
     }
 
     //=============================================================================================
@@ -422,7 +422,8 @@ const addData = () => {
     refundAmount = parseFloat(refundAmount);
 
 
-
+    console.log(invoiceNo.value);
+    
     if (invoiceNo.value == "") {
         Swal.fire("Failed!", "Please Select invoice no!", "error");
         invoiceNo.focus();
@@ -430,35 +431,35 @@ const addData = () => {
     }
 
     if (patientName.value == "") {
-        Swal.fire("Failed!", "Patient name must be not noull", "error");
+        Swal.fire("Failed!", "Patient name not found!", "error");
         patientName.focus();
         return;
     }
 
     if (billDate.value == "") {
-        Swal.fire("Failed!", "Please enter Date!", "error");
+        Swal.fire("Failed!", "Bill date not found!", "error");
         billDate.focus();
         return;
     }
 
     if (reffBy.value == "") {
-        Swal.fire.fire("Failed!", "Doctor name must be not null", "error");
+        Swal.fire("Failed!", "Doctor name not found!", "error");
         reffBy.focus();
         return;
     }
 
     if (returnDate.value == "") {
-        Swal.fire("Failed!", "Please Select return date!", "error");
+        Swal.fire("Failed!", "Select return date!", "info");
         return;
     }
 
     if (refundMode == "") {
-        Swal.fire("Failed!", "Please Select refund mode!", "error");
+        Swal.fire("Failed!", "Select refund mode!", "info");
         return;
     }
 
     if (itemList.value == "") {
-        Swal.fire("Failed!", "Please Select returning item!", "error");
+        Swal.fire("Failed!", "Select returning item!", "info");
         itemList.focus();
         return;
     } else { }
@@ -470,73 +471,73 @@ const addData = () => {
     }
 
     if (expDate.value == "") {
-        Swal.fire("Failed!", "Expiary date must be not null!", "error");
+        Swal.fire("Failed!", "Expiary date not found!", "error");
         expDate.focus();
         return;
     }
 
     if (unit.value == "") {
-        Swal.fire("Failed!", "Unit value must be not null!", "error");
+        Swal.fire("Failed!", "Item unit not found!", "error");
         unit.focus();
         return;
     }
 
     if (batch.value == "") {
-        Swal.fire("Failed!", "Batch number must be not null", "error");
+        Swal.fire("Failed!", "Item batch number not found", "error");
         batch.focus();
         return;
     }
 
     if (mrp.value == "") {
-        Swal.fire("Failed!", "MRP must be not null!", "error");
+        Swal.fire("Failed!", "Item MRP not found!", "error");
         mrp.focus();
         return;
     }
 
     if (currentQty.value == "") {
-        Swal.fire("Failed!", "Qantity must be not null", "error");
+        Swal.fire("Failed!", "Current qantity not found!", "error");
         currentQty.focus();
         return;
     }
 
     if (discount.value == "") {
-        Swal.fire("Failed!", "Discount must be not null", "error");
+        Swal.fire("Failed!", "Discount percent not found!", "error");
         discount.focus();
         return;
     }
 
     if (gst.value == "") {
-        Swal.fire("Failed!", "GST must be not null!", "error");
+        Swal.fire("Failed!", "Item GST not found!", "error");
         gst.focus();
         return;
     }
 
     if (taxable.value == "") {
-        Swal.fire("Failed!", "taxable must be not null!", "error");
+        Swal.fire("Failed!", "Taxable must be not null!", "error");
         taxable.focus();
         return;
     }
 
     if (billAmount.value == "") {
-        Swal.fire("Failed!", "bill amount must be not null!", "error");
+        Swal.fire("Failed!", "Bill amount must be not null!", "error");
         billAmount.focus();
         return;
     }
 
     if (returnQtyVal == "") {
-        Swal.fire("Failed!", "return qantity must be not null!", "error");
+        Swal.fire("Failed!", "Enter valid return qantity!", "error");
         returnQtyVal.focus();
         return;
     }
 
     if (refundTaxable == "") {
-        Swal.fire("Failed!", "refund amount must be not null!", "error");
+        Swal.fire("Failed!", "Refund must be not null!", "error");
         refund.focus();
         return;
     }
 
     if (refundAmount == "") {
-        Swal.fire("Failed!", "refund amount must be not null!", "error");
+        Swal.fire("Failed!", "Refund amount must be not null!", "error");
         refund.focus();
         return;
     }
@@ -548,7 +549,7 @@ const addData = () => {
 
             const item = existsItems[i];
             if (item.childNodes[5].childNodes[3].value == itemList.value) {
-                Swal.fire("You can not add same item more than one!");
+                Swal.fire("You can not add same item more than once. To edit selected item, select from table bellow.");
                 stockOutDetailsItemid.value = "";
                 pharmacyItemid.value = "";
                 ProductID.value = "";
@@ -682,7 +683,7 @@ const addData = () => {
 
         const dataTuple = {
             slno: slControl,
-            invoiceNo: invoiceNo,
+            invoiceNo: invoiceNo.value,
             ProductName: itemName,
             StockOutDetailsItemId: StockOutDetailsItemId,
             PharmacyInvoiceItemId: PharmacyInvoiceItemId,

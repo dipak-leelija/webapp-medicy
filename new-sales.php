@@ -104,7 +104,7 @@ $doctor = json_decode($doctor, true);
                                             <div class="col-md-4 col-4" onclick="counterBill()">
                                                 <div class="rounded counter-bill">
                                                     Counter Bill <i class="fas fa-plus-circle"></i></div>
-                                                <div class="d-none contact-box">
+                                                <div class=" contact-box">
                                                     <span id="contact"></span>
                                                 </div>
                                             </div>
@@ -164,7 +164,7 @@ $doctor = json_decode($doctor, true);
                                         <div class="col-md-3 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Item Name</label><br>
                                             <input type="any" id="product-id" style="display: none;">
-                                            <input type="text" id="product-name" class="sale-inp-item" onkeyup="searchItem(this.value)" onkeydown="chekForm()" autocomplete="off">
+                                            <input type="text" id="product-name" class="sale-inp-item" onkeyup="searchItem(this.value)" onkeydown="chekForm(this)" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-12">
@@ -259,7 +259,7 @@ $doctor = json_decode($doctor, true);
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="d-none sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class=" sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 

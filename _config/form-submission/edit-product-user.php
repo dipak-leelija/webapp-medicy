@@ -435,7 +435,7 @@ if (isset($_POST['update-product'])) {
             } else {
             ?>
                 <script>
-                    swal("Error", "Product updatation fail!", "error").then((value) => {
+                    swal("Error", "Product updatation failed!", "error").then((value) => {
                         parent.location.reload();
                     });
                 </script>

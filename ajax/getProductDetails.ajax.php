@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once dirname(__DIR__).'/config/service.const.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
@@ -145,7 +146,8 @@ if (isset($_GET["stockptr"])) {
 if (isset($_GET["looseStock"])) {
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["looseStock"], $_GET["batchNo"]);
     foreach ($stock as $stock) {
-        if ($stock['unit'] == 'tablets' || $stock['unit'] == 'capsules') {
+        // print_r($stock);
+        if (in_array(strtolower(trim($stock['unit'])), LOOSEUNITS)) {
             $looseCount = $stock['loosely_count'];
         } else {
             $looseCount = null;
@@ -175,11 +177,8 @@ if (isset($_GET["availibility"])) {
 
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
 
-    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
-
     foreach($stock as $stock){
-        // print_r($stock);
-        if (in_array(strtolower($stock['unit']), $allowedUnits)) {
+        if (in_array(strtolower(trim($stock['unit'])), LOOSEUNITS)) {
             $availibility = $stock['loosely_count'];
         } else {
             $availibility = $stock['qty'];

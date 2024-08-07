@@ -111,7 +111,7 @@ $IdsGeneration  = new IdsGeneration;
 
     ?>
             <script>
-                swal("Success", "New Prodcut Add request sent successfully!", "success")
+                swal("Success", "New Prodcut addition request sent successfully!", "success")
                     .then((value) => {
                         window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });
@@ -120,7 +120,7 @@ $IdsGeneration  = new IdsGeneration;
         } else {
         ?>
             <script>
-                swal("Error", "Product request unable to send!", "error")
+                swal("Error", "Unable to send new product add request!", "error")
                     .then((value) => {
                         window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });

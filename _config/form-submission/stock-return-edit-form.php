@@ -1,5 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once dirname(dirname(__DIR__)) . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -33,7 +34,7 @@ if (isset($_POST['stock-return-edit'])) {
 
     $updatedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
-    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+    // $allowedUnits = LOOSEUNITS;
     // ========================== end of array data ==============================
 
     // ================ STOCK RETURN DATA UPDATE  BLOCK ==================
@@ -75,7 +76,7 @@ if (isset($_POST['stock-return-edit'])) {
             $itemWeightage    = preg_replace('/[a-z-A-Z]/', '', $unit);
 
 
-            if (in_array(strtolower($itemUnit), $allowedUnits)) {
+            if (in_array(strtolower(trim($itemUnit)), LOOSEUNITS)) {
                 $returnQty = intval($totalReturnQTY) * intval($itemWeightage);
             } else {
                 $returnQty = $totalReturnQTY;
@@ -86,7 +87,7 @@ if (isset($_POST['stock-return-edit'])) {
             $CurrentItemQTY = $currenStockData->qty;
             $CurrentLooselyCount = $currenStockData->loosely_count;
 
-            if (in_array(strtolower($itemUnit), $allowedUnits)) {
+            if (in_array(strtolower(trim($itemUnit)), LOOSEUNITS)) {
                 $updatedLooseCount  = intval($CurrentLooselyCount) + intval($returnQty);
                 $updatedQty         = intdiv($updatedLooseCount, $itemWeightage);
             } else {
@@ -144,7 +145,8 @@ if (isset($_POST['stock-return-edit'])) {
                 $currentQty         = $CurrentStockData->qty;
                 $currentLooseQty    = $CurrentStockData->loosely_count;
 
-                if (in_array(strtolower($updatedItemUnit), $allowedUnits)) {
+            
+                if (in_array(strtolower(trim($updatedItemUnit)), LOOSEUNITS)){
                     $updatedLooseQty = intval($currentLooseQty) + (intval($itemRetundQtyDiff) * intval($updatedItemWeightage));
 
                     $updatedQty = intdiv($updatedLooseQty, $updatedItemWeightage);

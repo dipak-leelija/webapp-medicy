@@ -19,7 +19,7 @@ $page = "products";
 
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
-$Request            = new Request;
+$Request        = new Request;
 $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 
@@ -41,13 +41,7 @@ if (isset($_GET['search'])) {
 
     $productList = $productList->data;
 
-    // print_r($productList);
-
     $pagination = json_decode($Pagination->arrayPagination($productList));
-
-    // $result = $pagination;
-    // $allProducts = $pagination->items;
-    // $totalPtoducts = $pagination->totalitem;
 
     if ($pagination->status == 1) {
         $result = $pagination;
@@ -59,6 +53,7 @@ if (isset($_GET['search'])) {
         $allProducts = [];
         $totalPtoducts = 0;
     }
+
 } else {
 
     // Function INitilized 
@@ -69,7 +64,6 @@ if (isset($_GET['search'])) {
     $totalPtoducts  = $result->totalPtoducts;
 
     $productList = json_decode($Products->showProductsByLimitForUser($adminId));
-    // print_r($productList);
 }
 
 

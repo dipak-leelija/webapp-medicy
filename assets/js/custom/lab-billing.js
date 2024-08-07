@@ -272,7 +272,7 @@ getLessAmount = (payable) => {
     }
 
   } else if(payable > totalAmount){
-    alert("Entered Value is Greterthan Total.");
+    Swal.fire("Error","Entered Value is Greterthan Total.","error");
     document.getElementById("payable").value = totalAmount;
     document.getElementById("less-amount").value = "";
   }else{
@@ -323,12 +323,12 @@ const dueAmount = (dueAmount) =>{
     document.getElementById("paid-amount").value = payable - dueAmount;
   }
   else if(dueAmount > payable) {
-    alert("Due Amount can not be more than Payable Amount");
+    Swal.fire("Error","Due Amount can not be more than Payable Amount","error");
     paidAmount.value = '';
     document.getElementById("due").value = "";
 
   }else{
-    alert("Can not be blank");
+    Swal.fire("Error","Field can not be blank","error");
     paidAmount.value = '';
     document.getElementById("due").value = "";
   }
@@ -346,7 +346,7 @@ const paidAmount = (paidAmount) => {
     due.value = payable - paidAmount;
   }
   else if(paidAmount > payable){
-    alert("Paid Amount can not be more than Payable Amount");
+    Swal.fire("Error","Paid Amount can not be more than Payable Amount","error");
     document.getElementById("paid-amount").value = '';
     due.value = '';
   }else{

@@ -1,14 +1,14 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'appoinments.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'Pathology.class.php';
-require_once CLASS_DIR.'labAppointments.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'Pathology.class.php';
+require_once CLASS_DIR . 'labAppointments.class.php';
 
 //Classes Initilized
 $appointments    = new Appointments();
@@ -66,8 +66,8 @@ if (isset($_SESSION['appointment-data'])) {
 //     $patientState       = $_POST["patientState"];
 // }
 
-if(isset($_POST['bill-proceed'])){
-    if(isset($_POST['patientId'])){
+if (isset($_POST['bill-proceed'])) {
+    if (isset($_POST['patientId'])) {
         $exist          = TRUE;
         $patientId      = $_POST['patientId'];
         $testDate       = $_POST["testDate"];
@@ -89,7 +89,6 @@ if(isset($_POST['bill-proceed'])){
             $patientState           = $rowPatients->patient_state;
         }
     }
-    
 }
 
 
@@ -115,9 +114,7 @@ if(isset($_POST['bill-proceed'])){
 
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -126,7 +123,8 @@ if(isset($_POST['bill-proceed'])){
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
 
-
+    <!-- sweetalert2 css -->
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -136,7 +134,7 @@ if(isset($_POST['bill-proceed'])){
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -146,7 +144,7 @@ if(isset($_POST['bill-proceed'])){
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -161,7 +159,7 @@ if(isset($_POST['bill-proceed'])){
                                                 <p>Patient Name: </p>
                                             </div>
                                             <div class="col-md-7 mb-0 justify-content-start">
-                                                <p class="text-start"><b><?=  $patientName; ?> </b></p>
+                                                <p class="text-start"><b><?= $patientName; ?> </b></p>
                                             </div>
 
                                             <div class="col-md-5 mb-0">
@@ -193,23 +191,22 @@ if(isset($_POST['bill-proceed'])){
                                 <div class="row justify-content-between text-left">
                                     <div class="form-group col-sm-12 flex-column d-flex my-0">
                                         <label class="form-control-label" for="patientDoctor">Rreffered By</label>
-                                        <select id="docList" class="form-control" name="patientDoctor"
-                                            onChange="getDoc()" required>
+                                        <select id="docList" class="form-control" name="patientDoctor" onChange="getDoc()" required>
                                             <option disabled selected>Select</option>
                                             <option value="Self">By Self</option>
 
                                             <?php
-                                            if($showDoctors){
+                                            if ($showDoctors) {
                                                 $showDoctors = json_decode($showDoctors, true);
-                                            if($showDoctors && $showDoctors['status'] == 1 && !empty($showDoctors['data'])){
-                                                foreach ($showDoctors['data'] as $showDoctorDetails) {
-                                                    $doctorId = $showDoctorDetails['doctor_id'];
-                                                    $doctorName = $showDoctorDetails['doctor_name'];
-                                                    echo'<option value="'.$doctorId.'">'. $doctorName.'</option>';
+                                                if ($showDoctors && $showDoctors['status'] == 1 && !empty($showDoctors['data'])) {
+                                                    foreach ($showDoctors['data'] as $showDoctorDetails) {
+                                                        $doctorId = $showDoctorDetails['doctor_id'];
+                                                        $doctorName = $showDoctorDetails['doctor_name'];
+                                                        echo '<option value="' . $doctorId . '">' . $doctorName . '</option>';
+                                                    }
                                                 }
                                             }
-                                        }
-                                                ?>
+                                            ?>
                                         </select>
                                     </div>
 
@@ -218,8 +215,7 @@ if(isset($_POST['bill-proceed'])){
                                     </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex mt-0">
-                                        <input type="text" id="docName" class="form-control"
-                                            placeholder="Enter Doctor Name" onkeyup="newDoctor(this.value);">
+                                        <input type="text" id="docName" class="form-control" placeholder="Enter Doctor Name" onkeyup="newDoctor(this.value);">
                                     </div>
                                 </div>
 
@@ -227,16 +223,15 @@ if(isset($_POST['bill-proceed'])){
                                     <div class="form-group col-sm-12 flex-column d-flex mt-0">
                                         <input type="text" id="test-name" hidden>
                                         <input type="text" id="test-id" hidden>
-                                        <select id="test" class="form-control" name="test" onChange="getPrice()"
-                                            required disabled>
+                                        <select id="test" class="form-control" name="test" onChange="getPrice()" required disabled>
                                             <option disabled selected>Select Test</option>
                                             <?php
-                                                foreach ($showSubTests as $rowSubTests) {
-                                                    $subTestId   = $rowSubTests['id'];
-                                                    $subTestName = $rowSubTests['name'];
-                                                    echo'<option value='.$subTestId.'>'. $subTestName.'</option>';
-                                                }
-                                                ?>
+                                            foreach ($showSubTests as $rowSubTests) {
+                                                $subTestId   = $rowSubTests['id'];
+                                                $subTestName = $rowSubTests['name'];
+                                                echo '<option value=' . $subTestId . '>' . $subTestName . '</option>';
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -247,8 +242,7 @@ if(isset($_POST['bill-proceed'])){
                                     </div>
 
                                     <div class="form-group col-sm-5 flex-column d-flex mt-0">
-                                        <input class="form-control" id="disc" onkeyup="getDisc(this.value);"
-                                            placeholder="Discount %" type="number" max="100" disabled>
+                                        <input class="form-control" id="disc" onkeyup="getDisc(this.value);" placeholder="Discount %" type="number" max="100" disabled>
                                     </div>
                                 </div>
                                 <div class="row justify-content-between text-left">
@@ -256,9 +250,7 @@ if(isset($_POST['bill-proceed'])){
                                         <p class="form-control">Total ₹ <span id="total"></span></p>
                                     </div>
                                     <div class="form-group col-sm-5 flex-column d-flex mt-0">
-                                        <button class="btn btn-primary" id="add-bill-btn" type="button"
-                                            onClick="getBill()" disabled>Add to Bill <i
-                                                class="fa fa-arrow-right"></i></button>
+                                        <button class="btn btn-primary" id="add-bill-btn" type="button" onClick="getBill()" disabled>Add to Bill <i class="fa fa-arrow-right"></i></button>
                                     </div>
                                 </div>
 
@@ -276,7 +268,7 @@ if(isset($_POST['bill-proceed'])){
                                     <input type="hidden" name="patientAge" value="<?php echo $patientAge; ?>">
                                     <input type="hidden" name="patientGender" value="<?php echo $gender; ?>">
                                     <input type="hidden" name="patientPhnNo" value="<?php echo $patientPhoneNumber; ?>">
-                                    <input type="hidden" name="patientTestDate" value="<?php echo $testDate;?>">
+                                    <input type="hidden" name="patientTestDate" value="<?php echo $testDate; ?>">
                                     <input type="hidden" name="prefferedDocId" id="prefferedDocId">
                                     <input type="hidden" name="refferedDocName" id="refferedDocName">
 
@@ -331,8 +323,7 @@ if(isset($_POST['bill-proceed'])){
                                             <p class="mb-1">Payable: </p>
                                         </div>
                                         <div class="form-group col-sm-3 flex-column d-flex ">
-                                            <input class="myForm text-center" id="payable" name="payable"
-                                                onkeyup="getLessAmount(this.value)" type="number" value="00" required>
+                                            <input class="myForm text-center" id="payable" name="payable" onkeyup="getLessAmount(this.value)" type="number" value="00" required>
                                         </div>
 
                                     </div>
@@ -341,8 +332,7 @@ if(isset($_POST['bill-proceed'])){
                                     <div onload="disabledField();" class="row justify-content-between text-left">
                                         <div class="form-group col-sm-3 flex-column d-flex">
                                             <label class="form-control-label" for="">Update</label>
-                                            <select class="form-control" onchange="updateBill(this.value)" name="status"
-                                                id="update" required>
+                                            <select class="form-control" onchange="updateBill(this.value)" name="status" id="update" required>
                                                 <option value="" disabled selected>Select Update</option>
                                                 <option value="Completed">Completed</option>
                                                 <option value="Partial Due">Partial Due</option>
@@ -354,24 +344,20 @@ if(isset($_POST['bill-proceed'])){
                                         </div>
                                         <div class="form-group col-sm-3 flex-column d-flex ">
                                             <label class="form-control-label" for="">Due Amount</label>
-                                            <input class="myForm text-center" name="due" id="due" type="number"
-                                                onkeyup="dueAmount(this.value)" required readonly>
+                                            <input class="myForm text-center" name="due" id="due" type="number" onkeyup="dueAmount(this.value)" required readonly>
                                         </div>
                                         <div class="form-group col-sm-3 flex-column d-flex">
                                             <label class="form-control-label" for="less-amount">Less Amount</label>
-                                            <input class="myForm text-center" id="less-amount" name="less_amount"
-                                                type="any" value="00" readonly>
+                                            <input class="myForm text-center" id="less-amount" name="less_amount" type="any" value="00" readonly>
                                         </div>
                                         <div class="form-group col-sm-3 flex-column d-flex">
                                             <label class="form-control-label" for="">Paid Amount</label>
-                                            <input class="myForm text-center" name="paid_amount" id="paid-amount"
-                                                type="number" onkeyup="paidAmount(this.value)" required readonly>
+                                            <input class="myForm text-center" name="paid_amount" id="paid-amount" type="number" onkeyup="paidAmount(this.value)" required readonly>
                                         </div>
                                     </div>
 
                                     <div class="row justify-content-end">
-                                        <button class="btn btn-primary w-25" type="submit" id="bill-generate"
-                                            name="bill-generate" disabled>Generate Bill</button>
+                                        <button class="btn btn-primary w-25" type="submit" id="bill-generate" name="bill-generate" disabled>Generate Bill</button>
                                     </div>
                                 </form>
                             </div>
@@ -383,7 +369,7 @@ if(isset($_POST['bill-proceed'])){
 
 
                 </script>
-                
+
                 <!-- Bootstrap core JavaScript-->
                 <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
                 <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -396,6 +382,7 @@ if(isset($_POST['bill-proceed'])){
                 <!-- Custom scripts for all pages-->
                 <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
                 <script src="<?php echo JS_PATH ?>custom/lab-billing.js"></script>
+                <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 </body>
 
