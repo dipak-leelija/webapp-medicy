@@ -19,34 +19,34 @@ $desigRole = new Emproles();
 
 $currentUrl = $Utility->currentUrl();
 
-$showEmployees = $employees->employeesDisplay($adminId);
-$showDesignation = $desigRole->designationRoleCheckForLogin();
-$showDesignation = json_decode($showDesignation, true);
+// $showEmployees = $employees->employeesDisplay($ADMINID);
+// $showDesignation = $desigRole->designationRoleCheckForLogin();
+// $showDesignation = json_decode($showDesignation, true);
 
 
 
 $profileDetails = array();
 if ($_SESSION['ADMIN']) {
-    $adminDetails = $Admin->adminDetails($adminId);
+    $adminDetails = $Admin->adminDetails($ADMINID);
     $adminDetails = json_decode($adminDetails);
     if ($adminDetails->status) {
-        $adminData = $adminDetails->data;
+        $adminData = $adminDetails->data[0];
 
         // foreach ($adminData as $adminData) {
-            $firstName  = $adminData->fname;
-            $lastName   = $adminData->lname;
-            $image      = $adminData->adm_img;
-            $profileImg = ADM_IMG_PATH . $image;
-            $userName   = $adminData->username;
-            $email      = $adminData->email;
-            $phone      = $adminData->mobile_no;
-            $password   = $adminData->password;
-            $address    = $adminData->address;
+        $firstName  = $adminData->fname;
+        $lastName   = $adminData->lname;
+        $image      = $adminData->adm_img;
+        $profileImg = ADM_IMG_PATH . $image;
+        $userName   = $adminData->username;
+        $email      = $adminData->email;
+        $phone      = $adminData->mobile_no;
+        $password   = $adminData->password;
+        $address    = $adminData->address;
         // }
     }
 } else {
 
-    $employeeDetails = json_decode($employees->employeeDetails($employeeId, $adminId));
+    $employeeDetails = json_decode($employees->employeeDetails($employeeId, $ADMINID));
 
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
@@ -104,9 +104,7 @@ if ($_SESSION['ADMIN']) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
@@ -119,20 +117,20 @@ if ($_SESSION['ADMIN']) {
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
     <style>
-    #toggle {
-        /* position: absolutte;
+        #toggle {
+            /* position: absolutte;
             top: 25%;
             left: 200px; */
-        position: relative;
-        float: right;
-        transform: translateY(-115%);
-        width: 30px;
-        height: 30px;
-        background: url(img/hide-password.png);
-        /* background-color: black; */
-        background-size: cover;
-        cursor: pointer;
-    }
+            position: relative;
+            float: right;
+            transform: translateY(-115%);
+            width: 30px;
+            height: 30px;
+            background: url(img/hide-password.png);
+            /* background-color: black; */
+            background-size: cover;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -160,52 +158,15 @@ if ($_SESSION['ADMIN']) {
                 <div class="container-fluid">
                     <div class="card-body">
                         <div class=" d-flex justify-content-center align-items-center">
-                            <div class=" shadow bg-white rounded  profile">
-
-
-                                <!-- <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
-                                    <div class="ml-3">
-                                        <img class="img-uv-view shadow-lg "
-                                            src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>"
-                                            alt="">
-                                        <div class="position-absolute translate-middle ml-5">
-                                            <form method="POST"
-                                                action="<?= URL ?>_config/form-submission/profileSetup-form.php"
-                                                id="profileImageForm" enctype="multipart/form-data">
-                                                <input type="file" style="display:none;" id="img-uv-input"
-                                                    accept=".jpg,.jpeg,.png" name="profile-image"
-                                                    onchange="validateFileType(this)">
-                                                <label for="img-uv-input"
-                                                    class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i
-                                                        class="fas fa-camera"></i></label>
-                                                <div class="alert alert-danger d-none" id="err-show" role="alert">
-                                                    Only jpg/jpeg and png files are allowed!
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="p-name">
-                                        <h2 class="mb-0"><?= $firstName . " " . $lastName ?></h2>
-                                        <p class="text-primary mb-0">Username: <?= $userName; ?></p>
-                                        <p class="text-primary small">ID: <?= $adminId; ?></p>
-                                    </div>
-                                </div> -->
+                            <div class="shadow-sm bg-white rounded  profile">
 
                                 <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
                                     <div class="w-25">
-                                        <img class="img-uv-view shadow-lg "
-                                            src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>"
-                                            alt="">
+                                        <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                         <div class="position-absolute translate-middle ml-5">
-                                            <form method="POST"
-                                                action="<?= URL ?>_config/form-submission/profileSetup-form.php"
-                                                id="profileImageForm" enctype="multipart/form-data">
-                                                <input type="file" style="display:none;" id="img-uv-input"
-                                                    accept=".jpg,.jpeg,.png" name="profile-image"
-                                                    onchange="validateFileType(this)">
-                                                <label for="img-uv-input"
-                                                    class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i
-                                                        class="fas fa-camera"></i></label>
+                                            <form method="POST" action="<?= URL ?>_config/form-submission/profileSetup-form.php" id="profileImageForm" enctype="multipart/form-data">
+                                                <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType(this)">
+                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i class="fas fa-camera"></i></label>
                                                 <div class="alert alert-danger d-none" id="err-show" role="alert">
                                                     Only jpg/jpeg and png files are allowed!
                                                 </div>
@@ -235,55 +196,27 @@ if ($_SESSION['ADMIN']) {
                                         <label class="d-none" id="menue-control">0</label>
                                         <div id="home" class="tab-pane active">
                                             <div class="user w-100 p-3 mb-2 ">
-                                                <form action="_config/form-submission/profileSetup-form.php"
-                                                    method="post" id="edit-profile">
-                                                    <div
-                                                        class="d-flex justify-content-between align-item-between flex-wrap">
-                                                        <!-- <div class="col-md-6">
-                                                            <input type="text" class="form-control mb-3" id="fname" name="fname" maxlength="20" placeholder="First Name" value="<?= $firstName; ?>">
-                                                        </div> -->
+                                                <form action="_config/form-submission/profileSetup-form.php" method="post" id="edit-profile">
+                                                    <div class="d-flex justify-content-between align-item-between flex-wrap">
                                                         <div class="col-md-6 form-group">
-                                                            <input type="text" class=" med-input" id="fname"
-                                                                name="fname" maxlength="20" value="<?= $firstName; ?>"
-                                                                required>
-                                                            <label class="med-label" style="margin-left:10px;"
-                                                                for="fname">First Name</label>
+                                                            <input type="text" class=" med-input" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>" required>
+                                                            <label class="med-label" style="margin-left:10px;" for="fname">First Name</label>
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <input type="text" class=" med-input" id="lname"
-                                                                name="lname" maxlength="20" value="<?= $lastName; ?>"
-                                                                required>
-                                                            <label class="med-label" style="margin-left:10px;"
-                                                                for="lname">Last Name</label>
+                                                            <input type="text" class=" med-input" id="lname" name="lname" maxlength="20" value="<?= $lastName; ?>" required>
+                                                            <label class="med-label" style="margin-left:10px;" for="lname">Last Name</label>
                                                         </div>
-
-                                                        <!-- <div class="col-md-6">
-                                                            <input type="text" class="form-control mb-3" id="lname"
-                                                                name="lname" maxlength="20" placeholder="Last Name"
-                                                                value="<?= $lastName; ?>">
-                                                        </div> -->
                                                     </div>
 
-                                                    <div
-                                                        class="d-flex justify-content-between align-item-between flex-wrap">
+                                                    <div class="d-flex justify-content-between align-item-between flex-wrap">
                                                         <div class="col-md-6">
-                                                            <!-- <div>
-                                                                <input type="email" class="form-control mb-3" id="email"
-                                                                    name="email" maxlength="80"
-                                                                    placeholder="Email Address" value="<?= $email; ?>">
-                                                            </div> -->
                                                             <div class=" form-group">
-                                                                <input type="email" class=" med-input" id="email"
-                                                                    name="email" maxlength="80" value="<?= $email; ?>"
-                                                                    required>
+                                                                <input type="email" class=" med-input" id="email" name="email" maxlength="80" value="<?= $email; ?>" required>
                                                                 <label class="med-label" for="email">Email
                                                                     Address</label>
                                                             </div>
                                                             <div class=" form-group">
-                                                                <input type="number" class=" med-input"
-                                                                    id="mobile-number" name="mobile-number"
-                                                                    maxlength="10" max="9999999999"
-                                                                    value="<?= $phone; ?>" required>
+                                                                <input type="number" class=" med-input" id="mobile-number" name="mobile-number" maxlength="10" max="9999999999" value="<?= $phone; ?>" required>
                                                                 <label class="med-label" for="mobile-number">Contact
                                                                     Number</label>
                                                             </div>
@@ -296,17 +229,13 @@ if ($_SESSION['ADMIN']) {
                                                         </div>
 
                                                         <div class="col-md-6 form-group">
-                                                            <textarea class="med-input" placeholder="" name="address"
-                                                                rows="6"
-                                                                style="height: 105px;"><?= $address; ?></textarea>
-                                                            <label class="med-label" style="margin-left:10px;"
-                                                                for="address">Address</label>
+                                                            <textarea class="med-input" placeholder="" name="address" rows="6" style="height: 105px;"><?= $address; ?></textarea>
+                                                            <label class="med-label" style="margin-left:10px;" for="address">Address</label>
                                                         </div>
                                                     </div>
 
                                                     <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-primary" type="submit"
-                                                            name="submit" id="updateBtn">Update</button>
+                                                        <button class="btn btn-sm btn-primary" type="submit" name="submit" id="updateBtn">Update</button>
                                                     </div>
                                                 </form>
 
@@ -314,47 +243,29 @@ if ($_SESSION['ADMIN']) {
                                         </div>
 
                                         <div id="menu1" class="tab-pane fade">
-                                            <form class="p-3"
-                                                action="<?php echo htmlspecialchars(URL . 'ajax/updateProfile-password.ajax.php'); ?>"
-                                                method="post">
+                                            <form class="p-3" action="<?php echo htmlspecialchars(URL . 'ajax/updateProfile-password.ajax.php'); ?>" method="post">
 
                                                 <div class="form-group mb-3">
-                                                    <input type="password" class="med-input " id="old-password"
-                                                        name="old-password" maxlength="12"
-                                                        placeholder="" required
-                                                        oninput="showToggleBtn('old-password', 'toggleBtn1')">
-                                                        <label class="med-label" for="old-password">Current Password</label>
-                                                    <i class="fas fa-eye " id="toggleBtn1"
-                                                        style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;"
-                                                        onclick="togglePassword('old-password', 'toggleBtn1')"></i>
+                                                    <input type="password" class="med-input " id="old-password" name="old-password" maxlength="12" placeholder="" required oninput="showToggleBtn('old-password', 'toggleBtn1')">
+                                                    <label class="med-label" for="old-password">Current Password</label>
+                                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;" onclick="togglePassword('old-password', 'toggleBtn1')"></i>
                                                 </div>
                                                 <div class="form-group  mb-3">
-                                                    <input type="password" class="med-input " id="new-password"
-                                                        name="new-password" maxlength="12"
-                                                        placeholder="" required
-                                                        oninput="showToggleBtn('new-password', 'toggleBtn2')">
-                                                        <label class="med-label" for="new-password">Enter New Password</label>
-                                                    <i class="fas fa-eye " id="toggleBtn2"
-                                                        style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;"
-                                                        onclick="togglePassword('new-password', 'toggleBtn2')"></i>
+                                                    <input type="password" class="med-input " id="new-password" name="new-password" maxlength="12" placeholder="" required oninput="showToggleBtn('new-password', 'toggleBtn2')">
+                                                    <label class="med-label" for="new-password">Enter New Password</label>
+                                                    <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;" onclick="togglePassword('new-password', 'toggleBtn2')"></i>
                                                 </div>
                                                 <div class="form-group mb-3 ">
-                                                    <input type="password" class="med-input " id="cnf-password"
-                                                        name="cnf-password" maxlength="12"
-                                                        placeholder="" required
-                                                        oninput="showToggleBtn('cnf-password', 'toggleBtn3')">
-                                                        <label class="med-label" for="cnf-password">Confirm Password</label>
-                                                    <i class="fas fa-eye " id="toggleBtn3"
-                                                        style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;"
-                                                        onclick="togglePassword('cnf-password', 'toggleBtn3')"></i>
+                                                    <input type="password" class="med-input " id="cnf-password" name="cnf-password" maxlength="12" placeholder="" required oninput="showToggleBtn('cnf-password', 'toggleBtn3')">
+                                                    <label class="med-label" for="cnf-password">Confirm Password</label>
+                                                    <i class="fas fa-eye " id="toggleBtn3" style="display:none;font-size:1.2rem;width:4%;top:30%;right:4px;" onclick="togglePassword('cnf-password', 'toggleBtn3')"></i>
                                                     <small>
                                                         <p id="cpasserror" class="text-danger" style="display: none;">
                                                         </p>
                                                     </small>
                                                 </div>
                                                 <div class="mt-2 d-flex justify-content-end">
-                                                    <button type="submit" name="submit" id="change-password"
-                                                        class="btn btn-sm btn-primary">Save Changes</button>
+                                                    <button type="submit" name="submit" id="change-password" class="btn btn-sm btn-primary">Save Changes</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -378,10 +289,6 @@ if ($_SESSION['ADMIN']) {
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Custom Javascript -->
@@ -404,60 +311,60 @@ if ($_SESSION['ADMIN']) {
 
 
     <script>
-    function validateFileType(t) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Change Profile Photo?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#0047AB",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Change!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var fileName = document.getElementById("img-uv-input").value;
-                var idxDot = fileName.lastIndexOf(".") + 1;
-                var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-                if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
-                    readURL(t, fileName);
-                } else {
-                    document.getElementById("err-show").classList.remove("d-none");
+        function validateFileType(t) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Change Profile Photo?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#0047AB",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Change!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var fileName = document.getElementById("img-uv-input").value;
+                    var idxDot = fileName.lastIndexOf(".") + 1;
+                    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                        readURL(t, fileName);
+                    } else {
+                        document.getElementById("err-show").classList.remove("d-none");
+                    }
                 }
-            }
-        });
-    }
-
-
-    const readURL = (input, fileName) => {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = (e) => {
-                document.querySelector(".img-uv-view").src = e.target.result;
-                console.log(fileName.split(/(\\|\/)/g).pop());
-                $('#profileImageForm').submit();
-            }
-
-            reader.readAsDataURL(input.files[0]);
-            document.querySelector("#upload-btn").classList.remove("d-none");
+            });
         }
-    };
+
+
+        const readURL = (input, fileName) => {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = (e) => {
+                    document.querySelector(".img-uv-view").src = e.target.result;
+                    console.log(fileName.split(/(\\|\/)/g).pop());
+                    $('#profileImageForm').submit();
+                }
+
+                reader.readAsDataURL(input.files[0]);
+                document.querySelector("#upload-btn").classList.remove("d-none");
+            }
+        };
 
 
 
-    if (document.getElementById("menue-control").innerHTML.trim() === '1') {
+        if (document.getElementById("menue-control").innerHTML.trim() === '1') {
 
-        // control home menue
-        document.getElementById("home").classList.remove("active");
-        document.getElementById("home").classList.add("fade");
+            // control home menue
+            document.getElementById("home").classList.remove("active");
+            document.getElementById("home").classList.add("fade");
 
-        // control menue 1
-        document.getElementById("menu1").classList.remove("fade");
-        document.getElementById("menu1").classList.add("show", "active");
-        document.getElementById("menu1").classList.add("active");
+            // control menue 1
+            document.getElementById("menu1").classList.remove("fade");
+            document.getElementById("menu1").classList.add("show", "active");
+            document.getElementById("menu1").classList.add("active");
 
-        document.getElementById("menue-control").innerHTML = '0';
-    }
+            document.getElementById("menue-control").innerHTML = '0';
+        }
     </script>
 </body>
 

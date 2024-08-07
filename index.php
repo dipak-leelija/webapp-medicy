@@ -132,7 +132,7 @@ if ($labBills->status == 1) {
 
                             <!-- Earnings (Monthly) Card Example -->
                             <div class="col-xl-4 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "newPatient.php"; ?>
+                                <?php require_once DASHBOARD_COMPONENT . "NewPatientCount.php"; ?>
                             </div>
 
                         <?php endif; ?>
@@ -176,7 +176,7 @@ if ($labBills->status == 1) {
                             </div>
 
                             <div class="col-md-8 mb-4">
-                                <?php require_once ROOT_COMPONENT . "sales-purchase.php"; ?>
+                                <?php require_once DASHBOARD_COMPONENT . "SalesPurchaseGraph.php"; ?>
                             </div>
                         </div>
                         <!-- ================ FORTH ROW ROW ================ -->

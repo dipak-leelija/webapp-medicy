@@ -255,13 +255,11 @@ $doctor = json_decode($doctor, true);
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
-                                                        <label for="">Manf:</label><br>
-                                                        <input class=" sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class=" sale-inp" type="hidden" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
                                                     <div class="col-md-12 d-flex" style="word-wrap: break-word;">
-                                                        <label for="" style="margin-top: 5px;">Content:</label>
                                                         <input class="sale-inp" type="textarea" id="productComposition" style="border-width: 0px;  width: 30rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>
@@ -467,12 +465,7 @@ $doctor = json_decode($doctor, true);
         </div>
     </div>
     <!--============= End Add New Customer Modal =============-->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
+    
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
