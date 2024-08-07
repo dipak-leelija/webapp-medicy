@@ -10,7 +10,7 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
 ?>
 
 
-<div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-primary shadow-sm h-100 py-2 pending_border animated--grow-in">
     <div class="row mt-1">
         <div class="col-7">
             <div class="container-fluid">
@@ -141,10 +141,10 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     const salesPurchaseDataCall = (startDate, endDate) => {
 
         salesPurchaseDataFetchUrl = `<?php echo URL ?>ajax/sales-purchae-data-fetch.ajax.php?startDt=${startDate}&endDt=${endDate}`;
-        xmlhttp.open("GET", salesPurchaseDataFetchUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var salesPurchseData = JSON.parse(xmlhttp.responseText);
+        request.open("GET", salesPurchaseDataFetchUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var salesPurchseData = JSON.parse(request.responseText);
 
         if (salesPurchseData.status == '1') {
 
@@ -243,7 +243,7 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
                     label: "Sales",
                     data: [],
                     borderWidth: 0,
-                    backgroundColor: 'rgb(154, 229, 229)',
+                    backgroundColor: 'rgba(57, 137, 250, 1)',
                     minBarThickness: 2,
                     maxBarThickness: 15,
                 },
@@ -251,7 +251,7 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
                     label: "Purchase",
                     data: [],
                     borderWidth: 0,
-                    backgroundColor: 'rgb(52, 203, 203)',
+                    backgroundColor: 'rgba(245, 39, 93, 0.8)',
                     minBarThickness: 5,
                     maxBarThickness: 12,
                 }
@@ -272,5 +272,5 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     });
 
 
-    sellPurchseDataFilter('sellPurchaseToday');
+    sellPurchseDataFilter('sellPurchaseToday7days');
 </script>

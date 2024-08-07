@@ -100,8 +100,6 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
     </div>
 </div>
 
-<script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
-
 <script>
     let flag = 0;
 
@@ -117,10 +115,10 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
             productIds = JSON.stringify(productIds);
 
             mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
-            xmlhttp.open("GET", mostSoldProdNameUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var prodNameArray = xmlhttp.responseText;
+            request.open("GET", mostSoldProdNameUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var prodNameArray = request.responseText;
             prodNameArray = JSON.parse(prodNameArray);
 
             mostSoldChart.data.labels = prodNameArray;
@@ -142,10 +140,10 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
-        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var mostSoldDataByDate = xmlhttp.responseText;
+        request.open("GET", mostSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var mostSoldDataByDate = request.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -159,11 +157,11 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var mostSoldEndDate = document.getElementById('mostSoldEndDate').value;
 
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
-        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
+        request.open("GET", mostSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
 
-        var mostSoldDataByDate = xmlhttp.responseText;
+        var mostSoldDataByDate = request.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -290,10 +288,10 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var dataToSend = `mostSoldProdId=${productIds}`;
 
         mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
-        xmlhttp.open("GET", mostSoldProdNameUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var prodNameArray = xmlhttp.responseText;
+        request.open("GET", mostSoldProdNameUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var prodNameArray = request.responseText;
 
         prodNameArray = JSON.parse(prodNameArray);
 

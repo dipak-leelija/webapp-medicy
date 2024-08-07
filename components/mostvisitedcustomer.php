@@ -141,10 +141,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             customerId = JSON.stringify(customerId);
 
             mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-            xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var mostVistiCustomerNameArray = xmlhttp.responseText;
+            request.open("GET", mostVisitedCustomerDataUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var mostVistiCustomerNameArray = request.responseText;
 
             mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
 
@@ -177,11 +177,11 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         }
 
         mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?${customerFilterByDate}=${mostVistedCustomerDt}`;
-        xmlhttp.open("GET", mostVstCstmrDtUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
+        request.open("GET", mostVstCstmrDtUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
 
-        mostVisitCustomerDataFunction(JSON.parse(xmlhttp.responseText), flag);
+        mostVisitCustomerDataFunction(JSON.parse(request.responseText), flag);
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
         document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
@@ -205,10 +205,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         }
 
         mostVstCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?${customFilterByStartDt}=${purchaseVisitStartDt}&${customFilterByEndDt}=${purchaseVisitEndDt}`;
-        xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
-        xmlhttp.send(null);
+        request.open("GET", mostVstCstmrDtRngUrl, false);
+        request.send(null);
 
-        mostVisitCustomerDataFunction(JSON.parse(xmlhttp.responseText), flag);
+        mostVisitCustomerDataFunction(JSON.parse(request.responseText), flag);
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
         document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
@@ -311,10 +311,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         customerId = JSON.stringify(customerId);
 
         mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-        xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var customerNameArray = xmlhttp.responseText;
+        request.open("GET", mostVisitedCustomerDataUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var customerNameArray = request.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
 
