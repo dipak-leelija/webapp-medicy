@@ -87,10 +87,10 @@
     // data fetch on filter
     const soldItemDataFetch = (sortVal, startDt, endDt)=>{
         soldItemDataFetchUrl = `<?php echo URL ?>ajax/sold-items-data-fetch.ajax.php?sortVal=${sortVal}&startDt=${startDt}&endDt=${endDt}`;
-        xmlhttp.open("GET", soldItemDataFetchUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var soldItemsData = JSON.parse(xmlhttp.responseText);
+        request.open("GET", soldItemDataFetchUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var soldItemsData = JSON.parse(request.responseText);
         
         if(soldItemsData.status == '1'){
             soldItemsDataChartShow(soldItemsData.data);

@@ -67,21 +67,23 @@ if ($labBills->status == 1) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medicy Health Care - Admin Portal</title>
+    <title>Dashboard - <?= $healthCareName ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH; ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH; ?>custom/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH; ?>sb-admin-2.css">
+    <link rel="stylesheet" href="<?= CSS_PATH; ?>custom/custom.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH; ?>custom-dashboard.css">
-    <!-- <link rel="stylesheet" href="<?php echo CSS_PATH; ?>bootstrap 4/bootstrap.min.css"> -->
-
+    <link rel="stylesheet" href="<?= CSS_PATH; ?>custom-dashboard.css">
     <script src="<?php echo JS_PATH; ?>ajax.custom-lib.js"></script>
 
+    
+    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+    <script src="<?= PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 </head>
 
 <body id="page-top">
@@ -255,11 +257,6 @@ if ($labBills->status == 1) {
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
             
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
     <!-- Bootstrap core JavaScript-->
@@ -270,10 +267,7 @@ if ($labBills->status == 1) {
     <script src="<?= PLUGIN_PATH; ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH; ?>sb-admin-2.min.js"></script>
-
-    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
-    <script src="<?= PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
+    <script src="<?= JS_PATH; ?>sb-admin-2.js"></script>
 
     <script src="<?= JS_PATH; ?>index.js"></script>
 
