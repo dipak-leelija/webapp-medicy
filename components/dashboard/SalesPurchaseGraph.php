@@ -68,12 +68,12 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
         </div>
     </div>
     <div class="row d-flex">
-        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #9ae5e5;">
+        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #3989fa;">
             <b>
                 <p>&#x20b9;</p>
             </b>&nbsp;<b><label id="sales-amount">0</label></b>
         </div>
-        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #34cbcb;">
+        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #f5275dcc;">
             <b>
                 <p>&#x20b9;</p>
             </b>&nbsp;<b><label id="purchae-amount">0</label></b>
