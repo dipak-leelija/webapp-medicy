@@ -35,8 +35,6 @@ $requestTypes = [
     'ticket_request'       => ['tableName' => 'Generate Ticket', 'data'      => []]
 ];
 
-// print_r($requestTypes);
-
 
 // string splitter function
 function getInitials($string)
@@ -173,22 +171,14 @@ if ($pagination->status == 1) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Tickets - <?= $HEALTHCARENAME ?></title>
 
-    <title>Edit Requests</title>
-
-    <!-- Custom fonts for this template -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <!-- <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet"> -->
-    <link href="<?php echo CSS_PATH; ?>sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/products.css">
-    <!-- Custom styles for this page -->
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
+    <link rel="stylesheet" href="<?= CSS_PATH; ?>sb-admin-2.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/products.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css"/>
 </head>
 
 <body id="page-top">
@@ -299,24 +289,15 @@ if ($pagination->status == 1) {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
-    <!-- <?php include ROOT_COMPONENT . 'generateTicket.php'; ?> -->
-
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.js"></script>
 
 </body>
 

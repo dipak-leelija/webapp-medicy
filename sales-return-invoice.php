@@ -63,8 +63,10 @@ $refundMode     = $patientData[0]['refund_mode'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
 
     <style>

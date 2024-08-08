@@ -97,15 +97,15 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Update/Verify Patient - <?= $healthCareName ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Update/Verify Patient - <?= $HEALTHCARENAME ?></title>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>sb-admin-2.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/appointment.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
 </head>
 
 <body>

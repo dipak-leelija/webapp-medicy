@@ -2,6 +2,7 @@
 include_once __DIR__ . "/config/constant.php";
 require_once ROOT_DIR . '_config/passRecoverySessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
 
@@ -9,9 +10,6 @@ require_once CLASS_DIR . 'utility.class.php';
 
 $PHPMailer      = new PHPMailer();
 $Utility        = new Utility;
-
-
-// print_r($_SESSION);
 
 ?>
 
@@ -23,15 +21,13 @@ $Utility        = new Utility;
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Password Reset - <?= $HEALTHCARENAME ?></title>
 
-    <title>Medicy Health Care - Admin OTP VERIFICATION ON Registration</title>
-
-    <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>register.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
 
 
     <style>

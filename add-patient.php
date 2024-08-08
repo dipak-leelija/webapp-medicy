@@ -64,20 +64,16 @@ if ($clinicInfo['status'] == 1) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add New Patient - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
-
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Add New Patient - <?= $HEALTHCARENAME ?></title>
+    
+    <!-- Styles -->
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet" type="text/css"/>
     <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
     <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
-
-    <!-- css for sweetalert2 -->
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
 </head>
 

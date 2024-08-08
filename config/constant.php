@@ -99,7 +99,7 @@ session_start();
 	define("LOGO_WIDTH",						'180');										//width of the logo
 	define("LOGO_HEIGHT",						'50');										//height of the logo
 
-	define("FAVCON_PATH",						URL."/images/logo/favicon.png");			//location of the favcon
+	define("FAVCON_PATH",						URL."assets/img/site-imgs/favicon.ico");	//location of the favcon
 	define("LOGO_ALT",							SITE_NAME);							//alternate text for the logo
 	
 	define("FOOTER_LOGO",						URL.'/images/logo/footer-logo.png');		//location of the logo

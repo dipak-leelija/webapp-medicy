@@ -8,7 +8,6 @@ require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'patients.class.php';
-// require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'Pathology.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
@@ -18,7 +17,6 @@ require_once CLASS_DIR . 'labBillDetails.class.php';
 $appointments    = new Appointments();
 $Patients        = new Patients();
 $Pathology       = new Pathology;
-// $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
@@ -72,21 +70,17 @@ if (is_numeric($refDoc)) {
 <html lang="en">
 
 <head>
-
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
   <title>Test Bill Edit - #<?= $billId ?></title>
-  <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/custom-form-style.css">
-  <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
-  <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-  <!-- Custom styles for this page -->
-  <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+  
+  <link rel="stylesheet" href="<?php echo CSS_PATH ?>sb-admin-2.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/custom-form-style.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css" type="text/css" />
 </head>
 
 <body>

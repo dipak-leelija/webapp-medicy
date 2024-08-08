@@ -4,6 +4,7 @@ require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
@@ -26,12 +27,13 @@ if (isset($_GET['appointmentId'])) {
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointment Status</title>
+  
+  <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+  <title>Appointment Status - <?= $HEALTHCARENAME ?></title>
 
   <!-- Message Box CSS -->
+  <link rel="stylesheet" href="<?php echo CSS_PATH ?>sb-admin-2.css">
   <link rel="stylesheet" href="<?= CSS_PATH ?>sucessPageStyle.css">
-
-  <!--Only for demo purpose - no need to add.-->
   <link rel="stylesheet" href="<?= CSS_PATH ?>sucessPageDemo.css">
 
 </head>
@@ -50,7 +52,7 @@ if (isset($_GET['appointmentId'])) {
             ?>
           </h1>
 
-          <p>
+          <p class="my-2">
             <?php if ($set) {
               echo 'Click on View to Print Your Appointment Paper.';
             } else {

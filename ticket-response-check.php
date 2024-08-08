@@ -8,8 +8,6 @@ require_once CLASS_DIR . 'request.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-// echo $adminId;
-
 $Utility    = new Utility;
 $Request    = new Request;
 

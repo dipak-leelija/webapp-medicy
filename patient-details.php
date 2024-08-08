@@ -135,18 +135,13 @@ if (!empty($labBillingDetails)) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title><?= $Name .' - '. $HEALTHCARENAME ?></title>
 
-    <title>Patients - <?= SITE_NAME ?></title>
-
-    <!-- Custom fonts for this template-->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
-    <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-details.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>patient-details.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
     <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 </head>
@@ -174,7 +169,7 @@ if (!empty($labBillingDetails)) {
                 <div class="container-fluid">
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow-sm mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Patient Details</h6>
                             <!-- <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a> -->

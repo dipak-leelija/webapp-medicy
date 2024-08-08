@@ -4,7 +4,6 @@ $page = "add-new-product";
 require_once __DIR__ . '/config/constant.php';
 require_once __DIR__ . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-// require_once ROOT_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -12,7 +11,6 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
-// require_once CLASS_DIR . 'productCategory.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
 require_once CLASS_DIR . 'gst.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
@@ -57,10 +55,9 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Add Items</title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Add Items - <?= $HEALTHCARENAME ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

@@ -12,8 +12,6 @@ require_once CLASS_DIR.'labBillDetails.class.php';
 require_once CLASS_DIR.'patients.class.php';
 
 
-
-
 //  INSTANTIATING CLASS
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
@@ -79,21 +77,18 @@ if (is_numeric($docId)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/custom/test-bill.css">
-
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Lab Report Generate - <?= $HEALTHCARENAME ?></title>
+    
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>css/custom/test-bill.css" type="text/css" />
 </head>
 
 
 <body>
     <div class="custom-container">
         <div class="custom-body">
-           
-            
-           
-            
-           
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->

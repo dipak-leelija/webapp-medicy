@@ -50,18 +50,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login - <?= SITE_NAME ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>bootstrap/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
-
-    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
-    <title>Login</title>
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>login.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>form.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/password-show-hide.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 </head>
 
 <body>

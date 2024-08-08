@@ -21,8 +21,6 @@ $userExists = false;
 $emailExists = false;
 $diffrentPassword = false;
 
-// $adminId  = $IdGenerate->generateAdminId();
-// echo $adminId;
 
 if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
@@ -53,7 +51,6 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
         //----------------------------------
 
         $checkUser = $admin->echeckUsername($username);
-        // print_r($checkUser->data);
 
         if ($checkUser) {
             $userExists = true;
@@ -101,46 +98,42 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
             }
         }
     }
-} 
-else {
-    header("Location: https://medicy.in/pricing");
-    exit;
+} else {
+    if (is_localhost()) {
+        header("Location: http://localhost:5173/pricing");
+        exit;
+    }else {
+        header("Location: https://medicy.in/pricing");
+        exit;
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <title>Medicy Health Care - Admin Registration</title>
-
-    <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Registration - <?= $HEALTHCARENAME ?></title>
+    
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>register.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>form.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>/custom/password-show-hide.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" type="text/css" />
 
 </head>
 
 <body class="bg-gradient-primary">
-
     <main>
-
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
+                
                 <div class="p-5">
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -202,7 +195,6 @@ else {
                             </div>
                         </div>
                         <span id="password-error" class="error-msg">Password must be at least 8 characters long.</span>
-                        <!-- <span id="cpassword-error" class="error-msg">Password must be at least 8 characters long.</span> -->
                         <?php
 
                         if ($emailExists) {
@@ -244,15 +236,8 @@ else {
 
                         <button class="btn btn-primary btn-block" type="submit" name="register">Register
                             Account</button>
-                        <!-- <hr> -->
-                        <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Register with Google
-                                </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                </a> -->
                     </form>
-                    <!-- <hr> -->
+                    
                     <div class="text-center" style="margin-top:15px;">
                         <a class="small" href="forgetPassword.php">Reset Password</a>
                     </div>

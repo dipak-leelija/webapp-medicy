@@ -5,6 +5,7 @@ require_once __DIR__ . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
@@ -15,8 +16,6 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'gst.class.php';
 
-
-$page = "stock-in-details";
 
 
 //objects Initilization
@@ -93,27 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Medicy Items</title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>#<?= $stockIn_id ?> - Purchase Edit</title>
 
-    <!-- Custom fonts for this template -->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <!-- <link rel="stylesheet" href="../css/font-awesome-6.1.1-pro.css"> -->
-
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>custom/stock-in.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
 </head>
 
 <body id="page-top">
@@ -184,11 +174,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['bill_date']), "Y-m-d") : ''; ?>" /*onchange="getbillDate(this)"*/>
+                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['bill_date']), "Y-m-d") : ''; ?>" /*onchange="getbillDate(this)" * />
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['due_date']), "Y-m-d") : ''; ?>" /*onchange="getDueDate(this)"*/>
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['due_date']), "Y-m-d") : ''; ?>" /*onchange="getDueDate(this)" * />
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
@@ -239,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <input type="text" id="data-holder-1" value="<?php echo $distBill; ?>" hidden>
                             <input type="text" id="data-holder-2" value="<?php echo $stockIn_id; ?>" hidden>
 
@@ -457,12 +447,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </div>
                                 </form>
                             </div>
-                            <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                    <button class="btn btn-primary me-md-2" onclick="addData()">Add
-                                        <i class="fas fa-plus"></i></button>
-                                </div> -->
-
-                            <!-- </form> -->
                         </div>
                     </div>
                     <!-- /end Add Product  -->
@@ -687,9 +671,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php // print_r($stockInDetailsIds) 
-                                                                                                                                        ?>" hidden> -->
-
                                 <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
                             </div>
 
@@ -699,13 +680,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
                 </div>
-                <!-- /.container-fluid -->
                 <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
-                <!-- End of Footer -->
-
             </div>
             <!-- End of Content Wrapper -->
 

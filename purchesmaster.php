@@ -9,14 +9,12 @@ require_once ROOT_DIR  . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
-// require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
 
 
 $Distributor    = new Distributor();
 $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
-// $MeasureOfUnits = new MeasureOfUnits();
 $ItemUnit       = new ItemUnit();
 
 // Count Distributor Data
@@ -31,11 +29,8 @@ $countManufacturer   = ($decodedManufacturer !== null) ? count($decodedManufactu
 
 // Count Packaging Data
 $countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
-// Count Product Data
-// showItemUnits()
 
 $totalItemUnit       = count($ItemUnit->showItemUnits());
-// $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
 ?>
 
@@ -47,21 +42,15 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Purchase Master - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Purchase Master - <?= $HEALTHCARENAME ?></title>
 
-    <!-- Custom fonts for this template -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/appointment.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css"/>
+    
     <style>
         .card-hover img {
             -webkit-transform: scale(1);

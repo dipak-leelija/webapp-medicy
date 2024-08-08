@@ -43,7 +43,7 @@ if ($_SESSION['ADMIN']) {
     $userName       = $username;
     $email          = $userEmail;
     $phone          = $EMPCONTACT;
-    
+
     $name = $firstName . ' ' . $lastName;
 }
 
@@ -54,33 +54,18 @@ if ($_SESSION['ADMIN']) {
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Medicy Employees</title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Generate New Ticket - <?= $HEALTHCARENAME ?></title>
 
-    <!-- Custom fonts for this template -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/employees.css">
-    <link href="<?php echo CSS_PATH ?>form.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-
-    <style>
-        /*  */
-    </style>
-
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/employees.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>form.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
 </head>
 
 <body id="page-top">
@@ -240,27 +225,18 @@ if ($_SESSION['ADMIN']) {
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div></div> -->
-
 
                         </div>
                     </div>
                 </div>
+                <!-- End of Page Content -->
             </div>
+            <!-- End of Main Content -->
 
         </div>
-    </div>
-    <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
-
+        <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
 
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>

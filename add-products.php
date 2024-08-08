@@ -34,31 +34,18 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Add Items</title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Add Items - <?= $HEALTHCARENAME ?></title>
 
-    <!-- Custom fonts for this template -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Fontawsome Link -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
-
-    <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-    <!--Custom CSS -->
-    <!-- <link href="css/add-products.css" rel="stylesheet"> -->
-    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-
-    <!-- css path for bootstrap 5-->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>choices.min.css">
-
-    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
+    <!-- Styles -->
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/add-products.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css" type="text/css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
+    <!-- <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="<?php echo CSS_PATH ?>choices.min.css"> -->
+    <!-- <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" /> -->
 
 </head>
 
