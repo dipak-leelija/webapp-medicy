@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
-    <title>Forget Password - <?= $HEALTHCARENAME ?></title>
+    <title>Forget Password - <?= SITE_NAME ?></title>
 
     <link rel="stylesheet" href="<?= CSS_PATH ?>/sb-admin-2.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>login.css" type="text/css" />
