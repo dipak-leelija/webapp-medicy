@@ -113,19 +113,15 @@ if ($stockReturnLists->status == '1') {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Purchase Return - <?= $healthCareName ?></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Purchase Returns - <?= $HEALTHCARENAME?></title>
     
-    <!-- Custom styles for this template -->
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css" type="text/css">
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" type="text/css">
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
     
-    <!-- Datatable Style CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
@@ -513,11 +509,7 @@ if ($stockReturnLists->status == '1') {
 
 
             </div>
-            <!-- /.container-fluid -->
             <!-- End of Main Content -->
-            <!-- Footer -->
-            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->

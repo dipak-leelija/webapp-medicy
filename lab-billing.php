@@ -3,6 +3,7 @@ require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR  . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'appoinments.class.php';
@@ -99,32 +100,20 @@ if (isset($_POST['bill-proceed'])) {
 <html lang="en">
 
 <head>
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <!-- <link rel="stylesheet" href="../css/patient-style.css"> -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/custom-form-style.css">
+
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>lab Test Billing - <?= $HEALTHCARENAME ?></title>
 
 
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
-    <title>Lab Test Bill Generate - Medicy Health Care</title>
-
-
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-
-    <!-- sweetalert2 css -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/custom-form-style.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/appointment.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <!-- <link rel="stylesheet" href="<?= CSS_PATH ?>font-awesome.css"> -->
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
 </head>
 
 <body>

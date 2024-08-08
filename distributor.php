@@ -27,15 +27,11 @@ $showDistributor = $showDistributor->data;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Distributor of <?= $healthCareName ?> | <?= SITE_NAME ?> </title>
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Distributor - <?= $HEALTHCARENAME ?></title>
 
-    <!-- Custom fonts for this template-->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 
@@ -67,7 +63,7 @@ $showDistributor = $showDistributor->data;
 
                         <!-- Show Distributor -->
                         <div class="col-12">
-                            <div class="card shadow">
+                            <div class="card shadow-sm">
                                 <div class="card-header d-flex justify-content-end">
                                     <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
                                         Add new
@@ -75,7 +71,7 @@ $showDistributor = $showDistributor->data;
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
                                                     <th>SL.</th>
@@ -150,10 +146,6 @@ $showDistributor = $showDistributor->data;
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
@@ -197,10 +189,6 @@ $showDistributor = $showDistributor->data;
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
-    <!-- Scroll to Top Button-->
-    <!-- <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a> -->
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Bootstrap core JavaScript-->

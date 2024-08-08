@@ -74,9 +74,11 @@ if ($doctorCategory->status == 1) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Prescription - <?= url_enc($patientId) ?></title>
+
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>bootstrap/5.3.3/dist/css/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
-    <title>Prescription - <?= url_enc($patientId) ?></title>
 </head>
 
 <body>

@@ -132,7 +132,9 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
     <title><?= $healthCareName ?> - #<?= $billId ?></title>
+
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/receipts.css">
 </head>

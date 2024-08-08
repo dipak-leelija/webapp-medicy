@@ -2,9 +2,6 @@
 
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
-// require_once CLASS_DIR . 'dbconnect.php';
-// require_once ROOT_DIR . '_config/healthcare.inc.php';
-// require_once CLASS_DIR . 'patients.class.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -26,14 +23,6 @@ $doctors        = new Doctors();
 
 
 $currentURL = $Utility->currentUrl();
-
-// $test = false;
-// if (isset($_GET['test'])) {
-//     if ($_GET['test'] == 'true') {
-//         $test = true;
-//     }
-// }
-
 
 $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors);
@@ -124,21 +113,15 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-
-    <!-- Required meta tags -->
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
     <title>Enter Patient Details</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="stylesheet"href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>sb-admin-2.css">
-    <!-- Custom styles for this page -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-    <link rel="stylesheet"href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" />
+
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/appointment.css">
 </head>
 
 <body>
@@ -168,7 +151,7 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
 
-                    <div class="card p-0">
+                    <div class="card shadow-sm p-0">
                         <div class="card-header">
                             <h5 class="text-primary font-weight-bolder">Select Patient</h5>
                         </div>

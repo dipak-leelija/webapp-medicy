@@ -53,12 +53,13 @@ if($showDoctorCategoryById && $showDoctorCategoryById['status']){
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>bootstrap/5.3.3/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>prescription.css">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
     <title>Prescription</title>
+
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>bootstrap/5.3.3/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css" type="text/css" />
 </head>
 
 <body>

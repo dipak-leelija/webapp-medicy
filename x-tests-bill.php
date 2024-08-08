@@ -1,6 +1,8 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
+require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR . 'sub-test.class.php';
 
@@ -11,8 +13,6 @@ $SubTests = new SubTests();
 
 
 if (isset($_POST['bill-generate'])) {
-    // echo '<pre>';
-    // print_r($_POST);
     $idList          = $_POST['testId'];
 
     $patientId       = $_POST['patientId'];
@@ -34,9 +34,11 @@ if (isset($_POST['bill-generate'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tests Bill</title>
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/custom/test-bill.css">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Tests Bill - </title>
+
+    <link rel="stylesheet" href="<?= CSS_PATH?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH?>custom/test-bill.css">
 </head>
 
 
@@ -52,7 +54,7 @@ if (isset($_POST['bill-generate'])) {
                     <h6 class="text-start">Thanar More, Daulatabad, Murshidabad, Murshidabad, 742302</h6>
                 </div>
                 <div class="col-sm-4">
-                    <p class="text-end mb-0" style="margin-top: 20px;">Bill id: <b>MI000000</b></p>
+                    <p class="text-end mb-0" style="margin-top: 20px;">Bill id: <b></b></p>
                     <p class="text-end my-0">Patient ID: <b><?php echo $patientId;?></b> </p>
                     <p class="text-end my-0">Billing Date: <b>12/12/2022</b></p>
                 </div>
@@ -60,7 +62,7 @@ if (isset($_POST['bill-generate'])) {
         </div>
         <hr class="mb-1 mt-0">
         <div class="row my-0">
-            <div class="col-sm-6 my-0">Bill ID: 087VTY6RDT</div>
+            <div class="col-sm-6 my-0">Bill ID: </div>
             <div class="col-sm-6 my-0 text-end">Test Date: <?php echo $patientTestDate;?></div>
         </div>
         <hr class="my-1">

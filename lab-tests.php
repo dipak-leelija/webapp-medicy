@@ -67,21 +67,16 @@ if ($testCategories->status) {
 <html lang="en">
 
 <head>
-    <title>SB Admin 2 - Buttons</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <!-- Custom fonts for this template-->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Lab Test Category - <?= $HEALTHCARENAME ?></title>
 
-    <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
-
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>lab-test.css" type="text/css" />
 </head>
 
 <body id="page-top">
@@ -141,7 +136,6 @@ if ($testCategories->status) {
 
                                         if ($labTestTotalItem == 0) {
                                             echo "<div class='text-center font-weight-bold text-danger'>No Test Type Avilable.</div>";
-
                                         } else {
                                         ?>
 
@@ -160,7 +154,7 @@ if ($testCategories->status) {
                                                 <tbody id="table-data">
                                                     <?php
 
-                                                
+
 
                                                     foreach ($slicedLabTestData as $eachCategory) {
                                                         $testCatId = $eachCategory->id;
@@ -221,42 +215,18 @@ if ($testCategories->status) {
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Add New Catagory Section -->
-                        <!-- <div class="col-12 col-md-4">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3 booked_btn">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="m-0 font-weight-bold text-primary">Add Tests</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-
-                                    <button type="button" id="add-testType" class="btn btn-light w-100 border rounded text-center py-2 mb-3" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
-                                        Add Test Types
-                                    </button>
-
-                                    <button type="button" id="add-subTest" class="btn btn-light w-100 border rounded text-center py-2" data-toggle="modal" data-target="#addTestDataModel" onclick="addTestAndSubTest(this)">
-                                        Add Sub Test
-                                    </button>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
-            </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
 
-            <!-- <?php include ROOT_COMPONENT . 'footer-text.php'; ?> -->
+            </div>
+            <!-- End of Main Content -->
 
         </div>
-        <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
+
     <?php include ROOT_COMPONENT . 'generateTicket.php'; ?>
 
     <!-- Category Edit Modal -->

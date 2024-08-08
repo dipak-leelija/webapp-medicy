@@ -75,21 +75,16 @@ if (!empty($soldItems)) {
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Sales - <?= $healthCareName?></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     
-    <!-- Custom styles for this Page-->
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Sales - <?= $HEALTHCARENAME ?></title>
+    
     <link rel="stylesheet" href="<?= CSS_PATH ?>sales.css" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" type="text/css">
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
-
 </head>
 
 <body id="page-top">
@@ -277,10 +272,6 @@ if (!empty($soldItems)) {
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <!-- <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?> -->
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->

@@ -100,44 +100,26 @@ if (isset($_POST['submit'])) {
 ?>
 
 <!doctype html>
-
 <html lang="en">
-
 <head>
-
-    <!-- Required meta tags -->
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <title>Enter Patient Details</title>
 
+    <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
+    <title>Patient Selection - <?= $HEALTHCARENAME ?></title>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet" />
-
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
-
-    <link href="<?= PLUGIN_PATH ?>select2/select2.min.css" rel="stylesheet" />
-    <!-- Choices includes -->
-    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
-    <!-- css for sweetalert2 -->
-    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>select2/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>lab-test.css" type="text/css" />
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/appointment.css" type="text/css" />
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
-    <!-- css for sweetalert2 -->
-
-    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
-    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
 
 </head>
 
