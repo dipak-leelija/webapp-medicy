@@ -284,7 +284,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     foreach ($gstDetails as $gstDetail) {
                                                         // print_r($gstDetail);
                                                     ?>
-                                                        <option <?= $gst == $gstDetail->id ? 'selected' : ''; ?> value="<?php echo $gstDetail->id ?>">
+                                                        <option <?= $gst == $gstDetail->percentage ? 'selected' : ''; ?> value="<?php echo $gstDetail->percentage ?>">
                                                             <?php echo $gstDetail->percentage ?>
                                                         </option>';
 

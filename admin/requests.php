@@ -66,13 +66,23 @@ foreach ($requestTypes as $table => &$requestType) {
     foreach ($requestType['data'] as $requestDataItem) {
         // print_r($requestDataItem);
         if ($requestType['tableName'] == 'Product Request') {
+            if($requestDataItem->prod_req_status == 1){
+                $prdReqStatus = 'ACTIVE';
+                $reqCheck = 0;
+            }elseif($requestDataItem->old_prod_flag == 1){
+                $prdReqStatus = 'ACTIVE';
+                $reqCheck = 1;
+            }else{
+                $prdReqStatus = 'INACTIVE';
+            }
             $allRequestResult[] = [
-                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
+                'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'msgTitle'    => '',
                 'description' => $requestDataItem->req_dsc,
-                'status'      => '',
+                'status'      => $prdReqStatus,
+                'request_check' => $reqCheck,
             ];
         } elseif ($requestType['tableName'] == 'Distributor Request') {
             $allRequestResult[] = [
@@ -265,13 +275,22 @@ if ($pagination->status == 1) {
                                                 $status = '';
                                             }
 
-                                            if ($resItems->tableName == 'Generate Quarry' || $resItems->tableName == 'Generate Ticket') {
-                                                if($resItems->status == 'ACTIVE'){
-                                                    $link = "<a href='view-query-ticket.php?tokenNo=$resItems->id&table=$tableName'>View</a>";
-                                                }else{
+
+                                            if ($resItems->tableName == 'Product Request') {
+                                                if ($resItems->status == 'ACTIVE') {
+                                                    
+                                                    $link = "<a href='product-request-lsit.php?check=1&tokenNo=$resItems->id&modalName=$resItems->request_check'>View</a>";
+                                                } else {
                                                     $link = '';
                                                 }
-                                            }else{
+                                            } else if ($resItems->tableName == 'Generate Quarry' || $resItems->tableName == 'Generate Ticket'
+                                            ) {
+                                                if ($resItems->status == 'ACTIVE') {
+                                                    $link = "<a href='view-query-ticket.php?tokenNo=$resItems->id&table=$tableName'>View</a>";
+                                                } else {
+                                                    $link = '';
+                                                }
+                                            } else {
                                                 $link = '';
                                             }
                                             

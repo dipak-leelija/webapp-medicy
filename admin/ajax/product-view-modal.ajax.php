@@ -20,8 +20,6 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
-
-
 ?>
 
 <!DOCTYPE html>
