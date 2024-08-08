@@ -20,6 +20,7 @@ if ($_SESSION['SUPER_ADMIN']) {
   $supAdminId       = $_SESSION['SUPER_ADMINID'];
   $employeeId       = '';
   $addedBy          = $supAdminId;
+  
 
   $SUPER_ADMIN_EMAIL        = $_SESSION['SUPER_ADMIN_EMAIL'];
   $SUPER_ADMIN_CONTACT_NO   = $_SESSION['SUPER_ADMIN_CONTACT_NO'];

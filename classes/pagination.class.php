@@ -94,20 +94,13 @@ Class Pagination{
 
 
     function productRequestWithPagination() {
-        // Number of records per page
         $recordsPerPage = 16;
-    
-        // Get the current page number from the URL, default to 1
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    
-        // Calculate the starting record for the current page
         $startFrom = ($page - 1) * $recordsPerPage;
     
-        // Query to retrieve records for the current page
-        $sql = "SELECT * FROM product_request ORDER BY requested_on LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM product_request WHERE prod_req_status = 1 ORDER BY requested_on LIMIT $startFrom, $recordsPerPage";
         $result = $this->conn->query($sql);
     
-        // Fetch the records
         $products = [];
         while ($row = $result->fetch_assoc()) {
             $products[] = $row;

@@ -23,7 +23,6 @@ $ProductImages  = new ProductImages();
 $Request        = new Request;
 
 
-
 // Function INitilized 
 $col = 'admin_id';
 $result = json_decode($Pagination->productRequestWithPagination()); //showAllProducts
@@ -58,7 +57,6 @@ if ($modalName == 0) {
 } else {
     $modalHead = '';
 }
-
 
 ?>
 

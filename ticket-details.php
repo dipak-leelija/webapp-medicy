@@ -71,7 +71,7 @@ foreach ($requestTypes as $table => &$requestType) {
 
         if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
-                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
+                'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'msgTitle'    => '',
