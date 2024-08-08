@@ -25,69 +25,60 @@ $form21Data;
 
 ?>
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+<!-- New Section -->
+<div class="col">
+    <div class="mt-4 mb-4">
 
-    <!-- New Section -->
-    <div class="col">
-        <div class="mt-4 mb-4">
+        <div class="card-body">
 
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="imagePreviewForm20" class="image-preview" onclick="getFile('form-20')" style="z-index: 9999;">
-                                    <i class="fas fa-upload">Upload Form 20</i>
-                                </div>
-                                <div style='height: 0px;width: 0px; overflow:hidden;'>
-                                    <input id="form-20" type="file" name="form-20" value="" onchange="sub(this, 'imagePreviewForm20')" required />
-                                </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="imagePreviewForm20" class="image-preview" onclick="getFile('form-20')" style="z-index: 9999;">
+                                <i class="fas fa-upload">Upload Form 20</i>
                             </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="imagePreviewForm21" class="image-preview" onclick="getFile('form-21')">
-                                    <i class="fas fa-upload">Upload Form 21</i>
-                                </div>
-                                <div style='height: 0px;width: 0px; overflow:hidden;'>
-                                    <input id="form-21" type="file" name="form-21" value="" onchange="sub(this, 'imagePreviewForm21')" required />
-                                </div>
+                            <div style='height: 0px;width: 0px; overflow:hidden;'>
+                                <input id="form-20" type="file" name="form-20" value="" onchange="sub(this, 'imagePreviewForm20')" required />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label>Enter Organizatin GST number</label><span class="ml-2" id="gstin-span" style="color: red;">*</span>
-                        <input type="text" class="form-control mb-3" id="gstin" name="gstin" maxlength="15" placeholder="GSTIN" value="<?= $gstinData = $gstinData ?? ''; ?>" autocomplete="off" required onfocusout="checkField()">
-                    </div>
-                    <div class="col-md-6">
-                        <label>Enter PAN number</label><span class="ml-2" id="pan-span" style="color: red;">*</span>
-                        <input type="text" class="form-control mb-3" id="pan" name="pan" maxlength="10" placeholder="PAN" value="<?= $panData = $panData ?? ''; ?>" autocomplete="off" required onfocusout="checkField()">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                        <button class="btn btn-success me-md-2" name="drug-permit-data-update" type="submit" onclick="drugFormDataUpload ()">Update</button>
-                    </div>
-                </div>
 
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="imagePreviewForm21" class="image-preview" onclick="getFile('form-21')">
+                                <i class="fas fa-upload">Upload Form 21</i>
+                            </div>
+                            <div style='height: 0px;width: 0px; overflow:hidden;'>
+                                <input id="form-21" type="file" name="form-21" value="" onchange="sub(this, 'imagePreviewForm21')" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>Enter Organizatin GST number</label><span class="ml-2" id="gstin-span" style="color: red;">*</span>
+                    <input type="text" class="form-control mb-3" id="gstin" name="gstin" maxlength="15" placeholder="GSTIN" value="<?= $gstinData = $gstinData ?? ''; ?>" autocomplete="off" required onfocusout="checkField()">
+                </div>
+                <div class="col-md-6">
+                    <label>Enter PAN number</label><span class="ml-2" id="pan-span" style="color: red;">*</span>
+                    <input type="text" class="form-control mb-3" id="pan" name="pan" maxlength="10" placeholder="PAN" value="<?= $panData = $panData ?? ''; ?>" autocomplete="off" required onfocusout="checkField()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
+                    <button class="btn btn-success me-md-2" name="drug-permit-data-update" type="submit" onclick="drugFormDataUpload ()">Update</button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
 
 
 <script>

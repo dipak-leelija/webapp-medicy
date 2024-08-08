@@ -23,9 +23,6 @@ if ($bills->status) {
 
 ?>
 
-<!-- Page Wrapper -->
-<div id="wrapper">
-
     <!-- New Section -->
     <div class="col">
         <div class="mt-4 mb-4">
@@ -68,15 +65,6 @@ if ($bills->status) {
             </div>
         </div>
     </div>
-
-
-</div>
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
 
 <script>
     function validateFileType() {
