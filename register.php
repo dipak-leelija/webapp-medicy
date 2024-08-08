@@ -7,7 +7,6 @@ if (isset($_SESSION['LOGGEDIN'])) {
 }
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'subscription.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
@@ -22,8 +21,6 @@ $userExists = false;
 $emailExists = false;
 $diffrentPassword = false;
 
-// $adminId  = $IdGenerate->generateAdminId();
-// echo $adminId;
 
 if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
@@ -54,7 +51,6 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
         //----------------------------------
 
         $checkUser = $admin->echeckUsername($username);
-        // print_r($checkUser->data);
 
         if ($checkUser) {
             $userExists = true;
@@ -102,12 +98,15 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
             }
         }
     }
-} 
-else {
-    header("Location: https://medicy.in/pricing");
-    exit;
+} else {
+    if (is_localhost()) {
+        header("Location: http://localhost:5173/pricing");
+        exit;
+    }else {
+        header("Location: https://medicy.in/pricing");
+        exit;
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
