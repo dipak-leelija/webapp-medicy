@@ -141,10 +141,10 @@ if ($allPatients->status) {
                                         <input class="cvx-inp" type="text" placeholder="Patients ID / Patient Name" name="search-by-id-name" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
 
                                         <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none searchIcon" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                         </div>
 
-                                        <button class=" btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear Search Filter" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <button class=" btn btn-sm btn-outline-primary shadow-none input-group-append searchIcon" id="filter-reset-1" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear Search Filter" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
 

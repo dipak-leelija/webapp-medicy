@@ -148,22 +148,22 @@ $form20Data;
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <!-- search on invoice, patient name, contact number -->
-                            <div class="col-10 d-flex">
-                                <div class="col-md-3 col-md-3">
+                            <div class="col-10 d-flex justify-content-between">
+                                <div class="col-3 col-md-4">
                                     <div class="input-group">
                                         <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                         <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter3()"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none searchIcon" type="button" id="button-addon2" onclick="pharmacySearchFilter3()"><i class="fas fa-search"></i></button>
                                         </div>
 
-                                        <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary shadow-none input-group-append searchIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
 
                                 <!-- sales return date filter -->
-                                <div class="col-3 col-md-3 d-flex">
-                                    <select class="input-group cvx-inp1" name="sales-return-on" id="sales-return-on" onchange="pharmacySearchFilter3()">
+                                <div class="col-3 col-md-4 d-flex">
+                                    <select class=" cvx-inp1" name="sales-return-on" id="sales-return-on" onchange="pharmacySearchFilter3()">
                                         <option value="" disabled selected>Return Date Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -180,8 +180,8 @@ $form20Data;
                                     <label class="d-none" id="select-sales-return-end-date"><?php echo $returnTo; ?></label>
                                 </div>
 
-                                <div class="col-3 col-md-3 d-flex">
-                                    <select class="input-group cvx-inp1" name="sales-return-processed-by" id="sales-return-processed-by" onchange="pharmacySearchFilter3()">
+                                <div class="col-3 col-md-4 d-flex">
+                                    <select class=" cvx-inp1" name="sales-return-processed-by" id="sales-return-processed-by" onchange="pharmacySearchFilter3()">
                                         <option value="" disabled selected>Filter by staff</option>
                                         <option value="admin">Admin</option>
                                         <?php

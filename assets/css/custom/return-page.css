@@ -41,8 +41,11 @@
     min-width: 0;
     margin-bottom: 0;
 }
-.input-group .input-group-append>button{
+/* .input-group .input-group-append>button{
     height: 30px;
+} */
+.input-group .searchIcon{
+        height: 30px;
 }
 @media screen and (max-width: 767px) {
     .cvx-inp {
