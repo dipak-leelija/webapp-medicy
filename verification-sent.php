@@ -2,10 +2,8 @@
 include_once __DIR__ . "/config/constant.php";
 require_once ROOT_DIR . '_config/registrationSessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'admin.class.php';
 
 
@@ -25,7 +23,7 @@ $Admin          = new Admin;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
-    <title>Verification Sent Mail- <?= $HEALTHCARENAME ?></title>
+    <title>Verification Sent Mail- <?= SITE_NAME ?></title>
 
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>register.css" type="text/css" />
