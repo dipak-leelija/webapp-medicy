@@ -122,10 +122,10 @@ if (!empty($soldItems)) {
                                     <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary shadow-none searcIcon" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
                                     </div>
 
-                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append searcIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
 

@@ -118,11 +118,11 @@ if ($testCategories->status) {
                                             <input class="cvx-inp w-50 px-3" type="text" placeholder="Search test..." name="search-test" id="search-test" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append" id="dataSearch-btnDiv">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none searcIcon" type="button" id="dataSearch-btn" onclick="testDataSearch(this)"><i class="fas fa-search"></i></button>
                                             </div>
 
                                             <div class="input-group-append" id="reset-searchBtn-div">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="reset-search" onclick="testDataSearch(this)"><i class="fas fa-times"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none searcIcon" type="button" id="reset-search" onclick="testDataSearch(this)"><i class="fas fa-times"></i></button>
                                             </div>
 
                                         </div>
