@@ -77,7 +77,7 @@ if ($bills->status) {
 
     <!-- Custom fonts for this template-->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    
+
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.min.css" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>upload-design.css" type="text/css">
@@ -130,11 +130,7 @@ if ($bills->status) {
                 <!-- Begin Page Content -->
 
                 <div class="container-fluid">
-                    <label class="d-none" id="alert-div-control">0</label>
-
-                    <div class="row mt-4" style="z-index: 999;" id="alert-div">
-                        <?php require_once ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
-                    </div>
+                    <?php require_once ROOT_COMPONENT . "drugPermitDataAlert.php"; ?>
 
                     <div class="row mt-4 d-none" style="z-index: 999;" id="msg-div">
                         <?php require_once ROOT_COMPONENT . "drugPermitDataUpdateMsg.php"; ?>
@@ -222,7 +218,7 @@ if ($bills->status) {
 
     <script>
         if (document.getElementById("nav-pan-flag").innerHTML.trim() === '1') {
-            
+
             // control home menue
             document.getElementById("home").classList.remove("active");
             document.getElementById("home-tab").classList.remove("active");

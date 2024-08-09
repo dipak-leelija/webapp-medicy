@@ -116,21 +116,22 @@ if (!empty($soldItems)) {
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <!-- search on invoice, patient name, contact number -->
+                            <div class="col-10 d-flex justify-content-between">
                             <div class="col-3 col-md-4">
                                 <div class="input-group">
-                                    <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
+                                    <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary shadow-none searcIcon" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
                                     </div>
 
-                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary shadow-none input-group-append searcIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
 
                             <!-- date filter select -->
-                            <div class="col-3 col-md-3 d-flex">
-                                <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
+                            <div class="col-3 col-md-4 d-flex">
+                                <select class="cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
                                     <option value="" disabled selected>Select Duration</option>
                                     <option value="T">Today</option>
                                     <option value="Y">yesterday</option>
@@ -148,8 +149,8 @@ if (!empty($soldItems)) {
                             </div>
 
                             <!-- payment mode filter select -->
-                            <div class="col-3 col-md-3 d-flex">
-                                <select class="input-group cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
+                            <div class="col-3 col-md-4 d-flex">
+                                <select class="cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
                                     <option value="" disabled selected>Payment Mode</option>
                                     <option value="Cash">Cash</option>
                                     <option value="Credit">Credit</option>
@@ -164,6 +165,7 @@ if (!empty($soldItems)) {
                             <div class="col-3 col-md-2 d-flex justify-content-end">
                                 <a class="btn btn-sm btn-primary" href="new-sales.php"> New Sell <i class="fas fa-plus"></i></a>
                             </div>
+</div>
                         </div>
 
 

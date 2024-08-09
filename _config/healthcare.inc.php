@@ -30,7 +30,7 @@ if ($healthCare->status === 1 ) {
     }
 
     $healthCareLogo      = $healthCare->logo;
-    $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL.$healthCareLogo;
+    // $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.png' : URL.$healthCareLogo;
 
     $healthCareId        = $healthCare->hospital_id;
     $healthCareName      = $healthCare->hospital_name;

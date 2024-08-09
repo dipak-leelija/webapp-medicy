@@ -183,3 +183,10 @@ body{
     ul.tag-list li {
       list-style: none;
     }
+    /* .global-search{
+      border: none;
+      outline: none;
+    }
+    .global-search:focus{
+      border: 1px solid rgba(17, 17, 17, 0.2);
+    }  */

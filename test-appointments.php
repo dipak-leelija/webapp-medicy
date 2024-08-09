@@ -172,11 +172,11 @@ if ($labBillDisplay->status) {
                                         <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" aria-describedby="button-addon2" id="search-by-id-name-contact" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>" /*onkeyup="filterAppointmentByValue()" * />
 
                                         <div class="input-group-append" id="appointment-search-filter-1">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none searchIcon" type="button" id="button-addon" onclick="filterAppointmentByValue()"><i class="fas fa-search"></i></button>
                                         </div>
 
                                         <div class="input-group-append">
-                                            <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                            <button class="d-none btn btn-sm btn-outline-primary shadow-none input-group-append searchIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                         </div>
                                     </div>
                                 </div>

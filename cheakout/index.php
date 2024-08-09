@@ -32,7 +32,7 @@ if (isset($_POST['plan']) ||  isset($_SESSION['PURCHASEPLANID'])) {
 
 ######################################################################################################################
 $currentPage    = $Utility->setCurrentPageSession();
-$clinicInfo     = json_decode($HealthCare->showHealthCare($adminId));
+$clinicInfo     = json_decode($HealthCare->showHealthCare($ADMINID));
 if ($clinicInfo->status == 1) {
     $clinic = $clinicInfo->data;
     $clinicCity     = $clinic->city;
@@ -40,9 +40,9 @@ if ($clinicInfo->status == 1) {
     $clinicPIN      = $clinic->pin;
 }
 
-$adminDetails = json_decode($Admin->adminDetails($adminId));
-if($adminDetails){
-    $adminDetails = $adminDetails->data;
+$adminDetails = json_decode($Admin->adminDetails($ADMINID));
+if ($adminDetails) {
+    $adminDetails = $adminDetails->data[0];
     $adminFname = $adminDetails->fname;
     $adminLname = $adminDetails->lname;
     $ADMINCONTACT = $adminDetails->mobile_no;
@@ -71,9 +71,8 @@ if ($planResponse->status == 1) {
     <link rel="shortcut icon" href="<?= FAVCON_PATH ?>" type="image/png" />
     <link rel="apple-touch-icon" href="<?= FAVCON_PATH ?>" />
     <title><?= $planName ?> Plan - <?= SITE_NAME; ?></title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
     <!-- Plugins Files -->
-    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>/bootstrap/5.3.3/dist/css/bootstrap.css" type="text/css" />
 
 </head>
 
@@ -81,7 +80,7 @@ if ($planResponse->status == 1) {
     <div>
         <section class="order-summary-section pb-4 px-3 px-md-0">
             <div class="container">
-                <form id="formSubmit" name="formSubmit" action="payment.php" method="POST">
+                <form id="formSubmit" class="needs-validation" name="formSubmit" action="payment.php" method="POST" novalidate>
                     <div class="row pt-4 px-4 mt-4">
                         <h4 class="text-light bg-secondary rounded w-100 py-2 border-start border-4 border-primary px-4 mb-4">
                             Billing Summary</h4>
@@ -196,11 +195,15 @@ if ($planResponse->status == 1) {
 
                                     <div class="mb-2">
                                         <div class="form-check text-start">
-                                            <input class="form-check-input" type="checkbox" value="tncAccept" id="itemCheck" name="itemCheck">
+                                            <input class="form-check-input" type="checkbox" value="tncAccept" id="itemCheck" name="itemCheck" required>
                                             <label class="form-check-label" for="itemCheck">
                                                 <span>Please Accept terms and conditions</span>
                                             </label>
+                                            <div class="invalid-feedback">
+                                                You must agree before submitting.
+                                            </div>
                                         </div>
+
                                     </div>
 
                                     <button type="submit" id="payment-btn" name="payment-btn" class="btn btn-primary w-100">Continue</button>
@@ -218,13 +221,32 @@ if ($planResponse->status == 1) {
 
         </section>
     </div>
-    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap-5-3-3.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>bootstrap/5.3.3/dist/js/bootstrap.min.js"></script>
     <script src="<?= JS_PATH ?>main.js"></script>
     <script src="<?= JS_PATH ?>cheakout.js"></script>
 
 
 
     <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
         const checkAddress = (formName) => {
             var elements = document.forms[formName].elements;
             for (i = 0; i < elements
