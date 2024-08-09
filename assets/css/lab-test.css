@@ -69,6 +69,12 @@ border-radius: 50%;
     border-radius: 8px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+/* style="outline: none;border: 1px solid rgba(17, 17, 17, 0.2);border-radius: 2px;" */
+.cvx-inp{
+    outline: none;
+    border: 1px solid rgba(17, 17, 17, 0.2);
+    border-radius: 2px;
+}
 /* @media screen and (max-width: 767px){
     .editDiv{
        flex-direction: column;

@@ -12,3 +12,10 @@
 .card img:hover {
     transform: scale(1.1); 
 }
+.prodcut-search{
+    outline: none !important;
+    /* border: none !important; */
+    box-shadow: none !important;
+    border: 1px solid rgba(17, 17, 17, 0.2);
+    border-radius: 2px;
+}

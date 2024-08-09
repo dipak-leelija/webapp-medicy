@@ -113,6 +113,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
     
     <link rel="stylesheet" href="<?= CSS_PATH ?>main.css" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css" type="text/css">
     <link rel="stylesheet" href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" type="text/css">
 </head>
 
@@ -158,15 +159,15 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                                             <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                             <div class="input-group-append">
-                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none searchIcon" type="button" id="button-addon2" onclick="pharmacySearchFilter1()"><i class="fas fa-search"></i></button>
                                             </div>
 
-                                            <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none input-group-append searchIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                         </div>
                                     </div>
                                     <!-- date filter -->
                                     <div class="col-3 col-md-3 d-flex">
-                                        <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
+                                        <select class=" cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter1()">
                                             <option value="" disabled selected>Select purchase date</option>
                                             <option value="T">Today</option>
                                             <option value="Y">yesterday</option>
@@ -184,7 +185,7 @@ if (isset($_POST) && isset($_FILES['import-file'])) {
                                     </div>
                                     <!-- payment mode filter -->
                                     <div class="col-3 col-md-3 d-flex">
-                                        <select class="input-group cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
+                                        <select class=" cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter1()">
                                             <option value="" disabled selected>Payment Mode</option>
                                             <option value="Cash">Cash</option>
                                             <option value="Credit">Credit</option>

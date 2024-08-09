@@ -169,17 +169,17 @@ if ($stockReturnLists->status == '1') {
                                                 <input class="cvx-inp" type="text" placeholder="Search..." name="data-search" id="data-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>" autocomplete="off">
 
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="pharmacySearchFilter2()"><i class="fas fa-search"></i></button>
+                                                    <button class="btn btn-sm btn-outline-primary shadow-none searchIcon" type="button" id="button-addon2" onclick="pharmacySearchFilter2()"><i class="fas fa-search"></i></button>
                                                 </div>
 
-                                                <button class="btn btn-sm btn-outline-primary shadow-none input-group-append" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
+                                                <button class="btn btn-sm btn-outline-primary shadow-none input-group-append searchIcon" id="filter-reset-1" type="button" onclick="resteUrl(this.id)"><i class="fas fa-times"></i></button>
                                             </div>
                                         </div>
 
 
 
                                         <div class="col-md-3 col-sm-3 d-flex">
-                                            <select class="input-group cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter2()">
+                                            <select class=" cvx-inp1" name="added_on" id="added_on" onchange="pharmacySearchFilter2()">
                                                 <option value="" disabled selected>Filter by date</option>
                                                 <option value="T">Today</option>
                                                 <option value="Y">yesterday</option>
@@ -198,7 +198,7 @@ if ($stockReturnLists->status == '1') {
 
 
                                         <div class="col-md-3 col-sm-3 d-flex">
-                                            <select class="input-group cvx-inp1" id="added_by" onchange="pharmacySearchFilter2()">
+                                            <select class=" cvx-inp1" id="added_by" onchange="pharmacySearchFilter2()">
                                                 <option value="" disabled selected>Select Staff
                                                 </option>
                                                 <?php
@@ -213,7 +213,7 @@ if ($stockReturnLists->status == '1') {
                                         </div>
 
                                         <div class="col-3 col-md-3 d-flex">
-                                            <select class="input-group cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter2()">
+                                            <select class=" cvx-inp1" name="payment_mode" id="payment_mode" onchange="pharmacySearchFilter2()">
                                                 <option value="" disabled selected>Payment Mode</option>
                                                 <option value="Credit">Credit</option>
                                                 <option value="Cash">Cash</option>
