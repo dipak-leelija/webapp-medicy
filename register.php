@@ -22,91 +22,91 @@ $emailExists = false;
 $diffrentPassword = false;
 
 
-if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
+// if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
-    if (isset($_POST['pid'])) {
-        $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
-    }
+if (isset($_POST['pid'])) {
+    $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
+}
 
-    if (isset($_POST['register'])) {
-        $Fname      = $_POST['fname'];
-        $Lname      = $_POST['lname'];
-        $username   = $_POST['user-name'];
-        $email      = $_POST['email'];
-        $mobNo      = $_POST['mobile-number'];
-        $password   = $_POST['password'];
-        $cpassword  = $_POST['cpassword'];
+if (isset($_POST['register'])) {
+    $Fname      = $_POST['fname'];
+    $Lname      = $_POST['lname'];
+    $username   = $_POST['user-name'];
+    $email      = $_POST['email'];
+    $mobNo      = $_POST['mobile-number'];
+    $password   = $_POST['password'];
+    $cpassword  = $_POST['cpassword'];
 
-        // echo $Fname;
+    // echo $Fname;
 
-        $adminId  = $IdGenerate->generateAdminId();
+    $adminId  = $IdGenerate->generateAdminId();
 
-        $clinicId = $IdGenerate->generateClinicId($adminId);
+    $clinicId = $IdGenerate->generateClinicId($adminId);
 
-        $status = '0';
-        $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
+    $status = '0';
+    $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
 
-        // ======== OTP GENERATOR =========
-        $OTP  = $IdGenerate->otpGgenerator();
-        //----------------------------------
+    // ======== OTP GENERATOR =========
+    $OTP  = $IdGenerate->otpGgenerator();
+    //----------------------------------
 
-        $checkUser = $admin->echeckUsername($username);
+    $checkUser = $admin->echeckUsername($username);
 
-        if ($checkUser) {
-            $userExists = true;
+    if ($checkUser) {
+        $userExists = true;
+    } else {
+        $userExists = false;
+        $checkMail = $admin->echeckEmail($email);
+        if ($checkMail > 0) {
+            $emailExists = true;
         } else {
-            $userExists = false;
-            $checkMail = $admin->echeckEmail($email);
-            if ($checkMail > 0) {
-                $emailExists = true;
-            } else {
-                $emailExists = false;
-                if ($password == $cpassword) {
-                    $diffrentPassword = false;
+            $emailExists = false;
+            if ($password == $cpassword) {
+                $diffrentPassword = false;
 
-                    $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-                    if ($register) {
+                if ($register) {
 
-                        session_unset();
-                        session_destroy();
-                        session_start();
+                    session_unset();
+                    session_destroy();
+                    session_start();
 
-                        $_SESSION['REGISTRATION']       = true;
-                        $_SESSION['ADMIN_REGISER']      = true;
-                        $_SESSION['PRIMARY_REGISTER']   = true;
-                        $_SESSION['SECONDARY_REGISTER'] = false;
-                        $_SESSION['session_start_time']  = date('H:i:s');
-                        $_SESSION['time_out']           = $timeout_duration;
-                        $_SESSION['verify_key']         = $OTP;
-                        $_SESSION['first-name']         = $Fname;
-                        $_SESSION['email']              = $email;
-                        $_SESSION['username']           = $username;
-                        $_SESSION['adm_id']             = $adminId;
+                    $_SESSION['REGISTRATION']       = true;
+                    $_SESSION['ADMIN_REGISER']      = true;
+                    $_SESSION['PRIMARY_REGISTER']   = true;
+                    $_SESSION['SECONDARY_REGISTER'] = false;
+                    $_SESSION['session_start_time']  = date('H:i:s');
+                    $_SESSION['time_out']           = $timeout_duration;
+                    $_SESSION['verify_key']         = $OTP;
+                    $_SESSION['first-name']         = $Fname;
+                    $_SESSION['email']              = $email;
+                    $_SESSION['username']           = $username;
+                    $_SESSION['adm_id']             = $ADMINID;
 
-                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-                        if ($addToClinicInfo) {
-                            header("Location: register-mail.inc.php");
-                            exit;
-                        } else {
-                            $errMsg = "Clinic Info Can't Added!";
-                        }
+                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $ADMINID, NOW);
+                    if ($addToClinicInfo) {
+                        header("Location: register-mail.inc.php");
+                        exit;
+                    } else {
+                        $errMsg = "Clinic Info Can't Added!";
                     }
-                } else {
-                    $diffrentPassword = true;
                 }
+            } else {
+                $diffrentPassword = true;
             }
         }
     }
-} else {
-    if (is_localhost()) {
-        header("Location: http://localhost:5173/pricing");
-        exit;
-    }else {
-        header("Location: https://medicy.in/pricing");
-        exit;
-    }
 }
+// } else {
+//     if (is_localhost()) {
+//         header("Location: http://localhost:5173/pricing");
+//         exit;
+//     }else {
+//         header("Location: https://medicy.in/pricing");
+//         exit;
+//     }
+// }
 ?>
 
 <!DOCTYPE html>
@@ -116,10 +116,10 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
-    <title>Registration - <?= $HEALTHCARENAME ?></title>
-    
+    <title>Registration - <?= SITE_NAME ?></title>
+
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>register.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>form.css" type="text/css" />
@@ -133,7 +133,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
     <main>
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
-                
+
                 <div class="p-5">
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -173,7 +173,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                                 name="mobile-number" pattern="[0-9]{10}" placeholder=""
                                 onkeydown="validateMobileNumber()" onfocusout="verifyMobileNumber()" maxlength="10"
                                 required>
-                                <label class="med-label" for="mobile-number">Mobile Number <span class="form-asterisk"></span>
+                            <label class="med-label" for="mobile-number">Mobile Number <span class="form-asterisk"></span>
                         </div>
 
                         <div class="form-group row">
@@ -181,7 +181,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                                 <input type="password" class="med-input" id="password"
                                     name="password" maxlength="12" placeholder="" required
                                     oninput="showToggleBtn('password','toggleBtn1')">
-                                    <label class="med-label" for="password" style="left:22px">Password <span class="form-asterisk"></span></label>
+                                <label class="med-label" for="password" style="left:22px">Password <span class="form-asterisk"></span></label>
                                 <i class="fas fa-eye " id="toggleBtn1" style="display:none;"
                                     onclick="togglePassword('password','toggleBtn1')"></i>
                             </div>
@@ -189,7 +189,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                                 <input type="password" class="med-input" id="cpassword"
                                     name="cpassword" maxlength="12" placeholder="" required
                                     oninput="showToggleBtn('cpassword','toggleBtn2')">
-                                    <label class="med-label" for="cpassword" style="left:22px">Repeat Password <span class="form-asterisk"></span></label>
+                                <label class="med-label" for="cpassword" style="left:22px">Repeat Password <span class="form-asterisk"></span></label>
                                 <i class="fas fa-eye " id="toggleBtn2" style="display:none;"
                                     onclick="togglePassword('cpassword','toggleBtn2')"></i>
                             </div>
@@ -237,7 +237,7 @@ if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['
                         <button class="btn btn-primary btn-block" type="submit" name="register">Register
                             Account</button>
                     </form>
-                    
+
                     <div class="text-center" style="margin-top:15px;">
                         <a class="small" href="forgetPassword.php">Reset Password</a>
                     </div>
