@@ -203,6 +203,10 @@ if (isset($_POST['submit'])) {
 
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+
+    <!-- custom script for add patient -->
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
@@ -210,8 +214,7 @@ if (isset($_POST['submit'])) {
     <!-- <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script> -->
     <script src="<?= PLUGIN_PATH ?>select2/select2.min.js"></script>
 
-    <!-- custom script for add patient -->
-    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+
     <script src="<?php echo JS_PATH ?>add-patient.js"></script>
 
 
