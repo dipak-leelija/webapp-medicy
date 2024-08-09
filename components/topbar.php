@@ -38,7 +38,7 @@ foreach ($tables as $tableName) {
     <div class="d-flex">
         <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" id="search-all-form">
             <div class="input-group">
-                <input type="text" class="form-control bg-light small shadow-none global-search" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" onkeydown="searchFor()" id="search-all">
+                <input type="text" class="form-control bg-light border-1 small shadow-none" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" onkeydown="searchFor()" id="search-all">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="button">
                         <i class="fas fa-search fa-sm"></i>
