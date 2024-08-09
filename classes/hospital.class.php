@@ -4,8 +4,9 @@ class HealthCare
 {
     use DatabaseConnection;
 
-    
-    function addClinicInfo($clinicId, $adminId, $addedTime){
+
+    function addClinicInfo($clinicId, $adminId, $addedTime)
+    {
         try {
             $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `admin_id`, `added_on`) VALUES (?, ?, ?)";
             $stmt = $this->conn->prepare($addClinicData);
@@ -19,9 +20,9 @@ class HealthCare
             if (!$stmt->execute()) {
                 throw new Exception("Error executing statement: " . $stmt->error);
             }
-            return true; 
+            return true;
         } catch (Exception $e) {
-            return $e->getMessage(); 
+            return $e->getMessage();
         }
     }
 
@@ -30,18 +31,18 @@ class HealthCare
 
 
 
-    function showHealthCare($adminId='')
+    function showHealthCare($adminId = '')
     {
         $response = array();
 
         try {
-            if(!empty($adminId)){
-            $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("s", $adminId);
-            }else{
-            $sql = "SELECT * FROM clinic_info ";  
-            $stmt = $this->conn->prepare($sql);
+            if (!empty($adminId)) {
+                $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("s", $adminId);
+            } else {
+                $sql = "SELECT * FROM clinic_info ";
+                $stmt = $this->conn->prepare($sql);
             }
             // $stmt = $this->conn->prepare($sql);
 
@@ -51,15 +52,15 @@ class HealthCare
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
 
-                    if ($result->num_rows > 0) {
-                        // Fetch all rows into an array
-                        $row = $result->fetch_assoc();
-                        $response = $row;
+                    // if ($result->num_rows > 0) {
+                    // Fetch all rows into an array
+                    $row = $result->fetch_assoc();
+                    $response = $row;
 
-                        return json_encode(['status'=> 1, 'msg' => 'success', 'data' => $response]);
-                    } else {
-                        return json_encode(['status'=> 0, 'msg' => 'empty', 'data' => '']);
-                    }
+                    return json_encode(['status' => 1, 'msg' => 'success', 'data' => $response]);
+                    // } else {
+                    //     return json_encode(['status'=> 0, 'msg' => 'empty', 'data' => '']);
+                    // }
                 } else {
                     return $response; // Return null if the query execution fails
                 }
@@ -68,7 +69,7 @@ class HealthCare
             }
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            return json_encode(['status'=> 0, 'msg' => $e->getMessage(), 'data' => '']);
+            return json_encode(['status' => 0, 'msg' => $e->getMessage(), 'data' => '']);
         }
     }
 
@@ -77,7 +78,8 @@ class HealthCare
 
     // update healthcare details function ------------------
 
-    function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId){
+    function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId)
+    {
         try {
             $updateHealthCare = "UPDATE clinic_info SET logo = ?, hospital_name = ?, address_1 = ?, address_2   = ?, city = ?, dist = ?, pin = ?, health_care_state = ?, hospital_email = ?, hospital_phno = ?,   appointment_help_line = ? WHERE admin_id = ?";
 
@@ -102,7 +104,8 @@ class HealthCare
 
 
 
-    function updateDrugPermissionData($imgFolderForm20, $imgFolderForm21, $gstin, $pan, $adminId){
+    function updateDrugPermissionData($imgFolderForm20, $imgFolderForm21, $gstin, $pan, $adminId)
+    {
         try {
             $updateHealthCare = "UPDATE clinic_info SET form_20 = ?, form_21 = ?, gstin = ?, pan   = ? WHERE admin_id = ?";
 

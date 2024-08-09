@@ -33,6 +33,7 @@ if (isset($_POST['plan']) ||  isset($_SESSION['PURCHASEPLANID'])) {
 ######################################################################################################################
 $currentPage    = $Utility->setCurrentPageSession();
 $clinicInfo     = json_decode($HealthCare->showHealthCare($ADMINID));
+print_r($clinicInfo);
 if ($clinicInfo->status == 1) {
     $clinic = $clinicInfo->data;
     $clinicCity     = $clinic->city;
