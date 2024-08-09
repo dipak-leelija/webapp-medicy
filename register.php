@@ -22,7 +22,7 @@ $emailExists = false;
 $diffrentPassword = false;
 
 
-// if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
+if (isset($_POST['pid']) || isset($_SESSION['PURCHASEPLANID']) || isset($_POST['register'])) {
 
 if (isset($_POST['pid'])) {
     $_SESSION['PURCHASEPLANID'] = $_POST['pid'];
@@ -82,9 +82,9 @@ if (isset($_POST['register'])) {
                     $_SESSION['first-name']         = $Fname;
                     $_SESSION['email']              = $email;
                     $_SESSION['username']           = $username;
-                    $_SESSION['adm_id']             = $ADMINID;
+                    $_SESSION['adm_id']             = $adminId;
 
-                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $ADMINID, NOW);
+                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                     if ($addToClinicInfo) {
                         header("Location: register-mail.inc.php");
                         exit;
@@ -98,15 +98,15 @@ if (isset($_POST['register'])) {
         }
     }
 }
-// } else {
-//     if (is_localhost()) {
-//         header("Location: http://localhost:5173/pricing");
-//         exit;
-//     }else {
-//         header("Location: https://medicy.in/pricing");
-//         exit;
-//     }
-// }
+} else {
+    if (is_localhost()) {
+        header("Location: http://localhost:5173/pricing");
+        exit;
+    }else {
+        header("Location: https://medicy.in/pricing");
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
