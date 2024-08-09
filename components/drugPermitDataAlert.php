@@ -6,7 +6,7 @@
                     <strong>Please Upload Drug Permit Documents!</strong>
                 </div>
                 <div class="col-md-1 d-flex justify-content-end">
-                    <a href="<?= URL ?>clinic-setting.php?tab-control" class="btn btn-sm btn-primary"><i class="fas fa-upload"></i></a>
+                    <a href="<?= URL ?>clinic-setting.php?tab-control" class="btn btn-sm btn-outline-primary"><i class="fas fa-upload"></i></a>
                 </div>
             </div>
         </div>
