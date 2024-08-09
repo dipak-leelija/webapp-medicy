@@ -57,8 +57,6 @@ class HealthCare
                         $response = $row;
 
                         return json_encode(['status'=> 1, 'msg' => 'success', 'data' => $response]);
-                    } else {
-                        return json_encode(['status'=> 0, 'msg' => 'empty', 'data' => '']);
                     }
                 } else {
                     return $response; // Return null if the query execution fails
