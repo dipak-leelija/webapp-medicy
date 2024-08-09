@@ -316,7 +316,7 @@ class StockIn
                 throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("iss", $adminId, $startDt, $endDt);
+            $stmt->bind_param("sss", $adminId, $startDt, $endDt);
 
             $stmt->execute();
 

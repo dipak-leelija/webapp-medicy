@@ -13,8 +13,8 @@ $StockOut   = new StockOut;
 
 if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
 
-    $salesData = $StockOut->selectStockOutDataOnDateFilter($_GET['startDt'], $_GET['endDt'], $adminId);
-    $purchaseData = $StockIn->purchaseDatafetchByDateRange($_GET['startDt'], $_GET['endDt'], $adminId);
+    $salesData = $StockOut->selectStockOutDataOnDateFilter($_GET['startDt'], $_GET['endDt'], $ADMINID);
+    $purchaseData = $StockIn->purchaseDatafetchByDateRange($_GET['startDt'], $_GET['endDt'], $ADMINID);
 
     if ($salesData != null || $purchaseData != null) {
 
