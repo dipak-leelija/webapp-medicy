@@ -210,7 +210,7 @@ const searchItem = debounce((searchFor) => {
         searchReult.style.display = "block";
         extaDetails.style.display = "none";
 
-        const xmlhttp = new XMLHttpRequest();
+        // const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 searchReult.innerHTML = xmlhttp.responseText;
