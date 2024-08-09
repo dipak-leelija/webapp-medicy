@@ -23,7 +23,7 @@ $Admin          = new Admin;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" type="image/x-icon" href="<?= FAVCON_PATH ?>">
-    <title>Verification Sent Mail- <?= SITE_NAME ?></title>
+    <title>OTP Sent - <?= SITE_NAME ?></title>
 
     <link rel="stylesheet" href="<?= CSS_PATH ?>sb-admin-2.css" type="text/css" />
     <link rel="stylesheet" href="<?= CSS_PATH ?>register.css" type="text/css" />
@@ -82,14 +82,9 @@ $Admin          = new Admin;
                         <small><span class="d-flex justify-content-center" id="timer"></span></small>
                     </div>
 
-
-                    <!-- <button id="resendOTP" style="display: none;"><small><span class="d-flex justify-content-center" onclick="getNewotp()"><u>Resend OTP</u></span></small></button> -->
-
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-small" type="button" name="resendOTP" id="resendOTP" onclick="getNewotp()" style="display: none; color: blue; text-decoration: underline;">Resend OTP</button>
                     </div>
-
-
 
                     <div class="otp-container mt-2">
                             <div class="d-flex justify-content-center">

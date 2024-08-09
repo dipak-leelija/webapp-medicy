@@ -186,6 +186,10 @@ function getBill() {
     document.getElementById("paid-amount").value = 0;
   }
   document.getElementById("bill-generate").disabled = false;
+
+  document.getElementById('test').selectedIndex = 0;
+  document.getElementById("test-name").value = '';
+  document.getElementById("test-id").value = '';
 }
 
 function removeField(count, total) {
@@ -328,7 +332,7 @@ const dueAmount = (dueAmount) =>{
     document.getElementById("due").value = "";
 
   }else{
-    Swal.fire("Error","Field can not be blank","error");
+    Swal.fire("Error","Recheck Amount, Due amount and payment option.","error");
     paidAmount.value = '';
     document.getElementById("due").value = "";
   }
