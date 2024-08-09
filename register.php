@@ -99,13 +99,8 @@ if (isset($_POST['register'])) {
     }
 }
 } else {
-    if (is_localhost()) {
-        header("Location: http://localhost:5173/pricing");
+        header("Location: ".URL."cheakout/plans.php");
         exit;
-    }else {
-        header("Location: https://medicy.in/pricing");
-        exit;
-    }
 }
 ?>
 
