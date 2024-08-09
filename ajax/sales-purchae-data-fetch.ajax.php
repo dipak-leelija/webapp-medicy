@@ -41,6 +41,7 @@ if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
         } else {
             $totalSalesCount = 0;
             $totalSalesAmount = 0;
+            $maxSellAmount = 0;
         }
 
 

@@ -139,23 +139,6 @@ if ($labBills->status == 1) {
                         <!-- ================ THIRD ROW ================ -->
                         <div class="row d-flex">
                             <div class="col-md-4 mb-4">
-                                <!-- <div class="row"> -->
-                                    <!-- Expiring in 3 Months Card -->
-                                    <!-- <div class="col-xl-12 col-md-12 mb-4">
-                                        <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
-                                    </div> -->
-
-                                <!-- </div> -->
-
-                                <!-- <div class="row"> -->
-
-                                    <!----------- Sales of the day card ----------->
-                                    <!-- <div class="col-xl-12 col-md-12 mb-4">
-                                        <?php // require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
-                                    </div> -->
-
-                                <!-- </div> -->
-
                                 <div class="row">
                                     <!----------- Purchase today card ----------->
                                     <div class="col-xl-12 col-md-12 mb-4">
