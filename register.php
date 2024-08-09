@@ -82,11 +82,9 @@ if (isset($_POST['register'])) {
                     $_SESSION['first-name']         = $Fname;
                     $_SESSION['email']              = $email;
                     $_SESSION['username']           = $username;
-                    $_SESSION['adm_id']             = $ADMINID;
+                    $_SESSION['adm_id']             = $adminId;
 
-                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $ADMINID, NOW);
-                    print_r($addToClinicInfo);
-                    exit;
+                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                     if ($addToClinicInfo) {
                         header("Location: register-mail.inc.php");
                         exit;
