@@ -380,17 +380,15 @@ class Request
 
 
 
-    function deleteProductOnTable($prodId, $table)
+    function deleteProductOnTable($ticket, $table)
     {
         try {
-            $sql = "DELETE FROM $table WHERE `product_id` = ?";
+            $sql = "DELETE FROM $table WHERE `ticket_no` = ?";
             $statement = $this->conn->prepare($sql);
-
             if (!$statement) {
                 throw new Exception("Error preparing delete statement: " . $this->conn->error);
             }
-
-            $statement->bind_param("s", $prodId);
+            $statement->bind_param("s", $ticket);
             $statement->execute();
 
             if ($statement->affected_rows > 0) {
@@ -415,7 +413,7 @@ class Request
     {
         try {
             $queries = [
-                'product_request' => ['id', 'name', 'req_dsc', 'prod_req_status'],
+                'product_request' => ['id', 'ticket_no', 'name', 'req_dsc', 'prod_req_status'],
                 'distributor_request' => ['id', 'name', 'req_dsc', 'status'],
                 'manufacturer_request' => ['id', 'name', 'req_dsc', 'status'],
                 'packtype_request' => ['id', 'unit_name', 'req_dsc', 'status'],
@@ -1359,4 +1357,35 @@ class Request
         return json_encode($response);
     }
     
+
+
+
+    function updateProductRequestTable($tokentNo, $col, $data){
+        $response = array('status' => '', 'message' => '');
+        try{
+            $updateQuery = "UPDATE `product_request` SET $col = ? WHERE `ticket_no`=?";
+            $stmt = $this->conn->prepare($updateQuery);
+            
+            if ($stmt === false) {
+                throw new Exception('Prepare failed: ' . $this->conn->error);
+            }
+    
+            $stmt->bind_param('si', $data, $tokentNo);
+            $stmt->execute();
+    
+            if ($stmt->affected_rows > 0) {
+                $response['status'] = true;
+                $response['message'] = 'Record updated successfully';
+            } else {
+                $response['status'] = false;
+                $response['message'] = 'No record updated';
+            }
+    
+            $stmt->close();
+        } catch(Exception $e) {
+            $response['status'] = false;
+            $response['message'] = $e->getMessage();
+        }
+        return json_encode($response);
+    }
 }

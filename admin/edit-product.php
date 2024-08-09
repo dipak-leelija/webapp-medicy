@@ -33,13 +33,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 $itemUnits          = $ItemUnit->showItemUnits();
 
 $gstData            = json_decode($GST->seletGst());
-$gstData = $gstData->data;
-
+$gstData            = $gstData->data;
 
 $Category = json_decode($ProductCategory->selectAllProdCategory());
 $Category = $Category->data;
-// print_r($Category);
-// echo PROD_IMG;
+
+// echo ADM_URL.'product-request-lsit.php';
 ?>
 
 
@@ -82,17 +81,20 @@ $Category = $Category->data;
     <?php
     if (isset($_GET['id'])) {
 
-        $productId = $_GET['id'];
+        $ticketNo = $_GET['id'];
         $tableName = $_GET['table'];
 
         // ===================== Fetching Product Details =====================
 
-        $product = json_decode($Products->showProductsByIdOnTableName($productId, $tableName));
-
+        $product = json_decode($Products->showProductsByIdOnTableName($ticketNo, $tableName));
+        
         if ($product->status) {
 
-            $product = $product->data;
             // print_r($product);
+            $product = $product->data;
+
+            // product id ----- 
+            $productId = $product->product_id;
 
             // product name ====
             $productName    = $product->name;
@@ -270,6 +272,7 @@ $Category = $Category->data;
                                             <div class="col-md-12">
                                                 <lebel>Prodcut Name:</lebel>
                                                 <input class="c-inp w-100 p-1" id="product-id" name="product-id" placeholder="Product Id" value="<?= $productId ?>" required hidden>
+                                                <input class="c-inp w-100 p-1" id="ticket-no" name="ticket-no" value="<?= $ticketNo ?>" required hidden>
                                                 <input class="c-inp w-100 p-1" id="old-product-id" name="old-product-id" value="<?= $oldProdId ?>" hidden>
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
                                             </div>
@@ -431,7 +434,7 @@ $Category = $Category->data;
                                                     <?php
                                                     foreach ($gstData as $gstData) {
                                                     ?>
-                                                        <option <?= $gst == $gstData->id ? 'selected' : ''; ?> value="<?= $gstData->id; ?>">
+                                                        <option <?= $gst == $gstData->percentage ? 'selected' : ''; ?> value="<?= $gstData->percentage; ?>">
                                                             <?= $gstData->percentage; ?></option>';
                                                     <?php
                                                     }

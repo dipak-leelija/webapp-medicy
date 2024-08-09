@@ -124,8 +124,6 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     // reset chart as no value found
     function resetChart(filterDateArray) {
 
-        // console.log(filterDateArray);
-
         salesPurchaseDataChart.data.labels = filterDateArray;
         salesPurchaseDataChart.data.datasets[0].data = [];
         salesPurchaseDataChart.data.datasets[1].data = [];

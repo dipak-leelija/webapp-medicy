@@ -8,7 +8,8 @@ require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'request.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
-require_once CLASS_DIR . 'utility.class.php';
+
+
 
 
 $Products       = new Products();
@@ -17,7 +18,8 @@ $Unit           = new MeasureOfUnits();
 $Session        = new SessionHandler();
 $Request        = new Request;
 $IdsGeneration  = new IdsGeneration;
-$Utility        = new Utility;
+
+
 
 
 ?>
@@ -55,10 +57,10 @@ $Utility        = new Utility;
         $gst = $_POST['gst'];
         $hsnoNumber = $_POST['hsno-number'];
         $prodReqStatus = 1;
-
+        
         $description = 'New Product Request';
 
-        $ticketNo = $Utility->ticketNumberGenerator();
+        
         $productId = $IdsGeneration->generateProductId();
 
 

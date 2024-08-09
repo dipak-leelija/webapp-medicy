@@ -69,11 +69,12 @@ foreach ($requestTypes as $table => &$requestType) {
 
         if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
-                'id'          => getInitials($requestType['tableName']) . $requestDataItem->id,
+                'id'          => $requestDataItem->ticket_no,
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'msgTitle'    => '',
-                'description' => $requestDataItem->req_dsc
+                'description' => $requestDataItem->req_dsc,
+                'status'      => $requestDataItem->prod_req_status,
             ];
         } elseif ($requestType['tableName'] == 'Distributor Request') {
             $allRequestResult[] = [
@@ -254,6 +255,15 @@ if ($pagination->status == 1) {
 
                                             if (property_exists($resItems, 'status')) {
                                                 $status = $resItems->status;
+                                                if($status == 0 || $status == 1){
+                                                    if($status == 0){
+                                                        $status = 'Request Solved';
+                                                    }else{
+                                                        $status = 'Request Pending';
+                                                    }
+                                                }else{
+                                                    $status = $status;
+                                                }
                                             }else{
                                                 $status = 'Request Pending';
                                             }

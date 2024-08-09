@@ -20,6 +20,8 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -287,22 +289,22 @@ $QuantityUnit   = new QuantityUnit;
         }
 
         //========================= Delete Product =========================
-
         const del = (prodId, table, oldProdId) => {
 
             const btnID = prodId;
             const tblNm = table;
             const oldProductId = oldProdId;
 
-            swal.fire({
+            Swal.fire({
                 title: "Are you sure?",
-                text: "Want to Delete This Data?",
+                text: "You won't be able to revert this!",
                 icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
                     $.ajax({
                         url: "product.Delete.ajax.php",
                         type: "POST",
@@ -313,20 +315,18 @@ $QuantityUnit   = new QuantityUnit;
                             oldProdId: oldProductId,
                         },
                         success: function(data) {
-                            alert(data);
                             if (data) {
-                                Swal.fire(
-                                    "Deleted",
-                                    "Data Has Been Deleted",
-                                    "success"
-                                ).then(function() {
-                                    const redirectUrl = tblNm === 'products' ? "<?php echo ADM_URL . 'prodcuts.php'; ?>" : "<?php echo ADM_URL . 'product-request-list.php'; ?>";
-                                    parent.location = redirectUrl;
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Item has been deleted.",
+                                    icon: "success"
+                                }).then(() => {
+                                    parent.location.reload();
                                 });
                             } else {
                                 Swal.fire("Failed", "Product Deletion Failed!", "error");
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
+                                $("#error-message").html("Deletion Failed!").slideDown();
+                                $("#success-message").slideUp();
                             }
                         },
                         error: function(xhr, textStatus, errorThrown) {
